@@ -9,7 +9,7 @@ This promotes those mechanics into active work. Paid cosmetics remain stat-free.
 ## Player loop
 
 At player Lv25, choose **Establish your Inner Sea**. The farm contains a wooden
-house, barn, cellar, bird roost, insect garden and pond. Existing decoration
+house, barn, haunted cellar, bird roost, insect garden and pond. Existing decoration
 layouts and PNG export remain available. Choose five owned individuals for
 defense; the adventure party still has two companion slots.
 
@@ -17,8 +17,11 @@ Each habitat displays only its highest-level compatible owned individual. Ties
 use the first individual in saved collection order. Display is automatic and
 does not restrict training: every owned monster, including every duplicate in
 the bag, trains while the farm is clean and intact. Family/shape metadata maps
-aquatic creatures to the pond, insects to the garden, birds to the roost,
-burrowing/construct creatures to the cellar, and other land creatures to the barn.
+haunted objects, afterlife spirits, undead and demon/fiend families to the Haunted
+Cellar first. These current reviewed families take priority over legacy animal
+shapes. Other aquatic creatures use the pond, insects use the garden, birds use
+the roost, and other land creatures and ordinary constructs use the barn. The
+saved `cellar` ID and its upgrades are retained.
 
 Power is the sum of the current highest individual level of each owned species.
 Duplicates do not add power. The example of ten species at Lv100 gives 1,000

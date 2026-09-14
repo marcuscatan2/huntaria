@@ -9,7 +9,7 @@ Status: **local-prototype**. Draws characters and combat feedback; consumes comb
 
 `CharacterRig.mount / pose / trigger; CombatView.onEvent / draw / impactAudit; BondPresentation.timing`
 
-Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid and Mage use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional. Hunter/Swordsman use code-drawn vector reference figures with transform motion; final class pose packages remain unapproved.
+Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid, Mage, Hunter and Swordsman use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional. Hunter/Swordsman portraits reuse their sheet idle frame; Inner Sea exports receive a cached canvas. NPC appearance routing reserves class art for masters and selects four stable civilian sprites for ordinary people in field, dialogue, previews and combat. Final visual acceptance remains pending.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -75,6 +75,7 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [features/animation/TRAINER_SPRITES.md](<../../features/animation/TRAINER_SPRITES.md>)
 - [PASS21_VALIDATION.md](<../../PASS21_VALIDATION.md>)
 - [PASS22_VALIDATION.md](<../../PASS22_VALIDATION.md>)
+- [assets/characters/README.md](<../../assets/characters/README.md>)
 - Art and provenance: [assets/art-v6](<../../assets/art-v6>)
 - Art and provenance: [assets/art-v8](<../../assets/art-v8>)
 - Art and provenance: [assets/art-v9](<../../assets/art-v9>)
@@ -83,5 +84,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - Art and provenance: [assets/art-v21](<../../assets/art-v21>)
 - Art and provenance: [assets/art-v22](<../../assets/art-v22>)
 - Art and provenance: [assets/monsters](<../../assets/monsters>)
+- Art and provenance: [assets/characters](<../../assets/characters>)
 - Commercial cards: [F-024](<../../FEATURE_BACKLOG.md>), [F-025](<../../FEATURE_BACKLOG.md>), [F-026](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-01](<../../OWNER_REVIEWS.md#or-01>), [OR-04](<../../OWNER_REVIEWS.md#or-04>), [OR-05](<../../OWNER_REVIEWS.md#or-05>), [OR-06](<../../OWNER_REVIEWS.md#or-06>), [OR-09](<../../OWNER_REVIEWS.md#or-09>) Use the live board/preflight for status, not an approval copied here.

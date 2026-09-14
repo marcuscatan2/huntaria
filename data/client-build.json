@@ -18,7 +18,8 @@
     "assets/art-v22/*.png",
     "assets/monsters/*.png",
     "assets/world-runtime/*.webp",
-    "assets/audio/*.wav"
+    "assets/audio/*.wav",
+    "assets/characters/*.png"
   ],
   "rules": [
     "content.js",

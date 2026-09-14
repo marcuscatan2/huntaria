@@ -84,7 +84,7 @@
     battle._encounterId=encounterId;battle.ticketId=BondProfile.ticket(encounterId)?.id; committed=!!battle._supplyReceipt; running=false; elapsed=0;seenEvents=battle.events.length;lastFrame=0;
     if(npc?.kind==='boss'){guilds[1]=npc.name+' · Lv '+(npc.practice?BondProfile.snapshot().bossLevel:npc.level);}
     Bonding.reset(battle);
-    if(npc&&!npc.kind){if(BondWorld.NPCS[encounterId])battle.trainer(1).appearance=npc.appearance||encounterId;battle.trainer(1).name=npc.name;}
+    if(npc&&!npc.kind){battle.trainer(1).appearance=CharacterRig.npcAppearance(npc,encounterId);battle.trainer(1).name=npc.name;}
     const scene=BondWorld.SCENES.find(s=>s.id===(npc?.area||BondProfile.snapshot().area))||BondWorld.SCENES[0];
     $('#arena').classList.toggle('cave-arena',npc?.route==='cave');
     $('#arena').style.setProperty('--battle-scene',"url('"+scene.image+"')");

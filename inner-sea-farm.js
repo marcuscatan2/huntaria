@@ -4,7 +4,7 @@
 const C=BondContent,R=BondProgress,DAY=86400000,MINUTE=60000;
 const habitats=Object.freeze({
  barn:{name:'Barn',residents:'Land creatures',x:260,y:280},
- cellar:{name:'Cellar',residents:'Stone, burrowing and shadow creatures',x:710,y:205},
+ cellar:{name:'Haunted cellar',residents:'Ghosts, undead and impish creatures',x:710,y:205},
  aviary:{name:'Bird roost',residents:'Birds and winged creatures',x:755,y:365},
  garden:{name:'Insect garden',residents:'Insects and small garden creatures',x:260,y:405},
  pond:{name:'Pond',residents:'Aquatic creatures',x:515,y:425}
@@ -25,10 +25,10 @@ function clean(raw,s){const f=fresh();if(!raw||raw.version!==1)return f;
  return f;
 }
 function habitat(type){const u=C.UNITS[type]||{},shape=u.artSpec?.shape||u.shape||'',family=(u.visualFamily||u.family||'').toLowerCase();
+ if(/haunted|afterlife|ghost|undead|demon|fiend|impish/.test(family))return 'cellar';
  if(/fish|otter|seal|shrimp|axolotl|turtle|crab|frog|toad/.test(shape)||/aquatic|amphibian/.test(family))return 'pond';
  if(/moth|butterfly|bee|beetle|ant$|spider|centipede|snail|slug/.test(shape)||/insect|bug|arachnid/.test(family))return 'garden';
  if(/owl|bird|hawk|raven|crow|bat|eagle|heron|crane/.test(shape)||/avian|bird/.test(family))return 'aviary';
- if(/mole|wyrm|serpent|golem/.test(shape)||/construct|ghost|spirit/.test(family))return 'cellar';
  return 'barn';
 }
 function strongest(s){const best={};for(const m of s.companions||[]){const old=best[m.type];if(!old||R.level(m.xp)>R.level(old.xp))best[m.type]=m;}return best;}

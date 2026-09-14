@@ -3,7 +3,8 @@
   'use strict';
   const legacy=new Set(['druid','mage','emberfox','stonehorn','stormowl','bloomslime']);
   const types=new Set([...legacy,'frostfang','cindrake','ironback','thornstag','tideotter','lumimoth','mira','orin','vesper','lark','selene','elderroot']);
-  const animated=new Set(['druid','mage','apprentice']),sheets=new Map();
+  const painted=new Set(['hunter','swordsman']),people=['npc-keeper','npc-villager','npc-merchant','npc-traveler'];
+  const animated=new Set(['druid','mage','apprentice',...painted]),sheets=new Map();
   const supplied=type=>BondMonsterSprites.get(type);
   document.addEventListener('error',event=>{
     const img=event.target;if(!(img instanceof HTMLImageElement)||!img.classList.contains('character-sprite')||img.dataset.artFallback)return;
@@ -14,12 +15,21 @@
   },true);
   function rootlessArt(type){return !!window.BondCreatureArt&&!!BondContent.UNITS[type]?.artSpec&&type!=='elderroot';}
   const nativeFacing=type=>['rabbit','hound','fox','cat','boar','badger','marten','yak','tapir','ram','deer','bear','rhino','otter','seal','mole','porcupine','snake','wyrm','serpent','dragon','lizard','axolotl','centipede','shrimp','fish','snail','slug'].includes(BondContent.UNITS[type]?.artSpec?.shape)?-1:1;
+  function npcAppearance(npc,id=''){
+    if(npc.masterClass)return npc.masterClass;
+    if(npc.kind&&npc.kind!=='guide')return npc.type||npc.appearance||id;
+    if(npc.role==='keeper'||npc.kind==='guide'||npc.id==='early:forest-mage'||id==='early:forest-mage')return 'npc-keeper';
+    if(npc.role==='merchant')return 'npc-merchant';
+    const key=npc.id||id||npc.name||'villager';let hash=0;
+    for(const ch of key)hash=(Math.imul(hash,31)+ch.charCodeAt(0))>>>0;
+    return people[hash%people.length];
+  }
   function art(type){
-    if(type==='hunter'||type==='swordsman'){
-      const hunter=type==='hunter',color=hunter?'#627e46':'#668599';
-      const weapon=hunter?'<path d="M232 90Q295 166 232 242M232 90L232 242" fill="none" stroke="#966641" stroke-width="9"/><path d="M195 163H283l-15-9m15 9-15 9" fill="none" stroke="#e8dcc0" stroke-width="5"/>':'<path d="M228 184L250 54l13-18 6 25-23 127Z" fill="#dce8ed" stroke="#456272" stroke-width="4"/><path d="M212 185l48 8m-26-5-5 31" stroke="#d1aa5d" stroke-width="9"/>';
-      return '<svg class="character-sprite class-reference" data-character="'+type+'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" aria-hidden="true"><ellipse cx="160" cy="292" rx="65" ry="12" fill="#16372c33"/><path d="M121 223l-7 61h32l16-63m11 0 11 63h31l-18-68" fill="#493c32" stroke="#293a36" stroke-width="6"/><path d="M105 129Q155 109 202 136l21 92q-67 29-126 0Z" fill="'+color+'" stroke="#293f37" stroke-width="6"/><path d="m108 147-25 62 26 10 28-68m63-5 23 51 23-10-25-58" fill="'+color+'" stroke="#293f37" stroke-width="7"/><ellipse cx="158" cy="91" rx="36" ry="40" fill="#dfad85"/><path d="M122 84q-13-51 36-50 47-1 41 50l-24-26-52 24" fill="'+(hunter?'#425331':'#7498a5')+'"/><path d="M141 91h7m24 0h7" stroke="#33403b" stroke-width="6"/><path d="M144 111q15 9 28 0" fill="none" stroke="#956f57" stroke-width="3"/><path d="M104 202l106 0" stroke="#c2a065" stroke-width="12"/>'+weapon+'</svg>';
+    if(painted.has(type)){
+      const config=BondAnimationData[type],[l,t,r,b]=config.frames[13].rect;
+      return '<svg class="character-sprite" data-painted-portrait="true" data-character="'+type+'" xmlns="http://www.w3.org/2000/svg" viewBox="'+[l,t,r-l,b-t].join(' ')+'" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><image href="assets/characters/'+type+'-sheet.png" width="'+config.width+'" height="'+config.height+'"/></svg>';
     }
+    if(people.includes(type))return '<img class="character-sprite civilian-sprite" data-character="'+type+'" src="assets/characters/'+type+'.png" alt="" aria-hidden="true" width="1254" height="1254" decoding="async" draggable="false">';
     if(type==='apprentice'){const c=window.BondProfile?.snapshot().character;return BondApprenticePreview.markup(c?.look,c?.weapon);}
     const entry=supplied(type);
     if(entry)return '<img class="character-sprite supplied-monster" style="--sprite-native:'+entry.nativeFacing+'" data-character="'+type+'" src="'+entry.src+'" alt="" aria-hidden="true" width="1280" height="1280" decoding="async" draggable="false">';
@@ -69,15 +79,14 @@
     if(!sheets.has(key)){
       const image=new Image(),entry={key,image,render:image,ready:false,error:false,removed:0};
       entry.promise=new Promise(resolve=>{image.onload=()=>{try{if(key.startsWith('apprentice-')){const cleaned=removeNeutralBackdrop(image),isolated=removeDetachedPieces(cleaned.canvas);entry.render=isolated.canvas;entry.removed=cleaned.removed;entry.specks=isolated.removed;}else if(key==='mage'){const isolated=removeDetachedPieces(image);entry.render=isolated.canvas;entry.specks=isolated.removed;}entry.ready=true;resolve(true);document.dispatchEvent(new CustomEvent('bond-art-ready'));}catch(_){entry.error=true;resolve(false);}};image.onerror=()=>{entry.error=true;resolve(false);};});
-      image.src=key==='druid'?'assets/art-v10/druid-sheet.png':'assets/art-v21/'+key+'-sheet.png';sheets.set(key,entry);
+      image.src=painted.has(key)?'assets/characters/'+key+'-sheet.png':key==='druid'?'assets/art-v10/druid-sheet.png':'assets/art-v21/'+key+'-sheet.png';sheets.set(key,entry);
     }
     return sheets.get(key);
   }
   function mount(node,type,options={}){
     const sprite=node.querySelector('.character-sprite'),weapon=type==='apprentice'?(sprite?.dataset.weapon||window.BondProfile?.snapshot().character?.weapon||'dagger'):null;
     const rig={type,weapon,configKey:type==='apprentice'?'apprentice-'+(weapon==='bow'?'bow':'dagger'):type,sprite,frame:-1,action:null,mode:'idle',animated:animated.has(type)};
-    if(type==='hunter'||type==='swordsman'){rig.raster=true;rig.animated=true;return rig;}
-    if(supplied(type)&&rig.sprite){rig.raster=true;rig.animated=true;rig.sprite.style.transformOrigin='50% 88%';return rig;}
+    if((supplied(type)||people.includes(type))&&rig.sprite){rig.raster=true;rig.animated=true;rig.sprite.style.transformOrigin='50% 88%';return rig;}
     if(rootlessArt(type)&&rig.sprite){
       const container=document.createElement('div');container.innerHTML=BondCreatureArt.svg(type);const svg=container.firstElementChild;
       svg.classList.add('character-sprite','joint-creature');svg.setAttribute('aria-hidden','true');svg.dataset.character=type;
@@ -169,8 +178,18 @@
     // One scale per character and a fixed foot anchor, not per-frame auto-sizing.
     rig.ctx.drawImage(im,left,top,w,h,160-w*k*data.pivot,300-h*k,w*k,h*k);
   }
+  async function portraitSource(type){
+    if(!painted.has(type))throw Error('No painted class portrait: '+type);
+    const entry=sheet(type);if(!await entry.promise)throw Error('Portrait could not load');
+    if(!entry.portrait){
+      const canvas=document.createElement('canvas');canvas.width=canvas.height=320;
+      const [l,t,r,b]=BondAnimationData[type].frames[13].rect,w=r-l,h=b-t,k=280/Math.max(w,h);
+      canvas.getContext('2d').drawImage(entry.render,l,t,w,h,160-w*k/2,300-h*k,w*k,h*k);entry.portrait=canvas;
+    }
+    return entry.portrait;
+  }
   function retry(){for(const img of document.querySelectorAll('img[data-art-fallback]')){const url=img.dataset.artFallback;delete img.dataset.artFallback;img.src=url;}for(const s of sheets.values())if(s.error){s.error=false;s.image.src=s.image.src;}}
   function preload(type,weapon='dagger'){return animated.has(type)?sheet(type,weapon).promise:Promise.resolve(true);}
-  window.CharacterRig={art,mount,pose,trigger,retry,preload,ready:()=>Promise.all([...sheets.values()].map(s=>s.promise)),
+  window.CharacterRig={art,npcAppearance,portraitSource,mount,pose,trigger,retry,preload,ready:()=>Promise.all([...sheets.values()].map(s=>s.promise)),
     inspect:()=>[...sheets].map(([type,s])=>({type,ready:s.ready,error:s.error,removed:s.removed,specks:s.specks||0}))};
 })();

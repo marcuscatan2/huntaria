@@ -72,7 +72,7 @@ function buildObjects(){
  layer.innerHTML='<div id="region-destination" hidden></div><div id="region-player" class="world-node region-player"><div class="world-art">'+CharacterRig.art(party[0]?.type||'druid')+'</div><div class="world-player-hp" role="progressbar" aria-label="Your health" aria-valuemin="0" aria-valuemax="100"><i></i></div><span class="world-label">'+(P.snapshot().character?.name||'YOU')+'</span></div>'+followers.map((u,i)=>'<div id="follower-'+i+'" class="world-node region-companion" data-type="'+u.type+'" aria-hidden="true"><div class="world-art">'+CharacterRig.art(u.type)+'</div><div class="world-companion-hp" role="progressbar" aria-label="Companion health" aria-valuemin="0" aria-valuemax="100"><i></i></div></div>').join('')+
  objects.map(o=>{
   let visual='';
-  if(o.sceneryService)visual='';else if(o.kind==='guide')visual='<div class="world-art">'+CharacterRig.art('druid')+'</div>';else if(o.kind==='wild'||o.kind==='npc')visual='<div class="world-art">'+CharacterRig.art(o.type||W.NPCS[o.id].appearance||o.id)+'</div>';
+  if(o.sceneryService)visual='';else if(o.kind==='guide')visual='<div class="world-art">'+CharacterRig.art('npc-keeper')+'</div>';else if(o.kind==='wild'||o.kind==='npc')visual='<div class="world-art">'+CharacterRig.art(o.type||CharacterRig.npcAppearance(W.NPCS[o.id],o.id))+'</div>';
   else if(o.kind==='pack')visual='<span class="landmark-art">⚔</span>';
   else if(o.kind==='openingSign')visual='<span class="opening-sign-art" aria-hidden="true"><i></i><b></b></span>';
   else if(o.kind==='gate')visual='<div class="world-gate-visual"></div><span class="gate-badge" aria-hidden="true">'+(m.neighbors.findIndex(g=>g.id===o.id)+1)+' · '+(o.locked?'LOCKED':'EXIT')+'</span>';
@@ -167,9 +167,9 @@ const trialControls=document.createElement('div');trialControls.id='trial-skill-
 const transformButton=document.createElement('button');transformButton.id='npc-transform';transformButton.className='button primary';transformButton.hidden=true;$('#npc-fight').after(transformButton);
 function talk(id){
  stop();dialogId=id;const e=P.encounter(id);if(!e)return;if(e.openingGate&&!P.snapshot().journey.early.mageMet)P.meetOpeningMage();
- $('#npc-portrait').innerHTML=CharacterRig.art(e.type||e.appearance||id);$('#npc-title').textContent=e.name;$('#npc-tier').textContent=e.kind==='wild'?'WILD · Lv '+e.level+' · '+e.rarity:e.title;
+ $('#npc-portrait').innerHTML=CharacterRig.art(CharacterRig.npcAppearance(e,id));$('#npc-title').textContent=e.name;$('#npc-tier').textContent=e.kind==='wild'?'WILD · Lv '+e.level+' · '+e.rarity:e.title;
  $('#npc-dialogue').textContent=e.kind==='wild'?'Challenge this wild creature.':e.greeting;
- $('#npc-team').innerHTML=(e.enemies||e.team||[]).filter(Boolean).map(u=>'<div>'+CharacterRig.art(u.type)+'<strong>'+C.UNITS[u.type].name+'</strong><small>'+u.skills.map(k=>C.SKILLS[k].name).join(' · ')+'</small></div>').join('');
+ $('#npc-team').innerHTML=(e.enemies||e.team||[]).filter(Boolean).map(u=>'<div>'+CharacterRig.art(C.UNITS[u.type].role==='Trainer'?CharacterRig.npcAppearance(e,id):u.type)+'<strong>'+(C.UNITS[u.type].role==='Trainer'?e.name:C.UNITS[u.type].name)+'</strong><small>'+u.skills.map(k=>C.SKILLS[k].name).join(' · ')+'</small></div>').join('');
  const trainerReward=e.trialClass&&P.snapshot().journey.early.trialRewarded?0:e.trainerXP??e.xp??150;
  $('#npc-reward').textContent=e.kind==='wild'?'Per kill: '+(6+Math.floor(e.level/3))+' coins and '+BondAdventure.xp(e.level)+' companion XP.':e.practice?'No rewards in this local boss preview.':P.snapshot().defeated.includes(id)?'Cleared. Rematches give no additional first-win rewards.':'First victory: '+(e.coins||0)+' coins, '+trainerReward+' trainer XP, '+(e.xp||150)+' companion XP and a biscuit.';
  if(e.openingGate)$('#npc-reward').textContent='Win to open the forest road.';

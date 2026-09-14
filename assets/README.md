@@ -6,7 +6,9 @@
 - [Animation owner](../features/animation/README.md): creature/trainer art,
   poses, portraits, combat effects and character asset directories.
 - [Trainer pose sheets](../features/animation/TRAINER_SPRITES.md): Druid,
-  Mage and weapon-specific Apprentice atlas routing, provenance and limitations.
+  Mage, Hunter, Swordsman and weapon-specific Apprentice atlas routing.
+- [Human sprites](characters/README.md): new class sheets, four civilian NPCs,
+  exact built-in generation prompts and selected asset hashes.
 - [Exploration owner](../features/exploration/README.md): scenery and world props.
 - [Lossless scenery exports](world-runtime/README.md): pixel-identical runtime encoding; original images remain intact.
 - [Original audio](audio/README.md): procedural scores and reproducible loop files.

@@ -534,11 +534,48 @@
       "evidence": [
         {
           "path": "features/opening/CLASSES.md",
-          "sha256": "107893a0f8de84c7af6fdc51379bdb79e20f3b74d16deff0afb8a42146825fb6"
+          "sha256": "644942cf69740dea4ad99d6101a5306d71bbf2ad0efd61bbf7845d2d340e2f3b"
         },
         {
           "path": "features/inner-sea/FARM_SCOPE.md",
-          "sha256": "48549e5f29e2addba7b52cb25b8bacd5003a59de7e56cc31a8d1d5c34971aab7"
+          "sha256": "bd5ed153dd75a946838cfaf0bcf781d3577c383ac5417aa9ca9db85d71d41c11"
+        }
+      ]
+    },
+    {
+      "id": "human-sprites-haunted-cellar-2026-09-14",
+      "source": "Current owner conversation, 2026-09-14",
+      "scope": [
+        "Haunted cellar habitat for ghost and impish families, retaining saved cellar upgrades",
+        "Create and integrate Hunter and knight-styled Swordsman sprites using current Mage/Druid references",
+        "Create generic civilian NPC sprites; reserve class artwork among NPCs for class masters"
+      ],
+      "quotes": [
+        "Cellar -> Haunted cellar for ghost types / impish types.",
+        "Create interesting sprites for the knight and hunter (Same art style as the mage and druid).",
+        "Create some generic people sprites for regular NPCs. Keep the classes only on the class masters."
+      ],
+      "boundary": "Explicit authority for this named human asset batch and habitat change. Swordsman remains the existing stable class ID. Does not accept the finished artwork, approve expanded creature animation, lock device budgets or authorize public release. Broad animation-production gates remain unmet; this user-directed batch does not clear them.",
+      "evidence": [
+        {
+          "path": "assets/characters/prompts.json",
+          "sha256": "04d4cb0d1b5578be0af7cb350b50c74434b2a80c30d2af2df76dd7e8252382f5"
+        },
+        {
+          "path": "assets/art-v10/druid-sheet.png",
+          "sha256": "ba28fbe0ccefc529202143b3a72c98bfea2b2901aa82d749763d459bff0c3a8b"
+        },
+        {
+          "path": "assets/art-v21/mage-sheet.png",
+          "sha256": "d61c1b6490a1e56dd9b09c928d31e11ce8ebbda7b15781e1609bfcc9e162af2a"
+        },
+        {
+          "path": "features/animation/TRAINER_SPRITES.md",
+          "sha256": "063cf24d0ec623d99ea1af3c910e0e3661ee68b9d0ad73cc4d6e84575b0e0acb"
+        },
+        {
+          "path": "features/inner-sea/FARM_SCOPE.md",
+          "sha256": "bd5ed153dd75a946838cfaf0bcf781d3577c383ac5417aa9ca9db85d71d41c11"
         }
       ]
     }

@@ -1,5 +1,30 @@
 # Bond & Bolt browser prototype — handoff
 
+## Current handoff - human sprites and Haunted Cellar (2026-09-14)
+
+Hunter and the knight-styled Swordsman use painted 16-pose sheets referenced
+from the current Druid/Mage artwork. Static portraits and Inner Sea exports
+reuse their idle frame. Four civilian people now represent ordinary NPCs in
+exploration, dialogue, opponent previews and combat; class masters retain their
+class appearances. Combat kits and stable class IDs are unchanged.
+[Sprite sources and provenance](assets/characters/README.md) record exact
+built-in generation prompts, native alpha and selected hashes.
+
+The Haunted Cellar uses current ghost, undead, haunted-object and demon/fiend
+families before legacy animal shapes. Existing cellar upgrades retain their
+saved key. Highest-level resident selection and stable ties remain unchanged.
+
+Focused Chrome verification passed 28 trainer-art checks and 55 class/farm
+checks, including civilian/master consistency and both new class PNG exports.
+
+Needs you now: review this named human art batch at world/combat size before
+commissioning further variants; changing the direction later would repeat
+that art work. Coming next: more human art after visual acceptance, and habitat
+equipment after the farm-loop review. Technical fixes can continue.
+Safe to defer: broader creature animation and commercial release approvals.
+The owner's creation/integration authority is recorded in docs/review-gates.json;
+it does not accept the finished artwork or clear broad production gates.
+
 ## Current handoff — four classes and Inner Sea farm (2026-09-14)
 
 Hunter and Swordsman now have five-ability kits, trainer trees, demonstrations
