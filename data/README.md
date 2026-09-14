@@ -1,0 +1,32 @@
+# Data sources and reviewed snapshots
+
+The owner-maintained Bond & Bolt Google Sheet is the design source of truth for
+creature identity, display name, description, role, element, region, wild/source
+level, encounter source, rarity, attack attribute and design notes. `monster-roster.json` is the
+reviewed, versioned runtime snapshot of its `Roster!A:S` range; its source block
+records the reviewed Sheet revision and snapshot fingerprint. See the
+[sprite route](../features/animation/SUPPLIED_SPRITES.md).
+
+[Content owner](../features/content/README.md) routes species and skills. The
+browser never fetches a mutable spreadsheet during play: approved Sheet changes
+must be reviewed into local runtime JS/snapshots and tested. Stable IDs, not
+display names or row positions, join Sheet rows to saves. `mon-skills` was empty
+at reviewed revision 262, so existing implemented skills remain authoritative
+until that tab contains reviewed data.
+
+Publication: runtime source → current Chrome export → authorized snapshot
+update → generated creature tables. Follow
+[content updates](../docs/ENGINEERING.md#content-updates); run
+`python scripts/creature_reference.py --check` to check agreement.
+
+If the Sheet revision changes, compare `Roster!A:S` against this snapshot before
+editing runtime content, record the new reviewed revision/fingerprint, regenerate
+the derived tables, and run the content/browser gates. Do not silently overwrite
+the three retained starter encounters: Brimble Lv2, Bloomslime Lv3 and Rattlebit
+Lv5 are an explicit opening override. Individual IDs belong to saved companions,
+not roster rows. Keep temporary test odds distinct from release proposals.
+
+`client-build.json` allowlists public-package inputs and rules versions; see
+[build contract](../features/delivery/CLIENT_BUILD.md). `simulator-modules.json`
+orders the shared browser/Node probe inputs; see
+[runtime contract](../features/combat/RUNTIME.md). Neither selects a cloud vendor.

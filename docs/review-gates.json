@@ -1,0 +1,510 @@
+{
+  "version": 1,
+  "policy": {
+    "notify": "Before relevant production work and in every substantive development handoff: Needs you now (max 3), Coming next, Safe to defer. Never silently cross a blocked milestone.",
+    "approval": "Only explicit owner decisions on a named revision/scope count. No reply, green tests and general encouragement are not approval.",
+    "reopen": "Invalidate changed evidence automatically; review listed reopen triggers semantically. Re-approval affects only the changed scope and dependent standards.",
+    "prototypes": "A gate blocks its dependent production/commitment, not diagnostics, tests, review packets or reversible prototypes. Do not wait for final art to test mechanics.",
+    "work_reporting": "The assistant selects the honest work milestone before implementation. File/feature matching is advisory; gates do not infer intent from filenames."
+  },
+  "gates": [
+    {
+      "id": "OR-01",
+      "title": "Approve the visual direction with a small creature set",
+      "timing": "now",
+      "state": "revise",
+      "features": [
+        "animation",
+        "content",
+        "exploration",
+        "inner-sea"
+      ],
+      "work": [
+        "creature-production",
+        "animation-production",
+        "world-production",
+        "polished-playtest",
+        "public-launch",
+        "public-promotion"
+      ],
+      "before": "Before expanded-roster concepts become final portraits, rigs, world populations or marketing.",
+      "why": "A silhouette/proportion change propagates into portraits, crops, pivots, animation, hit/readability cues, world scale and screenshots. Repeating an unapproved style across 100 species multiplies that rework.",
+      "packet": [
+        "The owner supplied 100 replacement PNGs and a numbered stable-ID workbook; integration is authorized, final commercial art approval is not recorded. Current source and 100-species contact sheets are routed through features/animation/SUPPLIED_SPRITES.md. Review the supplied starter set in actual world/combat/collection sizes before dependent production.",
+        "Show actual combat/world thumbnail sizes on the same background, not only attractive large illustrations. Include tank/support/DPS, land/bird/insect/aquatic and a less conventional body.",
+        "Use the current expanded-roster rejection as a baseline to improve, not as permission to choose a final style silently."
+      ],
+      "owner_accept": [
+        "I want to collect these creatures; they belong in the same game.",
+        "Each silhouette is distinct; support does not look as bulky as tank; faces and trainer remain readable at play size.",
+        "Approve one named, versioned direction and representative sheet. A style approval does not approve all 100 designs."
+      ],
+      "continue_work": "Explore alternative concepts, fix logic, improve tools and run technical tests.",
+      "later": "Final designs for the remaining roster; cosmetic variants and incidental detail.",
+      "reopen": "Change to visual language, proportions, viewing angle or reference-set identity.",
+      "refs": [
+        "ART_BIBLE.md",
+        "CREATURE_DESIGN.md",
+        "VALIDATION_PLAN.md",
+        "features/animation/SUPPLIED_SPRITES.md"
+      ],
+      "per_species": false,
+      "decisions": [
+        {
+          "result": "revise",
+          "scope": [
+            "*"
+          ],
+          "reference": "Owner request creating these gates, 2026-09-11",
+          "quote": "The new mons desing for instance is awful, we'll need to work on that.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "OR-02",
+      "title": "Approve the first 20–30 minutes and core combat feel",
+      "timing": "now",
+      "state": "pending",
+      "features": [
+        "combat",
+        "growth",
+        "recovery",
+        "collection",
+        "campaign",
+        "opening"
+      ],
+      "work": [
+        "content-expansion",
+        "world-production",
+        "polished-playtest",
+        "public-launch",
+        "creature-production"
+      ],
+      "before": "Before repeating the current combat/progression loop across more regions, monsters and quests.",
+      "why": "Boring or unreadable combat, excessive walking, unrewarding hunts or forced recovery become embedded in encounter levels, rewards, quest scripts and content volume.",
+      "packet": [
+        "Use features/opening/PASS26_VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.",
+        "Replay victory, defeat, a selected fallen sole companion, reload and interrupted-menu routes. Firstlight defeat must preserve bearings at the same forest camp, fully recovered. Confirm ordinary Echo odds remain separate from the two disclosed onboarding guarantees.",
+        "Continue later review sessions through the four class demonstrations, Tidecrown, both temporary class trials, Druid/Mage commitment, the ability-change proof and the Lv30 individual tree proof. Record time, deaths, recovery trips, retries and the observed reason for each class/boss loss."
+      ],
+      "owner_accept": [
+        "Preparation produces understandable differences, encounters feel like battles, and the trainer-loss rule is clear.",
+        "Returning to recover feels like a useful decision, not tedious mandatory travel. The one-objective route, independent trainer level, Inventory summon, role signs and numbered exits remain understandable without a guide chain.",
+        "The hunt → Echo → individual companion → stronger challenge loop is worth repeating. This does not approve final numerical balance or release odds."
+      ],
+      "continue_work": "Bounded balance experiments, bug fixes and small prototype encounters.",
+      "later": "Exact late-game coefficients and competitive balance across all 100 species.",
+      "reopen": "Changing combat control model, battle length, progression curve, healing/travel friction or onboarding loop.",
+      "refs": [
+        "Companion stats.md",
+        "features/opening/PASS26_VALIDATION.md",
+        "PASS24_VALIDATION.md",
+        "PASS20_VALIDATION.md",
+        "VALIDATION_PLAN.md",
+        "features/opening/DESIGN.md",
+        "features/opening/EARLY_PROGRESSION_SCOPE.md",
+        "features/opening/VALIDATION.md",
+        "features/delivery/REMAINING_SCOPE.md"
+      ],
+      "per_species": false,
+      "decisions": []
+    },
+    {
+      "id": "OR-03",
+      "title": "Approve one complete world slice before repeating it",
+      "timing": "next",
+      "state": "pending",
+      "features": [
+        "world",
+        "exploration",
+        "population",
+        "campaign"
+      ],
+      "work": [
+        "world-production",
+        "content-expansion",
+        "polished-playtest",
+        "public-launch"
+      ],
+      "before": "Before producing the remaining full-detail maps, quest routes or region-wide art placement.",
+      "why": "Map scale and visual language constrain camera, gates, collision, pathfinding, prop sizes, spawn density, recovery trips and quest travel.",
+      "packet": [
+        "AI prepares one coherent village → field → forest/cave slice with roads, bridge, service, landmark, varied enemies and a return route.",
+        "Show a walk-through and minimap/atlas; measure actual representative crossings and recovery travel, preserving the existing ≥30-second large-map requirement.",
+        "Use final-candidate art in a small area and blockout elsewhere; do not decorate all 24 fields to request this review."
+      ],
+      "owner_accept": [
+        "It feels like a place, not connected pages; destinations and traversable space are legible.",
+        "Travel has encounters/landmarks without empty padding; monster density and village access support the intended difficulty.",
+        "Approve the reference slice and scale/navigation rules, not every unreleased region."
+      ],
+      "continue_work": "Greybox layouts, routing/collision tests and alternatives within the reference slice.",
+      "later": "Decoration and exact population tuning of later regions.",
+      "reopen": "Camera/perspective, scale, traversal speed, map topology or biome kit changes.",
+      "refs": [
+        "WORLD_DESIGN.md",
+        "WORLD_IMPLEMENTATION.md",
+        "VALIDATION_PLAN.md"
+      ],
+      "per_species": false,
+      "decisions": []
+    },
+    {
+      "id": "OR-04",
+      "title": "Approve the animation and impact reference",
+      "timing": "next",
+      "state": "pending",
+      "features": [
+        "animation",
+        "combat",
+        "shell",
+        "experience"
+      ],
+      "work": [
+        "animation-production",
+        "creature-production",
+        "polished-playtest",
+        "public-launch"
+      ],
+      "before": "After direction/concept approval, before mass rigging or animation production.",
+      "why": "Sprite framing, ground anchors, rig proportions, attack timing and VFX origins get copied into every character package. Fixing the template late means re-exporting many assets.",
+      "packet": [
+        "AI presents Druid plus the supplied Brimble (emberfox) and Rattlebit (stonehorn) designs with Mage/ranged/support context: idle, both walking directions, attack, cast, hit, defeat and victory. These new PNGs currently use transform motion; the retired monster frame sheets are not their animation reference.",
+        "Show actual play at 1× and 2×, crowded combat, Quiet FX and reduced motion. Include impact/sound/HP synchronization evidence.",
+        "Show the same creatures in the world and inventory, not only the arena."
+      ],
+      "owner_accept": [
+        "Movement has weight and contact; left/right facing is correct; support/tank/attacker actions read differently.",
+        "Projectile/contact, damage display and sound agree; important targets and warnings remain visible.",
+        "Approve the versioned rig/clip standard; approval of a still image alone does not approve motion."
+      ],
+      "continue_work": "Prototype rigs, single-character experiments and event-timing regressions.",
+      "later": "Extra idle variations, rare flourish animations and cosmetic-only effects.",
+      "reopen": "Rig topology, frame crop/pivot, timing conventions, presentation delay or camera scale changes.",
+      "refs": [
+        "ART_BIBLE.md",
+        "VALIDATION_PLAN.md"
+      ],
+      "per_species": false,
+      "decisions": []
+    },
+    {
+      "id": "OR-05",
+      "title": "Approve each creature's design before producing its assets",
+      "timing": "next",
+      "state": "pending",
+      "features": [
+        "content",
+        "animation"
+      ],
+      "work": [
+        "creature-production",
+        "animation-production",
+        "polished-playtest",
+        "public-launch",
+        "public-promotion"
+      ],
+      "before": "For each batch, before its final art, rig, animations, fixed world presentation or promotional use.",
+      "why": "A weak concept becomes expensive once its portrait, all poses, effects and habitat presentation are built. Different species must not collapse into recolors of one body.",
+      "packet": [
+        "AI submits batches of 5–10, identified by stable species IDs, with silhouette, face, element, role, distinctive feature and an in-game-size preview.",
+        "Start with 6–8 reference creatures under OR-01; after approval, production advances only for specifically approved individuals/species in the batch.",
+        "Supply a side-by-side contact sheet of approved references and the proposed batch. Keep rejected versions and change notes outside the short owner board."
+      ],
+      "owner_accept": [
+        "Every named species has a collectible identity and readable role; it belongs in the chosen art direction.",
+        "Approve/Revise/Replace per species; partial approval unlocks only those approved, never the entire roster.",
+        "All 100 launch species require scoped concept approval before their final production/release; not all must be reviewed today."
+      ],
+      "continue_work": "Concept exploration and placeholder-backed gameplay/testing for unapproved species.",
+      "later": "Finished art/animation for distant batches; display-name polishing while stable IDs remain unchanged.",
+      "reopen": "Any approved species' silhouette, proportions, signature anatomy or role-linked appearance changes.",
+      "refs": [
+        "CREATURE_DESIGN.md",
+        "CREATURE_FAMILIES.md",
+        "CREATURE_REFERENCE.md"
+      ],
+      "per_species": true,
+      "decisions": []
+    },
+    {
+      "id": "OR-06",
+      "title": "Approve target devices and the main interaction layout",
+      "timing": "next",
+      "state": "pending",
+      "features": [
+        "shell",
+        "party",
+        "collection",
+        "exploration",
+        "animation",
+        "opening",
+        "inner-sea",
+        "experience"
+      ],
+      "work": [
+        "world-production",
+        "creature-production",
+        "animation-production",
+        "polished-playtest",
+        "public-launch"
+      ],
+      "before": "Before locking asset detail/texture budgets or expanding screens and control patterns.",
+      "why": "Changing screen density, touch/mouse assumptions or the minimum device later affects asset sizes, camera distance, labels, effects, input, layouts and performance budgets.",
+      "packet": [
+        "AI proposes a concrete supported desktop/browser baseline and an explicit mobile promise or deferral, with costs/limitations explained.",
+        "Show the Patch 26 in-frame exploration objective, upper-right minimap/Atlas entry and bottom three-destination menu alongside party picker, skill editing, inventory, summoning and recovery on desktop and a narrow layout.",
+        "Owner/real testers check the chosen physical devices before certification; emulated viewports alone cannot approve hardware.",
+        "Settings/audio and the local three-socket Inner Sea editor/export are available for review; see features/delivery/REMAINING_SCOPE.md (C3) and the feature guides. Automated 320/390/768/1440-width checks do not certify a physical phone. Confirm whether Android is mandatory for the initial launch."
+      ],
+      "owner_accept": [
+        "The intended launch devices are explicitly chosen; essential controls and combat information are readable and usable.",
+        "I can set a party, change skills, summon and recover without confusing steps.",
+        "The proposed art/performance budget supports those devices. Production baseline approval is not device certification."
+      ],
+      "continue_work": "Responsive prototypes and accessibility/performance diagnostics.",
+      "later": "Secondary screen polish and optional extra browser/localization support already marked optional in the backlog.",
+      "reopen": "Minimum hardware, browser promise, input model, UI density or asset budgets change.",
+      "refs": [
+        "ART_BIBLE.md",
+        "features/opening/PASS26_VALIDATION.md",
+        "VALIDATION_PLAN.md"
+      ],
+      "per_species": false,
+      "decisions": []
+    },
+    {
+      "id": "OR-07",
+      "title": "Approve release economy and rarity expectations",
+      "timing": "later",
+      "state": "pending",
+      "features": [
+        "population",
+        "collection",
+        "growth",
+        "recovery",
+        "content"
+      ],
+      "work": [
+        "persistent-economy",
+        "public-launch",
+        "monetization"
+      ],
+      "before": "Before promising permanent progress, launching persistent economy tests or publishing acquisition claims.",
+      "why": "Progression rates and scarcity set player expectations; correcting permanent wealth or extremely rare drops after launch may require wipes, compensation or trust-damaging changes.",
+      "packet": [
+        "AI presents starter-to-late progression scenarios, recovery costs and expected acquisition time including rare encounter availability and kills/hour.",
+        "Separate current 15% testing from release proposals; show unlucky streaks and duplicate outcomes, not only averages or forced grants.",
+        "Preserve the agreed 100% summon/no-pity rules and proposed 10%/0.01% odds unless you explicitly authorize a change."
+      ],
+      "owner_accept": [
+        "I understand and accept the actual grind and unlucky-player experience, not just the percentage.",
+        "The economy supports ordinary progression without requiring rare/meta drops or purchases.",
+        "A clear test-wipe/persistence policy is communicated before people invest time."
+      ],
+      "continue_work": "Disposable-save balance experiments and theoretical rarity simulations.",
+      "later": "Precise final tuning while no permanent-value promise exists.",
+      "reopen": "Odds, source availability, XP, price/supply sinks, progression promises or reset policy changes.",
+      "refs": [
+        "CREATURE_DROPS.md",
+        "VALIDATION_PLAN.md"
+      ],
+      "per_species": false,
+      "decisions": []
+    },
+    {
+      "id": "OR-08",
+      "title": "Approve account, persistence and real multiplayer rules",
+      "timing": "later",
+      "state": "pending",
+      "features": [
+        "online",
+        "persistence",
+        "combat",
+        "campaign",
+        "inner-sea"
+      ],
+      "work": [
+        "online-implementation",
+        "persistent-economy",
+        "public-launch",
+        "monetization"
+      ],
+      "before": "Before committing to cloud save schemas, real group sessions or importing prototype profiles.",
+      "why": "Identity, ownership, reward receipts and room lifecycle constrain database/API design. Reworking them after accounts or purchases exist risks progress and financial reconciliation.",
+      "packet": [
+        "AI supplies a short player-facing policy: guest upgrade, save ownership, allowed devices, wipes/imports, pause/2× rules, disconnect/rejoin and group loot eligibility.",
+        "Add technical recommendations for versioned authoritative commands, idempotent receipts and migration/restore tests; owner is not asked to review implementation code.",
+        "Compare costs and tradeoffs before choosing paid providers or accepting a multiplayer promise."
+      ],
+      "owner_accept": [
+        "I approve what players are promised about progress, disconnects, groups and shared boss rewards.",
+        "Prototype saves cannot mint trusted online wealth; repeat boss drops remain possible, with no server-wide one-copy cap.",
+        "Scope/budget/provider decisions are explicit; later external account purchases still need authorization."
+      ],
+      "continue_work": "Headless simulation tests, disposable server spikes and interface proposals.",
+      "later": "Provider rollout and real room implementation until the rules/policies are approved.",
+      "reopen": "Ownership, reward eligibility, account migration, room model or persistence policy changes.",
+      "refs": [
+        "docs/ENGINEERING.md",
+        "VALIDATION_PLAN.md",
+        "features/delivery/REMAINING_SCOPE.md"
+      ],
+      "per_species": false,
+      "decisions": []
+    },
+    {
+      "id": "OR-09",
+      "title": "Approve the representative slice for a polished external test",
+      "timing": "later",
+      "state": "pending",
+      "features": [
+        "delivery",
+        "animation",
+        "combat",
+        "world",
+        "party",
+        "collection",
+        "opening",
+        "inner-sea",
+        "experience"
+      ],
+      "work": [
+        "polished-playtest",
+        "public-launch",
+        "monetization",
+        "public-promotion"
+      ],
+      "before": "Before presenting a build to outside players as representative of intended quality or commissioning launch media.",
+      "why": "If the advertised sample misrepresents final quality or masks the real loop, feedback and marketing investment can optimize the wrong game.",
+      "packet": [
+        "AI packages one approved loop/world slice with a pinned build and exactly which species/screens are included.",
+        "List known limitations and the questions being tested; provide a short launch-to-recovery play path and blocker summary.",
+        "Request explicit go/no-go for that audience/build. Uncoached newcomer checks required by the existing art/validation plan remain real human evidence."
+      ],
+      "owner_accept": [
+        "The sample honestly represents the intended look, feel and main loop.",
+        "No known blocker prevents the intended test; incomplete areas are disclosed rather than presented as finished.",
+        "Approve the bounded session/audience, not commercial launch. Early prototype feedback remains allowed before this gate."
+      ],
+      "continue_work": "All engineering QA, owner reviews and clearly labeled bounded prototype/usability feedback.",
+      "later": "Full launch content, monetization and mass recruitment.",
+      "reopen": "Representative assets/loop change, new test audience, material blockers or misleading known limitations.",
+      "refs": [
+        "ART_BIBLE.md",
+        "VALIDATION_PLAN.md"
+      ],
+      "per_species": false,
+      "decisions": []
+    },
+    {
+      "id": "OR-10",
+      "title": "Approve store, rights, player promises and support readiness",
+      "timing": "later",
+      "state": "pending",
+      "features": [
+        "commerce",
+        "delivery",
+        "online",
+        "inner-sea"
+      ],
+      "work": [
+        "monetization",
+        "public-launch",
+        "public-promotion"
+      ],
+      "before": "Before paid marketing/public commercial claims, taking money or production personal-data collection.",
+      "why": "Branding/assets without cleared provenance, misleading cosmetics, refunds or privacy/support gaps become public trust and operational liabilities once players spend or sign up.",
+      "packet": [
+        "AI prepares the cosmetics-only catalog, real previews, ownership/refund/support behavior and purchase-failure evidence.",
+        "Provide asset provenance/brand checks and a list of owner/provider/adviser approvals still required; do not invent legal clearance.",
+        "Present the exact player-facing promises, territories, data/retention policy and spend authorization."
+      ],
+      "owner_accept": [
+        "No product grants gameplay advantage; previews and ownership claims are accurate.",
+        "Necessary external reviews and purchase/recovery tests are documented before selling.",
+        "Explicit authorization covers the actual release/store/spend scope, not a generic approval of this plan."
+      ],
+      "continue_work": "Unpaid mockups, sandbox purchase tests and provenance collection.",
+      "later": "Cosmetic variants, final pricing and launch copy before public commitments.",
+      "reopen": "Asset rights/brand, paid catalog, data collection, territories or refund/support promises change.",
+      "refs": [
+        "VALIDATION_PLAN.md",
+        "docs/ENGINEERING.md"
+      ],
+      "per_species": false,
+      "decisions": []
+    },
+    {
+      "id": "OR-11",
+      "title": "Approve capacity, operating cost and recovery before expansion",
+      "timing": "later",
+      "state": "pending",
+      "features": [
+        "online",
+        "delivery",
+        "persistence"
+      ],
+      "work": [
+        "capacity-expansion",
+        "public-launch",
+        "monetization"
+      ],
+      "before": "Before admitting a larger persistent cohort, raising player caps or increasing operating spend.",
+      "why": "Unbounded concurrency, lost rewards or an untested restore become incidents involving real players rather than cheap disposable test failures.",
+      "packet": [
+        "AI shows measured target-cohort load/soak results, room/DB bottlenecks, per-player/room costs and spending/admission limits.",
+        "Demonstrate backup restoration, reward reconciliation, alerting, kill switches and rollback in staging.",
+        "Owner chooses the specific player cap, spending ceiling, support coverage and rollback/stop conditions."
+      ],
+      "owner_accept": [
+        "Evidence covers the proposed cap and budget with stated headroom, not an invented player-count promise.",
+        "Restore/rollback and rare-reward reconciliation have actually been exercised.",
+        "Authorize that cap/spend only; higher limits require a new review."
+      ],
+      "continue_work": "Local performance profiling and bounded staging/load experiments within authorized spend.",
+      "later": "Large-scale infrastructure before load measurements justify it.",
+      "reopen": "Player cap, provider/pricing, room size, retained data, spend or operational responsibility changes.",
+      "refs": [
+        "docs/ENGINEERING.md",
+        "VALIDATION_PLAN.md"
+      ],
+      "per_species": false,
+      "decisions": []
+    },
+    {
+      "id": "OR-12",
+      "title": "Final release go/no-go",
+      "timing": "later",
+      "state": "pending",
+      "features": [
+        "delivery"
+      ],
+      "work": [
+        "public-launch"
+      ],
+      "before": "Before a public commercial release.",
+      "why": "Shipping unresolved critical issues converts development rework into player harm, reputation loss and support obligations.",
+      "packet": [
+        "AI presents existing G0–G5 gate status, applicable acceptance criteria, unresolved blockers, all launch art approvals and outside-player/device evidence.",
+        "Include versioned build, staged rollout, rollback, support and budget plan; separate technical passes from owner acceptance.",
+        "No blanket auto-approval from green tests. All launch species need scoped design coverage and final asset acceptance evidence under the existing protocols."
+      ],
+      "owner_accept": [
+        "Required technical, owner, device, business and external gates are genuinely met for this release.",
+        "I explicitly authorize the named build, audience/cap and launch plan.",
+        "Anything deferred is visible and compatible with the player-facing promise."
+      ],
+      "continue_work": "Fixing blockers and validating a candidate without publishing it.",
+      "later": "Post-launch feature expansion, optional content and cosmetic extras.",
+      "reopen": "Release build/scope changes materially or prior approvals become stale.",
+      "refs": [
+        "VALIDATION_PLAN.md",
+        "FEATURE_BACKLOG.md"
+      ],
+      "per_species": false,
+      "decisions": []
+    }
+  ]
+}

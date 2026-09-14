@@ -1,0 +1,61 @@
+[
+  {
+    "key": "druid-sheet",
+    "kind": "sheet",
+    "prompt": "Generate a PNG with an actual transparent alpha background. Sixteen separate full-body cutouts of ONLY ONE HUMAN DRUID, arranged in four rows and four columns. No other characters or creatures anywhere. Chibi young adult druid, chestnut bob hair, tiny leaf and white flower hair clip, bright green eyes, moss-green layered leaf cloak, cream tunic, brown leather belt and boots, wooden staff topped by a green crystal. Polished hand-painted original fantasy RPG style, clean dark outlines, warm soft shading. Constant identical character proportions, clothes, staff, color, right-facing three-quarter camera, and scale in all sixteen images. All poses centered in equal square cells, feet at 88% height. Fit the ENTIRE character and staff inside the middle 70% of each cell, with a wide empty transparent gutter. Row 1 is a WALK CYCLE: 1 left foot far forward right foot far back, 2 both feet together passing, 3 right foot far forward left foot far back, 4 both feet together passing with left heel lifted. Show clear leg motion. Row 2 is a STAFF ATTACK: 1 crouched pulling staff back, 2 leaning forward driving staff ahead, 3 staff fully thrust horizontally to the right, 4 returning upright. Keep staff fully within its own cell. Row 3 is a HEALING SPELL: 1 cradling staff while looking down, 2 raising staff upward, 3 staff raised with other hand outstretched palm open, 4 gently lowering staff. Row 4: 1 hit recoil shielding face, 2 neutral standing idle eyes open staff upright, 3 sitting exhausted on ground, 4 cheering one hand raised. Exactly sixteen druid poses and nothing else. No animals, pets, monsters, scenery, floor, shadows, text, labels, gridlines or painted checkerboard. Truly transparent background.",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-6cb27c52-cf38-4f18-928e-1e3498fc8f3e.png",
+    "bundledPath": "assets/art-v10/druid-sheet.png",
+    "mode": "generate",
+    "discardedSource": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-e6e6afc7-6c1e-47bf-8d7f-e384becaef49.png"
+  },
+  {
+    "key": "emberfox-sheet",
+    "kind": "sheet",
+    "prompt": "Create a PNG with a genuinely transparent alpha background. It is a 4-by-4 grid of sixteen separate full-body character cutouts for a game animation. An adorable compact four-legged magical fox with russet-orange fur, creamy white cheek ruff, chest and muzzle, tall dark-tipped ears, brown paws, amber eyes, and a huge bushy curving tail whose tip is glowing golden-orange like a flame. Original polished hand-painted storybook fantasy mobile RPG style, warm crisp dark outlines, beautiful gentle shading, cute expressive silhouette. Every pose is the EXACT SAME character, same costume or anatomy, same colors, same camera, facing RIGHT. Each character is centered inside its own equal-size square cell and occupies ONLY 70% of the cell's width and 75% of its height. Leave generous fully transparent gutters between all characters. Nothing may touch another cell. Constant scale with feet aligned at 88% height inside every cell. Row 1: four distinct alternating leg positions of a walking cycle. Row 2: attack anticipation crouch, forward drive, full attack extension, recovery; druid thrusts the staff, fox pounces, rhino rams its horns. Row 3: spell preparation, raising head or staff, spell release posture, recovery. Row 4: hit reaction, steady idle stance, defeated resting on ground, triumphant celebration. No projectiles or spell particles. NO background scenery, floor, shadows, text, gridlines, labels, borders, contact sheet decoration or checkerboard. These are isolated character stickers on actual transparency, ready to overlay a game scene. Square image.",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-1e851361-05f7-41bd-849e-e83a7ea56d16.png",
+    "bundledPath": "assets/art-v10/emberfox-sheet.png",
+    "mode": "generate",
+    "discardedSource": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-d67ffeaa-de40-4810-b4aa-a2e8aa055d34.png"
+  },
+  {
+    "key": "stonehorn-sheet",
+    "kind": "sheet",
+    "prompt": "Create a PNG with a genuinely transparent alpha background. It is a 4-by-4 grid of sixteen separate full-body character cutouts for a game animation. A stout moss-backed rhinoceros monster made of layered chunky gray stone plates, with two ivory horns on its nose, tiny glowing amber eyes, green moss patches on its back and faint turquoise seams in the stone. Four short powerful legs. Original polished hand-painted storybook fantasy mobile RPG style, warm crisp dark outlines, beautiful gentle shading, cute expressive silhouette. Every pose is the EXACT SAME character, same costume or anatomy, same colors, same camera, facing RIGHT. Each character is centered inside its own equal-size square cell and occupies ONLY 70% of the cell's width and 75% of its height. Leave generous fully transparent gutters between all characters. Nothing may touch another cell. Constant scale with feet aligned at 88% height inside every cell. Row 1: four distinct alternating leg positions of a walking cycle. Row 2: attack anticipation crouch, forward drive, full attack extension, recovery; druid thrusts the staff, fox pounces, rhino rams its horns. Row 3: spell preparation, raising head or staff, spell release posture, recovery. Row 4: hit reaction, steady idle stance, defeated resting on ground, triumphant celebration. No projectiles or spell particles. NO background scenery, floor, shadows, text, gridlines, labels, borders, contact sheet decoration or checkerboard. These are isolated character stickers on actual transparency, ready to overlay a game scene. Square image.",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-deec9e94-c18b-4084-80d4-6cd24d50e25b.png",
+    "bundledPath": "assets/art-v10/stonehorn-sheet.png",
+    "mode": "generate",
+    "discardedSource": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-790ba50b-7536-4082-b74d-a410a18e0ef7.png"
+  },
+  {
+    "key": "contract",
+    "kind": "sprite",
+    "prompt": "Use case: stylized-concept\nAsset type: original monster-tamer inventory item, genuine transparent RGBA cutout. A single partially unrolled cream papyrus scroll, beautifully curled edges, forest-green silk ribbon, small leaf-shaped gold clasp. At its center is a luminous turquoise branching knot emblem, like two roots joining into one heart, abstract marks not legible writing. Original Bond Contract: a welcoming invitation into the summoner's inner sanctuary, not a ball or cage. Warm hand-painted chibi fantasy game style, fine dark outlines and soft cel shading, legible silhouette at 64 pixels. Three-quarter view, centered full object on square canvas with 12% transparent padding. No hands, characters, background, ground shadow, text, logo or watermark.",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-f1b6b656-b230-49e0-843e-5ceeba7db334.png",
+    "bundledPath": "assets/art-v10/contract.png",
+    "mode": "generate"
+  },
+  {
+    "key": "grass",
+    "kind": "sprite",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent game world grass patch sprite. One broad low oval clump of tall emerald meadow grass, sweeping lively blades, a few pale seed heads and tiny golden firefly specks nestled inside. Hand-painted cozy woodland fantasy style with clean dark edges, warm upper-left lighting, softly shaded volume. Camera slightly elevated three-quarter view matching a top-down-ish walking RPG landscape. Width about twice its height, entire clump visible, empty transparent padding all around. Genuinely transparent RGBA background. No terrain tile, ground disk, black shadow, creatures, labels, border, writing or watermark.",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-68d0cc8b-eea6-4e15-b894-4490ecfaaeee.png",
+    "bundledPath": "assets/art-v10/grass.png",
+    "mode": "generate"
+  },
+  {
+    "key": "inventory-atlas",
+    "kind": "atlas",
+    "prompt": "Use case: stylized-concept\nAsset type: game inventory icon atlas, exact 4-column by 4-row grid, 16 separate items, transparent RGBA background. Every icon centered in its equal square cell with 18% transparent margins. No visible grid lines or labels. Polished painterly cozy fantasy game style, warm ivory gold moss green and turquoise, crisp outlines and 3D-like soft cel shading, consistent scale and upper-left lighting. Row1 left-to-right: unrolled magical papyrus tied with green ribbon; round golden oat biscuit with leaf imprint; little pink moss flower; smooth blue river pebble. Row2: golden amber leaf; pale luminous moon crystal shard; silver-blue feather; round wood-and-leaf grove medal. Row3: silver wave-shaped river medal; purple lightning-shaped storm medal; bronze leaf-shaped amber medal; silver crescent moon medal. Row4: carved fang charm on green cord; turquoise heart crystal in a root-shaped gold setting; tiny green ink bottle; feather quill with a golden nib. ONE object per cell, all full visible, no touching cell edges or neighboring objects. No scenery, text, numerals, labels, border, watermark or ground shadows. Desired square 2048x2048 sheet.",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-681716ee-891f-4892-ab00-f9f453a5c57b.png",
+    "bundledPath": "assets/art-v10/inventory-atlas.png",
+    "mode": "generate"
+  },
+  {
+    "key": "inner-haven",
+    "kind": "scene",
+    "prompt": "Use case: stylized-concept\nAsset type: wide environment banner for a monster-tamer's Inner Haven, a peaceful private world within the summoner's spirit. An original floating grassy sanctuary island, ancient roots arching into a gentle circular gateway, a shallow glowing turquoise pool, a small cozy leaf-roof shelter and warm lanterns. Distant smaller floating islands fade into pale teal dream mist. A welcoming magical home for creature companions, no cages. Polished hand-painted chibi fantasy environment art, rich painterly detail but clean readable forms, soft warm sunlight and cool luminous water. Wide landscape 3:2 composition; center foreground calm and clear for displaying creature portraits in UI. No characters, no text, no logos, no UI, no borders, no watermark.",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-4a761a3e-5301-435c-83ef-b405aca2b725.png",
+    "bundledPath": "assets/art-v10/inner-haven.png",
+    "mode": "generate"
+  }
+]

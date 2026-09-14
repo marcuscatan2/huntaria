@@ -1,0 +1,69 @@
+{
+  "format": "Lossless WebP with exact RGBA equality; Pillow 12.1.0",
+  "assets": [
+    {
+      "source": "assets/world-v15/amber-atlas.png",
+      "source_sha256": "853c9ec7883104d6c21c912989d82c3afaace2cd99e3c74b7fb3602ce7cc0d54",
+      "runtime": "assets/world-runtime/amber-atlas.webp",
+      "sha256": "a5455bc11c330eb78860bea9fa48227cf592ad0561f6c8a757763da25b899f75",
+      "source_bytes": 2407002,
+      "runtime_bytes": 1888474
+    },
+    {
+      "source": "assets/world-v15/ashen-atlas.png",
+      "source_sha256": "f647778b1cbb9a3295295faecc176a03d0fb130d1927ec841ba527e55ceb5735",
+      "runtime": "assets/world-runtime/ashen-atlas.webp",
+      "sha256": "2f634999faec85ae9d7520a7695e200677c4c962ae092b103d79c88246c3b000",
+      "source_bytes": 2406728,
+      "runtime_bytes": 1818126
+    },
+    {
+      "source": "assets/world-v15/moonwell-atlas.png",
+      "source_sha256": "8412b10148db4aef8c402ec4f63c79ef775eda08c4fdcc5b33043c25aae76b7c",
+      "runtime": "assets/world-runtime/moonwell-atlas.webp",
+      "sha256": "e782dfd936800405e150cb836e83384cb8cd14e5319ccb12a4c8c60459cedb92",
+      "source_bytes": 2676997,
+      "runtime_bytes": 2003054
+    },
+    {
+      "source": "assets/world-v15/mosslight-atlas.png",
+      "source_sha256": "28bf4219078e6f256bc6a8bdadeff2c704b7a573ef0d6a64dbea03014c46e1a8",
+      "runtime": "assets/world-runtime/mosslight-atlas.webp",
+      "sha256": "634342820ea4465a705a186723281711e5d779f6f53ba1f172d70418aeb2ceec",
+      "source_bytes": 2639476,
+      "runtime_bytes": 1995276
+    },
+    {
+      "source": "assets/world-v15/terrain-atlas.png",
+      "source_sha256": "e7e8ebddce4625d6417449cca480b42fdae1ae9b513b353636129df3f08239fb",
+      "runtime": "assets/world-runtime/terrain-atlas.webp",
+      "sha256": "934af6254aa9fab8ac321441dfea74c9e5b435874b297504fabab66a1a94a614",
+      "source_bytes": 3503743,
+      "runtime_bytes": 2528882
+    },
+    {
+      "source": "assets/world-v15/willowbrook-atlas.png",
+      "source_sha256": "1debd647629583595ace276ee3f5131e20f4153b04bc33a55e31917bcd62851f",
+      "runtime": "assets/world-runtime/willowbrook-atlas.webp",
+      "sha256": "3235c76a0ef166f4d86ca06e1fc779c3a6f9382dc1da561a5f5500d03c060b37",
+      "source_bytes": 2778570,
+      "runtime_bytes": 2075926
+    },
+    {
+      "source": "assets/world-v15/windstep-atlas.png",
+      "source_sha256": "951b7956395590799bafee39e4c0bc68276af30d4f920336cc7bc6eac296f933",
+      "runtime": "assets/world-runtime/windstep-atlas.webp",
+      "sha256": "d61bf4a59a76c6cf9a41c18be49b95db6542f14e89ce2642d69673f89c8b269f",
+      "source_bytes": 2296468,
+      "runtime_bytes": 1737724
+    },
+    {
+      "source": "assets/world-v17/timber-bridge.png",
+      "source_sha256": "e0a53381cda26d9d065396451e4c3178e0f6816deab339d3829cef020ab3cb3f",
+      "runtime": "assets/world-runtime/timber-bridge.webp",
+      "sha256": "e8e13201ee5dd451c70c2684834fd00d3229996787bdc01ff15faca509976a3e",
+      "source_bytes": 2430720,
+      "runtime_bytes": 1844768
+    }
+  ]
+}

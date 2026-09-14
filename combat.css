@@ -1,0 +1,174 @@
+/* Combat presentation, illustrated artwork pass 06. Model rules are separate. */
+body.combat-mode .intro {display:none}
+body.combat-mode .topbar {height:72px}
+body.combat-mode .section-heading {padding:18px 0 15px}
+body.combat-mode .section-heading h2 {font-size:23px}
+.battle-layout {grid-template-columns:minmax(0,1fr) 260px;gap:18px}
+.arena-wrap {background:#213f36;border:1px solid #586c4d;border-radius:16px;box-shadow:0 15px 40px #24473518}
+.arena-header {background:#233f36;color:#c6cfaa;padding:13px 18px;border-bottom:1px solid #92a17640;font-size:8px}
+.arena-header #clock {color:#fff0bc;font-size:21px;font-weight:700}
+.arena-header #clock small {color:#a1b291}
+.live-dot {background:#d5e99a;box-shadow:0 0 10px #c2e889}
+.arena {height:600px;background:#4a714b var(--battle-scene,url('assets/art-v6/arena.png')) center center/cover;isolation:isolate}
+.arena::before {inset:0;width:auto;height:auto;border:0;border-radius:0;transform:none;background:radial-gradient(ellipse at 50% 50%,transparent 30%,#17392d4a 100%);z-index:1}
+.arena::after {inset:0;width:auto;height:auto;border:0;border-radius:0;transform:none;background:linear-gradient(120deg,transparent 32%,#fff7bd12 39%,transparent 47%);pointer-events:none;z-index:1}
+.arena.overtime {box-shadow:inset 0 0 90px #fbb15345}
+.arena-ring,.lane-line,.arena-crest,.arena-team-label {display:none}
+.arena-hud {position:absolute;left:18px;right:18px;top:15px;display:grid;grid-template-columns:1fr 32px 1fr;align-items:center;gap:10px;z-index:20;pointer-events:none}
+.bond-health {padding:9px 12px;border:1px solid #c4d0964a;border-radius:9px;background:#18362cdb;box-shadow:0 3px 12px #142d2b30;color:#f0edcd}
+.bond-health.enemy-bond {background:#343044db;border-color:#c8b5dd50}
+.bond-health strong {display:flex;justify-content:space-between;font-size:10px;letter-spacing:.5px}
+.bond-health small {font-size:9px;font-weight:400;color:#d4ddbf}
+.bond-track {height:5px;border-radius:3px;background:#101f2470;margin-top:7px;overflow:hidden}
+.bond-track i {display:block;height:100%;width:100%;background:linear-gradient(90deg,#89ba77,#d1eaa1);transition:width .15s}
+.enemy-bond .bond-track i {background:linear-gradient(90deg,#aa89c7,#dec0e6)}
+.versus {font:italic 13px Georgia;color:#e8daa3;text-align:center}
+.initiative {position:absolute;left:50%;top:91px;transform:translateX(-50%);display:flex;align-items:center;gap:5px;padding:5px 9px;background:#213a30bc;border:1px solid #c6d3a131;border-radius:30px;z-index:20;max-width:95%}
+.initiative-label {font-size:7px;letter-spacing:1px;color:#d5dbb8;padding-right:4px;white-space:nowrap}
+.initiative-unit {position:relative;width:28px;height:28px;border:1px solid #a8ca86;background:#4b6650;border-radius:50%;overflow:hidden;flex-shrink:0}
+.initiative-unit.enemy {border-color:#c7abd6;background:#645879}
+.initiative-unit svg {width:29px;height:29px}
+.initiative-unit.next {border:2px solid #f4da78;box-shadow:0 0 9px #f4dc7970}
+.initiative-unit.fallen {opacity:.25;filter:grayscale(1)}
+.scene-label {position:absolute;bottom:16px;left:20px;z-index:10;color:#eff2ce;font-size:8px;letter-spacing:1.5px;text-shadow:0 1px 3px #16352d;pointer-events:none}
+.scene-label span {display:block;color:#d0dbb2;letter-spacing:.4px;font-size:9px;margin-top:4px}
+.fighter {width:118px;z-index:4;outline:none;cursor:pointer;touch-action:manipulation;transition:opacity .3s;transform:translate(-50%,-50%)}
+.fighter[data-id='0-0'] {left:16%;top:56%}
+.fighter[data-id='0-1'] {left:37%;top:41%}
+.fighter[data-id='0-2'] {left:37%;top:72%}
+.fighter[data-id='1-0'] {left:84%;top:56%}
+.fighter[data-id='1-1'] {left:63%;top:41%}
+.fighter[data-id='1-2'] {left:63%;top:72%}
+.fighter::before {content:'';position:absolute;left:50%;top:96px;width:75px;height:26px;transform:translateX(-50%);border-radius:50%;background:#18352e50;border:2px solid #b7dc7a7a;box-shadow:0 2px 0 #1b3d3060;pointer-events:none}
+.fighter.enemy::before {border-color:#d1a2e887}
+.fighter.selected::before {border-color:#ffeb9b;box-shadow:0 0 0 4px #efd88324,0 0 20px #fff0a840;background:#eddd752c}
+.fighter.targeted:not(.selected)::before {border:2px dashed #ffdda0;background:#ffe1a01c;box-shadow:0 0 12px #ffdc7b35}
+.fighter.is-acting .fighter-art svg {animation-play-state:paused}
+.fighter.selected::after {content:'◆';position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:13px;color:#ffdf73;text-shadow:0 2px 3px #203d2e}
+.fighter:focus-visible {outline:2px solid #ffe798;outline-offset:5px;border-radius:9px}
+.fighter-art {height:96px;filter:drop-shadow(2px 5px 1px #173b304a);will-change:transform;z-index:2}
+.fighter-art svg {width:110px;height:110px;animation:companion-idle 3.2s ease-in-out infinite;filter:drop-shadow(0 -1px 0 #eef0b340)}
+.fighter.enemy .fighter-art svg {scale:-1 1}
+.fighter[data-type='stonehorn'] .fighter-art svg {width:120px;translate:-5px 0}
+.fighter[data-type='stormowl'] .fighter-art svg {animation:owl-hover 2s ease-in-out infinite}
+.fighter-name {position:relative;font-size:10px;color:#fff9df;text-shadow:0 1px 3px #183a2c,0 1px 2px #183a2c;font-weight:750;z-index:3}
+.trainer-crown {color:#ffe69c}
+.fighter-hp {width:86px;height:6px;background:#193a2e;border:1px solid #17332c;border-radius:2px;margin-top:3px;box-shadow:0 1px 2px #1b392b50}
+.hp-fill {background:linear-gradient(#e2ef9c,#9fc575)}
+.enemy .hp-fill {background:linear-gradient(#ebbed9,#b580b4)}
+.shield-fill {background:#fff3a2ae;border-color:#fffbcd}
+.hp-text {font-size:8px;color:#f2f0d2;text-shadow:0 1px 2px #1b3e2c;letter-spacing:0}
+.status-row {height:16px;position:relative;z-index:4;gap:2px;flex-wrap:nowrap}
+.status-pill {font-size:7px;white-space:nowrap;background:#e1e7b8;color:#304b33;border:1px solid #ecf2d666;line-height:12px;padding:0 3px;box-shadow:0 1px 3px #18342d30}
+.mini-cooldowns {margin-top:3px;gap:3px}
+.mini-cd {width:37px;height:3px;background:#213f347a}
+.mini-cd>i {background:#f1d990}
+.fighter.dead {opacity:.32;filter:grayscale(.85)}
+.fighter.dead .fighter-art {filter:grayscale(.8)}
+.fighter.dead .fighter-art svg {animation:none;transform:none}
+.fighter.dead::before {border-color:transparent}
+.fighter.shielded .fighter-art::before {content:'';position:absolute;inset:3px 2px -4px;border-radius:50% 50% 43% 43%;border:2px solid #f0de96a8;background:linear-gradient(130deg,#fff4b91c,transparent 50%,#dbea9938);box-shadow:inset 0 0 18px #e3e3a235;z-index:3;pointer-events:none}
+.fighter.guarding::before {border-style:dashed;border-color:#ffe693;box-shadow:0 0 14px #eed78288}
+.fighter.attacking .fighter-art,.fighter.hurt .fighter-art,.fighter.healed .fighter-art {animation:none}
+#combat-canvas {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:12}
+.arena.paused .fighter-art svg {animation-play-state:paused}
+.battle-controls {background:#243f35;border-color:#71825a55;padding:12px 14px;flex-wrap:wrap}
+.battle-controls .primary {background:#e0d593;color:#283c2e;border-color:#f7ecb3;box-shadow:0 2px 0 #111e2240}
+.battle-controls .primary:hover {background:#f3e7a2}
+.battle-controls .secondary,.battle-controls .icon-button {background:#355045;color:#e0e5bc;border-color:#718267}
+.battle-controls .speed-control {background:#183429}
+.battle-controls .speed-control button {color:#c3cfb1}
+.battle-controls .speed-control .selected {background:#e5dda8;color:#304631}
+.battle-controls .sound-toggle {color:#c9d4b4}
+.combat-dock {display:grid;grid-template-columns:1fr 1fr;gap:14px;background:#1c352c;padding:13px 16px;border-top:1px solid #72846155;color:#e7eacb}
+.selected-unit {display:flex;gap:9px;align-items:center;min-width:0}
+.dock-portrait {width:46px;height:46px;background:#3d5744;border:1px solid #82956a;border-radius:10px;flex-shrink:0}
+.dock-portrait svg {width:46px;height:46px}
+.selected-unit strong {font-size:12px;display:block}
+.selected-unit small {color:#aebf9c;font-size:9px;display:block;margin:2px 0}
+.selected-unit #selected-target {color:#e6d79d;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.selected-unit>div:last-child {min-width:0}
+.action-track {width:110px;height:3px;border-radius:3px;background:#0b271e;margin-top:6px;overflow:hidden}
+.action-track i {display:block;height:100%;background:#f3dda0}
+.dock-skills {display:flex;gap:8px;justify-content:flex-end;align-items:center}
+.dock-skill {position:relative;min-width:82px;border:1px solid #96a87560;border-radius:7px;padding:7px 9px;overflow:hidden;background:#395044}
+.dock-skill .cooldown-shade {position:absolute;inset:0;background:#102a23a6;transform-origin:bottom;pointer-events:none}
+.dock-skill strong,.dock-skill small {position:relative;z-index:1;display:block}
+.dock-skill strong {font-size:10px;white-space:nowrap}
+.dock-skill small {font-size:8px;color:#d5dfb9;margin-top:3px}
+.dock-skill.ready {border-color:#dddc98;background:#596444}
+.combat-note {color:#7b856f;font-size:10px;margin:10px 3px 0}
+.battle-sidebar .result-card {background:#eaeedc}
+.battle-sidebar .result-card.win-dusk {background:#eee8f5}
+.battle-sidebar .journal {padding:15px}
+@keyframes companion-idle {50%{transform:translateY(-2px) rotate(1deg)}}
+@keyframes owl-hover {50%{transform:translateY(-7px) rotate(-2deg)}}
+@media(max-width:1100px){.battle-layout{grid-template-columns:minmax(0,1fr) 230px}.fighter{width:96px}.fighter-art svg{width:96px;height:96px}.fighter-art{height:83px}.fighter::before{top:86px;width:62px}.fighter[data-type='stonehorn'] .fighter-art svg{width:104px;translate:-4px 0}.combat-dock{gap:8px;padding:12px}.dock-skill{min-width:70px;padding:7px}.dock-skill strong{font-size:9px}.action-track{width:90px}}
+@media(max-width:900px){.battle-layout{grid-template-columns:1fr}.battle-sidebar{display:grid;grid-template-columns:1fr 1fr}.arena{height:580px}.fighter{width:118px}.fighter-art{height:96px}.fighter-art svg{width:110px;height:110px}.fighter::before{top:96px;width:75px}.fighter[data-type='stonehorn'] .fighter-art svg{width:120px;translate:-5px 0}#combat-log{height:230px}}
+@media(max-width:600px){body.combat-mode main{padding:0 10px}body.combat-mode .topbar{padding:0 14px;height:64px}body.combat-mode .section-heading h2{font-size:21px}body.combat-mode .section-heading p{font-size:10px}.battle-sidebar{grid-template-columns:1fr}.arena{height:510px;background-size:auto 100%}.arena-header{padding:10px 12px;font-size:7px;letter-spacing:.3px}.arena-header #clock{font-size:18px}.arena-header #clock small{font-size:9px}.arena-hud{top:12px;left:10px;right:10px;gap:6px;grid-template-columns:1fr 22px 1fr}.bond-health{padding:7px 8px}.bond-health strong{font-size:9px;letter-spacing:0}.bond-health small{font-size:8px}.initiative{top:76px;gap:4px;padding:4px 7px}.initiative-unit{width:24px;height:24px}.initiative-unit svg{width:25px;height:25px}.fighter{width:78px}.fighter-art{height:68px}.fighter-art svg{width:79px;height:79px}.fighter[data-type='stonehorn'] .fighter-art svg{width:87px;translate:-4px 0}.fighter::before{top:72px;width:54px;height:20px}.fighter[data-id='0-0']{left:14%;top:59%}.fighter[data-id='1-0']{left:86%;top:59%}.fighter[data-id='0-1']{left:35%;top:41%}.fighter[data-id='1-1']{left:65%;top:41%}.fighter[data-id='0-2']{left:35%;top:77%}.fighter[data-id='1-2']{left:65%;top:77%}.fighter-hp{width:62px;height:5px}.fighter-name{font-size:9px}.hp-text{font-size:7px}.mini-cd{width:26px}.status-pill{font-size:6px;padding:0 2px}.status-row{gap:1px}.scene-label{left:13px;bottom:13px;font-size:7px}.scene-label span{font-size:8px}.combat-dock{padding:11px 10px;grid-template-columns:minmax(0,1fr) auto;gap:6px}.dock-portrait{width:34px;height:36px;border-radius:7px}.dock-portrait svg{width:34px;height:36px}.selected-unit{gap:6px}.selected-unit strong{font-size:10px}.selected-unit small{font-size:8px}.action-track{width:74px}.dock-skills{gap:5px}.dock-skill{min-width:66px;padding:6px}.dock-skill strong{font-size:8px}.dock-skill small{font-size:7px}.battle-controls{gap:6px;padding:10px}.battle-controls .button{font-size:10px;padding:10px}.battle-controls .sound-toggle{font-size:8px}.combat-note{font-size:9px}.fighter.selected::after{top:-11px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){.fighter-art svg{animation:none!important}.fighter-art{will-change:auto}.hp-fill,.bond-track i{transition:none}}
+
+/* Moving combatants need a compact silhouette and attached, readable health. */
+.fighter {width:94px}
+.fighter-art {height:78px}
+.fighter-art svg {width:88px;height:88px}
+.fighter[data-type='stonehorn'] .fighter-art svg {width:96px;translate:-4px 0}
+.fighter::before {top:80px;width:62px;height:22px}
+.fighter-hp {width:72px}
+.fighter.enemy .fighter-art svg {scale:1 1}
+.fighter.facing-left .fighter-art svg {scale:-1 1}
+.fighter.is-moving .fighter-art svg {animation-play-state:paused}
+.fighter.is-moving::before {border-style:dotted}
+.selected-unit #selected-movement {color:#cfdbbe;white-space:nowrap}
+.movement-stats {font-size:9px!important;color:#637b58!important;letter-spacing:.3px;margin-top:5px!important}
+.initiative-unit {padding:0;cursor:pointer;display:block}
+.initiative-unit:focus-visible {outline:2px solid #fff2b3;outline-offset:2px}
+.initiative-unit[aria-pressed='true'] {box-shadow:0 0 0 2px #f7e5a577}
+.fighter-name,.fighter-hp,.hp-text,.mini-cooldowns {translate:var(--vitals-x,0px) 0}
+.fighter.dead:not(.selected) .fighter-name,.fighter.dead:not(.selected) .hp-text,.fighter.dead:not(.selected) .mini-cooldowns {visibility:hidden}
+#battle-world {position:absolute;inset:0;z-index:3;transform-origin:center;pointer-events:none}
+#battle-world .fighter {pointer-events:auto}
+.fighter-art .character-rig {animation:none!important;transform:none;overflow:visible}
+.character-rig [data-part] {transform-box:view-box;will-change:auto}
+.fighter-name,.fighter-hp,.hp-text,.mini-cooldowns {opacity:0;pointer-events:none}
+.fighter-art {filter:drop-shadow(0 4px 2px #1a382d55)}
+.fighter::before {background:#132e2844;box-shadow:0 2px 5px #17372855;border-width:1px}
+.fighter.selected::before {border-width:2px;box-shadow:0 0 12px #f5df9155}
+.fighter.shielded .fighter-art::before {border-width:1px;background:linear-gradient(135deg,#fff5bb18,transparent 60%,#f4dda322);box-shadow:inset 0 0 10px #eddea322}
+.status-pill {box-shadow:none;opacity:.9;border-radius:3px}
+.status-pill.slow {background:#cae8f2;color:#38687c}
+.status-pill.haste {background:#def1b2;color:#527039}
+.status-pill.burn {background:#f2c39b;color:#854b38}
+.battle-controls #fx-mode {font-size:9px;color:#dfdba7;padding:7px 8px;border:1px solid #77846766;border-radius:5px;white-space:nowrap}
+.battle-controls #fx-mode[aria-pressed='true'] {background:#506348}
+/* Illustrated art pass: one consistent local image across every UI surface. */
+.character-sprite {display:block;max-width:100%;object-fit:contain;object-position:center bottom;user-select:none;pointer-events:none;transform-origin:50% 95%}
+.portrait {overflow:hidden;background:radial-gradient(ellipse at 50% 35%,#fbf9e9,#dce4ce)}
+.portrait .character-sprite {width:100%;height:100%;object-position:center;filter:drop-shadow(0 3px 2px #203c3028)}
+.dock-portrait {overflow:hidden}
+.dock-portrait .character-sprite,.initiative-unit .character-sprite {width:100%;height:100%;object-position:center}
+.fighter-art {height:100px;display:flex;align-items:flex-end;justify-content:center;filter:drop-shadow(0 3px 2px #152e3055)}
+.fighter-art .character-sprite {width:100px;height:100px;max-width:none;flex-shrink:0}
+.fighter[data-type='stonehorn'] .character-sprite {width:112px;height:105px}
+.fighter[data-type='bloomslime'] .character-sprite {width:70px;height:70px}
+.fighter.facing-left .character-sprite {scale:-1 1}
+.fighter::before {top:105px}
+.fighter.shielded .fighter-art::before {inset:10px -1px -4px}
+@media(max-width:600px){
+  .fighter{width:64px}.fighter-art{height:54px}
+  .fighter-art svg{width:62px;height:62px}
+  .fighter[data-type='stonehorn'] .fighter-art svg{width:68px;translate:-3px 0}
+  .fighter::before{top:58px;width:43px;height:16px}
+  .fighter-hp{width:50px}.fighter-name{font-size:8px}
+  .mini-cd{width:21px}.status-pill{font-size:6px}
+  .selected-unit #selected-movement{font-size:7px}
+  .fighter-art{height:64px}
+  .fighter-art .character-sprite{width:66px;height:66px}
+  .fighter[data-type='stonehorn'] .character-sprite{width:74px;height:70px}
+  .fighter[data-type='bloomslime'] .character-sprite{width:46px;height:46px}
+  .fighter::before{top:68px}
+}
+@media(max-width:360px){
+  .topbar .prototype-tag{display:none}
+  .topbar .brand{white-space:nowrap}
+}

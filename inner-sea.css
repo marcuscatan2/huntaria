@@ -1,0 +1,13 @@
+.haven-display{border:1px solid #b6cec3;border-radius:18px;overflow:hidden;margin:0 0 24px;background:#f5f4e8}
+.haven-heading{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:18px}
+.haven-heading h3,.haven-heading h2{margin:0;font-family:Georgia,serif;color:#254d45}
+.haven-heading>div:last-child{display:flex;gap:8px;flex-wrap:wrap}
+.haven-display canvas,#haven-dialog canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#5c868a}
+.haven-status{font-size:13px;color:#40594f;padding:0 18px;min-height:1em}
+#haven-dialog{width:min(900px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:1px solid #8daa9d;border-radius:18px;padding:0 0 20px;background:#f7f4e8;color:#254d45;overflow:auto}
+#haven-dialog::backdrop{background:#163b4499}
+.haven-sockets,.haven-companions{display:flex;gap:12px;padding:12px 18px;flex-wrap:wrap}
+.haven-sockets label{flex:1 1 175px;min-width:0;font-weight:700;font-size:13px}
+.haven-sockets select,.haven-style select{display:block;max-width:100%;width:100%;min-height:44px;margin-top:6px;padding:8px;border:1px solid #91ae9f;border-radius:8px;background:#fffdf3;color:#254d45}
+.haven-style{display:block;padding:12px 18px;font-weight:700}
+#haven-dialog [data-haven-save]{margin:0 18px}

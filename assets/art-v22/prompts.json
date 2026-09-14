@@ -1,0 +1,24 @@
+{
+  "mode": "built-in image generator with local project references",
+  "status": "Integrated character-creation previews. Dagger is native RGBA; bow's generated neutral checker is removed from edge-connected pixels at runtime before display.",
+  "grid": {
+    "columns": ["calm", "bright", "focused"],
+    "rows": ["crop", "sweep", "braid"]
+  },
+  "assets": [
+    {
+      "key": "apprentice-dagger-creation",
+      "output": "assets/art-v22/apprentice-dagger-creation.png",
+      "source": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-407de12d-b7bb-4119-861e-7cb60e5fbd21.png",
+      "references": ["assets/art-v21/apprentice-dagger-sheet.png"],
+      "prompt": "Use case: stylized-concept. Asset type: production character-creation customization atlas for a browser monster-tamer game. Primary request: Create a new 3 columns by 3 rows atlas of the exact Apprentice dagger character from the reference, shown full-body in the same polished hand-painted chibi fantasy game-art style. This is a customization preview, not an animation sheet. Input image: reference image establishes the character identity, cream apprentice tunic, dark trousers, boots, proportions, rendering quality, and worn dagger. Grid specification: exactly nine equally sized cells. Columns from left to right are expressions: calm (gentle neutral mouth and eyes), bright (warm open smile), focused (determined brows and closed mouth). Rows from top to bottom are hairstyles: short textured crop, side-swept medium hair matching the reference, and a clear long side braid. Every cell must match its requested row hairstyle and column expression. Pose: the same relaxed three-quarter standing pose facing slightly right in all nine cells, dagger held safely down at the side, both feet visible, consistent scale and foot baseline; only hair and expression change. Color setup: natural medium warm skin and medium chestnut-brown hair with readable highlights and shadows. Keep these colors clean and visually separable so the game can tint them. Scene/backdrop: genuinely transparent background in every cell. Composition: generous transparent padding around each figure, no figure crossing cell boundaries, no cropping, no overlaps. Constraints: preserve the exact Apprentice outfit and identity from the reference; one and only one character per cell; exact 3x3 ordering; high-quality clean silhouette; no checkerboard baked into the pixels. Avoid: grid lines, labels, text, numbers, icons, scenery, ground shadows, particles, extra weapons, duplicate limbs, costume changes, borders, watermark."
+    },
+    {
+      "key": "apprentice-bow-creation",
+      "output": "assets/art-v22/apprentice-bow-creation.png",
+      "source": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-53663158-3d79-4730-a3e1-665b65fd7408.png",
+      "references": ["assets/art-v22/apprentice-dagger-creation.png", "assets/art-v21/apprentice-bow-sheet.png"],
+      "prompt": "Use case: precise-object-edit. Asset type: production character-creation customization atlas for a browser monster-tamer game. Primary request: Recreate Image 1 as the bow-weapon counterpart. Preserve its exact 3 columns by 3 rows composition, exact character identity, hairstyles, expressions, stance, scale, spacing, outfit, lighting, paint quality, and transparent background. Replace only the worn dagger in each of the nine cells with the Apprentice's small weathered wooden bow and compact back quiver shown in Image 2. Input images: Image 1 is the exact target atlas/layout and appearance invariant. Image 2 is the weapon-design reference only. Grid invariants: columns remain calm, bright, focused; rows remain short crop, side-swept medium hair, long side braid. Exactly nine equally sized cells, one full-body character per cell. Pose adjustment allowed only as required for the weapon: bow held relaxed and lowered safely at the side, not drawn; the compact quiver may be visible behind the shoulder. Keep both feet visible and the same foot baseline. Scene/backdrop: genuinely transparent background in every cell. Constraints: change only dagger equipment into bow equipment; no checkerboard baked into pixels; no character crossing cell boundaries; no cropping or overlaps. Avoid: grid lines, labels, text, numbers, icons, scenery, ground shadows, particles, extra weapons, drawn arrow, aiming pose, duplicate limbs, costume changes, borders, watermark."
+    }
+  ]
+}

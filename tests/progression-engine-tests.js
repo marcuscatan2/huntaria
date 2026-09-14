@@ -1,0 +1,42 @@
+/* Pure pass 11 regressions. Safe to run without changing the player's save. */
+(function(){
+'use strict';
+window.runProgressionTests=function(){
+ const results=[],R=BondProgress,G=BondGame,T=BondGrowth,E=BondExpeditionData;
+ const test=(name,fn)=>{try{fn();results.push({name,pass:true});}catch(e){results.push({name,pass:false,error:e.message});}};
+ const assert=(x,m='Assertion failed')=>{if(!x)throw Error(m);};
+ const close=(a,b)=>Math.abs(a-b)<1e-8;
+ const fresh=()=>BondProfile.normalize({version:5,owned:['emberfox','stonehorn'],inventory:{bondcontract:3},xp:{},growth:{}});
+ test('XP thresholds round trip levels 1 through 100',()=>{for(let l=1;l<=100;l++){assert(R.level(R.threshold(l))===l);if(l>1)assert(R.level(R.threshold(l)-1)===l-1);}});
+ test('Invalid XP cannot create levels',()=>{for(const x of [NaN,Infinity,-1,'300',1.1,null])assert(R.level(x)===1);assert(R.level(99999999)===100);});
+ test('Trainer follows highest owned companion, not equipped slots',()=>{const s=fresh();s.owned.push('lumimoth');s.xp.lumimoth=R.threshold(27);assert(R.trainerLevel(s)===27);s.xp.cindrake=R.threshold(80);assert(R.trainerLevel(s)===27);});
+ test('Escalating allocation costs and level income',()=>{assert(R.cost(1)===2&&R.cost(10)===2&&R.cost(11)===3&&R.cost(91)===11);assert(R.statBudget(1)===48&&R.statBudget(2)===51&&R.statBudget(5)===61);});
+ test('Attributes reject overspending, fractions, unknown keys and over-cap',()=>{const a=R.cleanAttributes({str:999,agi:NaN,vit:-5,int:1.1,leadership:99},1);assert(a.str<=25&&a.agi===1&&a.vit===1&&a.int===1&&R.spent(a)<=48);});
+ test('Leadership transfers raw other attributes exactly once',()=>{const s=fresh();s.xp.emberfox=R.threshold(100);s.attributes={str:30,agi:20,vit:10,int:40,dex:15,leadership:20};const d=R.derived('emberfox',s);assert(close(d.shared.str,3)&&close(d.shared.int,4)&&!Object.hasOwn(d.shared,'leadership'));});
+ for(const t of T.TYPES){
+  test(t+' has 18 ranked nodes and a working signature',()=>{const nodes=T.nodes(t);assert(nodes.length===18&&new Set(nodes.map(n=>n.id)).size===18);assert([3,5,10].every(cap=>nodes.some(n=>n.max===cap)));const all=Object.fromEntries(nodes.map(n=>[n.id,n.max]));const stats=T.stats(t,all);assert(Object.values(stats).every(Number.isFinite));assert(stats.speed>0&&stats.healing>0&&stats.armor<=.5&&stats.cooldown<=.4);});
+  test(t+' Speed derives from old interval without rounding',()=>{const b=new G.Battle(G.defaultBuild());assert(close(G.UNITS[t].speed,100/G.UNITS[t].interval));assert(b.units.every(u=>close(u.speed*u.interval,100)));});
+ }
+ test('Tree clean enforces parents, ranks and budget',()=>{assert(!T.clean('druid',{might2:3}).might2);const r=T.clean('mage',{bond:99,might:5},3);assert(r.bond===3&&!r.might);assert(Object.keys(T.clean('nope',{bond:2})).length===0);});
+ test('Legacy nine-node array retains each valid rank',()=>{const raw={version:4,owned:['emberfox','stonehorn'],growth:{druid:['bond','might','might2']},inventory:{bondcontract:0,biscuit:2},coins:11};const s=BondProfile.normalize(raw);assert(s.version===5&&s.growth.druid.bond===1&&s.growth.druid.might===1&&s.growth.druid.might2===1&&!s.inventory.bondcontract&&s.coins===11);});
+ test('v3 migration retains legacy party and awards legacy starter paper only once',()=>{const s=BondProfile.normalize({version:3,collected:['brook'],inventory:{biscuit:1}},['tideotter']);assert(s.owned.includes('tideotter')&&s.inventory.bondcontract===5);assert(BondProfile.normalize(s).inventory.bondcontract===5);});
+ for(const a of R.ELEMENTS)for(const d of R.ELEMENTS)test(a+' → '+d+' elemental damage',()=>{const i=R.ELEMENTS.indexOf(a),j=R.ELEMENTS.indexOf(d);assert(R.multiplier(a,d)===(j===(i+1)%4?1.2:i===(j+1)%4?.8:1));});
+ test('Combat applies elemental advantage to actual damage',()=>{const b=new G.Battle(G.defaultBuild(),{elements:true}),a=b.units[1],d=b.units[5];a.element='Fire';d.element='Earth';d.passive=null;b.damage(a,d,100,'test');assert(d.maxHp-d.hp===120);});
+ test('Guard does not apply element multiplier a second time',()=>{const b=new G.Battle(G.defaultBuild(),{elements:true}),a=b.units[1],t=b.trainer(1),guard=b.units[4];a.element='Water';t.element='Fire';guard.element='Fire';guard.passive=null;guard.status.guard={until:99};b.damage(a,t,100,'test');assert(t.maxHp-t.hp===48&&guard.maxHp-guard.hp===72);});
+ test('No low-HP floor: wild spirit can be defeated normally',()=>{const b=new G.Battle(G.defaultBuild(),{encounter:BondWild.encounter('ritual:clearing:bloomslime')});const w=b.units.find(u=>u.side===1);b.damage(b.units[1],w,99999,'test');assert(w.hp===0&&b.ended&&b.winner===0&&b.ritual.state==='defeated');});
+ test('No ritual HP window or channeling remains',()=>{const b=new G.Battle(G.defaultBuild(),{encounter:BondWild.encounter('ritual:clearing:bloomslime')});b.time=10;b.units.at(-1).hp=1;assert(!b.ritualReady()&&!b.beginRitual()&&!b.channeling(b.trainer(0)));});
+ test('Wild encounter still loses immediately on trainer death',()=>{const b=new G.Battle(G.defaultBuild(),{encounter:BondWild.encounter('ritual:clearing:bloomslime')});b.damage(b.units.at(-1),b.trainer(0),99999,'test');assert(b.ended&&b.winner===1);});
+ test('Higher AGI changes actual ready intervals, not move speed',()=>{const s=fresh();s.attributes.agi=11;const a=new G.Battle(G.defaultBuild(),{profile:s}),b=new G.Battle(G.defaultBuild(),{profile:fresh()});assert(a.trainer(0).interval<b.trainer(0).interval&&a.trainer(0).moveSpeed===b.trainer(0).moveSpeed);});
+ test('Each effective DEX point removes exactly 0.667% cooldown up to the shared safety cap',()=>{const s=fresh();s.attributes.dex=11;assert(close(R.derived('druid',s).cooldown,.0667));s.companions[0].xp=R.threshold(100);s.attributes.dex=99;assert(R.derived('druid',s).cooldown===.5);});
+ test('Speed node and healing node affect model',()=>{const s=fresh();s.growth.druid={bond:1,stride:1,tempo:3,focus:1,care:3};const a=new G.Battle(G.defaultBuild(),{profile:s,growth:s.growth}),b=new G.Battle(G.defaultBuild(),{profile:fresh()});assert(a.trainer(0).speed>b.trainer(0).speed&&a.trainer(0).healScale>b.trainer(0).healScale);});
+ for(const [key,pool] of Object.entries(E.POOLS))test(key+' local pool and three-encounter route',()=>{const e=E.make(pool.area,pool.route,123,3,1);assert(e.steps.length===3&&e.steps.some(x=>x.catchable)&&e.steps.some(x=>x.team&&!x.catchable));assert(pool.tiers.reduce((n,t)=>n+t.weight,0)===100);assert(e.steps.every(x=>x.level===3&&x.coins>=pool.coins[0]&&x.coins<=pool.coins[1]));assert(JSON.stringify(e)===JSON.stringify(E.make(pool.area,pool.route,123,3,1)));});
+ test('Single-species pools work without absent-tier rolls',()=>{const p={tiers:[{name:'Only',weight:1,types:['emberfox']},{name:'Absent',weight:99,types:[]}]};for(let i=0;i<100;i++)assert(E.pick(p,E.random(i)).type==='emberfox');});
+ test('All tiers reachable with configured cumulative boundaries',()=>{const p=E.POOLS['ruins:cave'];let at=0;for(const t of p.tiers){assert(E.pick(p,()=>at/100).rarity===t.name);at+=t.weight;}});
+ test('Expedition survives normalization with fixed rolls/index/level',()=>{const s=fresh();s.expedition=E.make('ruins','cave',998,4,7);s.expedition.index=1;const clean=BondProfile.normalize(s);assert(clean.expedition.index===1&&JSON.stringify(clean.expedition.steps)===JSON.stringify(s.expedition.steps)&&clean.sequence>=7);});
+ test('Malformed expedition save rejected',()=>{const s=fresh();s.expedition={seed:3,id:1,level:NaN,index:0};assert(BondProfile.normalize(s).expedition===null);});
+ test('100000 wild rolls approximately match rarity weights',()=>{const rng=E.random(1907),p=E.POOLS['ruins:cave'],counts=Object.fromEntries(E.TIERS.map(t=>[t,0]));for(let i=0;i<100000;i++)counts[E.pick(p,rng).rarity]++;for(let i=0;i<6;i++)assert(Math.abs(counts[E.TIERS[i]]/1000-E.WEIGHTS[i])<.7);});
+ const metrics={routes:0,wins:0,losses:0};
+ test('120 expedition fights finish with finite health at levels 1–20',()=>{for(let i=0;i<40;i++){const s=fresh(),l=1+i%20;s.xp.emberfox=s.xp.stonehorn=R.threshold(l);const pool=Object.values(E.POOLS)[i%10],e=E.make(pool.area,pool.route,i*54321,l,1);for(const enc of e.steps){const build=G.defaultBuild();if(enc.team)build[1]=enc.team;const b=new G.Battle(build,{profile:s,enemyLevel:l,encounter:enc.kind?enc:null}).run();assert(b.ended&&b.time<=75&&b.units.every(u=>Number.isFinite(u.hp)&&u.hp>=0&&u.hp<=u.maxHp));metrics.routes++;b.winner===0?metrics.wins++:metrics.losses++;}}});
+ return {passed:results.filter(r=>r.pass).length,failed:results.filter(r=>!r.pass).length,results,metrics};
+};
+})();

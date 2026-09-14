@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#174d43">
+  <title>Bond & Bolt — The Mosslight Trail</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23174d43'/%3E%3Cpath d='m32 8 7 17 17 7-17 7-7 17-7-17-17-7 17-7Z' fill='%23ece2bb'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="combat.css">
+  <link rel="stylesheet" href="region.css">
+  <link rel="stylesheet" href="menu.css">
+  <link rel="stylesheet" href="progression.css">
+  <link rel="stylesheet" href="world.css">
+  <link rel="stylesheet" href="bonding.css">
+  <link rel="stylesheet" href="journey.css">
+  <link rel="stylesheet" href="loot.css">
+  <link rel="stylesheet" href="formation.css">
+  <link rel="stylesheet" href="pass13.css">
+  <link rel="stylesheet" href="pass14.css">
+  <link rel="stylesheet" href="world-v15.css">
+  <link rel="stylesheet" href="experience.css">
+  <link rel="stylesheet" href="inner-sea.css">
+  <script src="settings.js" defer></script>
+  <script src="boot-status.js" defer></script>
+  <script src="audio.js" defer></script>
+  <script src="content.js" defer></script>
+  <script src="rules.js" defer></script>
+  <script src="roster.js" defer></script>
+  <script src="monster-sprites.js" defer></script>
+  <script src="opening-rules.js" defer></script>
+  <script src="adventure-rules.js" defer></script>
+  <script src="progression.js" defer></script>
+  <script src="formation.js" defer></script>
+  <script src="game.js" defer></script>
+  <script src="creature-art.js" defer></script>
+  <script src="apprentice-preview.js" defer></script>
+  <script src="character-rig.js" defer></script>
+  <script src="animation-coverage.js" defer></script>
+  <script src="animation-data.js" defer></script>
+  <script src="combat-vfx.js" defer></script>
+  <script src="presentation-contract.js" defer></script>
+  <script src="combat-view.js" defer></script>
+  <script src="world-data.js" defer></script>
+  <script src="atlas-data.js" defer></script>
+  <script src="world-layout.js" defer></script>
+  <script src="world-nav.js" defer></script>
+  <script src="map-population.js" defer></script>
+  <script src="world-renderer.js" defer></script>
+  <script src="echoes.js" defer></script>
+  <script src="growth.js" defer></script>
+  <link rel="stylesheet" href="campaign.css">
+  <script src="campaign.js" defer></script>
+  <script src="inner-sea-rules.js" defer></script>
+  <script src="profile.js" defer></script>
+  <script src="inner-sea.js" defer></script>
+  <link rel="stylesheet" href="adventure.css">
+  <script src="world-atlas.js" defer></script>
+  <script src="recovery-menu.js" defer></script>
+  <script src="companion-picker.js" defer></script>
+  <script src="tree-menu.js" defer></script>
+  <script src="inventory-menu.js" defer></script>
+  <script src="menu.js" defer></script>
+  <script src="wild-behavior.js" defer></script>
+  <script src="region.js" defer></script>
+  <script src="campaign-menu.js" defer></script>
+  <script src="bonding.js" defer></script>
+  <script src="journey.js" defer></script>
+  <script src="formation-menu.js" defer></script>
+  <script src="loot-popup.js" defer></script>
+  <link rel="stylesheet" href="opening.css">
+  <script src="character-creation.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="test-controls.js" defer></script>
+  <script src="reference-scene.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Bond and Bolt home"><span class="brand-mark">✦</span><span>BOND <i>&</i> BOLT<small>A MONSTER TAMER PLAYGROUND</small></span></a>
+    <span class="prototype-tag"><span></span> PLAYABLE PROTOTYPE <b>26</b></span>
+    <div class="topbar-actions"><button id="open-patch-notes" class="button secondary" aria-haspopup="dialog">Patch 26 notes</button><button id="open-settings" class="button secondary" aria-haspopup="dialog">Settings</button></div>
+  </header>
+  <dialog id="patch-notes" aria-labelledby="patch-notes-title"><div class="patch-notes-heading"><div><p class="eyebrow">VISIBLE BUILD NOTES</p><h2 id="patch-notes-title">Patch 26 · The Forest Gate</h2></div><button id="close-patch-notes" class="button secondary">Close ×</button></div><ul><li><strong>Exploration now uses an in-frame HUD.</strong> The active quest, local map, World Atlas and three main destinations stay on the playfield.</li><li><strong>Your first Brimble always leaves a Soul Echo.</strong> The Bag highlights the Echo and its Summon action; the new companion automatically joins an open party slot.</li><li><strong>The Forest Mage guards the road.</strong> Find a second companion, complete the Mage's short trial, then the wider world opens. Region danger remains visible in the Atlas.</li><li><strong>Fallen companions are benched instead of blocking combat.</strong> They remain selected for later use and return after revival.</li><li><strong>Field HP is visible for the whole party.</strong> Every deployed companion now has the same compact green, yellow and red health indicator.</li><li><strong>Launch progression remains capped at Lv 60.</strong> Wild creatures may exceed the cap, but summoned companions are reduced to it.</li></ul></dialog>
+  <main>
+    <section id="boot-status" role="status"><p>Loading your adventure…</p><a class="button secondary" href="">Reload</a></section>
+    <div class="intro"><div><p class="eyebrow">TWO COMPANIONS. ONE BOND.</p><h1>A little preparation.<br>A very different battle.</h1><p>Choose your skills. Protect your trainer. Watch your plan unfold.</p></div><div class="intro-badge"><span>✦</span><strong>The bond is everything.</strong><p>Your trainer falls, your team loses.<br>Even if your monsters are standing.</p></div></div>
+    <div class="workspace-bar"><div class="tabs" role="tablist" aria-label="Playground"><button id="tab-region" class="tab active" role="tab" aria-selected="true" aria-controls="panel-region"><span>01</span> Explore</button><button id="tab-loadout" class="tab" role="tab" aria-selected="false" aria-controls="panel-loadout" tabindex="-1"><span>02</span> Party & bag</button><button id="tab-battle" class="tab" role="tab" aria-selected="false" aria-controls="panel-battle" tabindex="-1"><span>03</span> Battle <span id="battle-tab-dot"></span></button></div><span id="save-status" class="save-status" role="status">Saved on this device</span></div>
+    <section id="panel-region" role="tabpanel" aria-labelledby="tab-region">
+      <div class="section-heading"><div><h2 id="region-heading">Mosslight Clearing</h2><p id="region-subtitle">Where every bond begins</p></div></div>
+      <div class="region-layout">
+        <div class="region-scene"><div id="region-map" class="region-map" tabindex="0" role="group" aria-label="Walkable region" aria-describedby="region-controls-help">
+          <div class="region-map-heading"></div>
+          <div id="region-destination" class="region-destination" hidden aria-hidden="true"></div>
+          <div id="region-companion-1" class="world-node region-companion" aria-hidden="true"></div>
+          <div id="region-companion-2" class="world-node region-companion" aria-hidden="true"></div>
+          <div id="region-player" class="world-node region-player"><div class="world-art"></div><span class="world-label">YOU</span></div>
+          <div id="region-objects"></div><div class="region-location-stamp"></div><div id="region-toast" class="region-toast" hidden aria-hidden="true"></div>
+        </div><div class="region-controls"><p id="region-controls-help"><b>WASD / arrows</b> to walk · click/tap the ground to move.<br>Click wildlife to attack. Click gates and objects to approach. <b>E</b> acts nearby.</p><button id="region-interact" class="button secondary" disabled>Nothing nearby</button></div></div>
+        <aside class="region-sidebar">
+          <div class="region-card"><p class="eyebrow">A CONNECTED WORLD</p><h3>The Six Reaches.</h3><div id="world-route"></div></div>
+          <div class="region-card region-quest"><p class="eyebrow">YOUR ADVENTURE</p><ol id="region-objectives"></ol><p id="region-message" role="status" aria-live="polite">Collect treasures, meet the keepers, and follow the continuous trail.</p></div>
+          <div class="region-card"><p class="eyebrow">YOUR SATCHEL</p><p id="region-supplies"></p><div id="world-population" aria-label="Map population"></div><p><small>Inventory and party builds are in Loadout.</small></p><p id="region-save-status" class="region-save-status"></p></div>
+          <button id="region-reset" class="text-button">↺ Reset adventure & inventory</button>
+        </aside>
+      </div>
+      <dialog id="npc-dialog" aria-labelledby="npc-title" aria-describedby="npc-dialogue">
+        <div class="npc-dialog-grid"><div id="npc-portrait"></div><div class="npc-conversation"><p id="npc-tier" class="eyebrow"></p><h2 id="npc-title"></h2><p id="npc-dialogue"></p><div id="npc-team"></div><p id="npc-reward"></p><div class="npc-actions"><button id="npc-fight" class="button primary">Challenge →</button><button id="npc-advice" class="button secondary">Ask for advice</button><button id="npc-close" class="text-button">Not now</button></div></div></div>
+      </dialog>
+    </section>
+    <section id="panel-loadout" role="tabpanel" aria-labelledby="tab-loadout" hidden>
+      <div class="section-heading"><div><p class="eyebrow">YOUR TRAVELING COMPANIONS</p><h2>A bond worth building.</h2><p>Two classes. One hundred discoverable species. Make this party yours.</p></div><button id="reset-loadouts" class="text-button">↺ Reset builds</button></div>
+      <div id="teams"></div>
+      <div class="play-strip"><div class="strip-icon">↗</div><div><strong>Three skills. Your priorities.</strong><p>Use the first ready, useful skill; otherwise, a basic attack. Practice here, or challenge an NPC on the trail.</p></div><button id="fight" class="button primary">Practice battle →</button></div>
+      <details class="field-guide"><summary>How the battle works <span>+</span></summary><div><p><b>Monsters first.</b> Monsters normally pursue the closest living enemy monster, switching as positions change or monsters fall. Normal attacks reach the trainer only when no enemy monsters remain. Trainers focus the enemy monster with the lowest health percentage.</p><p><b>Movement matters.</b> Melee units close to 12 arena units; Bloomslime attacks at 27; casters at 34. Stonehorn moves slowly, Emberfox quickly. A ready attack waits for range without spending its cooldown. Slow reduces movement and action speed by 40%; Springstep boosts both by 30%. Cooldowns count down normally. Units steer around each other; circular obstacle collision is supported by the simulation.</p><p><b>Explicit exceptions.</b> Skyneedle and Crown Hex can pursue trainers while monsters live, but still need range. Skyneedle reaches 46 units. Wild Lunge is monster-first with 18-unit reach; it never bypasses surviving monsters. Arc Nova can hit trainers within its casting range. Chain Spark only hits monsters in range until none remain. Bondguard redirects 60% of trainer damage to the living tank anywhere in the arena.</p><p><b>Support and priority.</b> Support spells work across the whole friendly team. Heals and shields choose the living ally with the lowest health percentage. Heals wait for 25 missing HP; cleanse waits for a debuff or 30 missing HP. The first ready, useful skill takes priority: an out-of-range attack is pursued, not skipped. Otherwise, use a basic attack.</p><p><b>Predictable combat.</b> Physical attacks have a tiny AGI dodge chance, reduced by DEX accuracy. Combat uses a saved encounter seed; there are no critical hits. The same build produces the same result on every screen size. At 55 seconds, healing stops and damage doubles; at 75 seconds, trainer health percentage breaks a tie. Monster passives apply automatically. Skill trees add persistent bonuses to your party. Wild packs and the boss have no trainer: defeat every enemy before the time limit, or lose. Direct-trainer skills target a monster when no enemy trainer exists. Healing bonuses do not apply in Overcharge. Druid fusion and online group combat are outside this local prototype.</p></div></details>
+    </section>
+    <section id="panel-battle" role="tabpanel" aria-labelledby="tab-battle" hidden>
+      <div class="section-heading"><div><h2>The proving grounds.</h2><p id="battle-description">Your choices do the fighting. Keep an eye on the trainers.</p></div><div class="battle-navigation"><button id="return-region" class="text-button" title="Combat continues.">← Back to region</button><button id="edit-build" class="text-button">Edit loadout</button></div></div>
+      <div class="battle-layout"><div class="arena-wrap">
+        <div class="arena-header"><span><i class="live-dot"></i><b id="battle-state-label">READY</b></span><div id="clock">00:00 <small>/ 01:15</small></div><span id="overtime-label">TRAINER FALLS · BOND BREAKS</span></div>
+        <div id="arena" class="arena paused" aria-label="Automatic battle in a forest clearing">
+          <div class="arena-hud"><div class="bond-health"><strong>GROVE <small id="grove-bond-text"></small></strong><div class="bond-track"><i id="grove-bond-fill"></i></div></div><span class="versus">vs.</span><div class="bond-health enemy-bond"><strong>DUSK <small id="dusk-bond-text"></small></strong><div class="bond-track"><i id="dusk-bond-fill"></i></div></div></div>
+          <div id="boss-warning" class="boss-warning" hidden role="status" aria-live="off"></div>
+          <div id="initiative" class="initiative" aria-label="Estimated next actions"></div>
+          <div id="battle-world"><div id="units"></div><canvas id="combat-canvas" aria-hidden="true"></canvas></div>
+          <div class="scene-label">MOSSLIGHT CLEARING<span>Select a companion to inspect its skills</span></div>
+          <svg id="battle-effects" hidden aria-hidden="true"></svg>
+        </div>
+        <div id="combat-dock" class="combat-dock" aria-label="Selected unit details"></div>
+        <div class="battle-controls"><button id="start-battle" class="button primary">▶ Begin battle</button><button id="pause" class="button secondary" disabled>Ⅱ Pause</button><button id="run-battle" class="button secondary" disabled title="Retreat for 3 seconds. Enemies can still hit you.">Run</button><button id="restart" class="icon-button" aria-label="Restart this battle" title="Restart this battle">↺</button><div class="speed-control" aria-label="Battle playback speed"><button class="selected" data-speed="1" aria-pressed="true">1×</button><button data-speed="2" aria-pressed="false">2×</button></div><button id="fx-mode" class="text-button" aria-pressed="false" title="Quiet FX reduces particles and disables camera shake">FX: Full</button><label class="sound-toggle"><input id="sound" type="checkbox"> Sound</label></div>
+      </div><aside class="battle-sidebar"><div id="result" class="result-card" role="status"><p class="eyebrow">THE OBJECTIVE</p><h3>Protect the bond.</h3><p>Monster health is a resource.<br>Your trainer's health is the game.</p></div><div class="journal"><div class="journal-heading"><h3>Battle journal</h3><span id="event-count">0 EVENTS</span></div><p class="journal-hint">The latest actions, and why they matter.</p><ol id="combat-log"></ol></div></aside></div>
+      <p class="combat-note">Automatic combat · Movement and range matter · Select a unit to see its reach · Your trainer falls, your team loses.</p>
+      <div id="scoreboard" class="scoreboard" hidden></div>
+    </section>
+    <footer><span>✦ BOND & BOLT</span><span>Combat playground · All gameplay free · No accounts or purchases</span><span>Made for “one more try.”</span></footer>
+  </main>
+</body>
+</html>

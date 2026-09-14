@@ -1,0 +1,37 @@
+[
+  {
+    "key": "elderroot",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent illustrated sprite for an original browser monster-tamer game.\nSubject: A single original boss monster, Elderroot: a mighty squat living-stone and oak guardian, broad rocky shoulders, luminous turquoise heart crystal embedded in its chest, expressive stern amber eyes, moss and tiny golden leaves along its back, root-like feet, huge branch fists. Strong chunky silhouette, formidable yet charming. Full body, combat-ready neutral stance, three-quarter view facing right.\nStyle: polished hand-painted chibi fantasy game illustration; clean warm dark outlines, soft cel shading, rich but controlled color, tactile stone/cloth/wood, dimensional highlights from upper left, crisp readable shapes at 130 pixels tall. Match a cozy woodland adventure with cute rounded monsters, NOT pixel art or photorealistic.\nComposition: centered square image, generous transparent padding, no cropping. Genuine transparent RGBA background, no background scene, no floor, no checkerboard, no cast ground shadow (game supplies that), no border, no text, no logos, no watermark.",
+    "mode": "built-in image_gen",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-596286e1-4d9e-41bc-8fa4-b9146240d57b.png",
+    "bundledPath": "assets/art-v9/elderroot.png"
+  },
+  {
+    "key": "lark",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent illustrated sprite for an original browser monster-tamer game.\nSubject: A single original fantasy trainer NPC, Lark: cheerful adult woodland ranger with warm brown skin, short auburn hair, amber hooded cape thrown back, cream tunic, moss-green boots, small wooden charm staff and a leaf satchel. Full body, friendly standing pose, three-quarter view facing right.\nStyle: polished hand-painted chibi fantasy game illustration; clean warm dark outlines, soft cel shading, rich but controlled color, tactile stone/cloth/wood, dimensional highlights from upper left, crisp readable shapes at 130 pixels tall. Match a cozy woodland adventure with cute rounded monsters, NOT pixel art or photorealistic.\nComposition: centered square image, generous transparent padding, no cropping. Genuine transparent RGBA background, no background scene, no floor, no checkerboard, no cast ground shadow (game supplies that), no border, no text, no logos, no watermark.",
+    "mode": "built-in image_gen",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-dc9e90d9-36b9-47c9-a9a9-ee1e74148a5c.png",
+    "bundledPath": "assets/art-v9/lark.png"
+  },
+  {
+    "key": "selene",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent illustrated sprite for an original browser monster-tamer game.\nSubject: A single original fantasy trainer NPC, Selene: calm adult moon scholar with dark brown skin, silver braided hair, midnight-blue robe with pale gold trim, little crescent brooch, holding a turquoise crystal staff. Full body, poised standing pose, three-quarter view facing right.\nStyle: polished hand-painted chibi fantasy game illustration; clean warm dark outlines, soft cel shading, rich but controlled color, tactile stone/cloth/wood, dimensional highlights from upper left, crisp readable shapes at 130 pixels tall. Match a cozy woodland adventure with cute rounded monsters, NOT pixel art or photorealistic.\nComposition: centered square image, generous transparent padding, no cropping. Genuine transparent RGBA background, no background scene, no floor, no checkerboard, no cast ground shadow (game supplies that), no border, no text, no logos, no watermark.",
+    "mode": "built-in image_gen",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-854efdf3-e35b-4df4-b234-36c83702cb64.png",
+    "bundledPath": "assets/art-v9/selene.png"
+  },
+  {
+    "key": "camp",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent illustrated sprite for an original browser monster-tamer game.\nSubject: A single compact fantasy adventurer campsite landmark: one small cream canvas triangular tent trimmed forest-green, two traveling packs, a low stone-ring campfire with a little warm flame and a hanging lantern. Cohesive small cluster as ONE isolated game prop. Slightly elevated three-quarter view, entire cluster visible.\nStyle: polished hand-painted chibi fantasy game illustration; clean warm dark outlines, soft cel shading, rich but controlled color, tactile stone/cloth/wood, dimensional highlights from upper left, crisp readable shapes at 130 pixels tall. Match a cozy woodland adventure with cute rounded monsters, NOT pixel art or photorealistic.\nComposition: centered square image, generous transparent padding, no cropping. Genuine transparent RGBA background, no background scene, no floor, no checkerboard, no cast ground shadow (game supplies that), no border, no text, no logos, no watermark.",
+    "mode": "built-in image_gen",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-cd9542fe-ca14-4400-93c3-4833e1b51029.png",
+    "bundledPath": "assets/art-v9/camp.png"
+  },
+  {
+    "key": "waystone",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent illustrated sprite for an original browser monster-tamer game.\nSubject: A single fantasy ancient trail waystone landmark: squat ivory stone obelisk split around a floating turquoise crystal, overgrown moss and small ferns at the base, tiny gold rune-shaped abstract carvings (not readable words). Slightly elevated three-quarter view, entire prop visible.\nStyle: polished hand-painted chibi fantasy game illustration; clean warm dark outlines, soft cel shading, rich but controlled color, tactile stone/cloth/wood, dimensional highlights from upper left, crisp readable shapes at 130 pixels tall. Match a cozy woodland adventure with cute rounded monsters, NOT pixel art or photorealistic.\nComposition: centered square image, generous transparent padding, no cropping. Genuine transparent RGBA background, no background scene, no floor, no checkerboard, no cast ground shadow (game supplies that), no border, no text, no logos, no watermark.",
+    "mode": "built-in image_gen",
+    "sourcePath": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-aa0694ac-e4f5-44f1-9d99-7eb86b8543f9.png",
+    "bundledPath": "assets/art-v9/waystone.png"
+  }
+]

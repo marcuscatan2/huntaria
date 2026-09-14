@@ -1,0 +1,1325 @@
+{
+  "version": 1,
+  "features": [
+    {
+      "id": "shell",
+      "title": "Application lifecycle and navigation",
+      "status": "local",
+      "files": [
+        "index.html",
+        "style.css",
+        "app.js",
+        "test-controls.js",
+        "boot-status.js"
+      ],
+      "backlog": [
+        "F-008"
+      ],
+      "entry": "BondApp.prepareBattle / renderBattle / finish / switchTab",
+      "contract": "Owns screen transitions, scheduling and settlement. Explore/Loadout do not stop running fights; edits affect future builds. Adventure deployment benches selected fallen companions without removing them from the saved loadout; only the fallen trainer blocks a new adventure. All player Run controls request a saved three-second retreat; successful escape keeps wounds/accepted drops without victory rewards or rescue. Internal cancel is lifecycle/QA cleanup. Browser-hidden/Pause and reload remain resumable. Events feed CombatView; visuals cannot grant rewards. Isolated ?test=1 alone uses 3× world travel, automatic recovery after settled adventure wins/losses and visible 5× playback; normal mode keeps standard travel, 1×/2× playback and normal recovery. Player-visible patch notes announce material progression/world changes. Delegates audio/device preferences to experience; new creation does not mount the old world first.",
+      "tests": [
+        "field-polish",
+        "onboarding",
+        "opening",
+        "mechanics",
+        "ui",
+        "campaign",
+        "boundaries",
+        "experience"
+      ],
+      "docs": [
+        "docs/PLAYER_GUIDE.md",
+        "features/delivery/OPERATIONS.md",
+        "features/shell/ENCOUNTERS.md"
+      ],
+      "summary": "Coordinates screens and ticks; connects combat, presentation and profile settlement."
+    },
+    {
+      "id": "opening",
+      "title": "Character creation and quiet apprentice opening",
+      "status": "local-prototype",
+      "files": [
+        "opening-rules.js",
+        "character-creation.js",
+        "apprentice-preview.js",
+        "opening.css"
+      ],
+      "backlog": [
+        "F-029"
+      ],
+      "entry": "BondCreation.open / required; BondOpening.character / needsIdentity / build / loot; BondProfile.createCharacter / nameCharacter; BondApp.beginOpening",
+      "summary": "Creates a named apprentice or names an older migrated trainer without resetting it; connects identity, appearance and weapon choice to combat and the first forest.",
+      "contract": "Fresh profiles require creation; existing profiles retain progress/classes. Solo weapon builds begin at forest camp. One nearby Emberfox attacks after a movement-safe grace period; the first accepted Firstlight Emberfox victory grants the one-time Echo and Lv2 trainer threshold. The in-frame objective highlights Bag, the Brimble Echo and Summon; explicit summoning auto-fills an empty party slot. The Forest Mage then asks for any second companion, runs a deliberately easy protected proof battle, returns immediately to exploration and unlocks the physical exits. Existing pre-gate progressed saves remain ahead. Ordinary Echo odds stay unchanged. Four class demonstrations, Tidecrown, temporary Druid/Mage trials and a Lv20 confirmed specialization continue the authored route.",
+      "tests": [
+        "onboarding",
+        "opening",
+        "mechanics",
+        "ui",
+        "boundaries"
+      ],
+      "docs": [
+        "features/opening/DESIGN.md",
+        "features/opening/EARLY_PROGRESSION_SCOPE.md",
+        "features/opening/VALIDATION.md",
+        "features/opening/PASS26_VALIDATION.md",
+        "features/opening/PASS27_VALIDATION.md",
+        "PASS24_VALIDATION.md"
+      ]
+    },
+    {
+      "id": "content",
+      "title": "Species, skills, passives and reference data",
+      "status": "local-prototype",
+      "files": [
+        "content.js",
+        "roster.js",
+        "data/creature-reference.json",
+        "scripts/creature_reference.py",
+        "scripts/refresh_pass18_reference.py",
+        "data/monster-roster.json",
+        "scripts/inspect_roster_workbook.py"
+      ],
+      "backlog": [
+        "F-006",
+        "F-064"
+      ],
+      "entry": "BondContent; BondRoster.manifest / validate",
+      "contract": "Runtime content is assembled at boot. Stable species/skill IDs survive display renames. The owner-maintained Bond & Bolt Google Sheet is the source of truth for creature identity, design role, combat identity, element, region, wild/source level, encounter source, rarity and attack basis; a reviewed revision/fingerprint is imported locally and never fetched during play. The mon-skills tab is empty, so existing runtime stats/kits remain authoritative until reviewed Sheet data exists. The starter map is an explicit level/population override. 100 entries do not mean 100 approved animation packages; generated JSON/tables must agree with the reviewed runtime snapshot.",
+      "tests": [
+        "mechanics",
+        "reference",
+        "boundaries",
+        "sprites"
+      ],
+      "docs": [
+        "CREATURE_REFERENCE.md",
+        "CREATURE_DROPS.md",
+        "CREATURE_FAMILIES.md",
+        "CREATURE_DESIGN.md",
+        "features/animation/SUPPLIED_SPRITES.md"
+      ],
+      "summary": "Defines species and skills; supplies combat, progression, art and the reviewed catalog."
+    },
+    {
+      "id": "combat",
+      "title": "Deterministic simulation and damage rules",
+      "status": "local",
+      "files": [
+        "game.js",
+        "rules.js",
+        "scripts/simulator.cjs",
+        "data/simulator-modules.json",
+        "tests/runtime_cases.js",
+        "tests/runtime_check.py"
+      ],
+      "backlog": [
+        "F-001",
+        "F-002",
+        "F-004",
+        "F-007",
+        "F-036"
+      ],
+      "entry": "BondGame.Battle.step / emit / run; BondRules",
+      "contract": "Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement.",
+      "tests": [
+        "field-polish",
+        "mechanics",
+        "campaign",
+        "boundaries",
+        "runtime"
+      ],
+      "docs": [
+        "Companion stats.md",
+        "features/combat/RUNTIME.md"
+      ],
+      "summary": "Simulates targeting, damage and outcomes; sends events to animation and results to persistence."
+    },
+    {
+      "id": "growth",
+      "title": "Levels, attributes, Leadership and passive trees",
+      "status": "local",
+      "files": [
+        "progression.js",
+        "growth.js",
+        "tree-menu.js",
+        "progression.css",
+        "pass13.css"
+      ],
+      "backlog": [
+        "F-003",
+        "F-009",
+        "F-010"
+      ],
+      "entry": "BondProgress.derived / trainerLevel; BondGrowth.nodes / stats; BondTree",
+      "contract": "Trainer and companion XP are independent values on the same cumulative curve, with a hard player launch cap60; no owned monster sets trainer level. The engine/wild curve remains valid through100. Lv61–100 Echoes summon as Lv60 individuals while preserving sourceLevel; migration initializes trainerXP at the previously displayed level and preserves older tree access. Class trees unlock for the committed Druid/Mage at transformation. Individual monster trees unlock at player Lv30. Every species keeps18 ranked nodes; five nodes modify named skills and a sixth expresses its innate identity. Each effective DEX point gives0.667% active cooldown reduction; attribute and tree reduction share a50% total cap.",
+      "tests": [
+        "onboarding",
+        "mechanics",
+        "campaign",
+        "boundaries"
+      ],
+      "docs": [
+        "Companion stats.md",
+        "PASS24_VALIDATION.md"
+      ],
+      "summary": "Derives levels, attributes and passive bonuses; connects individual progress to combat and menus."
+    },
+    {
+      "id": "party",
+      "title": "Loadout, companion picker and formation",
+      "status": "local",
+      "files": [
+        "menu.js",
+        "companion-picker.js",
+        "formation.js",
+        "formation-menu.js",
+        "menu.css",
+        "formation.css",
+        "pass14.css"
+      ],
+      "backlog": [
+        "F-005",
+        "F-013"
+      ],
+      "entry": "BondMenu.render; BondPicker; BondFormation.assign; BondApp.changeUnit / changeSkills",
+      "contract": "UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials use a temporary three-of-five trainer build and never overwrite the Apprentice. Formation is an opening position, not a targeting override. Profile owns saved skills/trees.",
+      "tests": [
+        "mechanics",
+        "ui",
+        "boundaries",
+        "experience"
+      ],
+      "docs": [
+        "Companion stats.md"
+      ],
+      "summary": "Selects individuals, skills and formation; connects saved builds to battle initialization."
+    },
+    {
+      "id": "animation",
+      "title": "Character art, pose animation and combat feedback",
+      "status": "local-prototype",
+      "files": [
+        "character-rig.js",
+        "creature-art.js",
+        "animation-data.js",
+        "animation-coverage.js",
+        "combat-vfx.js",
+        "presentation-contract.js",
+        "combat-view.js",
+        "combat.css",
+        "reference-scene.js",
+        "monster-sprites.js",
+        "scripts/capture_character_reference.py",
+        "scripts/monster_sprites.py",
+        "tests/monster_sprites_check.py",
+        "tests/trainer_animation_check.py"
+      ],
+      "backlog": [
+        "F-024",
+        "F-025",
+        "F-026"
+      ],
+      "entry": "CharacterRig.mount / pose / trigger; CombatView.onEvent / draw / impactAudit; BondPresentation.timing",
+      "contract": "Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid and Mage use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional.",
+      "tests": [
+        "field-polish",
+        "mechanics",
+        "ui",
+        "boundaries",
+        "sprites",
+        "trainer-animation"
+      ],
+      "docs": [
+        "ART_BIBLE.md",
+        "CREATURE_DESIGN.md",
+        "features/animation/SUPPLIED_SPRITES.md",
+        "features/animation/TRAINER_SPRITES.md",
+        "PASS21_VALIDATION.md",
+        "PASS22_VALIDATION.md"
+      ],
+      "summary": "Draws characters and combat feedback; consumes combat events and exploration movement."
+    },
+    {
+      "id": "world",
+      "title": "World definitions, walkable geometry and routing",
+      "status": "local-prototype",
+      "files": [
+        "world-data.js",
+        "atlas-data.js",
+        "world-layout.js",
+        "world-nav.js"
+      ],
+      "backlog": [
+        "F-016",
+        "F-017",
+        "F-018",
+        "F-058"
+      ],
+      "entry": "BondAtlas.get / maps / collision; BondWorldLayout; BondNav.find",
+      "contract": "36 connected places: 24 large maps, six compact hubs and six compact boss domains; world units differ from arena units. world-layout augments BondAtlas geometry/validation during boot. Atlas neighbors and physical gates must agree. Firstlight exits are visibly locked until the Forest Mage proof; after that, roads remain open and nonlinear cross-region links reduce corridor dependence. The illustrated atlas derives each reach's average habitat level and compares it with trainer level (green at/below, yellow +1–5, red +6 or more); these are danger warnings, never later invisible progression locks. A displayed destination never grants teleport authority.",
+      "tests": [
+        "mechanics",
+        "ui",
+        "campaign",
+        "boundaries"
+      ],
+      "docs": [
+        "WORLD_DESIGN.md",
+        "WORLD_IMPLEMENTATION.md"
+      ],
+      "summary": "Defines maps, geometry and paths; supplies exploration and population placement."
+    },
+    {
+      "id": "exploration",
+      "title": "Exploration input, camera, atlas and scenery",
+      "status": "local-prototype",
+      "files": [
+        "region.js",
+        "world-renderer.js",
+        "world-atlas.js",
+        "region.css",
+        "world.css",
+        "world-v15.css",
+        "wild-behavior.js",
+        "scripts/world_assets.py",
+        "assets/world-runtime/manifest.json"
+      ],
+      "backlog": [
+        "F-027",
+        "F-035"
+      ],
+      "entry": "BondRegion.enter / leave / frame; WorldRenderer.mount / dispose / draw; BondWorldMap",
+      "contract": "Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; the designated opening Emberfox is temporarily hostile. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The mandatory Forest Mage onboarding trial is the sole protected encounter and cannot receive roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction.",
+      "tests": [
+        "field-polish",
+        "onboarding",
+        "opening",
+        "ui",
+        "mechanics",
+        "campaign",
+        "boundaries"
+      ],
+      "docs": [
+        "WORLD_DESIGN.md",
+        "WORLD_IMPLEMENTATION.md",
+        "assets/world-runtime/README.md"
+      ],
+      "summary": "Handles walking, camera, atlas and scenery; connects world geometry to profile and shared rigs."
+    },
+    {
+      "id": "population",
+      "title": "Map populations and spawn-life placement",
+      "status": "local",
+      "files": [
+        "map-population.js"
+      ],
+      "backlog": [
+        "F-059"
+      ],
+      "entry": "BondPopulation.keys / selected / position; BondProfile.population / beginHunt",
+      "contract": "Per-map quotas and saved random positions; Firstlight overrides rarity quotas, guarantees one reachable Emberfox inside the opening ring, and uses BondOpening difficulty bands/camp clearance. That stable first life is the only introductory attacker; the first accepted Firstlight Emberfox kill is the reward trigger even if the player chose another resident. Replacement lives follow ordinary behavior. A new life replaces a dead life elsewhere. Incompatible unreserved positions relocate without rerolling life/seed/loot; reserved lives remain frozen. Spawn ID prefixes are identities, not map authority. Profile owns clocks/RNG/receipts.",
+      "tests": [
+        "opening",
+        "mechanics",
+        "campaign",
+        "boundaries"
+      ],
+      "docs": [
+        "MAP_POPULATIONS.md"
+      ],
+      "summary": "Chooses map-wide spawn positions; persistence owns each life, timer and reserved encounter."
+    },
+    {
+      "id": "collection",
+      "title": "Inventory, Soul Echoes, summoning and loot presentation",
+      "status": "local",
+      "files": [
+        "echoes.js",
+        "inventory-menu.js",
+        "journey.js",
+        "loot-popup.js",
+        "journey.css",
+        "loot.css"
+      ],
+      "backlog": [
+        "F-011",
+        "F-012",
+        "F-014",
+        "F-015",
+        "F-060"
+      ],
+      "entry": "BondEchoes.qualifies / key; BondInventory; BondJourney; BondLoot; BondProfile.summon / complete",
+      "contract": "Profile grants once locally; menus and individual in-field pickups display accepted receipts. Inventory stays authoritative after notifications expire. Level gains show a transient accessible LEVEL UP effect with the new level and an actor ring. The accepted first Firstlight Brimble receipt can force one Emberfox Echo; the accepted second-role receipt can force one Bloomslime or Stonehorn Echo. Both use ordinary Echo items, are consumed once and do not change normal drop odds. During the first summon objective, the in-frame Bag destination, owned Brimble Echo and Summon action are highlighted in sequence. Summon consumes one Echo for one independent individual and auto-fills an empty party slot. Player copy never exposes backend odds or receipt language. Each item/coin/XP type has an independent three-second in-frame pickup; overflow waits for its full lifetime.",
+      "tests": [
+        "field-polish",
+        "onboarding",
+        "mechanics",
+        "ui",
+        "campaign",
+        "reference",
+        "boundaries"
+      ],
+      "docs": [
+        "CREATURE_DROPS.md"
+      ],
+      "summary": "Shows inventory and Soul Echo summoning; persistence owns drops and individual creation."
+    },
+    {
+      "id": "recovery",
+      "title": "Adventure tuning, injuries, medicine and village services",
+      "status": "local-test-tuning",
+      "files": [
+        "adventure-rules.js",
+        "recovery-menu.js",
+        "adventure.css"
+      ],
+      "backlog": [],
+      "entry": "BondAdventure; BondRecovery; BondProfile.buy / recover / rest",
+      "contract": "Test odds/XP/level policy is explicit. Health is persisted as basis points per trainer/individual. Forest camp and sanctuary full healing/revival are free, even with zero coins/supplies. Shop/rest need service proximity; portable medicine is separate. Firstlight defeat restores everyone at camp; later defeats retain injuries at town. A fallen trainer blocks adventure; a selected fallen companion remains in the loadout and field party but is benched from new combat and wild scaling until revived. Class/build changes must not heal. Practice remains health-independent.",
+      "tests": [
+        "opening",
+        "mechanics",
+        "ui",
+        "reference",
+        "boundaries"
+      ],
+      "docs": [
+        "PASS18_VALIDATION.md"
+      ],
+      "summary": "Defines test tuning and recovery UI; connects combat injuries to saved vitality and supplies."
+    },
+    {
+      "id": "campaign",
+      "title": "Chapters, NPCs, packs and simulated bosses",
+      "status": "local-prototype",
+      "files": [
+        "campaign.js",
+        "campaign-menu.js",
+        "campaign.css"
+      ],
+      "backlog": [
+        "F-019",
+        "F-020",
+        "F-021",
+        "F-022",
+        "F-023",
+        "F-062"
+      ],
+      "entry": "BondCampaign.reconcile / bosses; BondCampaignMenu; BondProfile.reserveBattle / restoreBattle",
+      "contract": "Campaign definitions feed encounters; profile reserves party/seed/supplies and accepted kills. BondCampaign.questMarker deterministically maps the current receipt-backed objective to `offer`, `delivery` or no marker; presentation does not infer or award quest state. The early route records two acquisitions, a Forest Mage meeting/proof gate, four distinct Druid/Mage demonstrations, fixed Lv15 Tidecrown, one rewarded temporary class trial, confirmed Lv20 specialization, an ability-change/counter loop, fixed Lv30 Amber guardian and monster-tree proof. Authored trainer XP reaches thresholds100/600/1500/6600/10500/19000/30000/43500 without repeat grinding; monster XP remains separate. One tiny in-frame current objective and its destination region/map guide the opening; the Mage proof is the only opening road lock and later levels communicate danger without invisible gates. Launch story trainers clamp to the Lv60 player ceiling while preserving sourceLevel. Practice boss scaling is reward-free and separate from progression bosses; no human multiplayer or essence source exists.",
+      "tests": [
+        "field-polish",
+        "campaign",
+        "mechanics",
+        "ui",
+        "boundaries"
+      ],
+      "docs": [
+        "PASS16_VALIDATION.md",
+        "features/opening/EARLY_PROGRESSION_SCOPE.md",
+        "PASS24_VALIDATION.md"
+      ],
+      "summary": "Defines quests, NPC encounters and simulated bosses; connects reservations to combat and rewards."
+    },
+    {
+      "id": "persistence",
+      "title": "Local profile, migrations and operation receipts",
+      "status": "local-only",
+      "files": [
+        "profile.js"
+      ],
+      "backlog": [],
+      "entry": "BondProfile.commit (private); normalize / reserveBattle / checkpoint / restoreBattle / settleKills / complete / summon",
+      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save.",
+      "tests": [
+        "field-polish",
+        "onboarding",
+        "opening",
+        "mechanics",
+        "campaign",
+        "ui",
+        "boundaries",
+        "experience"
+      ],
+      "docs": [
+        "features/persistence/SAVES.md",
+        "docs/ENGINEERING.md"
+      ],
+      "summary": "Owns local saves, migrations and receipts; accepts mutations requested by gameplay and UI."
+    },
+    {
+      "id": "experience",
+      "title": "Device preferences, accessibility and audio",
+      "status": "local-reference",
+      "files": [
+        "settings.js",
+        "audio.js",
+        "experience.css",
+        "scripts/audio_assets.py"
+      ],
+      "backlog": [
+        "F-028",
+        "F-030"
+      ],
+      "entry": "BondSettings.set / reduced / open; BondAudio.scene / impact / inspect",
+      "contract": "Owns local device preferences and lazy gesture-unlocked audio, never gameplay. Three original loops and a procedural cue bank use separate volume buses; pause/hidden/mute stop sources. Combat and exploration consume persisted motion/FX flags. Local save export is a user-requested download, not cloud recovery or authenticated data export.",
+      "tests": [
+        "experience",
+        "boundaries"
+      ],
+      "docs": [
+        "features/experience/SETTINGS_AUDIO.md",
+        "assets/audio/README.md"
+      ],
+      "summary": "Owns sound and device settings; connects presentation preferences and combat-impact cues without changing rules."
+    },
+    {
+      "id": "inner-sea",
+      "title": "Inner Sea scene and local earned decorations",
+      "status": "local-reference",
+      "files": [
+        "inner-sea-rules.js",
+        "inner-sea.js",
+        "inner-sea.css"
+      ],
+      "backlog": [
+        "F-031",
+        "F-032"
+      ],
+      "entry": "BondHaven.clean / valid / available; BondInnerSea.draw / edit / exportPicture; BondProfile.setHaven",
+      "contract": "One fixed scene, three owned decoration sockets, two individual display slots and two free skies. Existing progress facts unlock three local decorations. Draft cancel is nonmutating; profile validates critical writes. PNG export reuses the canvas and contains no account identity. No paid grants, cloud ownership, AFK output or final-art approval.",
+      "tests": [
+        "experience",
+        "boundaries"
+      ],
+      "docs": [
+        "features/inner-sea/DISPLAY.md"
+      ],
+      "summary": "Displays owned companions and earned decorations; profile saves the layout and the renderer exports a local picture."
+    },
+    {
+      "id": "legacy",
+      "title": "Retired capture and expedition compatibility",
+      "status": "retired",
+      "files": [
+        "bonding.js",
+        "bonding.css",
+        "wild-data.js",
+        "expedition-data.js"
+      ],
+      "backlog": [],
+      "entry": "Bonding no-op facade; unloaded BondWild / BondExpeditionData",
+      "contract": "bonding.js remains a no-op for app callers. wild-data.js and expedition-data.js are not loaded by the game. Old papyrus items are keepsakes. Do not revive old capture tests/mechanics accidentally.",
+      "tests": [
+        "boundaries"
+      ],
+      "docs": [
+        "Game notes.md"
+      ],
+      "summary": "Retains retired capture compatibility; do not treat it as an active acquisition system."
+    },
+    {
+      "id": "online",
+      "title": "Accounts, authoritative economy and real group sessions",
+      "status": "planned",
+      "files": [],
+      "backlog": [
+        "F-037",
+        "F-038",
+        "F-039",
+        "F-040",
+        "F-041",
+        "F-045",
+        "F-061",
+        "F-063",
+        "F-065"
+      ],
+      "entry": "Future server commands / room lifecycle / transactional ledger",
+      "contract": "No backend exists. Server must own auth, encounter validation, spawn lives, revisions and idempotent rewards. Never trust prototype saves as currency/essence authority. Shared deterministic smoke is only a prerequisite.",
+      "tests": [],
+      "docs": [
+        "docs/ENGINEERING.md"
+      ],
+      "summary": "Planned account and server authority; will own multiplayer, profiles and accepted rewards."
+    },
+    {
+      "id": "commerce",
+      "title": "Inner Sea cosmetics and payments",
+      "status": "planned",
+      "files": [],
+      "backlog": [
+        "F-033",
+        "F-042",
+        "F-043",
+        "F-044"
+      ],
+      "entry": "Future appearance catalog / checkout / verified entitlements",
+      "contract": "Cosmetics only; no gameplay advantage. Hosted payments and verified/refundable entitlements require backend authority. Current collection UI is not this feature.",
+      "tests": [],
+      "docs": [
+        "docs/ENGINEERING.md"
+      ],
+      "summary": "Planned cosmetics and payment entitlements; depends on authoritative online services."
+    },
+    {
+      "id": "delivery",
+      "title": "Tooling, quality gates, release and operations",
+      "status": "partial-tooling",
+      "files": [
+        "scripts/project.py",
+        "scripts/review_gates.py",
+        "docs/review-gates.json",
+        "tests/test_review_gates.py",
+        "tests/test_project_tools.py",
+        "tests/architecture_browser.py",
+        "tests/browser_check.py",
+        "docs/architecture.json",
+        "requirements-dev.txt",
+        ".gitignore",
+        ".gitattributes",
+        ".githooks/pre-commit",
+        ".github/workflows/validate.yml",
+        "scripts/navigation.py",
+        "tests/test_navigation.py",
+        ".ignore",
+        "tests/opening_check.py",
+        "tests/onboarding_check.py",
+        "tests/opening_cases.js",
+        "tests/field_polish_check.py",
+        "scripts/client_build.py",
+        "data/client-build.json",
+        "tests/client_build_check.py",
+        "tests/experience_check.py"
+      ],
+      "backlog": [
+        "F-034",
+        "F-046",
+        "F-047",
+        "F-048",
+        "F-049",
+        "F-050",
+        "F-051",
+        "F-052",
+        "F-053",
+        "F-054",
+        "F-055",
+        "F-056",
+        "F-057",
+        "F-066"
+      ],
+      "entry": "scripts/project.py; Git/CI configuration; future operator services",
+      "contract": "Local architecture/review/backup tooling and reproducible immutable client packages exist; packages remain local-preview. No deployment, production auth/payment/telemetry, restored cloud backups, certified capacity or external acceptance. Current remaining-work/decision audit is routed in REMAINING_SCOPE.md.",
+      "tests": [
+        "structure",
+        "boundaries",
+        "client-build"
+      ],
+      "docs": [
+        "docs/ENGINEERING.md",
+        "VALIDATION_PLAN.md",
+        "OWNER_REVIEWS.md",
+        "features/delivery/OPERATIONS.md",
+        "features/delivery/CLIENT_BUILD.md",
+        "features/delivery/REMAINING_SCOPE.md"
+      ],
+      "summary": "Owns navigation tooling and checks; routes release, owner-review and operations requirements."
+    }
+  ],
+  "boot_requires": {
+    "rules.js": [
+      "BondContent"
+    ],
+    "roster.js": [
+      "BondContent",
+      "BondRules"
+    ],
+    "adventure-rules.js": [
+      "BondContent",
+      "BondOpening"
+    ],
+    "progression.js": [
+      "BondContent"
+    ],
+    "game.js": [
+      "BondContent"
+    ],
+    "creature-art.js": [
+      "BondContent"
+    ],
+    "character-rig.js": [
+      "BondContent",
+      "BondMonsterSprites",
+      "BondApprenticePreview"
+    ],
+    "presentation-contract.js": [
+      "BondContent"
+    ],
+    "combat-view.js": [
+      "CharacterRig",
+      "CombatVFX",
+      "BondGame",
+      "BondSettings"
+    ],
+    "atlas-data.js": [
+      "BondContent",
+      "BondProgress",
+      "BondAdventure"
+    ],
+    "world-layout.js": [
+      "BondAtlas",
+      "BondContent"
+    ],
+    "world-nav.js": [
+      "BondAtlas",
+      "BondWorldLayout"
+    ],
+    "map-population.js": [
+      "BondOpening",
+      "BondAtlas",
+      "BondNav",
+      "BondWorldLayout",
+      "BondWorld"
+    ],
+    "world-renderer.js": [
+      "BondAtlas",
+      "BondWorldLayout"
+    ],
+    "echoes.js": [
+      "BondContent"
+    ],
+    "growth.js": [
+      "BondContent",
+      "BondProgress"
+    ],
+    "campaign.js": [
+      "BondAtlas",
+      "BondWorld",
+      "BondContent",
+      "BondGame",
+      "BondProgress",
+      "BondGrowth"
+    ],
+    "profile.js": [
+      "BondContent",
+      "BondProgress",
+      "BondAtlas",
+      "BondWorld",
+      "BondEchoes",
+      "BondPopulation",
+      "BondAdventure",
+      "BondGrowth",
+      "BondCampaign",
+      "BondOpening",
+      "BondHaven",
+      "BondGame",
+      "BondFormation",
+      "BondRules",
+      "BondRoster"
+    ],
+    "world-atlas.js": [
+      "BondAtlas",
+      "BondProfile",
+      "BondProgress"
+    ],
+    "recovery-menu.js": [
+      "BondProfile",
+      "BondAdventure",
+      "BondOpening"
+    ],
+    "companion-picker.js": [
+      "BondProfile",
+      "BondContent"
+    ],
+    "tree-menu.js": [
+      "BondProfile",
+      "BondGrowth"
+    ],
+    "inventory-menu.js": [
+      "BondProfile",
+      "BondContent"
+    ],
+    "menu.js": [
+      "BondGame",
+      "BondProfile",
+      "BondProgress",
+      "BondInventory",
+      "BondPicker",
+      "BondTree",
+      "BondInnerSea",
+      "BondAudio"
+    ],
+    "region.js": [
+      "BondProfile",
+      "BondCampaign",
+      "BondWorld",
+      "BondAtlas",
+      "BondNav",
+      "WorldRenderer",
+      "BondWorldMap",
+      "BondRecovery",
+      "BondWildBehavior",
+      "BondSettings"
+    ],
+    "campaign-menu.js": [
+      "BondCampaign",
+      "BondProfile",
+      "BondAtlas",
+      "BondProgress",
+      "BondContent"
+    ],
+    "journey.js": [
+      "BondProfile",
+      "BondProgress"
+    ],
+    "formation-menu.js": [
+      "BondProfile",
+      "BondFormation"
+    ],
+    "loot-popup.js": [
+      "BondProfile",
+      "BondEchoes",
+      "BondAudio"
+    ],
+    "app.js": [
+      "BondGame",
+      "BondProfile",
+      "BondRegion",
+      "BondMenu",
+      "CombatView",
+      "CharacterRig",
+      "Bonding",
+      "BondJourney",
+      "BondLoot",
+      "BondFormationView",
+      "BondCreation",
+      "BondAudio",
+      "BondBoot"
+    ],
+    "reference-scene.js": [
+      "BondApp"
+    ],
+    "test-controls.js": [
+      "BondApp",
+      "BondProfile",
+      "BondCreation"
+    ],
+    "opening-rules.js": [
+      "BondContent",
+      "BondRules"
+    ],
+    "character-creation.js": [
+      "BondProfile",
+      "BondOpening",
+      "BondApprenticePreview",
+      "CharacterRig"
+    ],
+    "apprentice-preview.js": [
+      "BondOpening"
+    ],
+    "monster-sprites.js": [
+      "BondContent",
+      "BondRoster"
+    ],
+    "animation-coverage.js": [
+      "BondMonsterSprites",
+      "BondContent"
+    ],
+    "audio.js": [
+      "BondSettings"
+    ],
+    "inner-sea.js": [
+      "BondProfile",
+      "BondHaven",
+      "BondSettings",
+      "CharacterRig",
+      "BondApprenticePreview"
+    ]
+  },
+  "unloaded": [
+    "wild-data.js",
+    "expedition-data.js"
+  ],
+  "pure_files": [
+    "rules.js",
+    "game.js",
+    "progression.js",
+    "formation.js",
+    "growth.js",
+    "map-population.js",
+    "opening-rules.js",
+    "wild-behavior.js",
+    "inner-sea-rules.js"
+  ],
+  "storage_writers": {
+    "profile.js": "Profile document and receipts",
+    "app.js": "Separate loadout key only",
+    "region.js": "World display preferences only",
+    "settings.js": "Device audio/visual preferences; normal and sandbox isolated"
+  },
+  "assets": {
+    "animation": [
+      "assets/art-v6",
+      "assets/art-v8",
+      "assets/art-v9",
+      "assets/art-v10",
+      "assets/art-v16",
+      "assets/art-v21",
+      "assets/art-v22",
+      "assets/monsters"
+    ],
+    "exploration": [
+      "assets/world-v15",
+      "assets/world-v17",
+      "assets/world-runtime"
+    ],
+    "experience": [
+      "assets/audio"
+    ]
+  },
+  "suites": {
+    "onboarding": {
+      "command": [
+        "tests/onboarding_check.py"
+      ],
+      "browser": true,
+      "purpose": "Background fights, frozen live builds, world anchors, hostile joins/replay, mixed rewards, level feedback, temporary loot, recovery and opening navigation"
+    },
+    "structure": {
+      "command": [
+        "scripts/project.py",
+        "check"
+      ],
+      "purpose": "Ownership, map freshness, links, checker regressions and scope integrity"
+    },
+    "mechanics": {
+      "command": [
+        "tests/pass18_check.py"
+      ],
+      "browser": true,
+      "purpose": "Current mechanics, population/progression/receipt regressions and content export"
+    },
+    "ui": {
+      "command": [
+        "tests/pass18_ui.py"
+      ],
+      "browser": true,
+      "purpose": "Played hunt, loot, recovery, atlas and viewport flows"
+    },
+    "campaign": {
+      "command": [
+        "tests/pass18_campaign.py"
+      ],
+      "browser": true,
+      "purpose": "Current campaign/replay assertions (reuses pass16_cases.js)"
+    },
+    "boundaries": {
+      "command": [
+        "tests/architecture_browser.py"
+      ],
+      "browser": true,
+      "purpose": "Boot globals, DOM-free rules, deterministic replay and view/model isolation"
+    },
+    "reference": {
+      "command": [
+        "scripts/creature_reference.py",
+        "--check"
+      ],
+      "purpose": "Reviewed 100-species snapshot and four generated outputs agree with Chrome export"
+    },
+    "opening": {
+      "command": [
+        "tests/opening_check.py"
+      ],
+      "browser": true,
+      "purpose": "Fresh creation, apprentice combat, quiet hunts, pursuit, death, loot/reload, isolated restart/heal safety and narrow-screen UI"
+    },
+    "sprites": {
+      "command": [
+        "tests/monster_sprites_check.py"
+      ],
+      "browser": true,
+      "purpose": "100 supplied sprites, workbook identity, unchanged mechanics, shared rendering, poses, facing and save preservation"
+    },
+    "trainer-animation": {
+      "command": [
+        "tests/trainer_animation_check.py"
+      ],
+      "browser": true,
+      "purpose": "Druid/Mage/Apprentice pose frames, painted creator choices, transparent rendering, weapon-specific motion, provenance and coverage"
+    },
+    "field-polish": {
+      "command": [
+        "tests/field_polish_check.py"
+      ],
+      "browser": true,
+      "purpose": "Fixed-lifetime loot under focus/hover, thin live world HP, foliage isolation, timed escape, pursuit damage, persistence failures and ordered replay"
+    },
+    "experience": {
+      "command": [
+        "tests/experience_check.py"
+      ],
+      "browser": true,
+      "purpose": "Preferences/audio lifecycle, owned scene drafting/persistence, PNG export and responsive input"
+    },
+    "runtime": {
+      "command": [
+        "tests/runtime_check.py"
+      ],
+      "browser": true,
+      "purpose": "1,000 canonical Chrome/Edge versus Node battles and local replay CPU"
+    },
+    "client-build": {
+      "command": [
+        "tests/client_build_check.py"
+      ],
+      "browser": true,
+      "purpose": "Allowlisted immutable bundle, file integrity and packaged-browser loading"
+    }
+  },
+  "connections": [
+    {
+      "id": "combat-feedback",
+      "from": "combat",
+      "to": "animation",
+      "via": [
+        "app.js",
+        "presentation-contract.js",
+        "combat-view.js",
+        "character-rig.js",
+        "combat-vfx.js"
+      ],
+      "contract": "Battle.events -> app renderBattle -> CombatView.onEvent -> timing/rig/VFX. Compare event.time/actor/target with impactAudit before changing simulation timing."
+    },
+    {
+      "id": "world-facing",
+      "from": "exploration",
+      "to": "animation",
+      "via": [
+        "region.js",
+        "character-rig.js",
+        "world-v15.css"
+      ],
+      "contract": "Region movement/follower facing -> shared CharacterRig.pose and CSS facing transform. Verify left and right in world and arena."
+    },
+    {
+      "id": "encounter-settlement",
+      "from": "combat",
+      "to": "persistence",
+      "via": [
+        "app.js",
+        "profile.js",
+        "loot-popup.js"
+      ],
+      "contract": "reserveBattle -> seeded Battle -> settleKills/checkpoint -> complete -> map/loot. A returned popup is not a receipt; retries must not pay twice."
+    },
+    {
+      "id": "spawn-reservation",
+      "from": "population",
+      "to": "persistence",
+      "via": [
+        "map-population.js",
+        "atlas-data.js",
+        "profile.js"
+      ],
+      "contract": "Quota and placement policy -> persisted life/seed/roll/position -> reserved encounter. Map reload/build edits cannot reroll an accepted life."
+    },
+    {
+      "id": "world-collision",
+      "from": "world",
+      "to": "exploration",
+      "via": [
+        "world-layout.js",
+        "world-nav.js",
+        "world-renderer.js",
+        "region.js"
+      ],
+      "contract": "One authored geometry feeds collision/routing and scenery; use renderer bounds for painted service hit targets, not unrelated marker rectangles."
+    },
+    {
+      "id": "owned-build",
+      "from": "party",
+      "to": "persistence",
+      "via": [
+        "app.js",
+        "profile.js",
+        "companion-picker.js"
+      ],
+      "contract": "Visual picker chooses instance ID; migrateParty/setSkills validates ownership; bond-growth invalidates stale builds while preserving reservations."
+    },
+    {
+      "id": "derived-stats",
+      "from": "growth",
+      "to": "combat",
+      "via": [
+        "progression.js",
+        "growth.js",
+        "formation.js",
+        "profile.js",
+        "game.js"
+      ],
+      "contract": "Profile snapshot + species bases + individual XP/ranks + formation -> battle initialization. UI preview must use the same derived formulas."
+    },
+    {
+      "id": "echo-to-individual",
+      "from": "collection",
+      "to": "persistence",
+      "via": [
+        "echoes.js",
+        "profile.js",
+        "inventory-menu.js",
+        "journey.js"
+      ],
+      "contract": "Echo item/receipt -> profile.summon -> consume one Echo and create one instance atomically locally -> refresh collection and picker."
+    },
+    {
+      "id": "injury-and-supplies",
+      "from": "recovery",
+      "to": "persistence",
+      "via": [
+        "adventure-rules.js",
+        "profile.js",
+        "game.js",
+        "recovery-menu.js"
+      ],
+      "contract": "Battle injury ratios -> checkpoint/complete -> vitality. Firstlight defeat records campRecovery and full camp revival; later defeats rescue to regional town with injuries. Before a new adventure, deploy removes selected zero-HP companions from the encounter copy but never from the saved loadout; trainer health remains the readiness gate. Buy/recover/rest validate proximity, resources and no active reservation; forest camp is a real rest service."
+    },
+    {
+      "id": "campaign-encounter",
+      "from": "campaign",
+      "to": "combat",
+      "via": [
+        "campaign.js",
+        "campaign-menu.js",
+        "profile.js",
+        "app.js",
+        "game.js"
+      ],
+      "contract": "Authored encounter -> requirement check -> saved temporary/fixed build and seed -> simulator -> accepted trainer/companion rewards and milestone reconciliation. Progression bosses use fixed levels; simulated practice parties never grant real acquisition."
+    },
+    {
+      "id": "early-progression",
+      "from": "opening",
+      "to": "campaign",
+      "via": [
+        "opening-rules.js",
+        "wild-behavior.js",
+        "region.js",
+        "campaign.js",
+        "profile.js",
+        "app.js",
+        "menu.js",
+        "growth.js",
+        "tree-menu.js"
+      ],
+      "contract": "Accepted first Firstlight Brimble claim -> guaranteed ordinary Echo -> highlighted Bag/Echo/Summon path and auto-party -> Forest Mage meeting -> guaranteed second-role Echo and second summon -> easy Mage proof that opens physical roads -> four recorded class demonstrations -> fixed Tidecrown -> temporary class trial -> Lv20 specialization -> adaptation encounters -> Lv30 monster-tree proof. Trainer XP and monster XP remain independent; UI hints and travel never grant milestones."
+    },
+    {
+      "id": "created-apprentice",
+      "from": "opening",
+      "to": "persistence",
+      "via": [
+      "character-creation.js",
+      "opening-rules.js",
+      "apprentice-preview.js",
+      "profile.js",
+        "app.js",
+        "game.js",
+        "menu.js"
+      ],
+      "contract": "Fresh path: validated name/palette/weapon -> painted creation preview -> createCharacter atomic local commit at BondOpening.start forest camp -> saved apprentice build and weapon-derived combat. Migration path: an unnamed legacy marker or literal Apprentice placeholder opens a one-time name-only screen -> nameCharacter updates only identity while preserving class/build, appearance, progress, location and encounter; it cannot be repeated. UI cannot create starter items independently."
+    },
+    {
+      "id": "territorial-encounter",
+      "from": "exploration",
+      "to": "persistence",
+      "via": [
+        "wild-behavior.js",
+        "region.js",
+        "profile.js",
+        "app.js",
+        "map-population.js"
+      ],
+      "contract": "Notice -> warning -> chase/contact -> reserve existing spawn life. With an active fight, joinBattle saves entry and tick before Battle.addEnemy. In-game tabs/modals do not pause active-fight pursuit; explicit Pause/browser-hidden does. Leash and line of sight apply. No visual reward authority."
+    },
+    {
+      "id": "device-presentation",
+      "from": "experience",
+      "to": "animation",
+      "via": [
+        "settings.js",
+        "audio.js",
+        "combat-view.js",
+        "app.js",
+        "region.js"
+      ],
+      "contract": "Settings changes invalidate visual preferences only; CombatView sends contact-timed cues. Device preference storage cannot alter battle/profile authority."
+    },
+    {
+      "id": "haven-layout",
+      "from": "inner-sea",
+      "to": "persistence",
+      "via": [
+        "inner-sea-rules.js",
+        "inner-sea.js",
+        "profile.js",
+        "menu.js"
+      ],
+      "contract": "Progress facts determine decoration availability; owned individual IDs and three sockets validate before a critical profile write. Draft/export never consume items or change combat."
+    }
+  ],
+  "interfaces": [
+    {
+      "name": "Combat event: game.js Battle.emit",
+      "shape": "time (logical seconds), kind, optional actor/target/side, text, amount; event-specific details include category, bypass, targets or until.",
+      "rule": "Events are ordered by simulation time. app delivers unseen events; view schedules visual deadlines. Never derive reward authorization from an event's display text.",
+      "features": [
+        "combat",
+        "animation",
+        "shell"
+      ]
+    },
+    {
+      "name": "Profile read and command: profile.js",
+      "shape": "snapshot() returns a cloned v7 profile. Operation return types vary: boolean, receipt/result, or pending completion; error() explains failed persistence.",
+      "rule": "Use the specific method's result. A button click, view refresh or mutated snapshot is not a successful persisted command. Respect false/pending and idempotent retries.",
+      "features": [
+        "persistence",
+        "party",
+        "collection",
+        "recovery",
+        "campaign",
+        "exploration",
+        "opening"
+      ]
+    },
+    {
+      "name": "Individual: progression.js / profile.js",
+      "shape": "id, species type, ordinal, active xp, optional deferredXP and sourceLevel, three skill IDs, growth ranks, pact metadata. Trainer uses profile attributes; owned level is derived from active XP and capped at60.",
+      "rule": "Use id for ownership/build/progress; use type for shared content/art. Never key individual mutations only by display name or species. Keep Lv61–100 wild provenance separate from the Lv60 owned-state ceiling, and never discard deferred legacy XP.",
+      "features": [
+        "growth",
+        "party",
+        "content",
+        "collection",
+        "persistence",
+        "combat"
+      ]
+    },
+    {
+      "name": "Spawn life / reservation: profile.js",
+      "shape": "Map population slot identifies a resident slot; saved life, position, seed, roll and readyAt identify its current incarnation. Encounter reservation records build/profile/seed/supplies/tick.",
+      "rule": "Preserve the incarnation and reserved inputs across reload/retry. Completion/kill receipts prevent paying that accepted life twice locally.",
+      "features": [
+        "population",
+        "persistence",
+        "campaign",
+        "combat"
+      ]
+    },
+    {
+      "name": "View invalidation signals",
+      "shape": "bond-profile and bond-growth from profile.js; bond-art-ready from character-rig.js; bond-creation-art-ready from apprentice-preview.js. Current consumers reread state; no command payload.",
+      "rule": "Do not use these signals to infer a reward or pass mutable battle state. Add producer/consumer contracts before introducing new signals.",
+      "features": [
+        "shell",
+        "persistence",
+        "animation",
+        "party",
+        "collection",
+        "exploration",
+        "opening"
+      ]
+    },
+    {
+      "name": "Space/time units",
+      "shape": "Battle coordinates use arena units; navigation/geometry use world units; rendering projects to CSS/device pixels. Combat event deadlines use battle seconds.",
+      "rule": "Convert at presentation boundaries only. Resizing, playback speed, camera zoom and reduced motion must not change deterministic outcomes.",
+      "features": [
+        "combat",
+        "world",
+        "exploration",
+        "animation"
+      ]
+    }
+  ],
+  "symptoms": [
+    [
+      "Wrong pose, sliding, missing frames",
+      "animation",
+      "world-facing",
+      "Check CharacterRig.inspect and CombatView.inspect; compare movement flags and facing before editing art."
+    ],
+    [
+      "Damage number / sound arrives before impact",
+      "animation",
+      "combat-feedback",
+      "Compare Battle.events with CombatView.impactAudit; reduced motion intentionally changes visual delay."
+    ],
+    [
+      "Wrong target, reach, damage or cooldown",
+      "combat",
+      "derived-stats",
+      "Reproduce seeded Battle without rendering; inspect profile-derived factors and explicit target exceptions."
+    ],
+    [
+      "Invisible bridge, blocked road, bad atlas destination",
+      "exploration",
+      "world-collision",
+      "Compare world geometry, neighbor gates, nav path and renderer bounds."
+    ],
+    [
+      "Duplicate/lost loot, Echo or replay rewards",
+      "persistence",
+      "encounter-settlement",
+      "Inspect life/ticket/claim IDs and command result; do not fix only the popup."
+    ],
+    [
+      "Same-species copies overwrite each other",
+      "party",
+      "owned-build",
+      "Trace individual IDs through picker, saved skills, ranks and battle build."
+    ],
+    [
+      "Monster respawns beside the kill or rerolls",
+      "population",
+      "spawn-reservation",
+      "Check reserved life and map-wide selected slot before changing delays."
+    ],
+    [
+      "Switching builds heals / recovery not working",
+      "recovery",
+      "injury-and-supplies",
+      "Check vitality, active reservation, service proximity and accepted storage write."
+    ],
+    [
+      "Quest not advancing / pack replay wrong",
+      "campaign",
+      "campaign-encounter",
+      "Inspect reconciliation and accepted per-kill/completion receipt; preserve saved rules inputs."
+    ],
+    [
+      "Creator repeats, wrong name, hair or starter weapon",
+      "opening",
+      "created-apprentice",
+      "Check character normalization, BondCreation.required, BondApprenticePreview.inspect, profile commit and weapon-specific build before avatar/UI. Real named profiles skip creation; unnamed legacy saves and literal Apprentice placeholders must complete the non-destructive name-only screen."
+    ],
+    [
+      "Creature attacks through a wall or while a menu is open",
+      "exploration",
+      "territorial-encounter",
+      "Check line of sight, warning/leash, modal pause and same spawn-life reservation."
+    ],
+    [
+      "Sound stuck, duplicate music, settings not retained",
+      "experience",
+      "device-presentation",
+      "Inspect BondAudio lifecycle and BondSettings state; verify impact and scene callers."
+    ],
+    [
+      "Wrong displayed companion, lost decoration or failed picture export",
+      "inner-sea",
+      "haven-layout",
+      "Check draft versus profile.haven, eligibility and canvas readiness before changing profile data."
+    ]
+  ]
+}

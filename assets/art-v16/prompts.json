@@ -1,0 +1,16 @@
+{
+  "mode": "built-in image_gen, identity-preserving edit",
+  "status": "Candidate only; baked checkerboard failed alpha inspection. Not loaded by gameplay. Local cleanup approval requested.",
+  "prompts": [
+    "Asset type: original game sprite sheet, identity-preserving edit. Image 1 is our Mage character anchor. Image 2 is our existing Druid animation sheet for rendering style only. Create ONE Mage sprite sheet on transparent alpha with EXACTLY 16 fully isolated poses in a strict equal 4 column x 4 row grid. Preserve mage's silver bob haircut, blue eyes, oversized purple crescent hat, purple ivory coat, boots and wooden staff with purple crystal; original chibi painted fantasy RPG style matching the Druid. The mage faces right in three-quarter side view in every frame. Same scale every cell, all feet grounded at same baseline per row; leave generous 20px transparent margin on ALL cell edges, never crossing cells. Row1: four distinct walking cycle poses, legs clearly stepping, coat trailing. Row2: four basic magic attack poses, staff pulled back anticipation, aiming, sharp extended release to right, relaxed recovery. Row3: four casting poses, gathering power with closed eyes, staff rising, full hand/staff extension, recovering. Row4: hit recoil, neutral idle, defeated sitting/lying down, cheerful victory staff raised. Staff and hat must stay fully within own cell in all poses. No particles or glows beyond hands, no projectiles, no background scenery, no text, no gridlines, no shadows outside figures. Frame cells square. This is a sprite asset for a game, not a concept illustration.",
+    "Edit this sprite sheet ONLY to remove its baked gray-and-white checkerboard background. Deliver a PNG with a REAL transparent alpha channel. Do not paint a checkerboard or solid backdrop. Every background pixel, including gaps between hat/staff/body, must become transparent. Preserve all sixteen Mage poses, their exact positions, colors, details, scale, grid and canvas dimensions. No new artwork. No resizing or cropping. Keep the mage's ivory coat and silver hair opaque. This is production sprite alpha extraction, not a conceptual depiction of transparency."
+  ],
+  "outputs": [
+    "assets/art-v16/mage-candidate.png",
+    "assets/art-v16/mage-alpha-attempt.png"
+  ],
+  "references": [
+    "assets/art-v6/mage.png",
+    "assets/art-v10/druid-sheet.png"
+  ]
+}

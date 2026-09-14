@@ -1,0 +1,10 @@
+# Keep generated bulk and local environments out of ordinary rg searches.
+# Explicit paths or rg --no-ignore remain available for evidence investigations.
+tests/artifacts/
+backups/
+.venv/
+venv/
+__pycache__/
+node_modules/
+dist/
+docs/scope-v1/

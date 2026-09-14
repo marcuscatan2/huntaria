@@ -1,0 +1,237 @@
+{
+  "revision": 15,
+  "created": "2026-09-11",
+  "assets": [
+    {
+      "id": "mosslight",
+      "path": "assets/world-v15/mosslight-atlas.png",
+      "source": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-606d00e7-3765-42f5-9bfd-cd02888484bb.png",
+      "prompt": "Use case: stylized-concept\nAsset type: production game scenery sprite atlas, not a concept sheet or screenshot.\nCreate one 2048x2048 transparent PNG sprite sheet in an EXACT 4 columns by 4 rows equal cell grid. SIXTEEN isolated environmental objects for an original illustrated monster-tamer browser world. Each object entirely inside its own 512x512 cell with at least 35px empty transparent padding, same orthographic three-quarter overhead viewpoint, ground contact centered near the bottom of each cell. No overlaps between cells. Genuine transparent alpha background, no white or checkerboard painted into image. No text, borders, labels, grid lines, people, monsters or watermark.\nStyle: polished hand-painted 2.5D cozy fantasy RPG scenery, broad readable silhouettes with painterly material detail, soft warm upper-left light, delicate darker contour accents, believable volume and charming craft. Palette: sage and apple green leaves, golden grass, warm bark and cream cottage walls. Not flat geometric vector shapes. Each cell depicts only its specified prop with minimal attached ground and soft contact shadow.\nCells in row-major order, left to right then top to bottom:\n1: broad old oak tree\n2: slender birch tree\n3: layered fern thicket\n4: gnarled mossy tree\n5: mossy boulder cluster\n6: small wildflower patch with stones\n7: wooden plank footbridge viewed from above\n8: root-framed dark cave entrance\n9: gigantic hollow oak with a small doorway\n10: split fallen tree forming a forest arch\n11: living root cathedral with a shallow reflecting pool\n12: roof-open mossy sinkhole with roots\n13: cream cottage with rounded green tiled roof\n14: open-air herbalist stall\n15: small sanctuary pavilion surrounding a luminous blue basin\n16: wooden notice board and travel lantern\nKeep camera angle, light direction and visual scale consistent. This is an actual sprite atlas for integration, with all sixteen complete sprites individually separated.",
+      "cells": [
+        "broad old oak tree",
+        "slender birch tree",
+        "layered fern thicket",
+        "gnarled mossy tree",
+        "mossy boulder cluster",
+        "small wildflower patch with stones",
+        "wooden plank footbridge viewed from above",
+        "root-framed dark cave entrance",
+        "gigantic hollow oak with a small doorway",
+        "split fallen tree forming a forest arch",
+        "living root cathedral with a shallow reflecting pool",
+        "roof-open mossy sinkhole with roots",
+        "cream cottage with rounded green tiled roof",
+        "open-air herbalist stall",
+        "small sanctuary pavilion surrounding a luminous blue basin",
+        "wooden notice board and travel lantern"
+      ],
+      "mode": "built-in image_gen",
+      "approval": "visual review performed; commercial owner acceptance pending",
+      "delivered": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2639476,
+        "pngColorType": 6,
+        "sha256": "28bf4219078e6f256bc6a8bdadeff2c704b7a573ef0d6a64dbea03014c46e1a8"
+      },
+      "integration": "Runtime Canvas/CSS atlas cropping only; source PNG preserved."
+    },
+    {
+      "id": "willowbrook",
+      "path": "assets/world-v15/willowbrook-atlas.png",
+      "source": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-3abe49c9-ad7f-44f5-92a0-a0f44e2058fb.png",
+      "prompt": "Use case: stylized-concept\nAsset type: production game scenery sprite atlas.\nCreate one square transparent PNG scenery sheet, EXACT 4 columns and 4 rows with SIXTEEN objects in separate equal-sized cells. Each complete sprite must stay INSIDE its cell, with transparent padding all around. No overlaps, no text, borders, labels or grid. Genuine transparent alpha background, no painted white/checkerboard.\nStyle: polished hand-painted illustrated 2.5D fantasy RPG, detailed organic materials, broad readable silhouette, soft upper-left lighting and warm delicate contours. Orthographic three-quarter overhead camera for every object. NOT flat SVG/vector style. Palette: teal willow foliage, silver reeds, turquoise water, warm weathered timber and pale clay. No people or monsters.\nEach cell contains only the described prop, minimal attached ground and soft contact shadow. Uniform cell size, do not make the top row taller than the other rows. Cells in row-major reading order:\n1: large trailing willow tree\n2: slender riverside alder tree\n3: lush reed clump\n4: silver fern thicket\n5: wet slate boulder cluster\n6: lily-pad pond cluster\n7: arched timber footbridge\n8: springwater grotto entrance\n9: rustic working watermill with one prominent waterwheel\n10: bent willow tree forming a tunnel\n11: raised reed watchpost with a ladder\n12: twin springs flowing between pale rocks\n13: raised riverside house on short stilts\n14: covered fish-and-herb provision stall\n15: open blue-roof sanctuary around a water basin\n16: riverbank noticeboard with a glass lantern\nIntended for an original commercial browser monster-tamer. Distinct complete objects with clean edges and enough empty margin to crop safely. No logos, watermark or UI.",
+      "cells": [
+        "large trailing willow tree",
+        "slender riverside alder tree",
+        "lush reed clump",
+        "silver fern thicket",
+        "wet slate boulder cluster",
+        "lily-pad pond cluster",
+        "arched timber footbridge",
+        "springwater grotto entrance",
+        "rustic working watermill with one prominent waterwheel",
+        "bent willow tree forming a tunnel",
+        "raised reed watchpost with a ladder",
+        "twin springs flowing between pale rocks",
+        "raised riverside house on short stilts",
+        "covered fish-and-herb provision stall",
+        "open blue-roof sanctuary around a water basin",
+        "riverbank noticeboard with a glass lantern"
+      ],
+      "mode": "built-in image_gen",
+      "approval": "visual review performed; commercial owner acceptance pending",
+      "delivered": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2778570,
+        "pngColorType": 6,
+        "sha256": "1debd647629583595ace276ee3f5131e20f4153b04bc33a55e31917bcd62851f"
+      },
+      "integration": "Runtime Canvas/CSS atlas cropping only; source PNG preserved."
+    },
+    {
+      "id": "amber",
+      "path": "assets/world-v15/amber-atlas.png",
+      "source": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-9a516cc3-ca51-421e-a491-66d39815d746.png",
+      "prompt": "Use case: stylized-concept\nAsset type: production game scenery sprite atlas.\nCreate one square transparent PNG scenery sheet, EXACT 4 columns and 4 rows with SIXTEEN objects in separate equal-sized cells. Each complete sprite must stay INSIDE its cell, with transparent padding all around. No overlaps, no text, borders, labels or grid. Genuine transparent alpha background, no painted white/checkerboard.\nStyle: polished hand-painted illustrated 2.5D fantasy RPG, detailed organic materials, broad readable silhouette, soft upper-left lighting and warm delicate contours. Orthographic three-quarter overhead camera for every object. NOT flat SVG/vector style. Palette: ochre, warm copper orange leaves, pale amber, dusty violet shadows and clay. No people or monsters.\nEach cell contains only the described prop, minimal attached ground and soft contact shadow. Uniform cell size, do not make the top row taller than the other rows. Cells in row-major reading order:\n1: broad copperleaf tree\n2: crooked ochre acacia tree\n3: amber fern bush\n4: sun-dried thorn thicket\n5: layered sandstone boulder\n6: small resin crystal cluster\n7: flat stone slab bridge\n8: amber-lit glass cave entrance\n9: great exposed amber crystal ridge\n10: copperleaf tree over a disused clay kiln\n11: broken aqueduct arch with hanging resin\n12: glowing glass-lit fissure in ochre rocks\n13: terraced clay house with copper awning\n14: clay pottery provision stall\n15: amber lantern pavilion with a central basin\n16: copper-ring noticeboard and warm lantern\nIntended for an original commercial browser monster-tamer. Distinct complete objects with clean edges and enough empty margin to crop safely. No logos, watermark or UI.",
+      "cells": [
+        "broad copperleaf tree",
+        "crooked ochre acacia tree",
+        "amber fern bush",
+        "sun-dried thorn thicket",
+        "layered sandstone boulder",
+        "small resin crystal cluster",
+        "flat stone slab bridge",
+        "amber-lit glass cave entrance",
+        "great exposed amber crystal ridge",
+        "copperleaf tree over a disused clay kiln",
+        "broken aqueduct arch with hanging resin",
+        "glowing glass-lit fissure in ochre rocks",
+        "terraced clay house with copper awning",
+        "clay pottery provision stall",
+        "amber lantern pavilion with a central basin",
+        "copper-ring noticeboard and warm lantern"
+      ],
+      "mode": "built-in image_gen",
+      "approval": "visual review performed; commercial owner acceptance pending",
+      "delivered": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2407002,
+        "pngColorType": 6,
+        "sha256": "853c9ec7883104d6c21c912989d82c3afaace2cd99e3c74b7fb3602ce7cc0d54"
+      },
+      "integration": "Runtime Canvas/CSS atlas cropping only; source PNG preserved."
+    },
+    {
+      "id": "moonwell",
+      "path": "assets/world-v15/moonwell-atlas.png",
+      "source": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-ff668681-fabe-41bd-8d6c-5345c8d8aae0.png",
+      "prompt": "Use case: stylized-concept\nAsset type: production game scenery sprite atlas.\nCreate one square transparent PNG scenery sheet, EXACT 4 columns and 4 rows with SIXTEEN objects in separate equal-sized cells. Each complete sprite must stay INSIDE its cell, with transparent padding all around. No overlaps, no text, borders, labels or grid. Genuine transparent alpha background, no painted white/checkerboard.\nStyle: polished hand-painted illustrated 2.5D fantasy RPG, detailed organic materials, broad readable silhouette, soft upper-left lighting and warm delicate contours. Orthographic three-quarter overhead camera for every object. NOT flat SVG/vector style. Palette: indigo shadows, pale jade, moonstone silver, restrained blue luminescence. No people or monsters.\nEach cell contains only the described prop, minimal attached ground and soft contact shadow. Uniform cell size, do not make the top row taller than the other rows. Cells in row-major reading order:\n1: moonlit pale jade tree\n2: slender silver birch with indigo foliage\n3: blue fern cluster\n4: low luminous mushroom cluster\n5: pale moonstone boulders\n6: broken runestone fragments\n7: pale curved stone footbridge\n8: moonstone cave arch\n9: broken monumental moon dial\n10: ancient library arch enclosed by pale trees\n11: tilted armillary observatory sphere on stone plinth\n12: underground stone bell vault\n13: repaired sanctuary house with curved blue roof\n14: antique books-and-herbs stall\n15: circular moonwell sanctuary and luminous basin\n16: astronomical noticeboard with crescent lantern\nIntended for an original commercial browser monster-tamer. Distinct complete objects with clean edges and enough empty margin to crop safely. No logos, watermark or UI.",
+      "cells": [
+        "moonlit pale jade tree",
+        "slender silver birch with indigo foliage",
+        "blue fern cluster",
+        "low luminous mushroom cluster",
+        "pale moonstone boulders",
+        "broken runestone fragments",
+        "pale curved stone footbridge",
+        "moonstone cave arch",
+        "broken monumental moon dial",
+        "ancient library arch enclosed by pale trees",
+        "tilted armillary observatory sphere on stone plinth",
+        "underground stone bell vault",
+        "repaired sanctuary house with curved blue roof",
+        "antique books-and-herbs stall",
+        "circular moonwell sanctuary and luminous basin",
+        "astronomical noticeboard with crescent lantern"
+      ],
+      "mode": "built-in image_gen",
+      "approval": "visual review performed; commercial owner acceptance pending",
+      "delivered": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2676997,
+        "pngColorType": 6,
+        "sha256": "8412b10148db4aef8c402ec4f63c79ef775eda08c4fdcc5b33043c25aae76b7c"
+      },
+      "integration": "Runtime Canvas/CSS atlas cropping only; source PNG preserved."
+    },
+    {
+      "id": "windstep",
+      "path": "assets/world-v15/windstep-atlas.png",
+      "source": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-8ef2b2e1-f2cf-44ae-b603-08dd8e134134.png",
+      "prompt": "Use case: stylized-concept\nAsset type: production game scenery sprite atlas.\nCreate one square transparent PNG scenery sheet, EXACT 4 columns and 4 rows with SIXTEEN objects in separate equal-sized cells. Each complete sprite must stay INSIDE its cell, with transparent padding all around. No overlaps, no text, borders, labels or grid. Genuine transparent alpha background, no painted white/checkerboard.\nStyle: polished hand-painted illustrated 2.5D fantasy RPG, detailed organic materials, broad readable silhouette, soft upper-left lighting and warm delicate contours. Orthographic three-quarter overhead camera for every object. NOT flat SVG/vector style. Palette: sky blue, chalk white cliffs, muted gold grasses, wind-swept sage trees. No people or monsters.\nEach cell contains only the described prop, minimal attached ground and soft contact shadow. Uniform cell size, do not make the top row taller than the other rows. Cells in row-major reading order:\n1: large wind-bent pine\n2: flat-topped wind-swept tree\n3: golden prairie grass clump\n4: small alpine shrub\n5: chalk cliff boulder cluster\n6: upright wind-shaped stone\n7: rope and timber footbridge\n8: wind-scoured cave mouth\n9: colossal wooden wind harp anchored in stone\n10: two bent trees spanning a small ravine\n11: ruined tall signal mast with pennants\n12: daylight chimney surrounded by suspended mineral sails\n13: low stone shelter tied down with ropes\n14: windbreak provision market stall\n15: anchored sanctuary with a blue basin and fluttering ribbons\n16: weathered signpost with a hanging wind chime\nIntended for an original commercial browser monster-tamer. Distinct complete objects with clean edges and enough empty margin to crop safely. No logos, watermark or UI.",
+      "cells": [
+        "large wind-bent pine",
+        "flat-topped wind-swept tree",
+        "golden prairie grass clump",
+        "small alpine shrub",
+        "chalk cliff boulder cluster",
+        "upright wind-shaped stone",
+        "rope and timber footbridge",
+        "wind-scoured cave mouth",
+        "colossal wooden wind harp anchored in stone",
+        "two bent trees spanning a small ravine",
+        "ruined tall signal mast with pennants",
+        "daylight chimney surrounded by suspended mineral sails",
+        "low stone shelter tied down with ropes",
+        "windbreak provision market stall",
+        "anchored sanctuary with a blue basin and fluttering ribbons",
+        "weathered signpost with a hanging wind chime"
+      ],
+      "mode": "built-in image_gen",
+      "approval": "visual review performed; commercial owner acceptance pending",
+      "delivered": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2296468,
+        "pngColorType": 6,
+        "sha256": "951b7956395590799bafee39e4c0bc68276af30d4f920336cc7bc6eac296f933"
+      },
+      "integration": "Runtime Canvas/CSS atlas cropping only; source PNG preserved."
+    },
+    {
+      "id": "ashen",
+      "path": "assets/world-v15/ashen-atlas.png",
+      "source": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-6c77ba93-25b2-4766-8ae3-3dcc1f04e5f5.png",
+      "prompt": "Use case: stylized-concept\nAsset type: production game scenery sprite atlas.\nCreate one square transparent PNG scenery sheet, EXACT 4 columns and 4 rows with SIXTEEN objects in separate equal-sized cells. Each complete sprite must stay INSIDE its cell, with transparent padding all around. No overlaps, no text, borders, labels or grid. Genuine transparent alpha background, no painted white/checkerboard.\nStyle: polished hand-painted illustrated 2.5D fantasy RPG, detailed organic materials, broad readable silhouette, soft upper-left lighting and warm delicate contours. Orthographic three-quarter overhead camera for every object. NOT flat SVG/vector style. Palette: charcoal basalt, rust red ash, turquoise cooling vents, small fresh green shoots. No people or monsters.\nEach cell contains only the described prop, minimal attached ground and soft contact shadow. Uniform cell size, do not make the top row taller than the other rows. Cells in row-major reading order:\n1: large charred tree with new green shoots\n2: twisted cinder tree\n3: dark red fern bush\n4: small amber orchid garden\n5: fractured basalt boulders\n6: small turquoise steam vent\n7: cooled basalt slab bridge\n8: dark volcanic cave entrance with warm inner light\n9: cooled lava river rock formation enclosing a tiny green oasis\n10: charred orchard tree bearing fresh shoots\n11: ruined basalt cooling tower\n12: glass caldera fault with turquoise cold water\n13: basalt house around a cool-water cistern\n14: heat-shielded provision stall\n15: dark sanctuary pavilion with a bright cool spring\n16: basalt trail noticeboard and amber lantern\nIntended for an original commercial browser monster-tamer. Distinct complete objects with clean edges and enough empty margin to crop safely. No logos, watermark or UI.",
+      "cells": [
+        "large charred tree with new green shoots",
+        "twisted cinder tree",
+        "dark red fern bush",
+        "small amber orchid garden",
+        "fractured basalt boulders",
+        "small turquoise steam vent",
+        "cooled basalt slab bridge",
+        "dark volcanic cave entrance with warm inner light",
+        "cooled lava river rock formation enclosing a tiny green oasis",
+        "charred orchard tree bearing fresh shoots",
+        "ruined basalt cooling tower",
+        "glass caldera fault with turquoise cold water",
+        "basalt house around a cool-water cistern",
+        "heat-shielded provision stall",
+        "dark sanctuary pavilion with a bright cool spring",
+        "basalt trail noticeboard and amber lantern"
+      ],
+      "mode": "built-in image_gen",
+      "approval": "visual review performed; commercial owner acceptance pending",
+      "delivered": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2406728,
+        "pngColorType": 6,
+        "sha256": "f647778b1cbb9a3295295faecc176a03d0fb130d1927ec841ba527e55ceb5735"
+      },
+      "integration": "Runtime Canvas/CSS atlas cropping only; source PNG preserved."
+    },
+    {
+      "id": "terrain",
+      "path": "assets/world-v15/terrain-atlas.png",
+      "source": "C:\\Users\\marcu\\.codex\\generated_images\\01a087da-6030-7da0-a283-55c3af14ceca\\exec-3dcfcd82-3c5f-4093-b482-7f500c59acf0.png",
+      "prompt": "Use case: stylized-concept\nAsset type: tileable top-down game ground material atlas, nine terrain textures for a hand-painted 2.5D fantasy browser RPG.\nCreate one square 1536x1536 OPAQUE image arranged as EXACT 3 columns by 3 rows of nine equal square texture cells. Each cell completely filled edge-to-edge with its material; no gutters, borders, labels or text. View each material from straight overhead, even diffuse light, no perspective, shadows, horizon, objects or large focal features. Fine painterly natural texture, small low-contrast details, soft material variation, seamless edges within each tile. These are ground texture swatches, NOT miniature landscapes.\nRow 1 left to right: 1 sage/apple-green meadow grass with tiny clover leaves; 2 muted teal-green moist riverbank grass; 3 warm ochre dry heath grass with subtle fine straw.\nRow 2: 4 desaturated indigo-green moonlit moss and tiny silver leaves; 5 chalky sage-and-gold short alpine prairie grass; 6 desaturated charcoal warm-grey ash ground with fine brown fragments and very sparse fresh moss.\nRow 3: 7 pale warm beige earth path with fine grit and occasional tiny pebbles; 8 pale grey aged limestone paving, small worn irregular stones with restrained joints; 9 dark cool grey cave floor of weathered rock and scattered fine grit.\nRestrained contrast; all materials sit behind readable game characters. No flowers, buildings, animals, logos, UI, watermark, shadows or grid lines. Exactly nine filled material swatches.",
+      "mode": "built-in image generation",
+      "cells": [
+        "Mosslight meadow",
+        "Willowbrook wet grass",
+        "Amber dry grass",
+        "Moonwell moss",
+        "Windstep alpine grass",
+        "Ashen gravel",
+        "Earth path",
+        "Limestone paving",
+        "Cave floor"
+      ],
+      "review": "Integrated; owner visual acceptance pending.",
+      "delivered": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 3503743,
+        "pngColorType": 2,
+        "sha256": "e7e8ebddce4625d6417449cca480b42fdae1ae9b513b353636129df3f08239fb"
+      },
+      "integration": "Runtime Canvas/CSS atlas cropping only; source PNG preserved."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" fill="none">
+  <!-- Original, code-native environment. No third-party game assets. -->
+  <defs>
+    <radialGradient id="ground"><stop stop-color="#91ad6b"/><stop offset=".65" stop-color="#608756"/><stop offset="1" stop-color="#294e40"/></radialGradient>
+    <linearGradient id="stone" x2="0" y2="1"><stop stop-color="#b2b68e"/><stop offset="1" stop-color="#7a906e"/></linearGradient>
+    <linearGradient id="leaf" x2=".5" y2="1"><stop stop-color="#527c51"/><stop offset="1" stop-color="#254e3c"/></linearGradient>
+    <pattern id="tiles" width="160" height="128" patternUnits="userSpaceOnUse"><path d="M0 0h80v64H0zm80 64h80v64H80z" fill="#c4d38b" opacity=".065"/><path d="M0 0H160V128H0Z M80 0V128 M0 64H160" stroke="#d4dc9d" stroke-opacity=".075"/></pattern>
+    <pattern id="grass" width="193" height="151" patternUnits="userSpaceOnUse"><path d="m16 27-4-9 7 5 2-10 2 13 8-5-5 8m97 81-4-7 8 5 4-10 1 12 6-3" stroke="#294f3d" stroke-width="2" opacity=".35"/><path d="m59 87 8-2m90-47 7 3" stroke="#d2d99c" stroke-width="3" opacity=".23"/><ellipse cx="171" cy="119" rx="9" ry="3" fill="#3b6245" opacity=".3"/></pattern>
+    <g id="rock"><ellipse cx="0" cy="12" rx="29" ry="10" fill="#16372d" opacity=".25"/><path d="m-27 6 9-23 27-7 22 22-13 19-32-1Z" fill="#718772" stroke="#4c6858" stroke-width="2"/><path d="m-27 6 24-3 12-27-27 7Z" fill="#9da78a"/><path d="m-3 3 34-5-13 19-32-1Z" fill="#607c66"/><path d="m-18-17 20-4" stroke="#c0c4a0" stroke-width="3"/></g>
+    <g id="fern" stroke-linecap="round"><path d="M0 8Q-4-12 5-27" stroke="#344f34" stroke-width="4"/><path d="M1 0q-24-1-27-14Q-7-13 1 0m0-9q-21-4-19-18Q-3-22 1-9m2-8q15-18 24-13Q23-15 3-17m-3 21q16-19 31-15Q18 7 0 4" fill="#537b45" stroke="#375d3c" stroke-width="2"/></g>
+    <g id="tree"><ellipse cy="78" rx="92" ry="31" fill="#183e31" opacity=".37"/><path d="m-26 78 9-68 28-6 24 74 19 14-37-2-13-21-7 24-42-6Z" fill="#555e3b" stroke="#344d32" stroke-width="4"/><path d="m-7 78 5-68 13-6 12 77" fill="#727448"/><path d="M-91 10q-26-38 11-58-18-45 31-53 14-38 55-23 41-21 58 20 43-2 50 36 37 29 8 60-13 31-51 20-23 21-50 3-47 20-65-5-32 13-47 0Z" fill="url(#leaf)" stroke="#264c37" stroke-width="5"/><path d="M-73-53q23-38 61-28 34-23 64 1M-78-6q28-16 54-5m46-29q42-22 65 9" stroke="#74905a" stroke-opacity=".45" stroke-width="13" stroke-linecap="round"/><path d="m-48-93 13-7m76 21 12 10m-26 43 18-2" stroke="#9da76a" stroke-opacity=".3" stroke-width="7" stroke-linecap="round"/></g>
+  </defs>
+  <path fill="url(#ground)" d="M0 0h1200v760H0z"/>
+  <path fill="url(#tiles)" d="M0 0h1200v760H0z"/>
+  <path d="M273 490q-66-122 74-227 187-145 430-36 160 72 123 214-36 153-266 162-251 15-361-113Z" fill="#b8ba82" opacity=".16"/>
+  <ellipse cx="600" cy="427" rx="279" ry="168" stroke="#3f6446" stroke-width="32" opacity=".32"/>
+  <ellipse cx="600" cy="420" rx="279" ry="168" stroke="url(#stone)" stroke-width="23" stroke-dasharray="104 8 50 12 86 7 40 16" opacity=".7"/>
+  <ellipse cx="600" cy="420" rx="240" ry="143" stroke="#d1d2a3" stroke-opacity=".22" stroke-width="2"/>
+  <path d="m600 305 64 77 114 38-114 38-64 77-64-77-114-38 114-38Z" stroke="#cbd09b" stroke-opacity=".24" stroke-width="6"/>
+  <path d="m600 354 40 48 64 18-64 18-40 48-40-48-64-18 64-18Z" fill="#c5c78f" opacity=".14"/>
+  <path d="m589 167 8 44 33 12m-221 362 20-30 36 1m247-267-9 30 27 15m54 227-29-2-8-26" stroke="#476347" stroke-opacity=".4" stroke-width="4"/>
+  <path fill="url(#grass)" d="M0 0h1200v760H0z"/>
+  <g fill="url(#stone)" stroke="#58745b" stroke-width="3"><path d="m152 544 77 9 18 32-44 29-64-27Z"/><path d="m97 607 62-1 24 30-20 29-79-13Z"/><path d="m58 681 55-17 44 32-14 31-84 6Z"/><path d="m946 157 36-39 57 5 15 39-64 22Z"/><path d="m1011 98 23-38 58-4 34 31-18 23Z"/></g>
+  <g opacity=".95"><use href="#rock" x="273" y="241"/><use href="#rock" transform="translate(955 538) scale(1.3)"/><use href="#rock" transform="translate(1059 572) scale(.7)"/><use href="#rock" transform="translate(251 652) scale(.6)"/><use href="#rock" transform="translate(800 122) scale(.65)"/></g>
+  <g><use href="#fern" x="190" y="363"/><use href="#fern" x="875" y="644"/><use href="#fern" x="274" y="279"/><use href="#fern" x="980" y="566"/><use href="#fern" x="490" y="148"/><use href="#fern" x="1070" y="337"/><use href="#fern" x="346" y="642"/><use href="#fern" x="727" y="664"/></g>
+  <g fill="#e3d794"><circle cx="228" cy="632" r="3"/><circle cx="237" cy="639" r="2"/><circle cx="227" cy="644" r="2"/><circle cx="863" cy="173" r="3"/><circle cx="875" cy="179" r="2"/></g>
+  <use href="#tree" transform="translate(58 100) scale(1.5)"/><use href="#tree" transform="translate(254 -31) scale(1.15)"/><use href="#tree" transform="translate(486 -81) scale(1.4)"/><use href="#tree" transform="translate(782 -64) scale(1.5)"/><use href="#tree" transform="translate(1118 65) scale(1.4)"/>
+  <use href="#tree" transform="translate(-83 410) scale(1.5)"/><use href="#tree" transform="translate(1280 400) scale(1.5)"/><use href="#tree" transform="translate(-9 738) scale(1.35)"/><use href="#tree" transform="translate(1180 740) scale(1.5)"/>
+</svg>

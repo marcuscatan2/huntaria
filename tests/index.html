@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bond & Bolt — Pass 15 checks</title>
+<style>body{font:14px/1.6 system-ui;padding:24px;background:#f6f4eb;color:#263e36}button{padding:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style>
+<script>if(new URLSearchParams(location.search).get('test')!=='1')location.replace(location.pathname+'?test=1');</script>
+<h1>Current pass 15 mechanics checks</h1>
+<p>Isolated sandbox save. These test local mechanics, not production servers, multiplayer or commercial art quality. Complete browser journeys: <code>python tests/world15_check.py --full</code>. Earlier Python and engine suites are historical evidence, not current acceptance.</p>
+<button id="run">Run current mechanics + 1,000 seeded fights</button><pre id="output">Ready.</pre>
+<script src="../content.js"></script><script src="../rules.js"></script><script src="../roster.js"></script><script src="../monster-sprites.js"></script><script src="../opening-rules.js"></script>
+<script src="../progression.js"></script><script src="../formation.js"></script><script src="../game.js"></script>
+<script src="../creature-art.js"></script><script src="../apprentice-preview.js"></script><script src="../character-rig.js"></script><script src="../animation-data.js"></script>
+<script src="../world-data.js"></script><script src="../atlas-data.js"></script><script src="../world-layout.js"></script><script src="../world-nav.js"></script><script src="../echoes.js"></script>
+<script src="../growth.js"></script><script src="../profile.js"></script><script src="pass15-engine.js"></script>
+<script>document.querySelector('#run').onclick=()=>{const r=runPass15Engine();document.querySelector('#output').textContent=JSON.stringify({passed:r.results.filter(x=>x.pass).length,total:r.results.length,failures:r.results.filter(x=>!x.pass),counts:r.counts},null,2);};</script>
+</html>

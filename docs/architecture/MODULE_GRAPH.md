@@ -1,0 +1,62 @@
+# Observed browser module graph
+
+Generated from [architecture.json](<../../docs/architecture.json>) and current source. [Feature index](<../../FEATURE_MAP.md>).
+
+Lexical references include optional/late callbacks; they are not proof of all dependencies.
+Only boot prerequisites require earlier providers. Later CSS overrides earlier CSS.
+
+| Boot | Module | Owner | Exports | References | Boot prerequisites | Signals |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | [settings.js](<../../settings.js>) | [experience](<../../features/experience/README.md>) | BondSettings | profile.js | — | bond-settings |
+| 2 | [boot-status.js](<../../boot-status.js>) | [shell](<../../features/shell/README.md>) | BondBoot | — | — | — |
+| 3 | [audio.js](<../../audio.js>) | [experience](<../../features/experience/README.md>) | BondAudio | settings.js | BondSettings | bond-settings |
+| 4 | [content.js](<../../content.js>) | [content](<../../features/content/README.md>) | BondContent | — | — | — |
+| 5 | [rules.js](<../../rules.js>) | [combat](<../../features/combat/README.md>) | BondRules | content.js | BondContent | — |
+| 6 | [roster.js](<../../roster.js>) | [content](<../../features/content/README.md>) | BondRoster | content.js, rules.js | BondContent, BondRules | — |
+| 7 | [monster-sprites.js](<../../monster-sprites.js>) | [animation](<../../features/animation/README.md>) | BondMonsterSprites | content.js | BondContent, BondRoster | — |
+| 8 | [opening-rules.js](<../../opening-rules.js>) | [opening](<../../features/opening/README.md>) | BondOpening | content.js, rules.js | BondContent, BondRules | — |
+| 9 | [adventure-rules.js](<../../adventure-rules.js>) | [recovery](<../../features/recovery/README.md>) | BondAdventure | content.js, opening-rules.js | BondContent, BondOpening | — |
+| 10 | [progression.js](<../../progression.js>) | [growth](<../../features/growth/README.md>) | BondProgress | content.js | BondContent | — |
+| 11 | [formation.js](<../../formation.js>) | [party](<../../features/party/README.md>) | BondFormation | — | — | — |
+| 12 | [game.js](<../../game.js>) | [combat](<../../features/combat/README.md>) | BondGame | adventure-rules.js, campaign.js, content.js, formation.js, growth.js, opening-rules.js, progression.js, rules.js | BondContent | — |
+| 13 | [creature-art.js](<../../creature-art.js>) | [animation](<../../features/animation/README.md>) | BondCreatureArt | content.js | BondContent | — |
+| 14 | [apprentice-preview.js](<../../apprentice-preview.js>) | [opening](<../../features/opening/README.md>) | BondApprenticePreview | opening-rules.js, profile.js | BondOpening | bond-creation-art-ready, bond-profile |
+| 15 | [character-rig.js](<../../character-rig.js>) | [animation](<../../features/animation/README.md>) | CharacterRig | animation-data.js, apprentice-preview.js, content.js, creature-art.js, monster-sprites.js, profile.js | BondContent, BondMonsterSprites, BondApprenticePreview | bond-art-ready |
+| 16 | [animation-coverage.js](<../../animation-coverage.js>) | [animation](<../../features/animation/README.md>) | BondAnimationCoverage | content.js, creature-art.js, monster-sprites.js | BondMonsterSprites, BondContent | — |
+| 17 | [animation-data.js](<../../animation-data.js>) | [animation](<../../features/animation/README.md>) | BondAnimationData | — | — | — |
+| 18 | [combat-vfx.js](<../../combat-vfx.js>) | [animation](<../../features/animation/README.md>) | CombatVFX | — | — | — |
+| 19 | [presentation-contract.js](<../../presentation-contract.js>) | [animation](<../../features/animation/README.md>) | BondPresentation | content.js | BondContent | — |
+| 20 | [combat-view.js](<../../combat-view.js>) | [animation](<../../features/animation/README.md>) | CombatView | app.js, character-rig.js, combat-vfx.js, game.js, presentation-contract.js, rules.js, settings.js | CharacterRig, CombatVFX, BondGame, BondSettings | bond-art-ready, bond-settings |
+| 21 | [world-data.js](<../../world-data.js>) | [world](<../../features/world/README.md>) | BondWorld | — | — | — |
+| 22 | [atlas-data.js](<../../atlas-data.js>) | [world](<../../features/world/README.md>) | BondAtlas | adventure-rules.js, content.js | BondContent, BondProgress, BondAdventure | — |
+| 23 | [world-layout.js](<../../world-layout.js>) | [world](<../../features/world/README.md>) | BondWorldLayout | atlas-data.js, content.js | BondAtlas, BondContent | — |
+| 24 | [world-nav.js](<../../world-nav.js>) | [world](<../../features/world/README.md>) | BondNav | atlas-data.js, world-layout.js | BondAtlas, BondWorldLayout | — |
+| 25 | [map-population.js](<../../map-population.js>) | [population](<../../features/population/README.md>) | BondPopulation | atlas-data.js, opening-rules.js, world-data.js, world-layout.js, world-nav.js | BondOpening, BondAtlas, BondNav, BondWorldLayout, BondWorld | — |
+| 26 | [world-renderer.js](<../../world-renderer.js>) | [exploration](<../../features/exploration/README.md>) | WorldRenderer | atlas-data.js, world-layout.js | BondAtlas, BondWorldLayout | — |
+| 27 | [echoes.js](<../../echoes.js>) | [collection](<../../features/collection/README.md>) | BondEchoes | content.js | BondContent | — |
+| 28 | [growth.js](<../../growth.js>) | [growth](<../../features/growth/README.md>) | BondGrowth | content.js, progression.js | BondContent, BondProgress | — |
+| 29 | [campaign.js](<../../campaign.js>) | [campaign](<../../features/campaign/README.md>) | BondCampaign | atlas-data.js, content.js, game.js, growth.js, progression.js, world-data.js | BondAtlas, BondWorld, BondContent, BondGame, BondProgress, BondGrowth | — |
+| 30 | [inner-sea-rules.js](<../../inner-sea-rules.js>) | [inner-sea](<../../features/inner-sea/README.md>) | BondHaven | — | — | — |
+| 31 | [profile.js](<../../profile.js>) | [persistence](<../../features/persistence/README.md>) | BondProfile | adventure-rules.js, atlas-data.js, campaign.js, content.js, echoes.js, formation.js, game.js, growth.js, inner-sea-rules.js, map-population.js, opening-rules.js, progression.js, roster.js, rules.js, world-data.js | BondContent, BondProgress, BondAtlas, BondWorld, BondEchoes, BondPopulation, BondAdventure, BondGrowth, BondCampaign, BondOpening, BondHaven, BondGame, BondFormation, BondRules, BondRoster | bond-growth, bond-profile |
+| 32 | [inner-sea.js](<../../inner-sea.js>) | [inner-sea](<../../features/inner-sea/README.md>) | BondInnerSea | app.js, apprentice-preview.js, character-rig.js, companion-picker.js, inner-sea-rules.js, profile.js, settings.js | BondProfile, BondHaven, BondSettings, CharacterRig, BondApprenticePreview | — |
+| 33 | [world-atlas.js](<../../world-atlas.js>) | [exploration](<../../features/exploration/README.md>) | BondWorldMap | atlas-data.js, content.js, profile.js, progression.js | BondAtlas, BondProfile, BondProgress | — |
+| 34 | [recovery-menu.js](<../../recovery-menu.js>) | [recovery](<../../features/recovery/README.md>) | BondRecovery | adventure-rules.js, app.js, character-rig.js, content.js, opening-rules.js, profile.js, world-data.js | BondProfile, BondAdventure, BondOpening | — |
+| 35 | [companion-picker.js](<../../companion-picker.js>) | [party](<../../features/party/README.md>) | BondPicker | app.js, character-rig.js, content.js, profile.js, progression.js | BondProfile, BondContent | — |
+| 36 | [tree-menu.js](<../../tree-menu.js>) | [growth](<../../features/growth/README.md>) | BondTree | companion-picker.js, game.js, growth.js, menu.js, profile.js | BondProfile, BondGrowth | — |
+| 37 | [inventory-menu.js](<../../inventory-menu.js>) | [collection](<../../features/collection/README.md>) | BondInventory | adventure-rules.js, app.js, atlas-data.js, character-rig.js, companion-picker.js, menu.js, profile.js, world-data.js | BondProfile, BondContent | — |
+| 38 | [menu.js](<../../menu.js>) | [party](<../../features/party/README.md>) | BondMenu | adventure-rules.js, app.js, atlas-data.js, audio.js, character-rig.js, companion-picker.js, echoes.js, formation-menu.js, game.js, growth.js, inner-sea.js, inventory-menu.js, journey.js, opening-rules.js, profile.js, progression.js, rules.js, tree-menu.js | BondGame, BondProfile, BondProgress, BondInventory, BondPicker, BondTree, BondInnerSea, BondAudio | bond-profile |
+| 39 | [wild-behavior.js](<../../wild-behavior.js>) | [exploration](<../../features/exploration/README.md>) | BondWildBehavior | — | — | — |
+| 40 | [region.js](<../../region.js>) | [exploration](<../../features/exploration/README.md>) | BondRegion | adventure-rules.js, app.js, atlas-data.js, campaign.js, character-creation.js, character-rig.js, content.js, echoes.js, inventory-menu.js, map-population.js, menu.js, opening-rules.js, profile.js, progression.js, recovery-menu.js, settings.js, wild-behavior.js, world-atlas.js, world-data.js, world-nav.js, world-renderer.js | BondProfile, BondCampaign, BondWorld, BondAtlas, BondNav, WorldRenderer, BondWorldMap, BondRecovery, BondWildBehavior, BondSettings | bond-profile |
+| 41 | [campaign-menu.js](<../../campaign-menu.js>) | [campaign](<../../features/campaign/README.md>) | BondCampaignMenu | app.js, atlas-data.js, campaign.js, content.js, profile.js, progression.js, region.js | BondCampaign, BondProfile, BondAtlas, BondProgress, BondContent | bond-profile |
+| 42 | [bonding.js](<../../bonding.js>) | [legacy](<../../features/legacy/README.md>) | Bonding | — | — | — |
+| 43 | [journey.js](<../../journey.js>) | [collection](<../../features/collection/README.md>) | BondJourney | app.js, character-rig.js, content.js, menu.js, profile.js, progression.js, world-data.js | BondProfile, BondProgress | — |
+| 44 | [formation-menu.js](<../../formation-menu.js>) | [party](<../../features/party/README.md>) | BondFormationView | app.js, character-rig.js, formation.js, game.js, profile.js | BondProfile, BondFormation | — |
+| 45 | [loot-popup.js](<../../loot-popup.js>) | [collection](<../../features/collection/README.md>) | BondLoot | app.js, audio.js, content.js, inventory-menu.js, menu.js, profile.js, progression.js, world-data.js | BondProfile, BondEchoes, BondAudio | bond-profile |
+| 46 | [character-creation.js](<../../character-creation.js>) | [opening](<../../features/opening/README.md>) | BondCreation | app.js, apprentice-preview.js, character-rig.js, opening-rules.js, profile.js | BondProfile, BondOpening, BondApprenticePreview, CharacterRig | — |
+| 47 | [app.js](<../../app.js>) | [shell](<../../features/shell/README.md>) | BondApp | adventure-rules.js, atlas-data.js, audio.js, bonding.js, boot-status.js, campaign.js, character-creation.js, character-rig.js, combat-view.js, game.js, journey.js, loot-popup.js, menu.js, opening-rules.js, profile.js, region.js, world-data.js, world-renderer.js | BondGame, BondProfile, BondRegion, BondMenu, CombatView, CharacterRig, Bonding, BondJourney, BondLoot, BondFormationView, BondCreation, BondAudio, BondBoot | bond-growth |
+| 48 | [test-controls.js](<../../test-controls.js>) | [shell](<../../features/shell/README.md>) |  | app.js, character-creation.js, profile.js | BondApp, BondProfile, BondCreation | bond-profile |
+| 49 | [reference-scene.js](<../../reference-scene.js>) | [animation](<../../features/animation/README.md>) | BondReference | app.js, game.js, menu.js, profile.js, world-data.js | BondApp | — |
+
+Unloaded legacy JS: [wild-data.js](<../../wild-data.js>), [expedition-data.js](<../../expedition-data.js>).
+
+CSS override order: [style.css](<../../style.css>) → [combat.css](<../../combat.css>) → [region.css](<../../region.css>) → [menu.css](<../../menu.css>) → [progression.css](<../../progression.css>) → [world.css](<../../world.css>) → [bonding.css](<../../bonding.css>) → [journey.css](<../../journey.css>) → [loot.css](<../../loot.css>) → [formation.css](<../../formation.css>) → [pass13.css](<../../pass13.css>) → [pass14.css](<../../pass14.css>) → [world-v15.css](<../../world-v15.css>) → [experience.css](<../../experience.css>) → [inner-sea.css](<../../inner-sea.css>) → [campaign.css](<../../campaign.css>) → [adventure.css](<../../adventure.css>) → [opening.css](<../../opening.css>).

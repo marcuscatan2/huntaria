@@ -1,0 +1,20 @@
+.formation-panel{padding:24px}
+.formation-direction{display:flex;justify-content:space-between;gap:12px;padding:12px 4px;font-size:12px;color:#526d5f}
+.formation-preview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:22px;background:linear-gradient(120deg,#e2ead4,#f9f3df);border:1px solid #c4d0b6;border-radius:18px}
+.formation-place{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;background:#fffbedaa;border:1px solid #c4ceb4;border-radius:14px;padding:14px 8px;gap:6px}
+.formation-place>small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6f795b}
+.formation-place img{width:150px;max-width:100%;height:140px;object-fit:contain}
+.formation-place>span{color:#6c7e6d;font-size:11px}
+.formation-place[data-formation-place="front"]{border-color:#a98545;box-shadow:inset 0 3px #b59550}
+.formation-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}
+.formation-controls label{display:flex;flex-direction:column;gap:10px;font-weight:700;min-width:0}
+.formation-controls small{display:block;color:#6c7e6d;font-size:11px;font-weight:400}
+.formation-controls select,.boss-test-controls input{font:inherit;color:#244f41;background:#fffcf2;border:1px solid #b8c4ad;border-radius:8px;padding:10px;width:100%;min-width:0}
+.formation-help{line-height:1.7;color:#536c5c;font-size:13px}
+.boss-test-controls{padding:16px;background:#e7eddb;border:1px solid #c4ceb3;border-radius:12px;margin:16px 0}
+.boss-test-controls label{display:block;font-weight:700;margin-bottom:8px}
+.boss-level-row{display:flex;gap:10px;align-items:center}
+.boss-level-row input{max-width:110px}
+.boss-test-controls p{font-size:12px;line-height:1.6;color:#536852;margin:10px 0 0}
+.boss-test-controls output{display:block;font-size:13px;font-weight:700;line-height:1.7;margin-top:12px}
+@media(max-width:650px){.formation-panel{padding:14px}.formation-preview{gap:6px;padding:10px}.formation-place{padding:10px 4px}.formation-place img{height:100px}.formation-place strong{font-size:12px}.formation-controls{grid-template-columns:1fr;gap:14px}.formation-controls label{flex-direction:row;align-items:center;justify-content:space-between}.formation-controls select{width:46%}.formation-direction{font-size:10px}.boss-level-row .button{white-space:normal;font-size:12px}}
