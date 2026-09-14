@@ -2,12 +2,41 @@
   "schema": 1,
   "mode": "local-preview",
   "profile_schema": 7,
-  "exclude_scripts": ["test-controls.js", "reference-scene.js"],
-  "static_files": ["forest-arena.svg"],
-  "asset_patterns": [
-    "assets/art-v6/*.png", "assets/art-v8/*.png", "assets/art-v9/*.png",
-    "assets/art-v10/druid-sheet.png", "assets/art-v21/*.png", "assets/art-v22/*.png",
-    "assets/monsters/*.png", "assets/world-runtime/*.webp", "assets/audio/*.wav"
+  "exclude_scripts": [
+    "test-controls.js",
+    "reference-scene.js"
   ],
-  "rules": ["content.js", "rules.js", "roster.js", "monster-sprites.js", "opening-rules.js", "adventure-rules.js", "progression.js", "formation.js", "growth.js", "game.js", "campaign.js", "atlas-data.js", "world-data.js", "echoes.js"]
+  "static_files": [
+    "forest-arena.svg"
+  ],
+  "asset_patterns": [
+    "assets/art-v6/*.png",
+    "assets/art-v8/*.png",
+    "assets/art-v9/*.png",
+    "assets/art-v10/druid-sheet.png",
+    "assets/art-v21/*.png",
+    "assets/art-v22/*.png",
+    "assets/monsters/*.png",
+    "assets/world-runtime/*.webp",
+    "assets/audio/*.wav"
+  ],
+  "rules": [
+    "content.js",
+    "rules.js",
+    "roster.js",
+    "monster-sprites.js",
+    "opening-rules.js",
+    "adventure-rules.js",
+    "progression.js",
+    "formation.js",
+    "growth.js",
+    "game.js",
+    "campaign.js",
+    "atlas-data.js",
+    "world-data.js",
+    "echoes.js",
+    "inner-sea-rules.js",
+    "moon-calendar.js",
+    "inner-sea-farm.js"
+  ]
 }

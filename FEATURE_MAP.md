@@ -22,7 +22,7 @@ Read one feature guide, not every file. Local status is not commercial acceptanc
 | <a id="campaign"></a>[campaign](<features/campaign/README.md>) | Defines quests, NPC encounters and simulated bosses; connects reservations to combat and rewards. | local-prototype |
 | <a id="persistence"></a>[persistence](<features/persistence/README.md>) | Owns local saves, migrations and receipts; accepts mutations requested by gameplay and UI. | local-only |
 | <a id="experience"></a>[experience](<features/experience/README.md>) | Owns sound and device settings; connects presentation preferences and combat-impact cues without changing rules. | local-reference |
-| <a id="inner-sea"></a>[inner-sea](<features/inner-sea/README.md>) | Displays owned companions and earned decorations; profile saves the layout and the renderer exports a local picture. | local-reference |
+| <a id="inner-sea"></a>[inner-sea](<features/inner-sea/README.md>) | Trains the owned collection and stages daily monster defenses; persistence commits farm care, upgrades and rewards. | local-prototype |
 | <a id="legacy"></a>[legacy](<features/legacy/README.md>) | Retains retired capture compatibility; do not treat it as an active acquisition system. | retired |
 | <a id="online"></a>[online](<features/online/README.md>) | Planned account and server authority; will own multiplayer, profiles and accepted rewards. | planned |
 | <a id="commerce"></a>[commerce](<features/commerce/README.md>) | Planned cosmetics and payment entitlements; depends on authoritative online services. | planned |

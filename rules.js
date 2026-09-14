@@ -13,7 +13,7 @@ const typed={
 };
 for(const [category,ids] of Object.entries(typed))for(const id of ids.split(' '))if(C.SKILLS[id])C.SKILLS[id].category=category;
 for(const [id,u] of Object.entries(C.UNITS)){
- u.basicCategory=['druid','mage','cindrake','tideotter','lumimoth'].includes(id)?'magic':['stormowl','bloomslime'].includes(id)?'ranged':'melee';
+ u.basicCategory=['druid','mage','cindrake','tideotter','lumimoth'].includes(id)?'magic':['stormowl','bloomslime','hunter'].includes(id)?'ranged':'melee';
 }
 function rng(seed=1){let x=Number.isInteger(seed)?seed>>>0:1;return ()=>{x=(Math.imul(x,1664525)+1013904223)>>>0;return x/4294967296;};}
 const damaging=s=>['hit','trainer','aoe','frontaoe'].includes(s.kind);

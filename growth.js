@@ -17,7 +17,7 @@ const data=[
 ];
 const NODES=data.map(([id,parent,name,stat,value,max,icon])=>({id,parent,name,stat,value,max,icon,label:'+'+(value*100).toFixed(1).replace('.0','')+'% '+({hp:'maximum HP',attack:'strike damage',armor:'damage reduction',move:'movement',cooldown:'cooldown reduction',speed:'Speed',healing:'healing'}[stat])+' / rank'}));
 const used=r=>Array.isArray(r)?new Set(r.filter(k=>NODES.some(n=>n.id===k))).size:Object.values(r||{}).reduce((n,v)=>n+(Number.isInteger(v)&&v>0?v:0),0);
-const budget=(s,type='druid')=>3+Math.floor((root.BondProgress?(!['druid','mage','apprentice'].includes(type)?BondProgress.monLevel(s,type):BondProgress.trainerLevel(s))-1:0)/2)+Math.min(8,Math.floor((s.defeated?.length||0)/2));
+const budget=(s,type='druid')=>3+Math.floor((root.BondProgress?(!BondContent.TRAINERS.includes(type)?Math.max(BondProgress.monLevel(s,type),BondProgress.instance(s,type)?.treeLevel||1):BondProgress.trainerLevel(s))-1:0)/2)+Math.min(8,Math.floor((s.defeated?.length||0)/2));
 function clean(type,raw,points=999){
  const out={};if(!TYPES.includes(type))return out;
  if(Array.isArray(raw))raw=Object.fromEntries(raw.map(k=>[k,1]));

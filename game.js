@@ -9,9 +9,9 @@
   const FORMATION = [[{x:16,y:56},{x:33,y:41},{x:33,y:72}], [{x:84,y:56},{x:67,y:41},{x:67,y:72}]];
   function defaultBuild() { return [['druid', 'emberfox', 'stonehorn'], ['mage', 'stormowl', 'bloomslime']].map(team => team.map(type => ({type, skills: [...UNITS[type].default]}))); }
   function validTeam(team) {
-    return Array.isArray(team)&&team.length===3&&team[0]&&['druid','mage','apprentice'].includes(team[0].type)&&
+    return Array.isArray(team)&&team.length===3&&team[0]&&BondContent.TRAINERS.includes(team[0].type)&&
       (!team[1]||!team[2]||(team[1].instanceId&&team[2].instanceId?team[1].instanceId!==team[2].instanceId:team[1].type!==team[2].type))&&team.every((u,i)=>i>0&&u===null||
-        u&&(u.type!=='apprentice'||root.BondOpening&&Object.hasOwn(root.BondOpening.weapons,u.weapon)&&u.skills?.every(k=>root.BondOpening.weapons[u.weapon].skills.includes(k)))&&(i===0?['druid','mage','apprentice']:MONSTERS).includes(u.type)&&Array.isArray(u.skills)&&u.skills.length===3&&
+        u&&(u.type!=='apprentice'||root.BondOpening&&Object.hasOwn(root.BondOpening.weapons,u.weapon)&&u.skills?.every(k=>root.BondOpening.weapons[u.weapon].skills.includes(k)))&&(i===0?BondContent.TRAINERS:MONSTERS).includes(u.type)&&Array.isArray(u.skills)&&u.skills.length===3&&
         new Set(u.skills).size===3&&u.skills.every(k=>UNITS[u.type].skills.includes(k)));
   }
   function validBuild(build) {return Array.isArray(build)&&build.length===2&&build.every(validTeam);}
@@ -48,6 +48,16 @@
       this.units = build.flatMap((team, side) => team.flatMap((u, slot) => u ? ({ ...UNITS[u.type], ...(u.type==='apprentice'?root.BondOpening.base(u.weapon):{}), ...(side===1?authoredOpponentTuning(u):{}), weapon:u.weapon, instanceId:u.instanceId||null, id: `${side}-${slot}`, type: u.type, side, slot, position: {...FORMATION[side][slot]}, previousPosition: {...FORMATION[side][slot]}, moving: false, moveTargetId: null, moveSkill: null, recoveryUntil: 0, targetId: null, maxHp: UNITS[u.type].hp, hp: UNITS[u.type].hp, skills: [...u.skills], cds: [0, 0, 0], basics: 0, passiveUsed: false, actionRemaining: 0.6 + slot * 0.15, status: {}, shield: 0, shieldUntil: 0, damage: 0, healing: 0, blocked: 0, casts: 0, owner:side===0?'player-0':'enemy', ownerIndex:0, eliminated:false, regenBuffer:0 }) : []));
       const owned=(team,profile)=>!profile||team.slice(1).filter(Boolean).every(u=>Array.isArray(profile.companions)?profile.companions.some(m=>m.id===u.instanceId&&m.type===u.type):!profile.owned||profile.owned.includes(u.type));
       if(!owned(build[0],options.profile))throw Error('Unowned companion instance');
+      this.defense=Array.isArray(options.defenders);
+      if(this.defense){
+        const defenders=options.defenders;
+        if(this.group||defenders.length<1||defenders.length>5||new Set(defenders.map(u=>u.instanceId)).size!==defenders.length||defenders.some(u=>!MONSTERS.includes(u.type)||!options.profile?.companions?.some(m=>m.id===u.instanceId&&m.type===u.type)||!Array.isArray(u.skills)||u.skills.length!==3||new Set(u.skills).size!==3||!u.skills.every(k=>UNITS[u.type].skills.includes(k))))throw Error('Invalid Inner Sea defenders');
+        const template=this.units.find(u=>u.side===0);
+        this.units=this.units.filter(u=>u.side===1).concat(defenders.map((u,i)=>{
+          const position={x:i<3?33:17,y:36+(i%3)*17},def=UNITS[u.type];
+          return {...template,...def,id:'0-'+(i+1),type:u.type,instanceId:u.instanceId,slot:i+1,side:0,weapon:undefined,position,previousPosition:{...position},hp:def.hp,maxHp:def.hp,skills:[...u.skills],cds:[0,0,0],status:{},shield:0,shieldUntil:0};
+        }));
+      }
       if(this.group){
         if(!Array.isArray(options.groupParties)||options.groupParties.length<1||options.groupParties.length>2)throw Error('Group needs two or three parties');
         options.groupParties.forEach((party,i)=>{
@@ -61,7 +71,7 @@
       this.wildPartySize=Math.max(1,Math.min(3,Number.isInteger(options.wildPartySize)?options.wildPartySize:this.units.filter(u=>u.side===0&&u.ownerIndex===0).length));
       const deployment=options.formation??options.profile?.formation;
       this.formation=deployment&&root.BondFormation?BondFormation.clean(deployment):null;
-      if(this.formation)for(const u of this.units.filter(u=>u.side===0&&u.ownerIndex===0)){
+      if(this.formation&&!this.defense)for(const u of this.units.filter(u=>u.side===0&&u.ownerIndex===0)){
         u.rank=this.formation[u.slot];u.position={...BondFormation.POSITIONS[u.rank]};u.previousPosition={...u.position};
       }
       this.encounter = options.encounter?.kind ? options.encounter : null;
@@ -96,6 +106,7 @@
         u.offense=derived?.offense||1;u.healScale=(derived?.healing||1)*(1+(bonus.healing||0))*(wildScale?.power||1);
         u.power=Math.round((derived?.power||u.power)*(wildScale?.power||1));
         u.hp=u.maxHp=Math.round((derived?.hp||u.maxHp)*(1+bonus.hp)*(wildScale?.hp||1)*(u.healthScale??1));u.moveSpeed*=1+bonus.move;
+        if(this.defense&&u.side===0){const defenseBonus=root.BondFarm?.bonuses(profile).defense||0;u.hp=u.maxHp=Math.round(u.maxHp*(1+defenseBonus));}
         if(wildScale)u.skillScale=(u.skillScale??1)*wildScale.power;
         u.growth.armor=Math.min(.6,(bonus.armor||0)+(derived?.armor||0));u.growth.cooldown=Math.min(.5,(bonus.cooldown||0)+(derived?.cooldown||0));
         u.speed=(derived?.speed||100/u.interval)*(1+(bonus.speed||0));u.interval=100/u.speed;
@@ -120,6 +131,7 @@
     team(side) { return this.units.filter(u => u.side === side && u.hp > 0 && !u.eliminated); }
     trainer(side) { return this.units.find(u => u.side === side && u.slot === 0); }
     objective(side) {
+      if(this.defense){const units=this.units.filter(u=>u.side===side);return {hp:units.reduce((n,u)=>n+Math.max(0,u.hp),0),maxHp:units.reduce((n,u)=>n+u.maxHp,0),label:side?'ATTACKERS':'DEFENDERS'};}
       if(this.group&&side===0){const trainers=this.units.filter(u=>u.side===0&&u.slot===0);return {hp:trainers.reduce((n,u)=>n+Math.max(0,u.hp),0),maxHp:trainers.reduce((n,u)=>n+u.maxHp,0),label:'ALLIED TRAINERS'};}
       const trainer=this.trainer(side);
       if(trainer)return {hp:trainer.hp,maxHp:trainer.maxHp,label:trainer.name};
@@ -133,7 +145,7 @@
     ritualStep(){}
     emit(kind, actor, target, text, amount = 0, details = {}) { this.events.push({time: this.time, kind, actor: actor?.id, target: target?.id, side: actor?.side, text, amount, ...details}); }
     requestEscape() {
-      if(this.ended||this.escape||this.trainer(0)?.hp<=0)return false;
+      if(this.defense||this.ended||this.escape||this.trainer(0)?.hp<=0)return false;
       this.escape={tick:this.tick,untilTick:this.tick+60};
       this.emit('escape',this.trainer(0),null,'Retreating! Survive for 3 seconds.');
       this.refreshTargets();return true;
@@ -235,6 +247,7 @@
     checkEnd() {
       const alive = [0, 1].map(s => this.objective(s).hp > 0);
       if (alive.every(Boolean)) return;
+      if(this.defense){this.ended=true;this.winner=alive[0]?0:1;this.reason=alive[0]?'Inner Sea defended':'Defenders defeated';this.emit('end',null,null,alive[0]?'Your defenders held the farm.':'The defenders fell. Your farm needs repairs.');return;}
       this.ended = true; this.winner = alive[0] ? 0 : alive[1] ? 1 : null; this.reason = this.encounter && alive[0] ? (this.encounter.kind==='boss'?'Guardian defeated':this.encounter.kind==='wild'?'Wild spirit defeated':'Pack defeated') : 'Trainer defeated';
       this.bossCharge=null;
       if(this.ritual)this.ritual.state=this.winner===0?'defeated':'failed';
@@ -244,8 +257,8 @@
       if (!target || target.hp <= 0 || target.eliminated || this.ended) return;
       const element=this.elements&&!details.elementApplied?BondProgress.multiplier(actor?.element,target.element):1;
       let raw = Math.round(amount * element * (this.overcharge ? 2 : 1));
-      if (intercept && target.slot === 0) {
-        const guard = this.team(target.side).find(u => u.slot > 0 && (!this.group||u.owner===target.owner) && this.has(u, 'guard'));
+      if (intercept && (target.slot === 0||this.defense)) {
+        const guard = this.team(target.side).find(u => u!==target && u.slot > 0 && (!this.group||u.owner===target.owner) && this.has(u, 'guard'));
         if (guard) {
           const redirected = Math.round(raw * 0.6); raw -= redirected;
           // Reverse the overtime multiplier because recursive damage applies it once.
@@ -261,7 +274,7 @@
       const floor=0;
       const dealt = Math.min(Math.max(0,target.hp-floor), raw - absorbed); target.hp -= dealt; if(actor)actor.damage += dealt;
       this.emit('damage', actor, target, `${actor?.name||'Environment'} → ${target.name}: ${label} · ${dealt} damage${absorbed ? ` (${absorbed} shielded)` : ''}.`, dealt, details);
-      if (target.hp <= 0) { target.hp = 0; target.shield = 0; target.status = {}; this.emit('defeat', actor, target, `${target.name} fell${target.slot === 0 ? '. The bond breaks!' : this.team(target.side).some(u => u.slot > 0) ? '. Remaining monsters still protect their trainer.' : '. No monsters remain to protect the trainer.'}`); }
+      if (target.hp <= 0) { target.hp = 0; target.shield = 0; target.status = {}; this.emit('defeat', actor, target, `${target.name} fell${this.defense?'.':target.slot === 0 ? '. The bond breaks!' : this.team(target.side).some(u => u.slot > 0) ? '. Remaining monsters still protect their trainer.' : '. No monsters remain to protect the trainer.'}`); }
       if(target.hp<=0&&target.slot===0&&this.group){for(const companion of this.units.filter(u=>u.side===target.side&&u.owner===target.owner&&u.slot>0)){companion.eliminated=true;companion.moving=false;this.emit('eliminate',target,companion,companion.name+' withdraws because their trainer fell.');}}
       this.checkEnd();
       if (!this.ended && target.hp>0 && target.hp<target.maxHp*.4 && target.passive==='lastgrove' && !target.passiveUsed) {

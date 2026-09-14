@@ -9,7 +9,7 @@ Status: **local-prototype**. Draws characters and combat feedback; consumes comb
 
 `CharacterRig.mount / pose / trigger; CombatView.onEvent / draw / impactAudit; BondPresentation.timing`
 
-Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid and Mage use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional.
+Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid and Mage use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional. Hunter/Swordsman use code-drawn vector reference figures with transform motion; final class pose packages remain unapproved.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -63,6 +63,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/monster_sprites_check.py --browser chrome` — 100 supplied sprites, workbook identity, unchanged mechanics, shared rendering, poses, facing and save preservation.
 - `python tests/trainer_animation_check.py --browser chrome` — Druid/Mage/Apprentice pose frames, painted creator choices, transparent rendering, weapon-specific motion, provenance and coverage.
+- `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

@@ -97,7 +97,7 @@ Test grants and deterministic rare drops are restricted to test builds/realms. T
 
 ### VP-01 — Data, roster and content contracts
 
-Validate the release manifest, stable IDs, all references and allowed numeric ranges. Enumerate 100 distinct species (94 wild + six bosses), two classes, 510 skill assignments, 100 innates, 102 trees/1,836 nodes, 24 exploration maps, six hubs, 60 trainer/faction compositions, 12 pack templates, six bosses and 48 objective steps. A placeholder/recolor is not a species. Every species has a habitat or boss source; every map exit resolves and every skill has an explicit category. Companion boss stats use normal roster budgets, not raid HP. Test malformed, missing, duplicate, empty-pool and incompatible schema entries. Review provenance/runtime exports and eight cosmetic SKUs. Pass: complete enumerated coverage with no invalid content; a valid manifest alone does not establish art quality or fun.
+Validate the release manifest, stable IDs, all references and allowed numeric ranges. Enumerate 100 distinct species (94 wild + six bosses), four classes, 520 skill assignments, 100 innates, 104 trees/1,872 nodes, 24 exploration maps, six hubs, 60 trainer/faction compositions, 12 pack templates, six bosses and 48 objective steps. A placeholder/recolor is not a species. Every species has a habitat or boss source; every map exit resolves and every skill has an explicit category. Companion boss stats use normal roster budgets, not raid HP. Test malformed, missing, duplicate, empty-pool and incompatible schema entries. Review provenance/runtime exports and eight cosmetic SKUs. Pass: complete enumerated coverage with no invalid content; a valid manifest alone does not establish art quality or fun.
 
 Evidence: pinned build/rules, inputs/seeds, raw observations/traces, expected versus actual, failures and dated reviewer decision.
 
@@ -127,7 +127,7 @@ Headless desktop timing is not owner approval, a novice study, physical-phone
 performance, live group networking or acoustic-onset measurement. See
 [the pass16 matrix](PASS16_VALIDATION.md) for remaining protocol gaps.
 
-Approve one played reference encounter plus an Echo/summon sequence using original/cleared art. Score silhouette/identity, consistent scale/ground anchor/depth, readable motion, distinct attack/cast/hit/defeat, impact timing, target/owner clarity, UI hierarchy and effect restraint. Every dimension must be acceptable to the owner; keep video, build and hardware. Impact visual versus presented HP/reaction/audio should differ by ≤50 ms at 1× and ≤100 ms at solo 2×; buffered group presentation uses the same logical event and keeps essential event order. Network transport delay is measured separately, not hidden as animation time. Require character×state coverage for 102 characters, six boss phase sequences, 24 large maps, six hubs, six boss domains and Inner Sea. Test 13-actor effects, overlap, low effects, reduced motion, pause/resume where legal and missing sprites. At least 8/10 novice reference viewers identify the trainer/objective and a useful preparation change. A screenshot or resemblance claim is insufficient.
+Approve one played reference encounter plus an Echo/summon sequence using original/cleared art. Score silhouette/identity, consistent scale/ground anchor/depth, readable motion, distinct attack/cast/hit/defeat, impact timing, target/owner clarity, UI hierarchy and effect restraint. Every dimension must be acceptable to the owner; keep video, build and hardware. Impact visual versus presented HP/reaction/audio should differ by ≤50 ms at 1× and ≤100 ms at solo 2×; buffered group presentation uses the same logical event and keeps essential event order. Network transport delay is measured separately, not hidden as animation time. Require character×state coverage for 104 characters, six boss phase sequences, 24 large maps, six hubs, six boss domains and Inner Sea. Test 13-actor effects, overlap, low effects, reduced motion, pause/resume where legal and missing sprites. At least 8/10 novice reference viewers identify the trainer/objective and a useful preparation change. A screenshot or resemblance claim is insufficient.
 
 Evidence: pinned build/rules, inputs/seeds, raw observations/traces, expected versus actual, failures and dated reviewer decision.
 
@@ -235,7 +235,7 @@ Owner approves a bounded pilot, test-data policy and any external service/spend;
 
 ### G1 — Reference loop accepted
 
-One large starter map passes crossing/navigation checks, trainer-alone kills work for both classes, a real drop path and controlled guaranteed summon work, and the polished reference meets VP-04/05. First ten-species batch and three-client boss/reward-recovery spike supply measured throughput/cost data for F-066. Owner accepts the reference and a revised full-release forecast or limits further work. This is not a 100-species launch.
+One large starter map passes crossing/navigation checks, trainer-alone kills work for all four classes, a real drop path and controlled guaranteed summon work, and the polished reference meets VP-04/05. First ten-species batch and three-client boss/reward-recovery spike supply measured throughput/cost data for F-066. Owner accepts the reference and a revised full-release forecast or limits further work. This is not a 100-species launch.
 
 ### G2 — Free pilot evaluated
 

@@ -107,9 +107,9 @@ commercial acceptance boxes have been checked.
 | Requirement | Active launch baseline | Principal acceptance |
 | --- | --- | --- |
 | Distinct summonable species | At least 100; planning 94 wild + six boss species; no recolor counting | F-006, F-064; VP-01/04 |
-| Trainer classes and kit | Two classes; each class/species five active choices, three equipped | F-004, F-006 |
-| Skill/innate/tree coverage | 510 active assignments; 100 innates; 102 trees ×18 nodes =1,836 | F-006, F-010, F-064 |
-| New-player party | Trainer alone; zero-to-two companions supported; both classes solo-beat starters | F-004, F-009, F-015 |
+| Trainer classes and kit | Four classes; each class/species five active choices, three equipped | F-004, F-006 |
+| Skill/innate/tree coverage | 520 active assignments; 100 innates; 104 trees ×18 nodes =1,872 | F-006, F-010, F-064 |
+| New-player party | Trainer alone; zero-to-two companions supported; all four classes solo-beat starters | F-004, F-009, F-015 |
 | World | 24 large maps across six regions: 18 outdoor + six caves; six compact hubs and six compact boss domains; danger never invisibly locks roads | F-016–018, F-058 |
 | Crossing | At least 30 seconds at base speed, target 45–90; shortest opposite-side routes; no load/combat/idle padding | F-058; VP-13 |
 | Habitat identity | 94 wild species assigned source populations with roaming and durable spawn life/respawn | F-059; VP-13 |
@@ -122,7 +122,7 @@ commercial acceptance boxes have been checked.
 | Boss essence | One 0.01% roll per eligible group victory, including later victories; one recipient per success; no server-wide copy cap | F-063; VP-15 |
 | Consume / deletion / restore | Reconcile each victory/reward/summon receipt without duplicating old rewards or disabling independent future drops | F-041, F-047, F-063 |
 | Progression | Hard player/owned ceiling60, engine/wild curve100; high-source summons clamp safely; trainer highest owned or 1; story possible with ordinary roster | F-009, F-019, F-051 |
-| Presentation | 102 character state sets, six boss phase sets, 24 large maps/six hubs/six boss domains and fixed Inner Sea | F-024–028, F-064 |
+| Presentation | 104 character state sets, six boss phase sets, 24 large maps/six hubs/six boss domains and fixed Inner Sea | F-024–028, F-064 |
 | Cosmetics | Eight paid products + ≥3 earned rewards; no power, Echo or luck sales | F-032–033, F-042–044 |
 | Full-scale runtime | Lazy loading; physical dense-map/13-actor tests; 100-account staged load | F-034–036, F-049 |
 | Resource reality | Withdraw old small-MVP schedule/cost allowance; measured pilot and funded rebaseline | F-066 |
@@ -135,7 +135,7 @@ Numbers remain commercial requirements, not automatic acceptance. Pass 14 suppli
 - V1 small-release quantities, proposed level20 cap, first-capture guarantee/pity, consumable contract rolls and board-based three-encounter routes are not active v2 commercial requirements.
 - Pass 13 replaces the old live contract/route system with local Soul Echo summoning and spatial maps. README, PROGRESS and Companion stats document actual behavior; server/group criteria are still planned.
 - GN-009 cooperative boss fights are now **planned for commercial v2**, not implemented. GN-001 account buffs and GN-002 quest evolution remain stashed.
-- Shared public exploration/towns, PvP, trading, guilds/chat, AFK production, housing construction, water exploration and paid gameplay advantages remain outside scope.
+- Shared public exploration/towns, PvP, trading, guilds/chat, housing construction, water exploration and paid gameplay advantages remain outside scope.
 - Boss rarity is not guaranteed superior power. Encounter raid stats/phase behavior are separate from a summoned companion's balanced playable kit.
 - A smaller free pilot can validate the work; it cannot satisfy the at-least-100 commercial launch requirement. The old time/cash estimate cannot be reused for this expanded scope.
 

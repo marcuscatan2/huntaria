@@ -14,7 +14,7 @@ real multiplayer and payments are not implemented.
 
 | Task | Start here | Connection |
 | --- | --- | --- |
-| Creation, Lv1–30 route, first Echoes and class choice | [Opening](features/opening/README.md) / [Campaign](features/campaign/README.md) | Receipt-backed milestones connect the first-Brimble Bag summon, Forest Mage road gate, demonstrations, fixed bosses, Lv20 specialization and Lv30 monster trees. |
+| Creation, Lv1–30 route, first Echoes and class choice | [Opening](features/opening/README.md) / [Campaign](features/campaign/README.md) | Receipt-backed milestones connect the first-Brimble Bag summon, Forest Mage road gate, demonstrations, fixed bosses, four Lv20 classes, the Lv25 farm and Lv30 monster trees. |
 | Test-mode travel, recovery, restart or playback speed | [Test controls](features/delivery/OPERATIONS.md#test-controls) | QA alone uses 3× travel, post-combat recovery and 5× playback; normal saves and tuning stay separate. |
 | Background fights, Run, joiners, targets or stuck encounters | [Live encounters](features/shell/ENCOUNTERS.md) / [Combat](features/combat/README.md) | Anchors and ordered join/escape requests connect simulation, persistence and rewards. |
 | Poses, hit feedback, creature art | [Animation](features/animation/README.md) / [Supplied roster](features/animation/SUPPLIED_SPRITES.md) | Numbered sprites map to stable species IDs; shared by combat, exploration and portraits. |
@@ -23,7 +23,7 @@ real multiplayer and payments are not implemented.
 | Monsters, skills, levels, builds | [Content](features/content/README.md) / [Growth](features/growth/README.md) / [Party](features/party/README.md) | The reviewed Google Sheet snapshot owns creature identity; stable species/individual IDs and the Lv60 player/Lv100 engine boundary flow into combat. |
 | Inventory, item popups, summoning, lost/duplicate progress | [Collection](features/collection/README.md) / [Persistence](features/persistence/README.md) | Loot presentation reads accepted receipts; profile commits items and individuals. |
 | Sound, Settings, reduced motion | [Preferences/audio](features/experience/README.md) | Device choices affect presentation, never combat rules. |
-| Inner Sea decorations or picture export | [Inner Sea](features/inner-sea/README.md) | Owned individuals/progress feed saved display slots and a shared export canvas. |
+| Inner Sea farming, defense or picture export | [Inner Sea](features/inner-sea/README.md) | Habitat residents, AFK training, five-monster defenses, repairs and upgrades connect to saved progress. |
 | Other features or an unclear bug | [Feature index](FEATURE_MAP.md) | Symptoms route to the owner and its connecting boundary. |
 
 Feature folders contain focused guidance and links to the actual implementation.

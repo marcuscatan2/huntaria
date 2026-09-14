@@ -1,5 +1,40 @@
 # Bond & Bolt browser prototype — handoff
 
+## Current handoff — four classes and Inner Sea farm (2026-09-14)
+
+Hunter and Swordsman now have five-ability kits, trainer trees, demonstrations
+and Lv20 master acceptance paths alongside Druid and Mage. Each master clearly
+asks the player to win an easy battle with their current party, then return to
+confirm the class. The shared master trainer-XP reward pays once and the dialog
+shows the remaining reward correctly. See [class contract](features/opening/CLASSES.md).
+
+The Lv25 Inner Sea is a wooden farm with five independently upgraded habitats
+and automatic highest-level residents. Clean, intact farms train every owned
+individual; power counts the strongest individual of each species once. Five
+selected monsters defend in automatic daily, calendar-scaled battles without a
+trainer. Victories settle attacker loot; defeats remove XP from every owned
+monster and require an item repair. Earned tree budgets survive level loss.
+The last defense has a read-only replay. Existing decoration drafts, local PNG
+export and additive save migration remain supported. Initial rates, costs,
+calendar boundaries and later habitat equipment are in the
+[farm scope](features/inner-sea/FARM_SCOPE.md).
+
+The full Chrome gate passed **3,915 browser/runtime assertions**: 14 architecture,
+2,103 mechanics, 43 played UI, 34 campaign, 143 opening, 58 lifecycle, 315 species
+sprites, 19 trainer art, 73 field, 37 experience, 44 class/farm, 1,005 runtime and
+27 package checks. All four classes pass the common-starter campaign paths.
+The 1,000-fight browser/Node corpus includes five-monster defense and agrees
+exactly; local replay p95 was 28.87 ms. Tooling, ownership, reference-data and
+scope-integrity checks also passed. The verified local-preview client is
+`dist/13b5fcd555408c24b49d/`. These are local checks, not online or device certification.
+
+Needs you now: review the class/master flow and farm composition/pacing before
+building equipment around these defaults. Coming next: boss/dungeon habitat
+equipment after that loop review; diagnostics and tuning remain reversible.
+Safe to defer: final class/farm artwork, permanent online economy and public
+release. Implementation authority and the two explicit owner answers are recorded
+in `docs/review-gates.json`; final art and release approvals remain pending.
+
 ## Current handoff — Patch 29 minimap quest markers (2026-09-14)
 
 The local minimap now mirrors the overhead quest marker at the quest NPC's real

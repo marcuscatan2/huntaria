@@ -18,10 +18,10 @@ fun, clear or correctly timed for real players.
 | 3 | Find the Forest Mage, then defeat Bloomslime or Stonehorn | Chosen species Echo; player Lv4 threshold | 200 + 300 |
 | 4 | Summon the second companion and win the Mage's easy proof | Firstlight exits open | — |
 | 5 | Defeat Tavi | `druid-sustain`; player Lv6 threshold | 900 |
-| 6 | Defeat Rain, Lina and Wren | Four distinct Druid/Mage demonstrations; player Lv12 threshold | 1,600 + 1,800 + 1,700 |
+| 6 | Defeat Rain, Lina and Wren | One Druid, Mage, Hunter and Swordsman demonstration; player Lv12 threshold | 1,600 + 1,800 + 1,700 |
 | 7 | Defeat fixed Lv15 Tidecrown | Class masters appear; player Lv15 threshold | 3,900 |
-| 8 | Win either temporary class trial | Chosen master is eligible at Lv20 | 8,500 once across both trials |
-| 9 | Confirm Druid or Mage | Persistent specialization and valid default class build | — |
+| 8 | Defeat any class master with the current party | Chosen master is eligible at Lv20 | 8,500 once across both trials |
+| 9 | Confirm one of four classes | Persistent specialization and valid default class build | — |
 | 10 | Application, counter, ability proof and route resolution | Player Lv25 threshold | 1,500 + 3,500 + 2,000 + 4,000 |
 | 11 | Three Amber challenges and fixed Lv30 guardian | Player Lv30 threshold | 3,000 + 2,500 + 3,000 + 5,000 |
 | 12 | Spend one owned-monster tree point and win its proof | Early progression complete | — |
@@ -72,18 +72,19 @@ adventures until revived.
   `50 × (level - 1) × level` and the visible player cap60.
 - Migration seeds `trainerXP` at the old displayed trainer level, then progression
   becomes independent. Companion XP and higher source-level provenance are kept.
-- Tavi, Rain, Lina and Wren are two Druid and two Mage demonstrations. A set of
+- Tavi, Rain, Lina and Wren demonstrate Druid, Mage, Hunter and Swordsman. A set of
   semantic demonstration IDs, not dialogue views, is the prerequisite.
 - Tidecrown and the Amber guardian have fixed progression levels. Their later
   boss-domain altars remain separately configurable reward-free practice.
-- A master trial can be attempted before Lv20 with the player's real two
-  companions and a temporary three-of-five Druid or Mage skill selection. The
-  temporary trainer never overwrites the Apprentice build.
-- Only the first completed trial pays the shared 8,500-XP route reward. The player
-  may inspect/try either class until final confirmation.
-- Confirmation requires the four demonstrations, Tidecrown, that class's trial
-  and player Lv20. It atomically sets Druid or Mage and initializes its class
-  tree. Normal menu switching is not available to a created character.
+- Each of four masters fights as the class offered. The player keeps the current
+  Apprentice party and wins an easy protected acceptance battle.
+- Only the first accepted master win pays 8,500 trainer XP. The player can defeat
+  different masters before committing, without repeating that XP reward.
+- Returning to a defeated master at Lv20 exposes **Become [class]**. Confirmation
+  commits once, preserves progress and unlocks the chosen class tree.
+- At Lv25, farm establishment appears between Amber resolution and mastery.
+
+See [CLASSES.md](CLASSES.md) for kits, migration and the exact master wording.
 
 The prototype uses persistent commitment, but a future server-controlled
 retraining/migration path remains possible. Final permanence wording is an owner
@@ -109,14 +110,10 @@ class tree unlocks at transformation and remains separate from monster trees.
 
 ## Intentionally deferred
 
-The Lv25 Inner Sea ownership objective is not active. The current Inner Sea is a
-local collection/cosmetic scene, and no bounded non-paid monster-development use
-has been approved. Do not present it as the Lv25 reward or implement AFK/daily
-power from deferred Game Notes.
-
-Also absent: additional launch classes, permanent-choice production copy, online
-players, authoritative group bosses, boss essence rewards and release economy
-balance.
+[The first Inner Sea farm](../inner-sea/FARM_SCOPE.md) is implemented. The next
+farm batch is habitat equipment from bosses/dungeons. Final class/farm artwork,
+permanent-choice production policy, online players, authoritative group bosses,
+boss essence rewards and release economy balance remain pending.
 
 ## Validation route
 

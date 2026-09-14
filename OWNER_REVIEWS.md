@@ -111,7 +111,7 @@ Priority: **NOW**. State: **Pending review packet / decision**.
 
 - Use features/opening/PASS26_VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.
 - Replay victory, defeat, a selected fallen sole companion, reload and interrupted-menu routes. Firstlight defeat must preserve bearings at the same forest camp, fully recovered. Confirm ordinary Echo odds remain separate from the two disclosed onboarding guarantees.
-- Continue later review sessions through the four class demonstrations, Tidecrown, both temporary class trials, Druid/Mage commitment, the ability-change proof and the Lv30 individual tree proof. Record time, deaths, recovery trips, retries and the observed reason for each class/boss loss.
+- Review the four class demonstrations, Tidecrown, each easy master acceptance battle and explicit Druid/Mage/Hunter/Swordsman commitment. The current party fights the named master; winning returns to the field. Then review the Lv25 Inner Sea farm, ability-change proof and Lv30 trees. Use features/opening/CLASSES.md and features/inner-sea/FARM_SCOPE.md.
 
 **You validate / acceptance:**
 
@@ -125,7 +125,7 @@ Priority: **NOW**. State: **Pending review packet / decision**.
 
 **Reopen when:** Changing combat control model, battle length, progression curve, healing/travel friction or onboarding loop.
 
-**Related specifications:** [Companion stats.md](<Companion stats.md>), [features/opening/PASS26_VALIDATION.md](<features/opening/PASS26_VALIDATION.md>), [PASS24_VALIDATION.md](<PASS24_VALIDATION.md>), [PASS20_VALIDATION.md](<PASS20_VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/opening/DESIGN.md](<features/opening/DESIGN.md>), [features/opening/EARLY_PROGRESSION_SCOPE.md](<features/opening/EARLY_PROGRESSION_SCOPE.md>), [features/opening/VALIDATION.md](<features/opening/VALIDATION.md>), [features/delivery/REMAINING_SCOPE.md](<features/delivery/REMAINING_SCOPE.md>).
+**Related specifications:** [Companion stats.md](<Companion stats.md>), [features/opening/PASS26_VALIDATION.md](<features/opening/PASS26_VALIDATION.md>), [PASS24_VALIDATION.md](<PASS24_VALIDATION.md>), [PASS20_VALIDATION.md](<PASS20_VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/opening/DESIGN.md](<features/opening/DESIGN.md>), [features/opening/EARLY_PROGRESSION_SCOPE.md](<features/opening/EARLY_PROGRESSION_SCOPE.md>), [features/opening/VALIDATION.md](<features/opening/VALIDATION.md>), [features/delivery/REMAINING_SCOPE.md](<features/delivery/REMAINING_SCOPE.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>), [features/opening/CLASSES.md](<features/opening/CLASSES.md>).
 
 <a id="or-03"></a>
 ### OR-03 — Approve one complete world slice before repeating it
@@ -258,6 +258,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 - AI presents starter-to-late progression scenarios, recovery costs and expected acquisition time including rare encounter availability and kills/hour.
 - Separate current 15% testing from release proposals; show unlucky streaks and duplicate outcomes, not only averages or forced grants.
 - Preserve the agreed 100% summon/no-pity rules and proposed 10%/0.01% odds unless you explicitly authorize a change.
+- The owner authorized Inner Sea AFK training, daily lunar defense and XP loss from all owned monsters. Review the actual training/cleanliness pace, penalties, repair costs, power-derived HP and future habitat equipment before permanent online progression; the first local tuning is not release approval.
 
 **You validate / acceptance:**
 
@@ -271,7 +272,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **Reopen when:** Odds, source availability, XP, price/supply sinks, progression promises or reset policy changes.
 
-**Related specifications:** [CREATURE_DROPS.md](<CREATURE_DROPS.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>).
+**Related specifications:** [CREATURE_DROPS.md](<CREATURE_DROPS.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>).
 
 <a id="or-08"></a>
 ### OR-08 — Approve account, persistence and real multiplayer rules
@@ -287,6 +288,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 - AI supplies a short player-facing policy: guest upgrade, save ownership, allowed devices, wipes/imports, pause/2× rules, disconnect/rejoin and group loot eligibility.
 - Add technical recommendations for versioned authoritative commands, idempotent receipts and migration/restore tests; owner is not asked to review implementation code.
 - Compare costs and tradeoffs before choosing paid providers or accepting a multiplayer promise.
+- Include server-time authority and exactly-once offline farm training/defense settlement; local device calendars and outcomes cannot mint trusted online XP or loot.
 
 **You validate / acceptance:**
 
@@ -300,7 +302,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **Reopen when:** Ownership, reward eligibility, account migration, room model or persistence policy changes.
 
-**Related specifications:** [docs/ENGINEERING.md](<docs/ENGINEERING.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/delivery/REMAINING_SCOPE.md](<features/delivery/REMAINING_SCOPE.md>).
+**Related specifications:** [docs/ENGINEERING.md](<docs/ENGINEERING.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/delivery/REMAINING_SCOPE.md](<features/delivery/REMAINING_SCOPE.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>).
 
 <a id="or-09"></a>
 ### OR-09 — Approve the representative slice for a polished external test

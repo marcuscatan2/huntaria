@@ -151,7 +151,7 @@ check("Active plans reject the superseded lifetime-essence cap",
       )))
 check("Full roster counts are arithmetically coherent",
       94 + 6 == 100 and (100 + 2) * 5 == 510 and (100 + 2) * 18 == 1836
-      and all(token in source for token in ("510", "100 innate", "1,836", "102")))
+      and all(token in source for token in ("520", "100 innate", "1,872", "104")))
 odds = [(0.1, 10, 7, 29), (0.0001, 10000, 6932, 29956)]
 check("Published independent-roll mean/median/95-percent thresholds are correct", all(
     math.isclose(1 / p, mean)

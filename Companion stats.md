@@ -10,7 +10,7 @@ allocation is an original approximation, not an exact port.
 
 ## Attributes and allocation
 
-Six raw attributes begin at 1 and cap at 99. Druid and Mage share one allocation.
+Six raw attributes begin at 1 and cap at 99. Druid, Mage, Hunter and Swordsman share one allocation.
 There are 48 initial spendable points. Reaching level L ≥ 2 grants
 3 + floor(L / 5) points. Raising n to n+1 costs 2 + floor((n−1) / 10).
 Allocation rejects unknown attributes and overspending; imported malformed
@@ -157,7 +157,7 @@ duration/source; statuses do not stack additive copies.
   later visible progression patch. Legacy over-cap XP is preserved as deferred
   data rather than deleted or applied. No ultra-rare companion is required.
 
-Each of 102 character types defines an 18-node template; each individual owns its
+Each of 104 character types defines an 18-node template; each individual owns its
 own investment in its species template. Each class has its own investment. Nodes are ranked; caps 3/5/10.
 A parent rank ≥1 unlocks its child. One point buys one rank; reset is free.
 
@@ -171,7 +171,7 @@ There are 40 possible points at the launch Lv60 cap with the maximum encounter
 bonus, versus 94 ranks to max the whole template. Unowned species show a read-only three-point template preview; no investment is
 saved without an individual. Healing branches become damage branches for kits without a healing
 mechanic; final affinities depend on role. Trees are tailored shared templates,
-not 102 wholly different ability systems. Preview paths and per-species coverage
+not 104 wholly different ability systems. Preview paths and per-species coverage
 are recorded in tests/artifacts/pass13-engine-*.json; viability still needs playtests.
 Loadout edits invalidate the local battle view but do not replace a reserved
 encounter: its original build/profile/seed/tick replays on resume.
@@ -358,3 +358,11 @@ access level +4 × map index +2 × species index, capped100. Bands intentionally
 overlap. Emberfox uses base HP430/ATK32/skill scale0.65/no innate; other individual
 wilds use full species bases/innates. Companion bases and XP thresholds did not
 change. Packs retain their separately authored weaker group scaling.
+
+## Inner Sea progression extension
+
+Intact farm power adds maximum HP once to the account trainer and companions,
+never to opponents. Power counts only the highest current individual level per
+species. Defense-only HP comes from habitat upgrades. XP loss preserves already
+earned monster-tree budgets through optional `treeLevel`. Exact initial farm
+values and clock/repair contracts live in [FARM_SCOPE.md](features/inner-sea/FARM_SCOPE.md).

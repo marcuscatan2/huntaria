@@ -75,16 +75,17 @@ for(const [r,region] of A.REGIONS.entries()){
   hp:3400,scale:players=>players===3?2.65:players===2?1.9:1,essenceBP:1,live:false};
 }
 const DEMONSTRATIONS={
- 'story:clearing:0':'druid-sustain','story:brook:1':'mage-control','story:brook:3':'druid-area','story:brook:4':'mage-bypass'
+ 'story:clearing:0':'druid-sustain','story:brook:1':'mage-control','story:brook:3':'hunter-range','story:brook:4':'swordsman-frontline'
 };
 for(const [id,map,trainerXP,greeting,advice] of [
  ['story:clearing:0','clearing-hub',900,'My monsters hold the line. I keep them fighting.','Focus pressure through the healing; formation and damage priority matter.'],
  ['story:brook:1','brook-0',1600,'Cold changes the pace of a fight.','Cleanse or haste answers Slow; ranged reach can keep attacking while others close.'],
- ['story:brook:3','brook-1',1800,'Roots buy my companions another breath.','Entangle controls your monsters. Keep enough focused damage to break the sustain.'],
- ['story:brook:4','brook-2',1700,'Your monsters are not the only target.','Crown Hex reaches trainers. Guard, ward or move your trainer to the back.']
+ ['story:brook:3','brook-1',1800,'My bow pins the target while my companions close in.','Answer ranged pressure with protection, reach or a fast frontline.'],
+ ['story:brook:4','brook-2',1700,'I fight beside my companions. Watch my guard.','Wait out Parry or spread your pressure. Protect your trainer from the sword lunge.']
  ]){
  const e=W.NPCS[id],m=A.get(map),point=A.safePoint(map,{x:m.guide.x+260,y:m.guide.y+210});
  Object.assign(e,{map,area:m.region,trainerXP,greeting,advice,demonstration:DEMONSTRATIONS[id],requiresWin:id==='story:brook:1'?'story:clearing:0':id==='story:brook:3'?'story:brook:1':id==='story:brook:4'?'story:brook:3':null,requiresCompanions:id==='story:clearing:0'?2:0,...point});
+ if(id==='story:brook:3'||id==='story:brook:4'){const type=id==='story:brook:3'?'hunter':'swordsman';e.appearance=type;e.team[0]={type,skills:[...C.UNITS[type].default]};}
  if(id==='story:clearing:0'||id==='story:brook:1'){const scale=id==='story:clearing:0'?.5:.48;e.team=e.team.map(entry=>({...entry,power:Math.round(C.UNITS[entry.type].power*scale),skillScale:scale,healthScale:.68}));}
 }
 
@@ -102,16 +103,16 @@ const ambercolossus=C.MONSTERS.find(t=>C.UNITS[t].source==='boss'&&C.UNITS[t].re
 addEarly({id:'early:boss:tidecrown',name:C.UNITS[tidecrown].name,appearance:tidecrown,title:'Willowbrook guardian · Lv 15',kind:'boss',level:15,seed:1515,earlyKey:'tidecrown',trainerXP:3900,coins:80,
  greeting:'The water gathers around one powerful creature.',advice:'Tidal Return marks the rear. Guard, ward or change formation before it lands.',requiresDemonstrations:4,
  enemies:[{type:tidecrown,skills:[...C.UNITS[tidecrown].default],hp:2500,power:36,boss:true,passive:C.UNITS[tidecrown].passive}],...placed('brook-boss',{x:A.get('brook-boss').hero.x,y:A.get('brook-boss').hero.y+240})});
-for(const type of ['druid','mage']){
- const enemy=type==='druid'?'mage':'druid';
- addEarly({id:'early:master:'+type,name:(type==='druid'?'Druid':'Mage')+' Master',appearance:type,title:'Class trial',level:15,seed:type==='druid'?201:202,trialClass:type,masterClass:type,trainerXP:8500,coins:100,
-  greeting:type==='druid'?'Keep your companions standing. Let the bond do the work.':'Control the opening, then turn it into pressure.',
-  advice:type==='druid'?'Try Mend, Barkskin and one control skill. Your real companions fight beside the temporary Druid build.':'Try Frostbolt or Arc Nova with Aegis. Your real companions remain part of the solution.',
-  requiresCompanions:2,team:trainerTeam(enemy,type==='druid'?'stonehorn':'emberfox',type==='druid'?'bloomslime':'cindrake').map(entry=>({...entry,power:Math.round(C.UNITS[entry.type].power*.62),skillScale:.62,healthScale:.8})),...placed('hollow-hub',{x:type==='druid'?700:1450,y:type==='druid'?620:700})});
+for(const [i,type] of C.CLASSES.entries()){
+ const name=C.UNITS[type].name;
+ addEarly({id:'early:master:'+type,name:name+' Master',appearance:type,title:name+' acceptance battle',level:15,seed:201+i,trialClass:type,masterClass:type,protectedEncounter:true,autoReturn:true,trainerXP:8500,coins:100,
+  greeting:"Defeat me in battle and I'll accept you as a "+name+". Don't worry, I'll go very easy on you.",
+  advice:'Fight with your current party. After you win, speak to me again to become a '+name+'.',
+  requiresCompanions:2,team:trainerTeam(type).map(entry=>({...entry,power:Math.round(C.UNITS[entry.type].power*.25),skillScale:.25,healthScale:.45})),...placed('hollow-hub',{x:550+(i%2)*650,y:420+Math.floor(i/2)*500})});
+ addEarly({id:'early:application:'+type,name:'Amber Trialkeeper',appearance:type==='druid'?'mage':'druid',title:'Use your new class',level:20,seed:301+i,applicationClass:type,earlyKey:'application',trainerXP:1500,coins:35,
+  greeting:'Show what your new class adds to this team.',advice:({druid:'Heal and shield your companions.',mage:'Control the enemy and follow with magic.',hunter:'Pin a target and focus it with your companions.',swordsman:'Keep your guard up as you close with the frontline.'})[type],
+  team:trainerTeam(type==='druid'?'mage':'druid','stonehorn','bloomslime'),...placed('hollow-0')});
 }
-for(const type of ['druid','mage'])addEarly({id:'early:application:'+type,name:'Amber Trialkeeper',appearance:type==='druid'?'mage':'druid',title:'Use your new class',level:20,seed:type==='druid'?301:302,applicationClass:type,earlyKey:'application',trainerXP:1500,coins:35,
- greeting:'Show what your new class adds to this team.',advice:type==='druid'?'Sustain one attacker long enough to break the frontline.':'Use control and pressure before the opposing support stabilizes.',
- team:trainerTeam(type==='druid'?'mage':'druid','stonehorn','bloomslime'),...placed('hollow-0')});
 addEarly({id:'early:counter',name:'Amber Pathwarden',appearance:'mage',title:'Counter-building trial',level:22,seed:401,earlyKey:'counter',trainerXP:3500,coins:50,
  greeting:'This formation reaches past the frontline.',advice:'Guard or ward the trainer; a different companion or ability can solve the same problem.',team:trainerTeam('mage','stormowl','bloomslime'),...placed('hollow-1')});
 addEarly({id:'early:ability',name:'Copperleaf Tactician',appearance:'druid',title:'Ability proof',level:23,seed:402,earlyKey:'ability',trainerXP:2000,coins:50,requiresAbilityChange:true,
@@ -126,10 +127,10 @@ addEarly({id:'early:boss:amber',name:C.UNITS[ambercolossus].name,appearance:ambe
 addEarly({id:'early:tree-proof',name:'Amber Naturalist',appearance:'druid',title:'Skill-tree proof',level:30,seed:3060,earlyKey:'treeProof',trainerXP:0,coins:20,requiresTreeInvestment:true,
  greeting:'Let your companion show what changed.',advice:'Spend one point in an owned companion tree, then return.',team:trainerTeam('druid','stonehorn','bloomslime'),...placed('hollow-hub',{x:900,y:1120})});
 
-const earlyFresh=()=>({introFightWon:false,introClaim:null,firstSummon:false,companionProof:false,proofClaim:null,secondChoice:null,secondClaim:null,secondSummon:false,mageMet:false,mageGate:false,demonstrations:[],tidecrown:false,trials:{druid:false,mage:false},trialRewarded:false,abilityChanged:false,application:false,counter:false,counterEcho:false,ability:false,resolution:false,amber1:false,amber2:false,amber3:false,amberBoss:false,treeProof:false});
+const earlyFresh=()=>({introFightWon:false,introClaim:null,firstSummon:false,companionProof:false,proofClaim:null,secondChoice:null,secondClaim:null,secondSummon:false,mageMet:false,mageGate:false,demonstrations:[],tidecrown:false,trials:Object.fromEntries(C.CLASSES.map(type=>[type,false])),trialRewarded:false,abilityChanged:false,application:false,counter:false,counterEcho:false,ability:false,resolution:false,amber1:false,amber2:false,amber3:false,amberBoss:false,treeProof:false});
 function earlyClean(raw){const e=earlyFresh();if(!raw||typeof raw!=='object')return e;for(const k of ['introFightWon','firstSummon','companionProof','secondSummon','mageMet','mageGate','tidecrown','trialRewarded','abilityChanged','application','counter','counterEcho','ability','resolution','amber1','amber2','amber3','amberBoss','treeProof'])e[k]=raw[k]===true;
  for(const k of ['introClaim','proofClaim','secondClaim'])if(typeof raw[k]==='string'&&raw[k].length<220)e[k]=raw[k];if(['bloomslime','stonehorn'].includes(raw.secondChoice))e.secondChoice=raw.secondChoice;
- e.demonstrations=[...new Set((Array.isArray(raw.demonstrations)?raw.demonstrations:[]).filter(x=>Object.values(DEMONSTRATIONS).includes(x)))];for(const type of ['druid','mage'])e.trials[type]=raw.trials?.[type]===true;
+ e.demonstrations=[...new Set((Array.isArray(raw.demonstrations)?raw.demonstrations:[]).map(x=>({'druid-area':'hunter-range','mage-bypass':'swordsman-frontline'})[x]||x).filter(x=>Object.values(DEMONSTRATIONS).includes(x)))];for(const type of BondContent.CLASSES)e.trials[type]=raw.trials?.[type]===true;
  // Saves made before the forest gate existed must not be pulled backward.
  if(!Object.hasOwn(raw,'mageMet')&&e.secondSummon){e.mageMet=true;e.mageGate=true;}
  return e;}
@@ -160,6 +161,7 @@ function requirement(encounter,s,party=null){const e=s.journey?.early||earlyFres
  if(encounter.requiresAbilityChange&&!e.abilityChanged)return 'Change one equipped companion ability in Party & bag first.';
  if(encounter.id==='early:resolution'&&!e.ability)return 'Complete the ability proof first.';
  if(encounter.id==='early:amber:1'&&(!e.resolution||R.trainerLevel(s)<25))return 'Reach player level 25 and finish the Amber route first.';
+ if(encounter.id==='early:amber:1'&&!s.farm?.owned)return 'Establish your Inner Sea first.';
  if(encounter.id==='early:amber:2'&&!e.amber1)return 'Defeat Amber Challenger 1 first.';
  if(encounter.id==='early:amber:3'&&!e.amber2)return 'Defeat Amber Challenger 2 first.';
  if(encounter.requiresEarly&&!e[encounter.requiresEarly])return 'Complete the preceding Amber challenge first.';
@@ -188,13 +190,14 @@ function earlyNext(s){const e=s.journey?.early||earlyFresh(),wins=s.journey?.win
  if(!e.mageGate)return {id:'early:forest-mage',label:'Return to the Mage',map:'clearing-0'};
  for(const [id,label,map] of [['story:clearing:0','Defeat Tavi with two companions','clearing-hub'],['story:brook:1','Face Rain and learn control','brook-0'],['story:brook:3','Face Lina in Rainwillow Forest','brook-1'],['story:brook:4','Face Wren at Reedwatch Banks','brook-2']])if(!wins[id])return {id,label,map};
  if(!e.tidecrown)return {id:'early:boss:tidecrown',label:'Defeat Tidecrown',map:'brook-boss'};
- if(!e.trials.druid&&!e.trials.mage)return {id:'ep:masters',label:'Choose a class trial in Amber Crossing',map:'hollow-hub'};
- if(!s.progression?.specialization)return {id:'ep:transform',label:'Return to a completed master and choose your class',map:'hollow-hub'};
+ if(!C.CLASSES.some(type=>e.trials[type]))return {id:'ep:masters',label:'Defeat a class master in Amber Crossing',map:'hollow-hub'};
+ if(!s.progression?.specialization)return {id:'ep:transform',label:'Speak to the master you defeated to join their class',map:'hollow-hub'};
  if(!e.application)return {id:'ep:application',label:'Use your new class in Amber Hollow',map:'hollow-0'};
  if(!e.counter)return {id:'early:counter',label:'Defeat the Amber Pathwarden',map:'hollow-1'};
  if(!e.abilityChanged)return {id:'ep:ability-change',label:'Change one companion ability in Party & bag',map:s.map};
  if(!e.ability)return {id:'early:ability',label:'Prove the changed ability',map:'hollow-2'};
  if(!e.resolution)return {id:'early:resolution',label:'Finish the Amber route',map:'hollow-3'};
+ if(!s.farm?.owned&&!e.amber1)return {id:'ep:farm',label:'Establish your Inner Sea',map:s.map};
  if(!e.amber1)return {id:'early:amber:1',label:'Defeat Amber Challenger 1',map:'hollow-0'};
  if(!e.amber2)return {id:'early:amber:2',label:'Defeat Amber Challenger 2',map:'hollow-1'};
  if(!e.amber3)return {id:'early:amber:3',label:'Defeat Amber Challenger 3',map:'hollow-2'};

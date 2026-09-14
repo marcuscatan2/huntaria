@@ -1,35 +1,25 @@
 # Early progression scope: arrival through player level 30
 
-Status: **implemented as a local prototype except EP-10 Inner Sea ownership;
+Status: **implemented locally, including four classes and the first EP-10 farm;
 commercial playtest acceptance remains pending**.
 This document scopes the progression direction supplied on 2026-09-13. The
 implemented runtime contract is summarized in `DESIGN.md`; this file retains the
 detailed rationale, target pacing and human validation gates.
 
 The purpose of this sequence is to take a fresh player from an unexplained
-arrival to a stable personal loop: recruit companions, understand two launch
+arrival to a stable personal loop: recruit companions, understand four launch
 classes, commit to one at player level 20, learn to adapt a familiar monster,
 establish the Inner Sea at player level 25, and unlock monster skill trees at
 player level 30.
 
 ## Decisions and adaptations
 
-### Use two launch specializations, not four invented classes
+### Four launch specializations
 
-The current runtime contains Apprentice, Druid and Mage. No Knight, Swordsman,
-Ranger or fourth class exists. The current commercial direction also names
-Druid and Mage as the launch specializations. Therefore:
-
-- keep **four required class-demonstration battles** before specialization;
-- use two different Druid demonstrations and two different Mage demonstrations;
-- make each encounter teach a distinct team relationship;
-- provide two masters and two class trials at launch;
-- keep the demonstration/state model data-driven so later classes can be added
-  without rewriting progression.
-
-Adding two shallow classes merely to match the number in the external brief
-would increase combat, balance, UI, animation and quest work without improving
-this opening. It is not in this scope.
+The owner expanded the class scope on 2026-09-14: Druid, Mage, Hunter and
+Swordsman follow Apprentice. Four demonstrations now teach one class each.
+Four masters offer easy acceptance battles using the player's current party,
+then explicit specialization at player Lv20. See [CLASSES.md](CLASSES.md).
 
 ### Separate trainer and monster progression
 
@@ -79,7 +69,7 @@ the next required milestone.
 | First trainer | 30-45 min | 1,500 / Lv6 | First class demonstration completed |
 | Willowbrook route and remaining demonstrations | 45-120 min | 6,600 / Lv12 | Four distinct demonstrations completed |
 | First creature boss | 2-3 h | 10,500 / Lv15 | Tidecrown defeated; route to masters established |
-| Class trial and transformation | 3-5 h | 19,000 / Lv20 | Player becomes Druid or Mage |
+| Class trial and transformation | 3-5 h | 19,000 / Lv20 | Player joins one of four classes |
 | Counter-building and ability lesson | 5-8 h | 30,000 / Lv25 | Player adapts a monster and earns Inner Sea ownership |
 | Amber Hollow progression | 8-12 h | 43,500 / Lv30 | Species-specific monster trees unlock |
 
@@ -284,8 +274,8 @@ requirements.
 | --- | --- | --- | --- |
 | Tavi / `druid-sustain` | Druid | Heal/ward monsters from the rear | Apply enough focused pressure |
 | Rain / `mage-control` | Mage | Slow movement and action tempo | Cleanse, haste or use ranged reach |
-| Lina / `druid-area` | Druid | Entangle monsters while sustaining the team | Formation and damage priority |
-| Wren / `mage-bypass` | Mage | Crown Hex threatens the trainer directly | Guard, ward or defensive formation |
+| Lina / `hunter-range` | Hunter | Pinning shot and ranged pressure | Protection, reach and closing the distance |
+| Wren / `swordsman-frontline` | Swordsman | Sword lunge and Parry beside companions | Wait out protection and adjust frontline pressure |
 
 - Each trainer gets one pre-fight line and one accurate retry hint. The mechanics,
   teams and arena setup—not dialogue alone—differentiate them.
@@ -305,8 +295,8 @@ requirements.
 
 **Validation gates**
 
-- Testers can describe a basic Druid/Mage difference and one second behavior for
-  each without recalling skill names.
+- Testers can describe one useful difference among Druid, Mage, Hunter and
+  Swordsman without recalling skill names.
 - Hints name the observed mechanic and a category of response, not a mandatory
   species or undisclosed loadout.
 - Required XP comes from first-time purposeful content; no repeated wild farming
@@ -355,22 +345,19 @@ requirements.
 **Entry conditions**
 
 - Tidecrown defeated and all four class demonstrations complete.
-- The player may meet and begin either master's quest before Lv20.
+- The player may meet and begin any master's quest before Lv20.
 
 **Encounter and interaction**
 
-- Place two launch masters in Amber Crossing: Druid and Mage. Their names remain
+- Place four launch masters in Amber Crossing: Druid, Mage, Hunter and Swordsman. Their names remain
   a content dependency; do not invent established lore in implementation.
-- Inspect both quests before committing. Starting one trial does not permanently
+- Inspect all four offers before committing. Defeating one master does not permanently
   lock the other until final confirmation.
-- Trial the real class with the player's real companions in a bounded temporary
-  battle setup. Trial builds never overwrite the Apprentice's saved build.
-  - **Druid trial:** choose three of the five Druid skills and keep two companions
-    alive through sustained pressure. Healing, warding and control priorities
-    must visibly matter.
-  - **Mage trial:** choose three of the five Mage skills and solve a control/burst
-    encounter. Slow, area pressure, direct pressure and self-protection must offer
-    more than one viable setup.
+- Defeat the chosen master with the player's current Apprentice party. The
+  master actually uses the offered class and explicitly promises an easy battle.
+  Winning returns to the field; return to the master and confirm **Become [class]**.
+  The shared XP reward pays once across all four master victories. There is no
+  temporary player-class swap or additional trial skill-selection screen.
 - Do not require a named species or both companions at Lv20. The quest may
   recommend roles and accessible habitats, but success in the actual class trial
   proves readiness.
@@ -383,7 +370,7 @@ requirements.
 
 **Reward and state change**
 
-- Atomically change Apprentice to Druid or Mage, preserve appearance, name,
+- Atomically change Apprentice to the chosen launch class, preserve appearance, name,
   inventory, monsters, formations and accepted receipts, and initialize the
   chosen class's valid default build.
 - Record specialization and transformation receipt once.
@@ -399,7 +386,7 @@ requirements.
 
 - The player can explain what their class contributes and name one party/build
   decision affected by it.
-- Both early second-companion choices can complete both class trials.
+- Both early second-companion choices can defeat each of the four masters.
 - Transformation is atomic, resumable and cannot duplicate rewards or erase the
   active party.
 - The post-transform fight lets the new class succeed before difficulty rises.
@@ -496,46 +483,19 @@ player-facing permanence wording needs owner approval before production copy.
 
 ### EP-10 - Inner Sea ownership at player Lv25
 
-This is scope only for the requested pass; it must not be implemented as part of
-the opening/class batch.
+Implemented as the first local farm batch following the owner's 2026-09-14
+request. At Lv25, establish the farm from the Inner Sea screen. The current
+objective leads there after the Amber route resolution, before Amber mastery.
+One house and five habitats display the highest-level compatible residents.
+Cleanliness enables AFK training of every owned copy; species maxima contribute
+power. Five individually assigned defenders face daily, lunar-scaled monster
+attacks at trainer level. Defeat removes XP from all owned monsters and damages the farm;
+item repair restores training and bonuses. Successful defense grants ordinary
+attacker loot and a read-only replay.
 
-**Entry conditions**
-
-- Player Lv25 and the associated introductory Inner Sea objective available.
-
-**Encounter and interaction**
-
-- Before Lv25, summoning remains in Inventory. The Inner Sea may be foreshadowed
-  with one restrained preview, but edit/ownership controls are not presented as
-  already owned.
-- At Lv25, establish the existing Inner Sea scene, make one persistent cosmetic
-  choice, and explain one approved monster-development use.
-- Visiting friends, parties and guild participation must remain independent of
-  personal ownership. Those online systems are outside this local scope.
-- Cosmetic decoration and any gameplay benefit must be visually and logically
-  separate. Paid cosmetics can never increase combat power.
-
-**Reward and state change**
-
-- Record `innerSeaOwned`, preserve the current scene layout contract and unlock
-  its edit controls after the introductory objective.
-
-**Progression gate**
-
-- Player Lv25 plus completion of the introductory ownership objective.
-
-**Validation gates**
-
-- Ownership, one customization and the approved practical use persist.
-- Players understand that decoration is not required combat power.
-- Social access is not blocked by ownership.
-
-**Unresolved dependency**
-
-The current Inner Sea has cosmetics/display only; it has no approved monster-
-strength system. Define and approve one bounded, non-paid development benefit
-before implementing this objective. Do not silently promote the stashed AFK/daily
-reward ideas into live scope.
+[Farm scope and tuning](../inner-sea/FARM_SCOPE.md) owns exact local defaults,
+clock/save contracts, migration, validation and the later habitat-equipment batch.
+Decoration never sells power. Equipment from bosses/dungeons remains future work.
 
 ### EP-11 - Species-specific monster trees at player Lv30
 
@@ -596,7 +556,7 @@ Minimum saved state:
 - set of class-demonstration IDs;
 - chosen/active/completed class trial and permanent specialization receipt;
 - ability-lesson completion;
-- `innerSeaOwned` and `monsterTreesUnlocked` feature flags where implemented;
+- `farm.owned` and the player-level monster-tree access rule;
 - tutorial/hint acknowledgement only for presentation, never as progression proof.
 
 Migration rules:
@@ -636,15 +596,14 @@ Migration rules:
 | 4 | Second role choice | opening, world, population, party | Spatial choice, second guarantee, auto-party |
 | 5 | Four class demonstrations | campaign, combat, world | Four authored encounters and saved IDs |
 | 6 | Tidecrown progression boss | campaign, combat, persistence | Single-boss route, telegraph and retry |
-| 7 | Class masters/trial/specialization | campaign, content, party, growth, animation | Two previews, two trials and atomic transformation |
+| 7 | Class masters/trial/specialization | campaign, content, party, growth, animation | Two previews, four master battles and atomic transformation |
 | 8 | Post-class counter loop | campaign, world, collection | One bounded acquisition/counter sequence and mini-boss |
 | 9 | Ability-selection lesson | party, campaign, content | Dynamic familiar-monster lesson and proof fight |
-| 10 | Inner Sea Lv25 design | inner-sea, growth, persistence | Separate approved future batch; no work until benefit decision |
+| 10 | Inner Sea Lv25 farm | inner-sea, growth, persistence, combat | Farm establishment, training, power, five-defender daily attacks, upgrades, repairs and replay |
 | 11 | Species-tree Lv30 system | growth, content, collection | Unlock, first lesson and batchable species definitions |
 | 12 | Full regression and playtest packet | delivery and all affected owners | Automated invariants plus human pacing evidence |
 
-Packages 1-9 and11 are implemented in the local prototype. Package10 remains
-deferred because its practical non-paid benefit is unresolved. Species trees use
+Packages 1-11 are implemented locally. Habitat equipment is the next farm batch. Species trees use
 the shared stable18-node topology with five named-skill nodes and one innate
 identity node for all100 runtime species; commercial content/balance approval is
 still required by roster batch.
@@ -663,7 +622,7 @@ still required by roster batch.
   before prerequisites; duplicate commits are harmless.
 - Ability selection works from first summon and prior discovery skips redundant
   menu instruction.
-- Inner Sea ownership checks Lv25 plus its objective when implemented.
+- Inner Sea establishment checks Lv25 and saves ownership once.
 - Monster trees check player Lv30, while node budget/prerequisites use the owned
   individual's state; duplicate species do not share purchases.
 - Defeat, retreat, background navigation, loadout use, reload and critical-save
@@ -681,7 +640,7 @@ deaths, recovery trips, menu confusion and which second species they chose.
 ### Gate B - Class readability
 
 After the four demonstrations, at least 4 of 5 testers should describe the core
-Druid/Mage distinction and one distinct behavior within each class. If they only
+difference among all four classes and a useful behavior for each. If they only
 remember dialogue, the encounters fail even if tests are green.
 
 ### Gate C - Boss comprehension
@@ -693,7 +652,7 @@ complete solution. Measure retries and the stated reason for each loss.
 ### Gate D - Class commitment
 
 Players must understand what their chosen class does, what it changes, and the
-commitment policy before confirmation. Validate Druid and Mage completion rates
+commitment policy before confirmation. Validate all four class completion rates
 with both early companion branches. This gate is required before permanence copy
 or later class-content production is locked.
 
@@ -711,12 +670,12 @@ monsters must still feel worth recruiting after the tree tutorial.
 
 ## Explicitly outside this scope
 
-- Two additional launch classes, class animation sets or unapproved class lore.
+- Classes beyond Druid, Mage, Hunter and Swordsman, final class animation sets or unapproved class lore.
 - Public servers, human parties/guilds, shared boss rooms and boss essence drops.
 - Paid items, power-selling, class-change sales or a release economy rebalance.
 - A new capture minigame or an alternate item to Soul Echoes.
 - Manual combat controls, boss dodge mechanics or a replacement combat engine.
-- AFK/daily Inner Sea rewards until promoted from Game Notes by an explicit request.
+- Habitat equipment drops from bosses/dungeons until the next equipment batch.
 - Final balance for every boss, class, creature and node. Mechanics and viable
   routes are required; release tuning follows playtest evidence.
 
@@ -724,10 +683,11 @@ monsters must still feel worth recruiting after the tree tutorial.
 
 1. **Class commitment wording and recovery policy:** approve true permanence or
    the recommended persistent-but-server-retrainable policy before EP-07 ships.
-2. **Inner Sea practical benefit:** approve one bounded, non-paid development use
-   before EP-10 implementation. Cosmetic ownership can be scoped independently.
+2. **Inner Sea tuning and quality:** review the implemented farm/training/defense loop
+   before permanent progression or the later equipment batch. The development
+   mechanics are explicitly authorized; release tuning remains unapproved.
 3. **Species-tree content gate:** approve the first Emberfox/Bloomslime/Stonehorn
    trees as the production pattern before generating the remaining roster batches.
 
 None of these decisions blocks independent trainer XP, the first two acquisitions,
-the four two-class demonstrations, Tidecrown or the ability-selection lesson.
+the four class demonstrations, Tidecrown or the ability-selection lesson.

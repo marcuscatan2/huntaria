@@ -1,19 +1,23 @@
 # Remaining scope — implementation and decision audit
 
-Audit: 2026-09-12. Covers all 66 active cards. The request authorizes unblocked
+Audit updated for the 2026-09-14 class/farm expansion. Covers all 66 active cards. The request authorizes unblocked
 implementation, not approval of final art, permanent economy, public services,
-payments or previously stashed ideas. No commercial criterion is accepted here.
+payments or unrelated stashed ideas. The owner explicitly activated Inner Sea AFK/defense and Hunter/Swordsman on 2026-09-14; see [farm scope](../inner-sea/FARM_SCOPE.md) and [class contract](../opening/CLASSES.md). No commercial criterion is accepted here.
 
-## Delivered in this batch
+## Implemented locally
 
 - F-028: three original on-demand loops, procedural cues, volume/mute controls,
   impact-linked playback and source cleanup. Final listening review remains.
 - F-030: persistent motion/FX/shake/flash controls, accessible settings dialog,
   focus restoration and responsive new controls. Whole-game physical/assistive
   certification is not supplied by automated tests.
-- F-031 and local part of F-032: fixed Inner Sea display, exactly three sockets,
-  two owned individual display slots, two skies, three earned decorations,
-  preview/save/cancel and a real local PNG download. No paid ownership.
+- F-031 and local part of F-032: wooden farm, five automatic habitat residents,
+  all-owned AFK XP, strongest-species power, lunar daily defenses with five
+  selected monsters, replay, loot, all-owned XP loss, repairs and upgrades.
+  Three decoration sockets, two skies and PNG export remain. Habitat equipment
+  from bosses/dungeons is the next gameplay batch.
+- F-006/F-019: Hunter and Swordsman join Druid and Mage, with five abilities,
+  trainer trees, demonstrations and explicit easy master acceptance challenges.
 - F-034 and local part of F-046: immutable allowlisted client bundles and
   hash manifests, failed-start reload UI, lazy hidden menus, pixel-identical
   compressed scenery and on-demand bridge. No deployment or online-rule claims.
@@ -32,10 +36,10 @@ Routes: [preferences/audio](../experience/SETTINGS_AUDIO.md),
 
 ### C1 — Class direction, before specialization/kit expansion
 
-Direction chosen: keep Apprentice first and Druid/Mage as the current launch
+Direction chosen: keep Apprentice first and Druid/Mage/Hunter/Swordsman as the current launch
 specializations; keep two companion slots. Extra summons remain effects, while a
-future true merge replaces one companion actor and never removes the trainer as
-the defeat objective. The player/owned hard cap is60; the engine/wild curve stays
+future true merge replaces one companion actor. Adventure battles retain the
+trainer defeat objective; Inner Sea defenses use five monsters without a trainer. The player/owned hard cap is60; the engine/wild curve stays
 valid through100. Final class kits and the exact allocation/balance curve still
 need a later content review before specialization production is expanded.
 
@@ -119,7 +123,7 @@ batch. Detailed criteria remain in [the backlog](../../FEATURE_BACKLOG.md).
 | F-012 | Existing usable inventory and individual summoning; account/revoked-entitlement states absent | C4,C5 |
 | F-013 | Existing100-entry guide/independent copies; six live group acquisition sources absent | C4 |
 | F-014 | Existing guaranteed receipt-backed local summon; server atomicity absent | C4 |
-| F-015 | Existing quiet Apprentice first hunt/first-Echo hint; specialization remains unresolved | C1,C2 |
+| F-015 | Existing Apprentice opening and four-class Lv20 specialization; final class feel/commitment policy pending | C1,C2 |
 | F-016 | Existing24 large maps/six hubs/six boss domains and open roads; full quality/device/online-lifecycle acceptance | C2,C4,C6 |
 | F-017 | Existing spatial gates and reciprocal routes; online lifecycle | C4 |
 | F-018 | Existing cave/forest exploration and durable local lives; server claims | C4 |
@@ -135,7 +139,7 @@ batch. Detailed criteria remain in [the backlog](../../FEATURE_BACKLOG.md).
 | F-028 | Implemented local loops/cues/controls; final listening/mix acceptance | C2,C6 |
 | F-029 | Existing quiet creation/navigation, plus settings/scene; real offline/login/group states absent | C1,C4 |
 | F-030 | New persistent controls/focus/responsive checks; whole-game human/device and future checkout acceptance | C3,C5,C6 |
-| F-031 | Implemented local scene/sockets/style/export; final visual and device review | C2,C6 |
+| F-031 | Implemented farm, AFK training, lunar five-monster defense, repairs/upgrades, scene/export; habitat equipment and final visual/device review pending | C2,C6 |
 | F-032 | Three local earned decorations and invariant gameplay; cloud/paid ownership and outfit slots absent | C4,C5; outfits use sprites |
 | F-033 | No paid catalog; needs approved products/prices and actual preview assets | C5; sprites |
 | F-034 | Implemented local immutable build/load safeguards; production rules/cache/network acceptance incomplete | C3,C4,C6 |
@@ -177,12 +181,14 @@ batch. Detailed criteria remain in [the backlog](../../FEATURE_BACKLOG.md).
 1. Settings: enable sound; change all volume/visual controls; move between world,
    battle and Inner Sea; pause/resume; reload. Listen for harsh/clipped/repeated
    sounds. The current mix is a reference, not a claim of commercial music quality.
-2. Inner Sea: arrange/empty/replace all three decorations and displayed companions;
-   preview then cancel; save and reload; download the image. Existing progress
-   unlocks decorations automatically. Test grants stay in the isolated QA profile.
+2. Inner Sea: establish the farm at Lv25, check the highest habitat residents,
+   assign defenders, clean, upgrade and watch a saved defense. Review an all-owned
+   XP loss and item repair before expanding equipment. Check decoration drafts,
+   reload and PNG export. Test grants stay in the isolated QA profile.
 3. Replay the quiet first 20–30 minutes and record pacing/clarity concerns (C2).
-   Approve the class/device direction (C1/C3) before expanding either contract.
+   Review all four class kits and master acceptance flow; device decisions remain C3.
 
-Coming next: C4 when online work is selected, then C5 before accounts/commerce or
+Coming next: habitat equipment after the farm loop review; C4 when online work
+is selected, then C5 before accounts/commerce or
 public data collection. Safe to defer: distant sprite batches, paid cosmetics,
 optional languages/iOS and final launch copy. Deferred Game notes remain stashed.

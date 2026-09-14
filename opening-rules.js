@@ -22,7 +22,7 @@ function character(raw){
  if(!raw||!validName(raw.name)||!Object.hasOwn(weapons,raw.weapon))return null;
  return {version:1,name:name(raw.name),weapon:raw.weapon,look:look(raw.look)};
 }
-function build(raw,specialization=null){if(['druid','mage'].includes(specialization))return {type:specialization,skills:[...C.UNITS[specialization].default]};const weapon=Object.hasOwn(weapons,raw?.weapon)?raw.weapon:'dagger';return {type:'apprentice',weapon,skills:[...weapons[weapon].skills]};}
+function build(raw,specialization=null){if(BondContent.CLASSES.includes(specialization))return {type:specialization,skills:[...C.UNITS[specialization].default]};const weapon=Object.hasOwn(weapons,raw?.weapon)?raw.weapon:'dagger';return {type:'apprentice',weapon,skills:[...weapons[weapon].skills]};}
 function base(weapon='dagger'){const w=weapons[weapon]||weapons.dagger;return {...C.UNITS.apprentice,...w,basicCategory:w.category,name:'Apprentice',skills:[...w.skills],default:[...w.skills]};}
 function attributes(weapon){return {str:weapon==='dagger'?12:1,agi:5,vit:9,int:1,dex:weapon==='bow'?12:1,leadership:1};}
 const drops={

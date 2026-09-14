@@ -39,7 +39,7 @@ There is no hidden pity, guaranteed first drop, second summoning gamble or autom
 ## 2. Current prototype and scope boundary
 
 The current local build has quiet named Apprentice creation (dagger/bow),
-Druid/Mage practice and legacy classes, 100 species definitions/supplied sprites,
+four-class practice, specialization and legacy classes, 100 species definitions/supplied sprites,
 24 large maps/six hubs/six boss domains, independent copies, skills/trees/formation, Soul Echo
 summoning, six local campaign chapters and simulated boss practice. Active fights
 continue behind menus, retain their world anchor, admit reserved aggressive
@@ -66,17 +66,17 @@ Rarity controls access, not an automatic stat advantage. Common species must rem
 
 ## 4. Included work and deliberate exclusions
 
-P0 includes the world/roster below, two classes, automatic solo and private group combat, fixed habitats, Echo acquisition, inventory/Inner Sea, progression/trees, production graphics/audio, browser usability, authoritative accounts/loot, eight cosmetic products, payment safety, operations and commercial validation.
+P0 includes the world/roster below, four classes, automatic solo and private group combat, fixed habitats, Echo acquisition, inventory/Inner Sea, progression/trees, production graphics/audio, browser usability, authoritative accounts/loot, eight cosmetic products, payment safety, operations and commercial validation.
 
 Private personal exploration instances are the efficient launch default. The map world is geographically connected; it does not require every exploring player to share one simulation. Bosses use shared realm scheduling and real synchronized group sessions. Town crowds, open-world kill stealing and server-wide player movement are excluded.
 
-Also excluded: PvP, trading/auction house, guilds, public chat, water exploration, walkable housing construction, chores/AFK rewards, a paid battle pass, loot-box sales, paid gameplay supplies, premium luck and paid boss entry. PT-BR and physical Safari/iOS certification remain P1 unless promoted before marketing them.
+Also excluded: PvP, trading/auction house, guilds, public chat, water exploration, walkable housing construction, a paid battle pass, loot-box sales, paid gameplay supplies, premium luck and paid boss entry. PT-BR and physical Safari/iOS certification remain P1 unless promoted before marketing them.
 
 GN-001 account-wide species-level buffs and GN-002 quest evolution remain stashed. GN-009 cooperative bosses are promoted into this commercial plan, not retroactively implemented.
 
 ## 5. Combat and attribute contract
 
-Solo parties contain the trainer and **zero, one or two** companions. A fresh profile creates a named level-1 Apprentice alone, chooses a dagger or bow and starts in the forest without a guide chain. Both weapons must defeat the introductory Emberfox without a paid/rare consumable. Druid and Mage are the current launch specializations: four demonstrations, Tidecrown and temporary class trials lead to a confirmed choice at player Lv20. Legacy Druid/Mage profiles remain usable. General menus accept zero-to-two companions; authored party trials may require two.
+Solo parties contain the trainer and **zero, one or two** companions. A fresh profile creates a named level-1 Apprentice alone, chooses a dagger or bow and starts in the forest without a guide chain. Both weapons must defeat the introductory Emberfox without a paid/rare consumable. Druid, Mage, Hunter and Swordsman are the launch specializations: four demonstrations, Tidecrown and easy master acceptance battles lead to a confirmed choice at player Lv20. Legacy Druid/Mage profiles remain usable. General menus accept zero-to-two companions; authored party trials may require two.
 
 Each actor has five active choices and equips three in priority order. Each species has one innate passive. Front/middle/back sets initial deployment; movement, range and target changes then happen normally. Ordinary monster attacks choose the nearest living enemy monster before a trainer. Only explicitly labeled skills/passives bypass that rule. Wild fights with no enemy trainer have valid fallback targets.
 
@@ -183,9 +183,9 @@ Prepared earned consumables retain reserve → consume-on-start → receipt sema
 
 A coherent original reference fight is the quality gate: Druid, Emberfox and Stonehorn facing Mage opposition, a Soul Echo drop, a summon and representative group support. Approval requires actual play/video on named hardware, not a still image or unsupported Sword x Staff parity claim.
 
-The art bible fixes silhouette, proportions, lighting/palette, ground anchors, scale, depth, icons and typography. All **100 species and two classes** need idle, move, basic attack, cast, hit, defeat and victory states; each of six bosses needs warning/charge, phase and recovery. Shared rigs, effects and tree templates reduce labor, but recolors do not count as distinct monsters and whole-portrait bobbing does not satisfy an attack.
+The art bible fixes silhouette, proportions, lighting/palette, ground anchors, scale, depth, icons and typography. All **100 species and four classes** need idle, move, basic attack, cast, hit, defeat and victory states; each of six bosses needs warning/charge, phase and recovery. Shared rigs, effects and tree templates reduce labor, but recolors do not count as distinct monsters and whole-portrait bobbing does not satisfy an attack.
 
-The baseline has **510 skill assignments, 100 innate assignments and 102 eighteen-node trees = 1,836 nodes**. It does not require 510 different engine implementations. Every assignment still needs semantic, visual and timing QA.
+The baseline has **520 skill assignments, 100 innate assignments and 104 eighteen-node trees = 1,872 nodes**. It does not require 520 different engine implementations. Every assignment still needs semantic, visual and timing QA.
 
 Use event-driven effects: projectile arrival, HP update, reaction and sound express the same impact. Low-effects/reduced-motion retain essential information. Cross-party ownership and boss warnings stay legible with 13 actors. Produce species in batches of ten and maps from a measured reusable pipeline; the last batch must meet the first batch's approved floor.
 
@@ -197,7 +197,7 @@ Primary navigation remains Explore, Party & Bag and Battle. Atlas, collection/In
 
 Zero-monster inventory/party screens are intentional. The tutorial teaches movement, solo combat, ordinary rewards, the 10% starter drop and guaranteed summoning. First combat targets ≤2 minutes for newcomers; first random Echo has no forced deadline. Loss reports use observed events to explain one preparation change.
 
-The Inner Sea is one fixed illustrative scene, a summoning altar, three cosmetic decoration sockets, a background/style selector and owned companion display. Include local screenshot export without private identifiers. Walkable hideout, chores, visiting and AFK rewards stay deferred.
+The Inner Sea is a Lv25 farm with a wooden house, five habitats, strongest-resident displays, cleanliness-based AFK training and strongest-species power. Five assigned monsters defend it each day against trainer-level attackers scaled by real lunar phases. Defeat removes XP from all owned monsters and damages the farm; item repairs restore training and account bonuses. Habitats upgrade independently, while cosmetic sockets/styles and local PNG export remain stat-free. See [farm scope](features/inner-sea/FARM_SCOPE.md) for the initial implementation and later boss/dungeon habitat equipment. Visiting and walkable construction remain deferred.
 
 Keyboard-only completion, visible focus, correctly labeled modals, meaningful empty/error/pending states, 200% text zoom, non-color-only status indicators and reduced motion are mandatory. Support 320/390/768/1440 CSS-pixel layouts and named physical devices.
 

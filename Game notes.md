@@ -39,7 +39,7 @@ That document now describes the actual implemented formulas.
 
 ## GN-001 — Account-wide monster mastery
 
-Status: STASHED. Source: user item 2.
+Status: PARTIALLY PROMOTED on 2026-09-14. The strongest-current-individual aggregation now supplies Inner Sea power; the original per-species flat attribute proposal below remains stashed. Source: user item 2 and the explicit Inner Sea implementation request.
 
 - Each monster species' level contributes an account-wide attribute benefit.
 - The benefit applies to the trainer and all of the account's monsters, not
@@ -342,4 +342,14 @@ are still future work.
 
 The v1 small-launch time/cost estimate is withdrawn. See F-066 for the measured
 pilot and rebaseline before a new commercial commitment. GN-001 account buffs,
-GN-002 quest evolution, housing chores/AFK, PvP and water exploration stay deferred.
+GN-002 quest evolution, PvP and water exploration stay deferred.
+
+## GN-011 — Inner Sea farm and lunar defenses
+
+Status: ACTIVE; first local implementation authorized 2026-09-14. The owner
+explicitly requested scoping and implementation of AFK training while clean,
+five-monster daily defense, moon-scaled attacks, XP loss and item repairs,
+independent habitat upgrades and strongest-species power. These mechanics are
+no longer stashed. [FARM_SCOPE.md](features/inner-sea/FARM_SCOPE.md) owns the
+contract and provisional tuning; boss/dungeon habitat equipment is the next batch.
+GN-002 evolution and GN-001's original flat species-stat proposal remain deferred.

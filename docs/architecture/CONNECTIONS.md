@@ -98,7 +98,7 @@ Trace through: [campaign.js](<../../campaign.js>) → [campaign-menu.js](<../../
 
 [opening](<../../features/opening/README.md>) → [campaign](<../../features/campaign/README.md>)
 
-Accepted first Firstlight Brimble claim -> guaranteed ordinary Echo -> highlighted Bag/Echo/Summon path and auto-party -> Forest Mage meeting -> guaranteed second-role Echo and second summon -> easy Mage proof that opens physical roads -> four recorded class demonstrations -> fixed Tidecrown -> temporary class trial -> Lv20 specialization -> adaptation encounters -> Lv30 monster-tree proof. Trainer XP and monster XP remain independent; UI hints and travel never grant milestones.
+Accepted first Firstlight Brimble claim -> guaranteed ordinary Echo -> highlighted Bag/Echo/Summon path and auto-party -> Forest Mage meeting -> guaranteed second-role Echo and second summon -> easy Mage proof that opens physical roads -> four recorded class demonstrations -> fixed Tidecrown -> easy master acceptance battle -> Lv20 specialization -> adaptation encounters -> Lv30 monster-tree proof. Trainer XP and monster XP remain independent; UI hints and travel never grant milestones. Four classes are available; explicit farm establishment at Lv25 precedes Amber mastery.
 
 Trace through: [opening-rules.js](<../../opening-rules.js>) → [wild-behavior.js](<../../wild-behavior.js>) → [region.js](<../../region.js>) → [campaign.js](<../../campaign.js>) → [profile.js](<../../profile.js>) → [app.js](<../../app.js>) → [menu.js](<../../menu.js>) → [growth.js](<../../growth.js>) → [tree-menu.js](<../../tree-menu.js>).
 
@@ -134,9 +134,18 @@ Trace through: [settings.js](<../../settings.js>) → [audio.js](<../../audio.js
 
 [inner-sea](<../../features/inner-sea/README.md>) → [persistence](<../../features/persistence/README.md>)
 
-Progress facts determine decoration availability; owned individual IDs and three sockets validate before a critical profile write. Draft/export never consume items or change combat.
+Owned progress validates three decoration sockets and legacy selections; pure farm rules separately compute training, strongest-species power, daily defenses and habitat residents. Profile settles timestamps, XP, repairs and rewards atomically. Drafts, export and defense replay cannot grant rewards.
 
-Trace through: [inner-sea-rules.js](<../../inner-sea-rules.js>) → [inner-sea.js](<../../inner-sea.js>) → [profile.js](<../../profile.js>) → [menu.js](<../../menu.js>).
+Trace through: [inner-sea-rules.js](<../../inner-sea-rules.js>) → [inner-sea.js](<../../inner-sea.js>) → [profile.js](<../../profile.js>) → [menu.js](<../../menu.js>) → [inner-sea-farm.js](<../../inner-sea-farm.js>) → [inner-sea-farm-view.js](<../../inner-sea-farm-view.js>).
+
+<a id="farm-defense"></a>
+## farm-defense
+
+[inner-sea](<../../features/inner-sea/README.md>) → [combat](<../../features/combat/README.md>)
+
+Explicit UTC phase/attack timestamp + saved five-individual defense loadout -> trainer-free deterministic Battle -> one committed XP/loot/damage outcome and read-only replay. Profile owns clock and storage; ordinary adventures use frozen profile snapshots.
+
+Trace through: [inner-sea-farm.js](<../../inner-sea-farm.js>) → [game.js](<../../game.js>) → [profile.js](<../../profile.js>) → [progression.js](<../../progression.js>).
 
 ## Shared interface shapes
 

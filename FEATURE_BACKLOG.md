@@ -32,7 +32,7 @@ complete online groups, or approve all 100 creature art packages.
 
 ## Release contract
 
-- At least 100 distinct summonable species; planning allocation 94 wild and six boss species. Two trainer classes, five skills/three equipped each, one innate per species, 18 passive nodes per character type.
+- At least 100 distinct summonable species; planning allocation 94 wild and six boss species. Four trainer classes, five skills/three equipped each, one innate per species, 18 passive nodes per character type.
 - Planning baseline: 24 large maps across six regions, six compact hubs. Large maps must take at least 30 seconds to cross at base walking speed; target 45–90 seconds. Hubs are exempt.
 - Trainer can begin alone. Starter Echo drops: 10%. Designated mid/late Echoes and every very-rare drop: 0.01%. A legal Echo summon: 100%. No pity or second summoning roll.
 - Two–three-player optional boss fights; one 0.01% group essence roll on every eligible victory. Boss essences are extremely rare but have no server-wide copy limit; previous drops/ownership/summons do not change the chance.
@@ -83,7 +83,7 @@ Accountability labels allocate future work; they do not spawn agents or authoriz
 | [F-028](#f-028) | P0 | M2 | Music, sound effects and audio controls |
 | [F-029](#f-029) | P0 | M1–M2 | Onboarding and coherent menu navigation |
 | [F-030](#f-030) | P0 | M5 | Accessibility and input/settings quality |
-| [F-031](#f-031) | P0 | M2 | Small Inner Sea display and local screenshot export |
+| [F-031](#f-031) | P0 | M2 | Inner Sea farm, daily defense and local screenshot export |
 | [F-032](#f-032) | P0 | M4 | Appearance ownership, equipment and earned cosmetics |
 | [F-033](#f-033) | P0 | M4 | Eight-product catalog and real previews |
 | [F-034](#f-034) | P0 | M0–M3 | Versioned client build and runtime asset pipeline |
@@ -228,17 +228,17 @@ Required protocols: VP-02, VP-03. Evidence: pinned build/rules, fixtures/seeds, 
 ### F-006 — 100-species roster, skill and passive content contract
 
 Priority: P0 · Milestone: M0 · Status: Local implementation / commercial criteria incomplete.
-Baseline: 100 local species and 510 assignments; commercial art/boss sources pending
+Baseline: 100 local species and 520 assignments; commercial art/boss sources pending
 Dependencies: None (foundational contract).
 Source items: MVP-04, MVP-05, MVP-06, MVP-26
 Accountability: Implementation agent; owner accepts
 
 Acceptance criteria:
 
-- [ ] F-006-AC1: Launch contains at least 100 distinct summonable monster species plus two trainer classes. Working manifest: 94 wild species and six group-boss essence species. Color variants, skins, ages and encounter-only copies do not count as new species.
-- [ ] F-006-AC2: Every species and class has five authored active-skill assignments, three equipped per present actor; the 100-species baseline requires 510 assignments, 100 innate passive assignments and 102 eighteen-node trees (1,836 nodes). Shared effect code is allowed; 510 unique engine effects are not required.
+- [ ] F-006-AC1: Launch contains at least 100 distinct summonable monster species plus four trainer classes. Working manifest: 94 wild species and six group-boss essence species. Color variants, skins, ages and encounter-only copies do not count as new species.
+- [ ] F-006-AC2: Every species and class has five authored active-skill assignments, three equipped per present actor; the 100-species baseline requires 520 assignments, 100 innate passive assignments and 104 eighteen-node trees (1,872 nodes). Shared effect code is allowed; 520 unique engine effects are not required.
 - [ ] F-006-AC3: Every species has a stable ID, silhouette/portrait, role, element, attributes, movement/range, legal kit, innate passive and discoverable habitat or boss source. Content rejects unknown references, invalid numbers and role-inapplicable tree branches.
-- [ ] F-006-AC4: All 100 species are playable after a test-authorized summon and validated in battle, menus and Inner Sea; no placeholder art/kit counts toward launch acceptance. Coverage enumerates all 510 assignments, passives and trees, not just the original ten.
+- [ ] F-006-AC4: All 100 species are playable after a test-authorized summon and validated in battle, menus and Inner Sea; no placeholder art/kit counts toward launch acceptance. Coverage enumerates all 520 assignments, passives and trees, not just the original ten.
 
 Validation: Validate the F-064 roster manifest and per-species acceptance matrix. Use controlled test inventory to cover ultra-rare species; test injection cannot mint a production Echo or boss essence.
 Required protocols: VP-01, VP-02. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
@@ -310,19 +310,19 @@ Required protocols: VP-02, VP-10. Evidence: pinned build/rules, fixtures/seeds, 
 ### F-010 — Eighteen-node ranked mastery trees
 
 Priority: P0 · Milestone: M2 · Status: Local implementation / commercial criteria incomplete.
-Baseline: 102 role-usable trees; path viability review pending
+Baseline: 104 role-usable trees; path viability review pending
 Dependencies: F-003, F-009
 Source items: MVP-06, MVP-08
 Accountability: Implementation agent; owner accepts
 
 Acceptance criteria:
 
-- [ ] F-010-AC1: Each of the two classes and at least100 monster species exposes eighteen ranked nodes with stable IDs, valid prerequisites and caps3/5/10. Monster trees unlock at player Lv30; each species has five named-skill nodes and an innate-identity node over shared validated effect primitives.
+- [ ] F-010-AC1: Each of the four classes and at least100 monster species exposes eighteen ranked nodes with stable IDs, valid prerequisites and caps3/5/10. Monster trees unlock at player Lv30; each species has five named-skill nodes and an innate-identity node over shared validated effect primitives.
 - [ ] F-010-AC2: Each individual owns separate ranked investment in its species template; the committed Druid/Mage class tree unlocks with Lv20 transformation. No purchase exceeds budget/cap or bypasses progression/prerequisites. Free respec refunds exactly; migration preserves valid investments and grandfathers access where needed.
 - [ ] F-010-AC3: Every offered branch has a usable effect for that character, including healing branches. Previewed rank changes agree with battle values and cap interactions.
 - [ ] F-010-AC4: At the locked progression budgets, at least two distinct development paths per class are viable and every species has one documented useful path. Unlimited respec remains free; the UI does not imply all nodes can be maxed.
 
-Validation: Enumerate all 102 trees; traverse prerequisites, reject cap/budget exploits, check fractional attribute stacking and role affinities. Cover the 100-species roster in staged test batches.
+Validation: Enumerate all 104 trees; traverse prerequisites, reject cap/budget exploits, check fractional attribute stacking and role affinities. Cover the 100-species roster in staged test batches.
 Required protocols: VP-01, VP-02, VP-05. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
 
 <a id="f-011"></a>
@@ -340,7 +340,7 @@ Acceptance criteria:
 - [ ] F-011-AC1: One earned coin currency has documented sources/sinks and per-item loot rows. Soul Echoes, boss essences, drop boosts and gameplay supplies are never sold for money; there is no paid luck, pity or paid entry advantage.
 - [ ] F-011-AC2: Each eligible spawn death has one loot decision per configured item. Starter Echo rate is 10%; designated mid/late Echoes and every very-rare item use 0.01%, independently of spawn rarity. F-060 fixes exact denominators and group roll scope.
 - [ ] F-011-AC3: A persisted loot receipt binds drops to the eligible account or selected boss recipient. World pickup feedback cannot lose a rare item: leaving, death, disconnect or a full display queue recover it to inventory without rolling again.
-- [ ] F-011-AC4: An account with no monsters, Echoes, supplies or coins can defeat accessible starter wildlife using either trainer class alone and earn ordinary rewards. Progress cannot require obtaining a 0.01% drop.
+- [ ] F-011-AC4: An account with no monsters, Echoes, supplies or coins can defeat accessible starter wildlife using any of the four trainer classes alone and earn ordinary rewards. Progress cannot require obtaining a 0.01% drop.
 
 Validation: Exact integer drop boundaries, dead-spawn deduplication, zero-supply trainer-only loops, kill-then-loss, pickup/leave/disconnect recovery and per-row loot independence. See VP-15 for rare-event tests.
 Required protocols: VP-02, VP-03, VP-15. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
@@ -492,7 +492,7 @@ Required protocols: VP-01, VP-03, VP-07, VP-13. Evidence: pinned build/rules, fi
 ### F-019 — Six-region progression chapters and an accessible main ending
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: Six chapters / 48 objectives / accessible ending and once-only rewards; common-starter paths tested for both classes; see PASS16_VALIDATION.md
+Baseline: Six chapters / 48 objectives / accessible ending and once-only rewards; common-starter paths covered for all four classes in tests/pass16_cases.js; current evidence in PROGRESS.md
 Dependencies: F-016, F-020, F-021
 Source items: MVP-05
 Accountability: Implementation agent; owner accepts
@@ -614,19 +614,19 @@ Required protocols: VP-04, VP-05. Evidence: pinned build/rules, fixtures/seeds, 
 ### F-025 — Animation for 100 species and both trainer classes
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: 3 painted pose rigs, 71 vector-joint rigs, 28 simpler fallbacks; 102-row coverage explicit, production gate open; see PASS16_VALIDATION.md
+Baseline: 3 painted pose rigs, 71 vector-joint rigs, 28 simpler fallbacks; 104-row coverage explicit, production gate open; see PASS16_VALIDATION.md
 Dependencies: F-024
 Source items: MVP-04, MVP-26
 Accountability: Implementation agent; owner accepts
 
 Acceptance criteria:
 
-- [ ] F-025-AC1: All 100 distinct species and both classes have idle, movement, basic attack, cast, hit, defeat and victory states mapped to real events; each of six boss species additionally supports charge, phase transition and recovery.
+- [ ] F-025-AC1: All 100 distinct species and all four classes have idle, movement, basic attack, cast, hit, defeat and victory states mapped to real events; each of six boss species additionally supports charge, phase transition and recovery.
 - [ ] F-025-AC2: Every state has stable ground anchors and scale, no clipped body parts or sheet bleed, and timings approved under the reference rubric. Recolor-only variants cannot count as new species.
 - [ ] F-025-AC3: Turning, approach, melee recovery and flight remain readable at actual size. Depth and health bars follow actors; defeated actors stop acting. Reusable rigs are allowed, but whole-portrait bobbing alone does not satisfy attack animation.
-- [ ] F-025-AC4: Solo pause/2×, live group clock, background/resume, low effects and reduced motion preserve correct state. All 102 character asset sets load or show a recoverable nonblank failure.
+- [ ] F-025-AC4: Solo pause/2×, live group clock, background/resume, low effects and reduced motion preserve correct state. All 104 character asset sets load or show a recoverable nonblank failure.
 
-Validation: Character-by-state coverage manifest and actual clips for all 102 characters, six boss phase sequences, anchor checks and representative 13-combatant group playback.
+Validation: Character-by-state coverage manifest and actual clips for all 104 characters, six boss phase sequences, anchor checks and representative 13-combatant group playback.
 Required protocols: VP-04, VP-06. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
 
 <a id="f-026"></a>
@@ -634,14 +634,14 @@ Required protocols: VP-04, VP-06. Evidence: pinned build/rules, fixtures/seeds, 
 ### F-026 — Impact-synchronized VFX and combat feedback
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: 510 explicit visual assignments and shared solo impact deadline; live group/network/device signoff pending; see PASS16_VALIDATION.md
+Baseline: 520 explicit visual assignments and shared solo impact deadline; live group/network/device signoff pending; see PASS16_VALIDATION.md
 Dependencies: F-008, F-024
 Source items: MVP-03, MVP-04
 Accountability: Implementation agent; owner accepts
 
 Acceptance criteria:
 
-- [ ] F-026-AC1: All 510 skill assignments map to readable reusable physical, projectile, elemental, area, heal, ward and status VFX; innate triggers and each boss warning are identified. Assignments need not be unique engine effects.
+- [ ] F-026-AC1: All 520 skill assignments map to readable reusable physical, projectile, elemental, area, heal, ward and status VFX; innate triggers and each boss warning are identified. Assignments need not be unique engine effects.
 - [ ] F-026-AC2: Visible contact/projectile arrival, HP delta, hit reaction and sound share one logical impact event. Solo 1×/2× and network-interpolated group presentation meet VP-04; effects never alter authoritative simulation.
 - [ ] F-026-AC3: Damage, guarding, healing and dodge remain distinguishable in the 13-combatant worst case. Ownership labels distinguish allies; effects cannot hide a trainer or boss warning.
 - [ ] F-026-AC4: Solo pause freezes local presentation; group clients cannot pause the server. Low-effects/reduced-motion preserve essential warnings, loot confirmation and guaranteed summoning outcome.
@@ -733,20 +733,20 @@ Required protocols: VP-05, VP-12. Evidence: pinned build/rules, fixtures/seeds, 
 
 <a id="f-031"></a>
 
-### F-031 — Small Inner Sea display and local screenshot export
+### F-031 — Inner Sea farm, daily defense and local screenshot export
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: Local three-socket/two-companion scene, skies, drafting/persistence and PNG export; final art acceptance pending
+Baseline: Local farm, five automatic habitat displays, AFK training, daily defenses, upgrades/repairs, decoration drafts and PNG export; equipment and release acceptance pending
 Dependencies: F-013, F-025, F-027
 Source items: MVP-09
 Accountability: Implementation agent; owner accepts
 
 Acceptance criteria:
 
-- [ ] F-031-AC1: One fixed scene displays the trainer and selected owned companions with exactly three decoration sockets and one background/style selector.
+- [ ] F-031-AC1: One farm scene contains a wooden house, barn, cellar, bird roost, insect garden and pond, displaying the highest-level compatible owned individual per habitat with stable first-individual ties. Retain three cosmetic sockets and one style selector.
 - [ ] F-031-AC2: Selecting a socket previews/equips only eligible owned decorations; unequip/replace/cancel works and the layout survives returning from combat and reloading.
 - [ ] F-031-AC3: A local image export reproduces the player's scene without private email/account identifiers, remote upload, blank assets or browser-tainted-canvas failure.
-- [ ] F-031-AC4: No walkable housing map, drag-grid construction, chores, AFK production, visiting friends or public image hosting is introduced.
+- [ ] F-031-AC4: Clean, intact farms train every owned copy; power sums one maximum level per species. Five chosen monsters defend without a trainer against daily trainer-level, lunar-scaled attacks. Successful defenses settle normal attacker loot once; failure removes XP from all owned monsters and suspends training/bonuses until item repair. Habitats upgrade separately; future boss/dungeon habitat equipment must strengthen account/defense without selling power. Validate offline time, normalization, replay and idempotency under the detailed farm scope.
 
 Validation: Every socket/background state, empty ownership, rapid replace, locked decoration, reload and screenshot pixel/content review at desktop/mobile resolutions.
 Required protocols: VP-03, VP-04, VP-05. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
@@ -1416,7 +1416,7 @@ Accountability: Implementation agent; owner accepts
 Acceptance criteria:
 
 - [ ] F-064-AC1: The launch manifest lists at least100 genuinely distinct summonable species (94 wild/six boss). The initial100 use25 land,15 bird,4 frog,1 mythic,15 insect,3 spider,12 aquatic,10 reptile/newt,6 plant/fungus,6 spirit/construct and3 other-invertebrate inspirations. Each records source map, element, role, silhouette/art, five skills, innate,18-node tree and acquisition rules; skins/recolors do not count.
-- [ ] F-064-AC2: All 510 skill assignments, 100 innates and 102 trees totaling 1,836 nodes are defined and validated. Shared mechanics and tree templates are allowed; each species needs a coherent identity and at least one tested useful build, with stronger balance sampling across class/role matchups.
+- [ ] F-064-AC2: All 520 skill assignments, 100 innates and 104 trees totaling 1,872 nodes are defined and validated. Shared mechanics and tree templates are allowed; each species needs a coherent identity and at least one tested useful build, with stronger balance sampling across class/role matchups.
 - [ ] F-064-AC3: Produce and accept batches of ten after a first reference batch; each has animation/event clips, provenance, collision/anchor checks, working Echo summon and loadout tests. Completion is species-by-species, not a numeric placeholder counter.
 - [ ] F-064-AC4: Commercial gates require all 100 complete; the final batch receives the same rubric. A smaller free prototype/pilot is explicitly labeled a test, never presented as satisfying this launch floor; boss species are tested in isolated grant-enabled realms.
 

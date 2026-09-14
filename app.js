@@ -5,7 +5,7 @@
   let build = G.soloBuild(), battle = null, running = false, speed = 1, elapsed = 0, lastFrame = 0, seenEvents = 0, saveAvailable = true;
   const tabs = ['region','loadout','battle'], recordedEncounters = new WeakSet();
   let activeTab = 'region', encounterId = null, committed = false;
-  let practiceParties=1,trialSkills=null;
+  let practiceParties=1;
   try { const saved = JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('bond-bolt-build-v3'+(BondProfile.TEST?'-sandbox':''))||(!BondProfile.TEST&&BondProfile.snapshot().migration&&(localStorage.getItem('bond-bolt-build-v2')||localStorage.getItem('bond-bolt-build-v1')))); build = G.migrateBuild(saved)||build; } catch (_) { saveAvailable = false; }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(build)); saveAvailable = true; } catch (_) { saveAvailable = false; } $('#save-status').textContent = saveAvailable ? 'Saved on this device' : 'Session only · storage unavailable'; }
   // Shared illustrated sprites for loadouts, portrait buttons, and battle.
@@ -35,7 +35,7 @@
     if (![0,1].includes(side)||![0,1,2].includes(slot))return false;
     if(slot>0&&(ref===null||ref==='')){build[side][slot]=null;invalidate();return true;}
     let next;
-    if(!slot){if(side===0&&BondProfile.snapshot().character&&!BondProfile.snapshot().character.legacy)return false;if(!['druid','mage'].includes(ref))return false;next={type:ref,skills:[...G.UNITS[ref].default]};}
+    if(!slot){if(side===0&&BondProfile.snapshot().character&&!BondProfile.snapshot().character.legacy)return false;if(!BondContent.CLASSES.includes(ref))return false;next={type:ref,skills:[...G.UNITS[ref].default]};}
     else if(side===0){
       let mon=BondProfile.getCompanion(ref);
       if(!mon){const matches=BondProfile.companions(ref);if(matches.length===1)mon=matches[0];}
@@ -70,7 +70,6 @@
   }));
   function prepareBattle() {
     const fightBuild=JSON.parse(JSON.stringify(build)),npc=BondProfile.encounter(encounterId),profile=BondProfile.snapshot(),adventure=!!npc&&!npc.practice;
-    if(npc?.trialClass){const pool=G.UNITS[npc.trialClass].skills,chosen=Array.isArray(trialSkills)&&trialSkills.length===3&&new Set(trialSkills).size===3&&trialSkills.every(id=>pool.includes(id))?trialSkills:G.UNITS[npc.trialClass].default;fightBuild[0][0]={type:npc.trialClass,skills:[...chosen]};}
     if(adventure)fightBuild[0]=BondAdventure.deploy(profile,fightBuild[0]);
     if(npc?.team)fightBuild[1]=JSON.parse(JSON.stringify(npc.team));
     guilds[1]=npc?npc.name:'Dusk';
@@ -137,7 +136,7 @@
     const npc=BondProfile.encounter(id);
     if(!npc||!BondProfile.validEncounter(id))return false;
     const injured=!npc.practice&&!BondProfile.snapshot().encounterSave&&BondAdventure.readiness(BondProfile.snapshot(),build[0]);if(injured){document.querySelector('#region-message').textContent=injured;return false;}
-    let levelChanged=false;if(npc.trialClass)trialSkills=options.trialSkills||trialSkills||[...G.UNITS[npc.trialClass].default];else trialSkills=null;
+    let levelChanged=false;
     if(npc.kind==='boss'&&npc.practice){
       practiceParties=[1,2,3].includes(options.practiceParties)?options.practiceParties:1;
       const selected=options?.bossLevel??BondProfile.snapshot().bossLevel;

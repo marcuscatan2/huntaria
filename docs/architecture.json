@@ -49,13 +49,14 @@
       ],
       "entry": "BondCreation.open / required; BondOpening.character / needsIdentity / build / loot; BondProfile.createCharacter / nameCharacter; BondApp.beginOpening",
       "summary": "Creates a named apprentice or names an older migrated trainer without resetting it; connects identity, appearance and weapon choice to combat and the first forest.",
-      "contract": "Fresh profiles require creation; existing profiles retain progress/classes. Solo weapon builds begin at forest camp. One nearby Emberfox attacks after a movement-safe grace period; the first accepted Firstlight Emberfox victory grants the one-time Echo and Lv2 trainer threshold. The in-frame objective highlights Bag, the Brimble Echo and Summon; explicit summoning auto-fills an empty party slot. The Forest Mage then asks for any second companion, runs a deliberately easy protected proof battle, returns immediately to exploration and unlocks the physical exits. Existing pre-gate progressed saves remain ahead. Ordinary Echo odds stay unchanged. Four class demonstrations, Tidecrown, temporary Druid/Mage trials and a Lv20 confirmed specialization continue the authored route.",
+      "contract": "Fresh profiles require creation; existing profiles retain progress/classes. Solo weapon builds begin at forest camp. One nearby Emberfox attacks after a movement-safe grace period; the first accepted Firstlight Emberfox victory grants the one-time Echo and Lv2 trainer threshold. The in-frame objective highlights Bag, the Brimble Echo and Summon; explicit summoning auto-fills an empty party slot. The Forest Mage then asks for any second companion, runs a deliberately easy protected proof battle, returns immediately to exploration and unlocks the physical exits. Existing pre-gate progressed saves remain ahead. Ordinary Echo odds stay unchanged. Four class demonstrations, Tidecrown, four easy master acceptance battles and a Lv20 confirmed specialization continue the authored route. Hunter and Swordsman are playable specializations. The master fights as its offered class; the player retains the current Apprentice party and confirms after victory at Lv20. Farm establishment joins the route at Lv25.",
       "tests": [
         "onboarding",
         "opening",
         "mechanics",
         "ui",
-        "boundaries"
+        "boundaries",
+        "farm-classes"
       ],
       "docs": [
         "features/opening/DESIGN.md",
@@ -63,7 +64,8 @@
         "features/opening/VALIDATION.md",
         "features/opening/PASS26_VALIDATION.md",
         "features/opening/PASS27_VALIDATION.md",
-        "PASS24_VALIDATION.md"
+        "PASS24_VALIDATION.md",
+        "features/opening/CLASSES.md"
       ]
     },
     {
@@ -84,7 +86,7 @@
         "F-064"
       ],
       "entry": "BondContent; BondRoster.manifest / validate",
-      "contract": "Runtime content is assembled at boot. Stable species/skill IDs survive display renames. The owner-maintained Bond & Bolt Google Sheet is the source of truth for creature identity, design role, combat identity, element, region, wild/source level, encounter source, rarity and attack basis; a reviewed revision/fingerprint is imported locally and never fetched during play. The mon-skills tab is empty, so existing runtime stats/kits remain authoritative until reviewed Sheet data exists. The starter map is an explicit level/population override. 100 entries do not mean 100 approved animation packages; generated JSON/tables must agree with the reviewed runtime snapshot.",
+      "contract": "Runtime content is assembled at boot. Stable species/skill IDs survive display renames. The owner-maintained Bond & Bolt Google Sheet is the source of truth for creature identity, design role, combat identity, element, region, wild/source level, encounter source, rarity and attack basis; a reviewed revision/fingerprint is imported locally and never fetched during play. The mon-skills tab is empty, so existing runtime stats/kits remain authoritative until reviewed Sheet data exists. The starter map is an explicit level/population override. 100 entries do not mean 100 approved animation packages; generated JSON/tables must agree with the reviewed runtime snapshot. BondContent.CLASSES lists Druid, Mage, Hunter and Swordsman; TRAINERS also includes Apprentice.",
       "tests": [
         "mechanics",
         "reference",
@@ -120,13 +122,14 @@
         "F-036"
       ],
       "entry": "BondGame.Battle.step / emit / run; BondRules",
-      "contract": "Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement.",
+      "contract": "Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective.",
       "tests": [
         "field-polish",
         "mechanics",
         "campaign",
         "boundaries",
-        "runtime"
+        "runtime",
+        "farm-classes"
       ],
       "docs": [
         "Companion stats.md",
@@ -151,12 +154,13 @@
         "F-010"
       ],
       "entry": "BondProgress.derived / trainerLevel; BondGrowth.nodes / stats; BondTree",
-      "contract": "Trainer and companion XP are independent values on the same cumulative curve, with a hard player launch cap60; no owned monster sets trainer level. The engine/wild curve remains valid through100. Lv61–100 Echoes summon as Lv60 individuals while preserving sourceLevel; migration initializes trainerXP at the previously displayed level and preserves older tree access. Class trees unlock for the committed Druid/Mage at transformation. Individual monster trees unlock at player Lv30. Every species keeps18 ranked nodes; five nodes modify named skills and a sixth expresses its innate identity. Each effective DEX point gives0.667% active cooldown reduction; attribute and tree reduction share a50% total cap.",
+      "contract": "Trainer and companion XP are independent values on the same cumulative curve, with a hard player launch cap60; no owned monster sets trainer level. The engine/wild curve remains valid through100. Lv61–100 Echoes summon as Lv60 individuals while preserving sourceLevel; migration initializes trainerXP at the previously displayed level and preserves older tree access. Class trees unlock for the committed Druid/Mage at transformation. Individual monster trees unlock at player Lv30. Every species keeps18 ranked nodes; five nodes modify named skills and a sixth expresses its innate identity. Each effective DEX point gives0.667% active cooldown reduction; attribute and tree reduction share a50% total cap. Intact farm power adds capped account HP once, never to enemies. XP losses preserve already-earned individual tree budgets via optional treeLevel.",
       "tests": [
         "onboarding",
         "mechanics",
         "campaign",
-        "boundaries"
+        "boundaries",
+        "farm-classes"
       ],
       "docs": [
         "Companion stats.md",
@@ -187,7 +191,8 @@
         "mechanics",
         "ui",
         "boundaries",
-        "experience"
+        "experience",
+        "farm-classes"
       ],
       "docs": [
         "Companion stats.md"
@@ -220,14 +225,15 @@
         "F-026"
       ],
       "entry": "CharacterRig.mount / pose / trigger; CombatView.onEvent / draw / impactAudit; BondPresentation.timing",
-      "contract": "Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid and Mage use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional.",
+      "contract": "Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid and Mage use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional. Hunter/Swordsman use code-drawn vector reference figures with transform motion; final class pose packages remain unapproved.",
       "tests": [
         "field-polish",
         "mechanics",
         "ui",
         "boundaries",
         "sprites",
-        "trainer-animation"
+        "trainer-animation",
+        "farm-classes"
       ],
       "docs": [
         "ART_BIBLE.md",
@@ -289,7 +295,7 @@
         "F-035"
       ],
       "entry": "BondRegion.enter / leave / frame; WorldRenderer.mount / dispose / draw; BondWorldMap",
-      "contract": "Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; the designated opening Emberfox is temporarily hostile. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The mandatory Forest Mage onboarding trial is the sole protected encounter and cannot receive roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction.",
+      "contract": "Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; the designated opening Emberfox is temporarily hostile. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The Forest Mage onboarding trial and four class-master acceptance battles are protected from roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -297,7 +303,8 @@
         "ui",
         "mechanics",
         "campaign",
-        "boundaries"
+        "boundaries",
+        "farm-classes"
       ],
       "docs": [
         "WORLD_DESIGN.md",
@@ -406,13 +413,14 @@
         "F-062"
       ],
       "entry": "BondCampaign.reconcile / bosses; BondCampaignMenu; BondProfile.reserveBattle / restoreBattle",
-      "contract": "Campaign definitions feed encounters; profile reserves party/seed/supplies and accepted kills. BondCampaign.questMarker deterministically maps the current receipt-backed objective to `offer`, `delivery` or no marker; presentation does not infer or award quest state. The early route records two acquisitions, a Forest Mage meeting/proof gate, four distinct Druid/Mage demonstrations, fixed Lv15 Tidecrown, one rewarded temporary class trial, confirmed Lv20 specialization, an ability-change/counter loop, fixed Lv30 Amber guardian and monster-tree proof. Authored trainer XP reaches thresholds100/600/1500/6600/10500/19000/30000/43500 without repeat grinding; monster XP remains separate. One tiny in-frame current objective and its destination region/map guide the opening; the Mage proof is the only opening road lock and later levels communicate danger without invisible gates. Launch story trainers clamp to the Lv60 player ceiling while preserving sourceLevel. Practice boss scaling is reward-free and separate from progression bosses; no human multiplayer or essence source exists.",
+      "contract": "Campaign definitions feed encounters; profile reserves party/seed/supplies and accepted kills. BondCampaign.questMarker deterministically maps the current receipt-backed objective to `offer`, `delivery` or no marker; presentation does not infer or award quest state. The early route records two acquisitions, a Forest Mage meeting/proof gate, four distinct Druid/Mage/Hunter/Swordsman demonstrations, fixed Lv15 Tidecrown, one rewarded master acceptance battle, confirmed Lv20 specialization, an ability-change/counter loop, fixed Lv30 Amber guardian and monster-tree proof. Authored trainer XP reaches thresholds100/600/1500/6600/10500/19000/30000/43500 without repeat grinding; monster XP remains separate. One tiny in-frame current objective and its destination region/map guide the opening; the Mage proof is the only opening road lock and later levels communicate danger without invisible gates. Launch story trainers clamp to the Lv60 player ceiling while preserving sourceLevel. Practice boss scaling is reward-free and separate from progression bosses; no human multiplayer or essence source exists. Hunter and Swordsman are playable specializations. The master fights as its offered class; the player retains the current Apprentice party and confirms after victory at Lv20. Farm establishment joins the route at Lv25.",
       "tests": [
         "field-polish",
         "campaign",
         "mechanics",
         "ui",
-        "boundaries"
+        "boundaries",
+        "farm-classes"
       ],
       "docs": [
         "PASS16_VALIDATION.md",
@@ -439,7 +447,8 @@
         "campaign",
         "ui",
         "boundaries",
-        "experience"
+        "experience",
+        "farm-classes"
       ],
       "docs": [
         "features/persistence/SAVES.md",
@@ -475,27 +484,32 @@
     },
     {
       "id": "inner-sea",
-      "title": "Inner Sea scene and local earned decorations",
-      "status": "local-reference",
+      "title": "Inner Sea farm, training, defenses and decoration",
+      "status": "local-prototype",
       "files": [
         "inner-sea-rules.js",
         "inner-sea.js",
-        "inner-sea.css"
+        "inner-sea.css",
+        "inner-sea-farm.js",
+        "inner-sea-farm-view.js",
+        "moon-calendar.js"
       ],
       "backlog": [
         "F-031",
         "F-032"
       ],
-      "entry": "BondHaven.clean / valid / available; BondInnerSea.draw / edit / exportPicture; BondProfile.setHaven",
-      "contract": "One fixed scene, three owned decoration sockets, two individual display slots and two free skies. Existing progress facts unlock three local decorations. Draft cancel is nonmutating; profile validates critical writes. PNG export reuses the canvas and contains no account identity. No paid grants, cloud ownership, AFK output or final-art approval.",
+      "entry": "BondFarm.advance / command / attack; BondProfile.farmAction / settleFarm; BondFarmView; BondInnerSea.draw / exportPicture",
+      "contract": "Lv25 farm ownership, wooden house and five independently upgraded habitats; each displays the highest-level compatible owned individual. All bag copies train while clean and intact. Power counts the strongest of each species once. Five separate defenders fight real daily monster-only battles at trainer level, scaled by bundled lunar phases. Success settles ordinary attacker loot once; loss removes XP from all owned monsters and damages the farm, suspending training/account bonuses until an item repair. Saved last outcome supplies a read-only replay. Original decoration drafts, styles, legacy selected IDs and local PNG export remain. Future habitat equipment and authoritative online settlement are unimplemented.",
       "tests": [
         "experience",
-        "boundaries"
+        "boundaries",
+        "farm-classes"
       ],
       "docs": [
-        "features/inner-sea/DISPLAY.md"
+        "features/inner-sea/DISPLAY.md",
+        "features/inner-sea/FARM_SCOPE.md"
       ],
-      "summary": "Displays owned companions and earned decorations; profile saves the layout and the renderer exports a local picture."
+      "summary": "Trains the owned collection and stages daily monster defenses; persistence commits farm care, upgrades and rewards."
     },
     {
       "id": "legacy",
@@ -589,7 +603,9 @@
         "scripts/client_build.py",
         "data/client-build.json",
         "tests/client_build_check.py",
-        "tests/experience_check.py"
+        "tests/experience_check.py",
+        "tests/farm_classes_check.py",
+        "tests/farm_classes_cases.js"
       ],
       "backlog": [
         "F-034",
@@ -612,7 +628,8 @@
       "tests": [
         "structure",
         "boundaries",
-        "client-build"
+        "client-build",
+        "farm-classes"
       ],
       "docs": [
         "docs/ENGINEERING.md",
@@ -714,7 +731,9 @@
       "BondGame",
       "BondFormation",
       "BondRules",
-      "BondRoster"
+      "BondRoster",
+      "BondFarm",
+      "BondMoonCalendar"
     ],
     "world-atlas.js": [
       "BondAtlas",
@@ -832,7 +851,24 @@
       "BondHaven",
       "BondSettings",
       "CharacterRig",
-      "BondApprenticePreview"
+      "BondApprenticePreview",
+      "BondFarm",
+      "BondFarmView"
+    ],
+    "inner-sea-farm.js": [
+      "BondContent",
+      "BondProgress",
+      "BondGame",
+      "BondAtlas",
+      "BondOpening",
+      "BondEchoes",
+      "BondMoonCalendar"
+    ],
+    "inner-sea-farm-view.js": [
+      "BondFarm",
+      "BondProfile",
+      "BondProgress",
+      "CharacterRig"
     ]
   },
   "unloaded": [
@@ -848,7 +884,9 @@
     "map-population.js",
     "opening-rules.js",
     "wild-behavior.js",
-    "inner-sea-rules.js"
+    "inner-sea-rules.js",
+    "inner-sea-farm.js",
+    "moon-calendar.js"
   ],
   "storage_writers": {
     "profile.js": "Profile document and receipts",
@@ -974,6 +1012,13 @@
       ],
       "browser": true,
       "purpose": "Allowlisted immutable bundle, file integrity and packaged-browser loading"
+    },
+    "farm-classes": {
+      "command": [
+        "tests/farm_classes_check.py"
+      ],
+      "browser": true,
+      "purpose": "Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls"
     }
   },
   "connections": [
@@ -1111,17 +1156,17 @@
         "growth.js",
         "tree-menu.js"
       ],
-      "contract": "Accepted first Firstlight Brimble claim -> guaranteed ordinary Echo -> highlighted Bag/Echo/Summon path and auto-party -> Forest Mage meeting -> guaranteed second-role Echo and second summon -> easy Mage proof that opens physical roads -> four recorded class demonstrations -> fixed Tidecrown -> temporary class trial -> Lv20 specialization -> adaptation encounters -> Lv30 monster-tree proof. Trainer XP and monster XP remain independent; UI hints and travel never grant milestones."
+      "contract": "Accepted first Firstlight Brimble claim -> guaranteed ordinary Echo -> highlighted Bag/Echo/Summon path and auto-party -> Forest Mage meeting -> guaranteed second-role Echo and second summon -> easy Mage proof that opens physical roads -> four recorded class demonstrations -> fixed Tidecrown -> easy master acceptance battle -> Lv20 specialization -> adaptation encounters -> Lv30 monster-tree proof. Trainer XP and monster XP remain independent; UI hints and travel never grant milestones. Four classes are available; explicit farm establishment at Lv25 precedes Amber mastery."
     },
     {
       "id": "created-apprentice",
       "from": "opening",
       "to": "persistence",
       "via": [
-      "character-creation.js",
-      "opening-rules.js",
-      "apprentice-preview.js",
-      "profile.js",
+        "character-creation.js",
+        "opening-rules.js",
+        "apprentice-preview.js",
+        "profile.js",
         "app.js",
         "game.js",
         "menu.js"
@@ -1162,9 +1207,23 @@
         "inner-sea-rules.js",
         "inner-sea.js",
         "profile.js",
-        "menu.js"
+        "menu.js",
+        "inner-sea-farm.js",
+        "inner-sea-farm-view.js"
       ],
-      "contract": "Progress facts determine decoration availability; owned individual IDs and three sockets validate before a critical profile write. Draft/export never consume items or change combat."
+      "contract": "Owned progress validates three decoration sockets and legacy selections; pure farm rules separately compute training, strongest-species power, daily defenses and habitat residents. Profile settles timestamps, XP, repairs and rewards atomically. Drafts, export and defense replay cannot grant rewards."
+    },
+    {
+      "id": "farm-defense",
+      "from": "inner-sea",
+      "to": "combat",
+      "via": [
+        "inner-sea-farm.js",
+        "game.js",
+        "profile.js",
+        "progression.js"
+      ],
+      "contract": "Explicit UTC phase/attack timestamp + saved five-individual defense loadout -> trainer-free deterministic Battle -> one committed XP/loot/damage outcome and read-only replay. Profile owns clock and storage; ordinary adventures use frozen profile snapshots."
     }
   ],
   "interfaces": [

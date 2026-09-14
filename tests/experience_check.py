@@ -59,15 +59,8 @@ def main():
             check('Exactly three sockets and all three earned decorations',page.locator('[data-haven-slot]').count()==3 and page.evaluate('BondHaven.available(BondProfile.snapshot()).length===3'))
             page.locator('#haven-style').select_option('dusk')
             for i,name in enumerate(['cairn','lantern','bloom']):page.locator(f'[data-haven-slot="{i}"]').select_option(name)
-            # Exercise the same draft selector callback through the actual portrait picker.
-            page.locator('[data-haven-companion="0"]').click()
-            selector=page.evaluate('BondProfile.companions()[0].id')
-            # Picker buttons use data-pick-ref; keep the contract visible in failures.
-            page.locator(f'[data-pick="{selector}"]').click()
-            page.locator('[data-haven-companion="1"]').click()
-            selector=page.evaluate('BondProfile.companions()[1].id');page.locator(f'[data-pick="{selector}"]').click()
             page.locator('[data-haven-save]').click()
-            check('Independent same-species companions and three decorations save',page.evaluate('BondProfile.snapshot().haven.style==="dusk"&&BondProfile.snapshot().haven.companions.every(Boolean)&&new Set(BondProfile.snapshot().haven.companions).size===2&&BondProfile.snapshot().haven.slots.filter(Boolean).length===3'))
+            check('Three decorations save while habitats choose residents automatically',page.evaluate('BondProfile.snapshot().haven.style==="dusk"&&BondProfile.snapshot().haven.slots.filter(Boolean).length===3&&BondFarm.residents(BondProfile.snapshot())[BondFarm.habitat("emberfox")].id===BondProfile.companions()[0].id'))
             chosen=page.evaluate('BondProfile.snapshot().haven')
             page.locator('[data-haven-edit]').click();page.locator('#haven-style').select_option('dawn');page.locator('[data-haven-slot="0"]').select_option('');page.locator('[data-haven-cancel]').click()
             check('Cancel discards the entire preview',page.evaluate('BondProfile.snapshot().haven')==chosen)

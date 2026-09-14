@@ -1,5 +1,20 @@
 [
-  "content.js", "rules.js", "roster.js", "monster-sprites.js",
-  "opening-rules.js", "adventure-rules.js", "progression.js", "formation.js",
-  "game.js", "world-data.js", "atlas-data.js", "world-layout.js", "world-nav.js", "growth.js", "campaign.js"
+  "content.js",
+  "rules.js",
+  "roster.js",
+  "monster-sprites.js",
+  "opening-rules.js",
+  "adventure-rules.js",
+  "progression.js",
+  "formation.js",
+  "game.js",
+  "world-data.js",
+  "atlas-data.js",
+  "world-layout.js",
+  "world-nav.js",
+  "growth.js",
+  "campaign.js",
+  "echoes.js",
+  "moon-calendar.js",
+  "inner-sea-farm.js"
 ]

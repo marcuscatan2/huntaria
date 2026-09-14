@@ -48,6 +48,16 @@
   skill('lull','Lullaby','frontaoe',40,11,{effect:'slow',duration:3}); skill('aurora','Aurora','teamheal',50,12);
   skill('trailcut','Quick cut','hit',86,6,{category:'melee'}); skill('trailguard','Raised guard','selfshield',95,11,{duration:5});
   skill('trailshot','Quick shot','hit',72,6,{category:'ranged'}); skill('trailaim','Steady aim','hit',120,11,{category:'ranged'}); skill('trailbreath','Catch breath','selfheal',70,15);
+  skill('huntersmark','Pinning shot','hit',85,7,{category:'ranged',effect:'slow',duration:4});
+  skill('volley','Arrow volley','frontaoe',70,10,{category:'ranged'});
+  skill('longshot','Longshot','hit',140,11,{category:'ranged',reach:46});
+  skill('huntingcall','Hunting call','haste',0,13,{duration:5});
+  skill('trailward','Trail ward','selfshield',150,12,{duration:6});
+  skill('cleave','Cleave','frontaoe',90,9,{category:'melee'});
+  skill('swordlunge','Sword lunge','hit',155,8,{category:'melee',reach:18});
+  skill('parry','Parry','selfshield',180,10,{duration:6});
+  skill('rallyingcry','Rallying cry','teamshield',80,13,{duration:6});
+  skill('secondwind','Second wind','selfheal',95,14);
   const passives = {
     kindling:{name:'Kindling',description:'Strikes deal 15% more damage to burning enemies.'},
     granite:{name:'Granite Hide',description:'Take 10% less incoming damage, including intercepted damage.'},
@@ -67,6 +77,8 @@
   unit('apprentice','Apprentice','A stranger on the forest floor','Trainer',780,38,1.45,1.3,1,'#b4aa74','trailcut trailguard trailshot trailaim trailbreath','trailcut trailguard trailbreath');
   unit('druid','Druid','Keeper of the grove','Trainer',800,28,1.8,1,4,'#57a386','mend bark bramble renewal entangle','mend bramble bark');
   unit('mage','Mage','Weaver of the arcane','Trainer',720,39,1.8,1,4,'#a39ad9','frost nova hex aegis comet','frost nova aegis');
+  unit('hunter','Hunter','A steady bow and a watchful pack','Trainer',780,43,1.65,1.15,4,'#91ac65','huntersmark volley longshot huntingcall trailward','huntersmark longshot trailward');
+  unit('swordsman','Swordsman','Steel beside your companions','Trainer',1080,50,1.65,1.2,1,'#739cad','cleave swordlunge parry rallyingcry secondwind','cleave parry swordlunge');
   unit('emberfox','Emberfox','A spark with sharp teeth','Melee DPS',610,49,1.55,1.5,1,'#df8858','pounce burn pierce quickstep firefan','burn pounce quickstep','kindling');
   unit('stonehorn','Stonehorn','A steadfast little mountain','Tank',1100,26,2.3,.6,1,'#8c9c86','guard fortify slam boulder rally','guard slam fortify','granite');
   unit('stormowl','Stormowl','Quiet wings. Loud thunder.','Ranged DPS',570,46,1.65,1.1,4,'#91b6d0','chain snipe gust staticbolt tailwind','chain snipe gust','charged');
@@ -77,5 +89,5 @@
   unit('thornstag','Thornstag','Guardian of the wild paths','Tank',940,32,2.1,.85,1,'#b0bb86','antler rootbind wildguard greencanopy lifebud','wildguard rootbind antler','lastgrove');
   unit('tideotter','Tideotter','Go gently. Go together.','Support',510,23,1.85,1,3,'#8fc4ca','springwater riptide ripples rivercleanse bubbleward','springwater riptide bubbleward','current');
   unit('lumimoth','Lumimoth','A lantern for lost friends','Support',470,25,1.8,1.1,4,'#b9a5d4','moonbeam moondust lantern lull aurora','moondust lantern moonbeam','moonward');
-  root.BondContent={UNITS:units,SKILLS:skills,PASSIVES:passives,MONSTERS:Object.keys(units).filter(k=>units[k].passive)};
+  root.BondContent={UNITS:units,SKILLS:skills,PASSIVES:passives,CLASSES:Object.freeze(['druid','mage','hunter','swordsman']),TRAINERS:Object.freeze(['druid','mage','hunter','swordsman','apprentice']),MONSTERS:Object.keys(units).filter(k=>units[k].passive)};
 })(globalThis);

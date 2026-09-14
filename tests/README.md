@@ -17,6 +17,7 @@
 | Playable trainer sheets, painted creator, alpha isolation and weapon poses | `python tests/trainer_animation_check.py --browser chrome` |
 | Reviewed catalog integrity | `python scripts/creature_reference.py --check` |
 | Settings, audio, Inner Sea drafting and PNG export | `python tests/experience_check.py --browser chrome` |
+| Classes, farm training, lunar defense and repairs | `python tests/farm_classes_check.py --browser chrome` |
 | 1,000 browser/Node outcomes and CPU probe | `python tests/runtime_check.py --browser chrome` |
 | Repeatable local package and startup smoke | `python tests/client_build_check.py --browser chrome` |
 

@@ -42,6 +42,8 @@ The links below point to the actual source; root browser paths remain in use.
 | [data/client-build.json](<../../data/client-build.json>) | Owned source/configuration; inspect before editing. |
 | [tests/client_build_check.py](<../../tests/client_build_check.py>) | Owned source/configuration; inspect before editing. |
 | [tests/experience_check.py](<../../tests/experience_check.py>) | Owned source/configuration; inspect before editing. |
+| [tests/farm_classes_check.py](<../../tests/farm_classes_check.py>) | Owned source/configuration; inspect before editing. |
+| [tests/farm_classes_cases.js](<../../tests/farm_classes_cases.js>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -60,6 +62,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python scripts/project.py check` — Ownership, map freshness, links, checker regressions and scope integrity.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/client_build_check.py --browser chrome` — Allowlisted immutable bundle, file integrity and packaged-browser loading.
+- `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

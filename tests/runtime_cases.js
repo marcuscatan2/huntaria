@@ -3,7 +3,7 @@
 'use strict';
 function fixture(i){
  const C=BondContent,G=BondGame,R=BondProgress,level=[1,5,20,60,100][i%5],types=C.MONSTERS;
- const team=side=>[(i+side)%2?'mage':'druid',types[(i*7+side*3)%100],types[(i*11+side*13+1)%100]].map((type,slot)=>({type,instanceId:slot?'fixture:'+side+':'+slot:undefined,skills:[...C.UNITS[type].skills].slice((i+slot)%3,(i+slot)%3+3)}));
+ const team=side=>[C.CLASSES[(i+side)%4],types[(i*7+side*3)%100],types[(i*11+side*13+1)%100]].map((type,slot)=>({type,instanceId:slot?'fixture:'+side+':'+slot:undefined,skills:[...C.UNITS[type].skills].slice((i+slot)%3,(i+slot)%3+3)}));
  const build=[team(0),team(1)];if(i%7===0)build[0][2]=null;if(i%11===0)build[0][1]=null;
  const companions=build[0].slice(1).filter(Boolean).map((u,j)=>({id:u.instanceId,type:u.type,ordinal:j+1,xp:R.threshold(level),growth:{},skills:u.skills}));
  const profile={companions,attributes:{str:7,agi:9,vit:8,int:11,dex:6,leadership:5},growth:{},formation:['front','middle','back']};
@@ -14,7 +14,8 @@ function fixture(i){
   build[0]=party.map(u=>({...u}));profile.companions=party.slice(1).map((u,j)=>({id:u.instanceId,type:u.type,ordinal:1,xp:R.threshold(level),growth:{},skills:u.skills}));
   options.groupParties=[0,1].map(()=>({team:party,profile}));
  }else if(i%3===0)options.encounter={kind:i%2?'wild':'pack',enemies:Array.from({length:i%2?1:5},(_,j)=>{const type=types[(i+j)%100];return {type,skills:[...C.UNITS[type].default]};})};
- return {build,options,escape:i%13===0?35:null};
+ if(i%20===3){const extras=Array.from({length:5},(_,j)=>({id:'defense:'+j,type:types[(i+j)%100],ordinal:1,xp:R.threshold(level),growth:{},skills:[...C.UNITS[types[(i+j)%100]].default]}));profile.companions.push(...extras);profile.farm={...BondFarm.fresh(),owned:true};options.defenders=extras.map(m=>({type:m.type,instanceId:m.id,skills:m.skills}));options.encounter={kind:'pack',enemies:extras.slice(0,3).map(m=>({type:m.type,skills:m.skills,level}))};}
+ return {build,options,escape:!options.defenders&&i%13===0?35:null};
 }
 function run(i){const f=fixture(i),b=new BondGame.Battle(f.build,f.options);while(!b.ended){if(b.tick===f.escape)b.requestEscape();b.step();}return {tick:b.tick,winner:b.winner,reason:b.reason,escaped:!!b.escaped,units:b.units,events:b.events};}
 function canonical(value){if(Array.isArray(value))return '['+value.map(canonical).join(',')+']';if(value&&typeof value==='object')return '{'+Object.keys(value).filter(k=>value[k]!==undefined).sort().map(k=>JSON.stringify(k)+':'+canonical(value[k])).join(',')+'}';return JSON.stringify(value);}

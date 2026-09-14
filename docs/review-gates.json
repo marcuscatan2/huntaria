@@ -72,7 +72,8 @@
         "recovery",
         "collection",
         "campaign",
-        "opening"
+        "opening",
+        "inner-sea"
       ],
       "work": [
         "content-expansion",
@@ -86,7 +87,7 @@
       "packet": [
         "Use features/opening/PASS26_VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.",
         "Replay victory, defeat, a selected fallen sole companion, reload and interrupted-menu routes. Firstlight defeat must preserve bearings at the same forest camp, fully recovered. Confirm ordinary Echo odds remain separate from the two disclosed onboarding guarantees.",
-        "Continue later review sessions through the four class demonstrations, Tidecrown, both temporary class trials, Druid/Mage commitment, the ability-change proof and the Lv30 individual tree proof. Record time, deaths, recovery trips, retries and the observed reason for each class/boss loss."
+        "Review the four class demonstrations, Tidecrown, each easy master acceptance battle and explicit Druid/Mage/Hunter/Swordsman commitment. The current party fights the named master; winning returns to the field. Then review the Lv25 Inner Sea farm, ability-change proof and Lv30 trees. Use features/opening/CLASSES.md and features/inner-sea/FARM_SCOPE.md."
       ],
       "owner_accept": [
         "Preparation produces understandable differences, encounters feel like battles, and the trainer-loss rule is clear.",
@@ -105,7 +106,9 @@
         "features/opening/DESIGN.md",
         "features/opening/EARLY_PROGRESSION_SCOPE.md",
         "features/opening/VALIDATION.md",
-        "features/delivery/REMAINING_SCOPE.md"
+        "features/delivery/REMAINING_SCOPE.md",
+        "features/inner-sea/FARM_SCOPE.md",
+        "features/opening/CLASSES.md"
       ],
       "per_species": false,
       "decisions": []
@@ -296,7 +299,8 @@
       "packet": [
         "AI presents starter-to-late progression scenarios, recovery costs and expected acquisition time including rare encounter availability and kills/hour.",
         "Separate current 15% testing from release proposals; show unlucky streaks and duplicate outcomes, not only averages or forced grants.",
-        "Preserve the agreed 100% summon/no-pity rules and proposed 10%/0.01% odds unless you explicitly authorize a change."
+        "Preserve the agreed 100% summon/no-pity rules and proposed 10%/0.01% odds unless you explicitly authorize a change.",
+        "The owner authorized Inner Sea AFK training, daily lunar defense and XP loss from all owned monsters. Review the actual training/cleanliness pace, penalties, repair costs, power-derived HP and future habitat equipment before permanent online progression; the first local tuning is not release approval."
       ],
       "owner_accept": [
         "I understand and accept the actual grind and unlucky-player experience, not just the percentage.",
@@ -308,7 +312,8 @@
       "reopen": "Odds, source availability, XP, price/supply sinks, progression promises or reset policy changes.",
       "refs": [
         "CREATURE_DROPS.md",
-        "VALIDATION_PLAN.md"
+        "VALIDATION_PLAN.md",
+        "features/inner-sea/FARM_SCOPE.md"
       ],
       "per_species": false,
       "decisions": []
@@ -336,7 +341,8 @@
       "packet": [
         "AI supplies a short player-facing policy: guest upgrade, save ownership, allowed devices, wipes/imports, pause/2× rules, disconnect/rejoin and group loot eligibility.",
         "Add technical recommendations for versioned authoritative commands, idempotent receipts and migration/restore tests; owner is not asked to review implementation code.",
-        "Compare costs and tradeoffs before choosing paid providers or accepting a multiplayer promise."
+        "Compare costs and tradeoffs before choosing paid providers or accepting a multiplayer promise.",
+        "Include server-time authority and exactly-once offline farm training/defense settlement; local device calendars and outcomes cannot mint trusted online XP or loot."
       ],
       "owner_accept": [
         "I approve what players are promised about progress, disconnects, groups and shared boss rewards.",
@@ -349,7 +355,8 @@
       "refs": [
         "docs/ENGINEERING.md",
         "VALIDATION_PLAN.md",
-        "features/delivery/REMAINING_SCOPE.md"
+        "features/delivery/REMAINING_SCOPE.md",
+        "features/inner-sea/FARM_SCOPE.md"
       ],
       "per_species": false,
       "decisions": []
@@ -505,6 +512,35 @@
       ],
       "per_species": false,
       "decisions": []
+    }
+  ],
+  "implementation_authorizations": [
+    {
+      "id": "classes-and-farm-2026-09-14",
+      "source": "Current owner conversation, implementation request and follow-up answers, 2026-09-14",
+      "scope": [
+        "Hunter and Swordsman local playable classes",
+        "Explicit easy master acceptance challenge",
+        "First local Inner Sea farm, AFK training, power, lunar daily defense, repair and upgrades"
+      ],
+      "quotes": [
+        "Implement the new classes (hunter and swordsman) - The test seems complete only for druid and mage.",
+        "Defeat me in battle and I'll accept you as a Mage. Don't worry, I'll go very easy on you",
+        "Second, scope and start implementing the Inner sea feature:",
+        "All owned monsters lose XP",
+        "Yes—automatic defense plus replay"
+      ],
+      "boundary": "Implementation authority only. Does not approve final class/farm artwork, release tuning, online accounts or commerce. Boss/dungeon habitat equipment is the later requested batch.",
+      "evidence": [
+        {
+          "path": "features/opening/CLASSES.md",
+          "sha256": "107893a0f8de84c7af6fdc51379bdb79e20f3b74d16deff0afb8a42146825fb6"
+        },
+        {
+          "path": "features/inner-sea/FARM_SCOPE.md",
+          "sha256": "48549e5f29e2addba7b52cb25b8bacd5003a59de7e56cc31a8d1d5c34971aab7"
+        }
+      ]
     }
   ]
 }

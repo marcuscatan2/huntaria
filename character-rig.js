@@ -15,6 +15,11 @@
   function rootlessArt(type){return !!window.BondCreatureArt&&!!BondContent.UNITS[type]?.artSpec&&type!=='elderroot';}
   const nativeFacing=type=>['rabbit','hound','fox','cat','boar','badger','marten','yak','tapir','ram','deer','bear','rhino','otter','seal','mole','porcupine','snake','wyrm','serpent','dragon','lizard','axolotl','centipede','shrimp','fish','snail','slug'].includes(BondContent.UNITS[type]?.artSpec?.shape)?-1:1;
   function art(type){
+    if(type==='hunter'||type==='swordsman'){
+      const hunter=type==='hunter',color=hunter?'#627e46':'#668599';
+      const weapon=hunter?'<path d="M232 90Q295 166 232 242M232 90L232 242" fill="none" stroke="#966641" stroke-width="9"/><path d="M195 163H283l-15-9m15 9-15 9" fill="none" stroke="#e8dcc0" stroke-width="5"/>':'<path d="M228 184L250 54l13-18 6 25-23 127Z" fill="#dce8ed" stroke="#456272" stroke-width="4"/><path d="M212 185l48 8m-26-5-5 31" stroke="#d1aa5d" stroke-width="9"/>';
+      return '<svg class="character-sprite class-reference" data-character="'+type+'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" aria-hidden="true"><ellipse cx="160" cy="292" rx="65" ry="12" fill="#16372c33"/><path d="M121 223l-7 61h32l16-63m11 0 11 63h31l-18-68" fill="#493c32" stroke="#293a36" stroke-width="6"/><path d="M105 129Q155 109 202 136l21 92q-67 29-126 0Z" fill="'+color+'" stroke="#293f37" stroke-width="6"/><path d="m108 147-25 62 26 10 28-68m63-5 23 51 23-10-25-58" fill="'+color+'" stroke="#293f37" stroke-width="7"/><ellipse cx="158" cy="91" rx="36" ry="40" fill="#dfad85"/><path d="M122 84q-13-51 36-50 47-1 41 50l-24-26-52 24" fill="'+(hunter?'#425331':'#7498a5')+'"/><path d="M141 91h7m24 0h7" stroke="#33403b" stroke-width="6"/><path d="M144 111q15 9 28 0" fill="none" stroke="#956f57" stroke-width="3"/><path d="M104 202l106 0" stroke="#c2a065" stroke-width="12"/>'+weapon+'</svg>';
+    }
     if(type==='apprentice'){const c=window.BondProfile?.snapshot().character;return BondApprenticePreview.markup(c?.look,c?.weapon);}
     const entry=supplied(type);
     if(entry)return '<img class="character-sprite supplied-monster" style="--sprite-native:'+entry.nativeFacing+'" data-character="'+type+'" src="'+entry.src+'" alt="" aria-hidden="true" width="1280" height="1280" decoding="async" draggable="false">';
@@ -71,6 +76,7 @@
   function mount(node,type,options={}){
     const sprite=node.querySelector('.character-sprite'),weapon=type==='apprentice'?(sprite?.dataset.weapon||window.BondProfile?.snapshot().character?.weapon||'dagger'):null;
     const rig={type,weapon,configKey:type==='apprentice'?'apprentice-'+(weapon==='bow'?'bow':'dagger'):type,sprite,frame:-1,action:null,mode:'idle',animated:animated.has(type)};
+    if(type==='hunter'||type==='swordsman'){rig.raster=true;rig.animated=true;return rig;}
     if(supplied(type)&&rig.sprite){rig.raster=true;rig.animated=true;rig.sprite.style.transformOrigin='50% 88%';return rig;}
     if(rootlessArt(type)&&rig.sprite){
       const container=document.createElement('div');container.innerHTML=BondCreatureArt.svg(type);const svg=container.firstElementChild;

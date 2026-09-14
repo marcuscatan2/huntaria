@@ -7,6 +7,9 @@ for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','
 }
 const C=BondContent,R=BondProgress,A=BondAtlas,W=BondWorld,E=BondEchoes,Q=BondPopulation,clone=x=>JSON.parse(JSON.stringify(x));
 const T=BondAdventure;Object.assign(W.ITEMS,T.items);
+if(!root.BondFarm||!root.BondMoonCalendar)throw Error('Required Inner Sea module unavailable');
+W.ITEMS.timber={name:'Timber',icon:'▤',category:'Materials',description:'Used to upgrade an Inner Sea habitat.'};
+W.ITEMS.repairkit={name:'Farm repair kit',icon:'⚒',category:'Materials',description:'Repairs the Inner Sea after a failed defense.'};
 const TEST=typeof location!=='undefined'&&new URLSearchParams(location.search).get('test')==='1';
 const KEY='bond-bolt-profile-v7'+(TEST?'-sandbox':''),BUILD_KEY='bond-bolt-build-v4'+(TEST?'-sandbox':'');
 const integer=(v,max=1000000000)=>Number.isSafeInteger(v)&&v>0?Math.min(max,v):0;
@@ -22,7 +25,7 @@ function summarize(s){
 const resolve=(s,id)=>s.companions.find(m=>m.id===id)||null;
 const fresh=()=>({version:7,revision:0,character:null,map:'clearing-0',area:'clearing',position:{...A.get('clearing-0').entry},visited:['clearing-0'],
  vitality:{trainer:10000,companions:{}},trainerXP:0,apprenticeXP:0,progression:{version:2,specialization:null,treeGrandfathered:false},companions:[],formation:[...BondFormation.DEFAULT],bossLevel:1,growth:{},owned:[],xp:{},attributes:R.cleanAttributes(null,1),pacts:{},
- haven:BondHaven.fresh(),sights:[],collected:[],defeated:[],inventory:{biscuit:2},echoes:{},coins:0,prepared:false,boost:false,sequence:0,
+ haven:BondHaven.fresh(),farm:BondFarm.fresh(),sights:[],collected:[],defeated:[],inventory:{biscuit:2},echoes:{},coins:0,prepared:false,boost:false,sequence:0,
  journey:root.BondCampaign?.fresh()||{},encounterSave:null,encounterReceipts:{},spawns:{},claims:{},summons:{},tutorial:{moved:false,kills:0,summons:0},migration:null});
 function normalize(raw){
  const s=fresh();if(!raw||![2,3,4,5,6,7].includes(raw.version))return s;
@@ -37,14 +40,14 @@ function normalize(raw){
   seen.add(m.id);ordinals[m.type]=(ordinals[m.type]||0)+1;
   const skills=validSkills(m.type,m.skills)?[...m.skills]:[...C.UNITS[m.type].default],pact=m.pact,engineXP=R.clampXP(m.xp),excess=Math.max(0,engineXP-R.PLAYER_MAX_XP);
   if(excess)cappedCompanions++;
-  s.companions.push({id:m.id,type:m.type,ordinal:ordinals[m.type],xp:R.clampPlayerXP(engineXP),deferredXP:Math.max(integer(m.deferredXP,R.ENGINE_MAX_XP),excess),sourceLevel:Number.isInteger(m.sourceLevel)?Math.max(1,Math.min(R.ENGINE_LEVEL_CAP,m.sourceLevel)):undefined,skills,growth:m.growth||{},pact:{map:A.get(pact?.map)?pact.map:'clearing-0',trainerClass:['druid','mage','apprentice'].includes(pact?.trainerClass)?pact.trainerClass:'druid'}});
+  s.companions.push({id:m.id,type:m.type,ordinal:ordinals[m.type],xp:R.clampPlayerXP(engineXP),treeLevel:Number.isInteger(m.treeLevel)?Math.max(R.level(engineXP),Math.min(60,integer(m.treeLevel))):undefined,deferredXP:Math.max(integer(m.deferredXP,R.ENGINE_MAX_XP),excess),sourceLevel:Number.isInteger(m.sourceLevel)?Math.max(1,Math.min(R.ENGINE_LEVEL_CAP,m.sourceLevel)):undefined,skills,growth:m.growth||{},pact:{map:A.get(pact?.map)?pact.map:'clearing-0',trainerClass:BondContent.TRAINERS.includes(pact?.trainerClass)?pact.trainerClass:'druid'}});
  }
  summarize(s);
  const currentProgression=raw.progression?.version>=2;
  const oldApprentice=s.character&&!s.character.legacy?Math.min(5,R.level(s.apprenticeXP)):1;
  const oldShown=Math.max(oldApprentice,...s.companions.map(m=>R.level(m.xp)));
  s.trainerXP=currentProgression?R.clampPlayerXP(integer(raw.trainerXP,R.PLAYER_MAX_XP)):R.threshold(oldShown);
- s.progression={version:2,specialization:['druid','mage'].includes(raw.progression?.specialization)?raw.progression.specialization:null,
+ s.progression={version:2,specialization:BondContent.CLASSES.includes(raw.progression?.specialization)?raw.progression.specialization:null,
   treeGrandfathered:raw.progression?.treeGrandfathered===true||!currentProgression&&seeds.some(m=>m?.growth&&BondGrowth.used(m.growth)>0)};
  s.inventory={};
  for(const k of Object.keys(W.ITEMS))if(!k.startsWith('echo:')&&integer(raw.inventory?.[k]))s.inventory[k]=integer(raw.inventory[k]);
@@ -54,7 +57,7 @@ function normalize(raw){
  s.defeated=[...new Set((Array.isArray(raw.defeated)?raw.defeated:[]).filter(k=>Object.hasOwn(W.NPCS,k)))];
  s.sights=[...new Set((Array.isArray(raw.sights)?raw.sights:[]).filter(id=>A.maps.some(m=>m.landmarks.some(l=>l.id===id))))];
  s.collected=[...new Set((Array.isArray(raw.collected)?raw.collected:[]).filter(k=>A.get(k)||A.REGIONS.some(r=>r.id===k)))];
- let refunded=0;for(const type of ['druid','mage','apprentice']){s.growth[type]=BondGrowth.clean(type,raw.growth?.[type],BondGrowth.budget(s,type));refunded+=Math.max(0,BondGrowth.used(raw.growth?.[type])-BondGrowth.used(s.growth[type]));}
+ let refunded=0;for(const type of BondContent.TRAINERS){s.growth[type]=BondGrowth.clean(type,raw.growth?.[type],BondGrowth.budget(s,type));refunded+=Math.max(0,BondGrowth.used(raw.growth?.[type])-BondGrowth.used(s.growth[type]));}
  for(const mon of s.companions){const ranks=BondGrowth.clean(mon.type,mon.growth,BondGrowth.budget(s,mon.id));refunded+=Math.max(0,BondGrowth.used(mon.growth)-BondGrowth.used(ranks));mon.growth=ranks;}
  const requested=raw.version>=6?raw.map:(A.REGIONS.some(r=>r.id===raw.area)?raw.area:'clearing')+'-0';
  // Preserve the location of existing/debug saves. Player-facing routes still use
@@ -95,17 +98,19 @@ function normalize(raw){
   const selected=new Set(Q.selected(h,s.spawns,s.encounterSave?.encounter?.enemies));
   for(const id of Q.keys(h))if(s.spawns[id])s.spawns[id].activeSlot=selected.has(id);
  }
- s.vitality=T.clean(s,raw.vitality);s.haven=BondHaven.clean(raw.haven,s);summarize(s);return s;
+ s.vitality=T.clean(s,raw.vitality);s.haven=BondHaven.clean(raw.haven,s);s.farm=BondFarm.clean(raw.farm,s);
+ if(!raw.farm&&raw.haven&&(s.haven.slots.some(Boolean)||s.haven.companions.some(Boolean)))s.farm.owned=true;
+ summarize(s);return s;
 }
 let state=fresh(),persistent=true,lastError='';
 try{const suffix=TEST?'-sandbox':'';const saved=localStorage.getItem(KEY)||localStorage.getItem('bond-bolt-profile-v6'+suffix)||(!TEST&&(localStorage.getItem('bond-bolt-profile-v5')||localStorage.getItem('bond-bolt-profile-v4')));if(saved)state=normalize(JSON.parse(saved));}catch(_){persistent=false;}
 function sync(){if(!persistent)return;try{const raw=JSON.parse(localStorage.getItem(KEY));if(raw?.version===7&&raw.revision>state.revision)state=normalize(raw);}catch(_){}}
 function notify(growth=false){if(typeof document==='undefined')return;document.dispatchEvent(new CustomEvent('bond-profile'));if(growth)document.dispatchEvent(new CustomEvent('bond-growth'));}
 function commit(fn,{growth=false,quiet=false,critical=false}={}){
- sync();const next=clone(state),result=fn(next);if(result===false||result===null)return result;
+ sync();const next=clone(state);const farmChanged=BondFarm.advance(next,Date.now());const result=fn(next);if(result===false||result===null)return result;
  root.BondCampaign?.reconcile(next);summarize(next);next.revision=state.revision+1;
  try{localStorage.setItem(KEY,JSON.stringify(next));persistent=true;lastError='';}
- catch(_){if(critical&&persistent){lastError='Could not save this change. Your items were kept. Free browser storage and retry.';if(!quiet)notify();return false;}persistent=false;lastError='Session only: browser storage is unavailable. Export your progress before closing.';}
+ catch(_){if((critical||farmChanged)&&persistent){lastError='Could not save this change. Your items were kept. Free browser storage and retry.';if(!quiet)notify();return false;}persistent=false;lastError='Session only: browser storage is unavailable. Export your progress before closing.';}
  state=next;if(!quiet)notify(growth);return result===undefined?true:result;
 }
 const add=(s,id,n=1)=>{s.inventory[id]=integer((s.inventory[id]||0)+n);};
@@ -274,7 +279,7 @@ function complete(b,id){
  completeReceipts.set(b,result);return result;
 }
 function summon(type,trainerClass='druid',requestId){
- if(!C.MONSTERS.includes(type)||!['druid','mage','apprentice'].includes(trainerClass))return false;
+ if(!C.MONSTERS.includes(type)||!BondContent.TRAINERS.includes(trainerClass))return false;
  return commit(s=>{
   const previous=requestId?s.summons[requestId]:null;
   if(previous?.type===type)return {ok:true,repeated:true,type,instanceId:previous.instanceId,id:requestId};
@@ -301,7 +306,7 @@ root.BondProfile={
  KEY,BUILD_KEY,TEST,fresh,normalize,snapshot:()=>{sync();return clone(state);},persistent:()=>persistent,error:()=>lastError,owns:t=>state.owned.includes(t),getCompanion:id=>{sync();const m=resolve(state,id);return m?clone(m):null;},companions:type=>{sync();return clone(state.companions.filter(m=>!type||m.type===type));},label:m=>m?C.UNITS[m.type].name+' #'+m.ordinal:'Empty slot',
  createCharacter(raw){const c=BondOpening.character(raw);if(!c||c.legacy)return false;return commit(s=>{if(s.character||s.encounterSave||s.companions.length||s.tutorial.kills||s.coins)return false;s.character=c;s.attributes=BondOpening.attributes(c.weapon);s.map=BondOpening.start.map;s.area=A.get(s.map).region;s.position=A.safePoint(s.map,BondOpening.start.position);s.visited=[s.map];s.inventory={leafdraught:2};s.growth.apprentice={};return true;},{critical:true,growth:true});},
  nameCharacter(value){const name=BondOpening.name(value);if(!BondOpening.validName(name)||name.toLocaleLowerCase()==='apprentice')return false;return commit(s=>{if(!s.character||!BondOpening.needsIdentity(s.character))return false;s.character=s.character.legacy?{legacy:true,name}:{...s.character,name};return true;},{critical:true});},
- canSpecialize(type){sync();const e=state.journey.early;return ['druid','mage'].includes(type)&&!state.progression.specialization&&R.trainerLevel(state)>=20&&e?.tidecrown===true&&e.demonstrations.length===4&&e.trials[type]===true;},
+ canSpecialize(type){sync();const e=state.journey.early;return BondContent.CLASSES.includes(type)&&!state.progression.specialization&&R.trainerLevel(state)>=20&&e?.tidecrown===true&&e.demonstrations.length===4&&e.trials[type]===true;},
  specialize(type){if(!this.canSpecialize(type))return false;return commit(s=>{if(s.progression.specialization)return false;s.progression.specialization=type;s.growth[type]||={};return {ok:true,type};},{critical:true,growth:true});},
  requirement(id,party){const e=encounter(id);return e?BondCampaign.requirement(e,state,party):'Encounter unavailable.';},
  setSkills(id,skills){return commit(s=>{const m=resolve(s,id);if(!m||!validSkills(m.type,skills))return false;m.skills=[...skills];BondCampaign.recordAbility(s,m);},{critical:true,growth:true});},
@@ -330,15 +335,17 @@ root.BondProfile={
  allocate(k){return commit(s=>{const a=R.attributes(s);if(!R.ATTRS.includes(k)||a[k]>=99||R.statBudget(R.trainerLevel(s))-R.spent(a)<R.cost(a[k]))return false;a[k]++;s.attributes=a;},{growth:true});},
  resetAttributes(){return commit(s=>{s.attributes=R.cleanAttributes(null,1);},{growth:true});},
  learn(ref,id){return commit(s=>{
-  const mon=resolve(s,ref),type=mon?.type||ref;if(!mon&&!['druid','mage','apprentice'].includes(type))return false;
+  const mon=resolve(s,ref),type=mon?.type||ref;if(!mon&&!BondContent.TRAINERS.includes(type))return false;
   if(!BondGrowth.unlocked(s,ref))return false;
   const n=BondGrowth.nodes(type).find(n=>n.id===id),r=mon?mon.growth:s.growth[type]||{};
   if(!n||(r[id]||0)>=n.max||BondGrowth.used(r)>=BondGrowth.budget(s,ref)||(n.parent&&!r[n.parent]))return false;
   const next={...r,[id]:(r[id]||0)+1};if(mon)mon.growth=next;else s.growth[type]=next;
  },{critical:true,growth:true});},
- respec(ref){return commit(s=>{if(!BondGrowth.unlocked(s,ref))return false;const m=resolve(s,ref);if(m){if(!BondGrowth.used(m.growth))return false;m.growth={};}else{if(!['druid','mage'].includes(ref)||!BondGrowth.used(s.growth[ref]))return false;s.growth[ref]={};}},{critical:true,growth:true});},
+ respec(ref){return commit(s=>{if(!BondGrowth.unlocked(s,ref))return false;const m=resolve(s,ref);if(m){if(!BondGrowth.used(m.growth))return false;m.growth={};}else{if(!BondContent.CLASSES.includes(ref)||!BondGrowth.used(s.growth[ref]))return false;s.growth[ref]={};}},{critical:true,growth:true});},
  reset(){active.clear();return commit(s=>{for(const k of Object.keys(s))delete s[k];Object.assign(s,fresh());},{growth:true});},
  setHaven(layout){return commit(s=>{if(!BondHaven.valid(layout,s))return false;s.haven=clone(layout);return true;},{critical:true});},
+ farmAction(action,value){return commit(s=>BondFarm.command(s,action,value,Math.max(Date.now(),s.farm.lastAt)),{critical:true,growth:true});},
+ settleFarm(){sync();if(!state.farm.owned||Date.now()-state.farm.lastAt<60000)return false;return commit(()=>true,{critical:true,growth:true});},
  export:()=>{sync();return JSON.stringify(state,null,2);},
  startExpedition:()=>false,abandonExpedition:()=>false,scribe:()=>false,
  testing:TEST?{

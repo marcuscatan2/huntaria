@@ -33,7 +33,7 @@ function derived(type,s,base=C.UNITS[type],enemyLevel=null){
  const source=attributes(s),a=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,enemyLevel!==null?0:trainer?source[k]-1:source[k]*source.leadership*.005]));
  const hpScale=(1+.04*(l-1))*(1+a.vit*.01),levelOffense=1+.025*(l-1);
  const factors={melee:levelOffense*(1+a.str*.01),ranged:levelOffense*(1+a.dex*.01),magic:levelOffense*(1+a.int*.01)};
- const offense=factors[base.basicCategory],hp=Math.round(base.hp*hpScale);
+ const offense=factors[base.basicCategory],farmHP=enemyLevel===null?(root.BondFarm?.bonuses(s).hp||0):0,hp=Math.round(base.hp*hpScale*(1+farmHP));
  return {level:l,element:ELEMENT[type],hp,power:Math.round(base.power*offense),offense,factors,effective:a,
   healing:levelOffense*(1+a.int*.01),speed:100/base.interval*(1+a.agi*.008),
   armor:Math.min(.1,a.vit*.0005),cooldown:Math.min(MAX_COOLDOWN_REDUCTION,a.dex*DEX_COOLDOWN_RATE),regenPerSecond:hp*a.vit*.00002,shared:trainer?null:a};

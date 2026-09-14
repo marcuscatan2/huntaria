@@ -6,7 +6,7 @@ dialog.id='companion-picker';dialog.setAttribute('aria-labelledby','picker-title
 let options={},query='',role='All',page=0,returnFocus=null;
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function entries(){
- const source=options.practice?C.MONSTERS.map(type=>({id:type,type,ordinal:null,xp:0,skills:C.UNITS[type].default})):options.classes?['druid','mage'].map(type=>({id:type,type,xp:0,skills:C.UNITS[type].default})):P.companions();
+ const source=options.practice?C.MONSTERS.map(type=>({id:type,type,ordinal:null,xp:0,skills:C.UNITS[type].default})):options.classes?C.CLASSES.map(type=>({id:type,type,xp:0,skills:C.UNITS[type].default})):P.companions();
  return source.filter(m=>{const u=C.UNITS[m.type],design=u.designRole||u.role,match=role==='All'||role==='Damage'&&/(DPS|Fighter)/.test(design)||role==='Tank'&&design.includes('Tank')||role==='Support'&&/(Supp|Support)/.test(design);return (!options.species||m.type===options.species)&&match&&(!query||(label(m)+' '+u.element+' '+design).toLowerCase().includes(query.toLowerCase()));});
 }
 const label=m=>m.ordinal?P.label(m):C.UNITS[m.type].name;

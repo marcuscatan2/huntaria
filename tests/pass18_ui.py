@@ -108,7 +108,7 @@ with sync_playwright() as pw:
           let s=P.snapshot();s.character={version:1,name:'Trial Tester',weapon:'dagger',look:BondOpening.defaultLook};s.progression={version:2,specialization:null,treeGrandfathered:false};s.trainerXP=BondProgress.threshold(19);s.journey.early.demonstrations=Object.values(BondCampaign.DEMONSTRATIONS);s.journey.early.tidecrown=true;P.testing.replace(s);
           BondApp.changeUnit(0,1,a);BondApp.changeUnit(0,2,b);const master=BondCampaign.earlyEncounters.find(e=>e.id==='early:master:druid');P.travel(master.map,master);BondApp.switchTab('region');}""")
         page.clock.run_for(300);page.locator('[data-object="early:master:druid"]').click();page.clock.run_for(300)
-        check('Druid trial exposes a temporary three-of-five skill build',page.locator('#trial-skill-controls').is_visible() and page.locator('#trial-skill-controls select').count()==3 and page.locator('#trial-skill-controls select').first.locator('option').count()==5 and 'will not change' in page.locator('#trial-skill-controls').inner_text())
+        check('Druid master explains the acceptance battle and retains the current party',not page.locator('#trial-skill-controls').is_visible() and "Defeat me in battle and I'll accept you as a Druid" in page.locator('#npc-dialogue').inner_text())
         page.locator('#npc-close').click();page.evaluate("""()=>{const s=BondProfile.snapshot();s.journey.early.trials.druid=true;BondProfile.testing.replace(s);BondApp.switchTab('region');}""");page.clock.run_for(300);page.locator('[data-object="early:master:druid"]').click()
         check('Completed class trial shows a disabled transformation before player Lv20',page.locator('#npc-transform').is_visible() and page.locator('#npc-transform').is_disabled())
         page.locator('#npc-close').click();page.evaluate("""()=>{const s=BondProfile.snapshot();s.trainerXP=BondProgress.threshold(20);BondProfile.testing.replace(s);BondApp.switchTab('region');}""");page.clock.run_for(300);page.locator('[data-object="early:master:druid"]').click()
@@ -116,7 +116,7 @@ with sync_playwright() as pw:
         page.once('dialog',lambda d:d.accept());page.locator('#npc-transform').click();page.clock.run_for(300)
         check('Transformation atomically replaces Apprentice with the chosen class',page.evaluate("BondProfile.snapshot().progression.specialization==='druid'&&BondApp.getBuild()[0][0].type==='druid'"))
         page.evaluate('BondCampaignMenu.open()')
-        check('Journey panel presents one current early objective and milestone progress',page.locator('#campaign-dialog .early-next').count()==1 and page.locator('#campaign-dialog .early-progress article').count()==7 and 'CURRENT' in page.locator('#campaign-dialog').inner_text())
+        check('Journey panel presents one current early objective and milestone progress',page.locator('#campaign-dialog .early-next').count()==1 and page.locator('#campaign-dialog .early-progress article').count()==8 and 'CURRENT' in page.locator('#campaign-dialog').inner_text())
         page.locator('#campaign-close').click()
     except Exception:errors.append(traceback.format_exc())
     check('No JavaScript/test errors',not errors);check('No missing assets',not missing);check('Runtime unchanged during verification',source==hashes());browser.close()

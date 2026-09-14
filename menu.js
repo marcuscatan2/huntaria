@@ -11,7 +11,7 @@ function typeSelect(type){
 }
 function openPartyPicker(targetSlot){
  slot=targetSlot;priority=0;
- if(!side&&!slot&&P.snapshot().character&&!P.snapshot().character.legacy){render();host.querySelector('#menu-notice').textContent='Apprentice · specialization quests are not available yet.';return;}
+ if(!side&&!slot&&P.snapshot().character&&!P.snapshot().character.legacy){render();host.querySelector('#menu-notice').textContent='Apprentice · meet a class master in Amber Crossing.';return;}
  const u=BondApp.getBuild()[side][slot];
  BondPicker.open({title:slot?'Choose companion for slot '+slot:'Choose trainer class',practice:!!side&&slot>0,classes:slot===0,allowEmpty:slot>0,selected:slot===0?u?.type:side?u?.type:u?.instanceId,returnSelector:'[data-slot="'+slot+'"]',onChoose:ref=>BondApp.changeUnit(side,slot,ref)});
 }

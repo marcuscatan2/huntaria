@@ -9,7 +9,7 @@ Status: **local-prototype**. Defines species and skills; supplies combat, progre
 
 `BondContent; BondRoster.manifest / validate`
 
-Runtime content is assembled at boot. Stable species/skill IDs survive display renames. The owner-maintained Bond & Bolt Google Sheet is the source of truth for creature identity, design role, combat identity, element, region, wild/source level, encounter source, rarity and attack basis; a reviewed revision/fingerprint is imported locally and never fetched during play. The mon-skills tab is empty, so existing runtime stats/kits remain authoritative until reviewed Sheet data exists. The starter map is an explicit level/population override. 100 entries do not mean 100 approved animation packages; generated JSON/tables must agree with the reviewed runtime snapshot.
+Runtime content is assembled at boot. Stable species/skill IDs survive display renames. The owner-maintained Bond & Bolt Google Sheet is the source of truth for creature identity, design role, combat identity, element, region, wild/source level, encounter source, rarity and attack basis; a reviewed revision/fingerprint is imported locally and never fetched during play. The mon-skills tab is empty, so existing runtime stats/kits remain authoritative until reviewed Sheet data exists. The starter map is an explicit level/population override. 100 entries do not mean 100 approved animation packages; generated JSON/tables must agree with the reviewed runtime snapshot. BondContent.CLASSES lists Druid, Mage, Hunter and Swordsman; TRAINERS also includes Apprentice.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -31,7 +31,7 @@ The links below point to the actual source; root browser paths remain in use.
 Observed references include optional and late callbacks, not only boot dependencies.
 
 - Uses: [combat](<../../features/combat/README.md>)
-- Used by: [animation](<../../features/animation/README.md>), [campaign](<../../features/campaign/README.md>), [collection](<../../features/collection/README.md>), [combat](<../../features/combat/README.md>), [exploration](<../../features/exploration/README.md>), [growth](<../../features/growth/README.md>), [legacy](<../../features/legacy/README.md>), [opening](<../../features/opening/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [recovery](<../../features/recovery/README.md>), [world](<../../features/world/README.md>)
+- Used by: [animation](<../../features/animation/README.md>), [campaign](<../../features/campaign/README.md>), [collection](<../../features/collection/README.md>), [combat](<../../features/combat/README.md>), [exploration](<../../features/exploration/README.md>), [growth](<../../features/growth/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [legacy](<../../features/legacy/README.md>), [opening](<../../features/opening/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [recovery](<../../features/recovery/README.md>), [shell](<../../features/shell/README.md>), [world](<../../features/world/README.md>)
 
 No explicit cross-feature connection recorded; check the observed dependencies above.
 
