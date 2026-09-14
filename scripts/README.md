@@ -12,7 +12,7 @@ Use `python scripts/project.py --help` from the project root.
 | `map --write` | Regenerate feature guides, index, connections and module graph |
 | `reviews` / `reviews --work … --enforce` | Owner priorities / dependent-work preflight |
 | `reviews --write` | Regenerate owner board; never grants approval |
-| `backup` | Unique verified source/art ZIP, not browser saves |
+| `backup` | On explicit request: verified source/art ZIP, not browser saves |
 
 [Operations](../features/delivery/OPERATIONS.md) owns setup and caveats.
 [Engineering](../docs/ENGINEERING.md#content-updates) owns authorized

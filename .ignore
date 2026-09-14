@@ -2,6 +2,7 @@
 # Explicit paths or rg --no-ignore remain available for evidence investigations.
 tests/artifacts/
 backups/
+backup/
 .venv/
 venv/
 __pycache__/

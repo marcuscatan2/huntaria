@@ -117,7 +117,11 @@ credentials. These tools never configure a remote or public sharing.
 python scripts/project.py backup
 ```
 
-Creates a unique source/art/document ZIP in backups, checks CRCs and embedded
+Use Git commits as routine source checkpoints. Push to the authorized remote
+when requested for an off-device copy; uncommitted files are outside Git history.
+Do not create routine ZIP archives. Both `backup/` and `backups/` stay ignored.
+
+Only on explicit owner request, this command creates a unique source/art/document ZIP in backups, checks CRCs and embedded
 per-file SHA-256 hashes, and never overwrites an archive. Excludes its own output,
 Git internals, environments, obvious secrets and generated test artifacts.
 A local checkpoint is not off-device disaster recovery. Export player saves

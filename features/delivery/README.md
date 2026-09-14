@@ -9,7 +9,7 @@ Status: **partial-tooling**. Owns navigation tooling and checks; routes release,
 
 `scripts/project.py; Git/CI configuration; future operator services`
 
-Local architecture/review/backup tooling and reproducible immutable client packages exist; packages remain local-preview. No deployment, production auth/payment/telemetry, restored cloud backups, certified capacity or external acceptance. Current remaining-work/decision audit is routed in REMAINING_SCOPE.md.
+Local architecture/review tooling, Git source checkpoints, on-request ZIP backups and reproducible immutable client packages exist; packages remain local-preview. No deployment, production auth/payment/telemetry, restored cloud backups, certified capacity or external acceptance. Current remaining-work/decision audit is routed in REMAINING_SCOPE.md.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.

@@ -119,7 +119,10 @@ and affected browser suites. No cosmetic documentation edits when facts are unch
 
 ## Backups, data publication and release
 
-- `python scripts/project.py backup` creates a unique verified source/art ZIP.
+- Use Git commits for routine source checkpoints; push to the authorized remote
+  when requested to retain an off-device copy. Git does not capture uncommitted
+  files or browser saves. Keep `backup/` and `backups/` ignored.
+- Only on explicit request, `python scripts/project.py backup` creates a verified source/art ZIP.
   It excludes test artifacts, environments and obvious secrets. It does not
   back up browser storage, Google Sheets or provide off-device recovery.
 - [Content publication](../../docs/ENGINEERING.md#content-updates) is

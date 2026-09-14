@@ -49,6 +49,8 @@
   full gate for cross-cutting work. Never weaken tests just to get a green result.
 - Preserve normal browser saves, stable IDs and legacy migration inputs. Use
   disposable test contexts. Future servers cannot trust client-owned rewards.
+- Use Git commits for source checkpoints. Create ZIP backups only when the
+  owner explicitly requests one; keep backup/ and backups/ out of Git.
 - No public deployment, external sharing, paid services, production accounts,
   secrets or destructive save operations without appropriate user authority.
 - Name new code by responsibility, not pass number; avoid personal paths.

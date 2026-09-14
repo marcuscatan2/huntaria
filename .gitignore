@@ -5,6 +5,7 @@ __pycache__/
 node_modules/
 tests/artifacts/
 backups/
+backup/
 dist/
 build/
 .pytest_cache/
