@@ -156,10 +156,25 @@ with sync_playwright() as pw:
         page.locator('#explore-close').click()
         page.evaluate("""()=>{
           BondProfile.testing.heal();
-          const P=BondProfile,pop=P.population(),fox=pop.find(x=>x.type==='emberfox'),stone=pop.find(x=>x.type==='stonehorn');
-          const actor=BondRegion.inspect().actors.find(x=>x.id===stone.id),point=BondAtlas.safePoint('clearing-0',{x:(actor?.x??stone.x)-110,y:actor?.y??stone.y});
-          P.position(point);BondApp.switchTab('region');
-          window.joinId=stone.id;
+          const P=BondProfile,pop=P.population(),fox=pop.find(x=>x.type==='emberfox'&&x.present);
+          BondApp.switchTab('region');BondRegion.escapeGrace();
+          const actors=BondRegion.inspect().actors,distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+          let fixture=null;
+          // Random residents need a clear approach, outside contact and isolated from other pursuers.
+          for(const stone of pop.filter(x=>x.type==='stonehorn'&&x.present)){
+            const actor=actors.find(x=>x.id===stone.id&&x.life===stone.life);if(!actor)continue;
+            for(const [dx,dy] of [[-110,0],[110,0],[0,-110],[0,110]]){
+              const point=BondAtlas.safePoint('clearing-0',{x:actor.x+dx,y:actor.y+dy}),gap=distance(actor,point);
+              if(gap>=90&&gap<=140&&BondNav.clear('clearing-0',actor,point,55)&&
+                 actors.every(o=>!o.hostile||o.id===actor.id||distance(o,point)>400)){
+                fixture={actor,point};break;
+              }
+            }
+            if(fixture)break;
+          }
+          if(!fixture)throw Error('No isolated resident with a clear territorial pursuit approach');
+          P.position(fixture.point);BondApp.switchTab('region');
+          window.joinId=fixture.actor.id;
           window.joinEncounter=P.beginHunt(fox.id).id;BondApp.startRegionBattle(joinEncounter);
           window.live=BondApp.getBattle();window.liveNode=document.querySelector('.fighter[data-id="0-0"]');window.anchorStart=BondRegion.inspect().position;
         }""")
