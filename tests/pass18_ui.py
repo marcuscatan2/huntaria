@@ -3,6 +3,7 @@ import argparse,functools,json,threading,hashlib,traceback
 from datetime import datetime,timedelta,timezone
 from http.server import ThreadingHTTPServer
 from browser_check import legacy_adventure, ROOT,ARTIFACTS,QuietServer,find_browser,sync_playwright
+from playwright.sync_api import expect
 parser=argparse.ArgumentParser();parser.add_argument('--browser',default='chrome');args=parser.parse_args()
 server=ThreadingHTTPServer(('127.0.0.1',0),functools.partial(QuietServer,directory=str(ROOT)))
 threading.Thread(target=server.serve_forever,daemon=True).start();url=f'http://127.0.0.1:{server.server_port}/?test=1'
@@ -49,9 +50,15 @@ with sync_playwright() as pw:
         check('Keyboard selects map destination without teleporting',page.evaluate('BondProfile.snapshot().map==="clearing-0"') and 'Mosslight Village' in page.locator('.atlas-destination').inner_text())
         check('Atlas roads exactly represent reciprocal graph edges',page.evaluate("""()=>{const edges=new Set(BondAtlas.maps.flatMap(m=>m.neighbors.map(g=>[m.id,g.to].sort().join('|'))));return document.querySelectorAll('[data-atlas-road]').length===edges.size&&[...document.querySelectorAll('[data-atlas-road]')].every(p=>edges.has(p.dataset.atlasRoad));}"""))
         check('Atlas derives six average wildlife levels and colors them against trainer level',page.evaluate("""()=>{const trainer=BondProgress.trainerLevel(BondProfile.snapshot()),lands=[...document.querySelectorAll('.atlas-land')];return lands.length===6&&lands.every((g,i)=>Number(g.dataset.atlasAverage)===BondWorldMap.average(i)&&g.classList.contains('threat-'+BondWorldMap.threat(Number(g.dataset.atlasAverage),trainer)))&&BondWorldMap.threat(10,10)==='safe'&&BondWorldMap.threat(15,10)==='caution'&&BondWorldMap.threat(16,10)==='danger';}"""))
-        page.locator('[data-atlas-region="clearing"]').dispatch_event('mouseenter')
-        page.clock.run_for(200)
-        check('Hovering a reach reveals its colored average-level card',page.locator('[data-atlas-region="clearing"] .atlas-region-info').evaluate("e=>getComputedStyle(e).opacity==='1'") and 'AVG LV.' in page.locator('[data-atlas-region="clearing"] .atlas-region-info').text_content())
+        reach=page.locator('[data-atlas-region="clearing"]');level_card=reach.locator('.atlas-region-info')
+        # CSS transitions use browser time, independent of the paused game clock.
+        page.locator('.atlas-pan-help').hover();expect(level_card).to_have_css('opacity','0')
+        reach.locator('.atlas-region-name').hover();expect(level_card).to_have_css('opacity','1')
+        check('Hovering a reach reveals its colored average-level card',reach.evaluate("e=>e.matches(':hover')") and 'AVG LV.' in level_card.text_content())
+        page.locator('.atlas-pan-help').hover();expect(level_card).to_have_css('opacity','0')
+        check('Leaving a reach hides its average-level card',not reach.evaluate("e=>e.matches(':hover')||e.matches(':focus')"))
+        reach.focus();expect(level_card).to_have_css('opacity','1')
+        check('Keyboard focus reveals the same reach level card',reach.evaluate("e=>e.matches(':focus')") and 'AVG LV.' in level_card.text_content())
         page.screenshot(path=str(ARTIFACTS/f'pass18-atlas-ui-{args.browser}.png'),full_page=True)
         page.locator('[data-world-travel="clearing-hub"]').click();page.clock.run_for(6000)
         check('Atlas Walk here crosses the physical gate',page.evaluate('BondProfile.snapshot().map==="clearing-hub"'))
