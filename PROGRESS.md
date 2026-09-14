@@ -1,5 +1,23 @@
 # Bond & Bolt browser prototype — handoff
 
+## Current handoff - class sprite visibility repair (2026-09-14)
+
+The shared rig hides replaced portraits with the DOM hidden attribute, which
+works for both HTML and SVG. Hunter/Swordsman portrait viewports explicitly
+clip the atlas under combat styles. Each fighter/world actor displays one
+animated canvas once ready, retaining a cropped static fallback while waiting
+or if loading fails.
+
+The trainer suite passes 44 checks, including real keyboard movement, both
+sides of a started class-master battle and world return. The same new scene
+regressions fail 14 checks when the previous renderer is served in a disposable
+browser. Visibility checks now inspect actual computed display rather than the
+JavaScript hidden property that masked the SVG failure.
+
+Needs you now: no decision blocks this repair. Coming next: existing art and
+farm reviews before further variants/equipment. Safe to defer: broader art and
+release approvals. Review priorities are otherwise unchanged.
+
 ## Current handoff - human sprites and Haunted Cellar (2026-09-14)
 
 Hunter and the knight-styled Swordsman use painted 16-pose sheets referenced

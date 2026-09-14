@@ -47,7 +47,10 @@ selector. NPC names, combat classes, skills, quests and rewards are unchanged.
 Player characters continue to use their selected class artwork.
 
 Hunter/Swordsman static portraits display frame 13 through an SVG viewport over
-the painted PNG. Animated scenes use the same sheet on canvas.
+the painted PNG. The viewport explicitly clips overflow, including under combat
+SVG styles. Animated scenes use the same sheet on canvas and hide the replaced
+portrait with the DOM `hidden` attribute. SVG elements do not implement the
+HTML `hidden` property; assigning that property alone leaves them visible.
 `CharacterRig.portraitSource` provides a cached transparent canvas for Inner Sea
 rendering/export, without serializing external image references into data URLs.
 
@@ -72,7 +75,10 @@ Run `python tests/trainer_animation_check.py --browser chrome`, then the full
 project gate. The trainer test renders every frame on a colored background,
 checks four distinct walk/attack/cast images for Druid, Mage, Hunter, Swordsman and both Apprentice
 weapons, checks transparent output, verifies the eager idle-frame handoff and
-verifies honest coverage metadata.
+verifies honest coverage metadata. Hunter/Swordsman regressions exercise real
+keyboard walking, both sides of a started master battle, world return and
+pending/failed-sheet fallbacks. Assertions inspect computed visibility and
+clipping, rather than a JavaScript visibility flag.
 `tests/opening_check.py` separately proves the creator uses canvas art and that
 every appearance/weapon control produces a distinct painted preview.
 

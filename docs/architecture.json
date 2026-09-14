@@ -225,7 +225,7 @@
         "F-026"
       ],
       "entry": "CharacterRig.mount / pose / trigger; CombatView.onEvent / draw / impactAudit; BondPresentation.timing",
-      "contract": "Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid, Mage, Hunter and Swordsman use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional. Hunter/Swordsman portraits reuse their sheet idle frame; Inner Sea exports receive a cached canvas. NPC appearance routing reserves class art for masters and selects four stable civilian sprites for ordinary people in field, dialogue, previews and combat. Final visual acceptance remains pending.",
+      "contract": "Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid, Mage, Hunter and Swordsman use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional. Hunter/Swordsman portraits reuse their explicitly clipped sheet idle frame; animated rigs hide replaced HTML/SVG portraits through the DOM hidden attribute; Inner Sea exports receive a cached canvas. NPC appearance routing reserves class art for masters and selects four stable civilian sprites for ordinary people in field, dialogue, previews and combat. Final visual acceptance remains pending.",
       "tests": [
         "field-polish",
         "mechanics",
@@ -985,7 +985,7 @@
         "tests/trainer_animation_check.py"
       ],
       "browser": true,
-      "purpose": "Druid/Mage/Apprentice pose frames, painted creator choices, transparent rendering, weapon-specific motion, provenance and coverage"
+      "purpose": "All five trainer classes and both Apprentice weapons: pose frames, painted creator, transparency, real Hunter/Swordsman world/combat visibility, keyboard motion, clipped fallbacks, provenance and coverage"
     },
     "field-polish": {
       "command": [

@@ -27,7 +27,7 @@
   function art(type){
     if(painted.has(type)){
       const config=BondAnimationData[type],[l,t,r,b]=config.frames[13].rect;
-      return '<svg class="character-sprite" data-painted-portrait="true" data-character="'+type+'" xmlns="http://www.w3.org/2000/svg" viewBox="'+[l,t,r-l,b-t].join(' ')+'" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><image href="assets/characters/'+type+'-sheet.png" width="'+config.width+'" height="'+config.height+'"/></svg>';
+      return '<svg class="character-sprite" data-painted-portrait="true" style="overflow:hidden" data-character="'+type+'" xmlns="http://www.w3.org/2000/svg" viewBox="'+[l,t,r-l,b-t].join(' ')+'" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><image href="assets/characters/'+type+'-sheet.png" width="'+config.width+'" height="'+config.height+'"/></svg>';
     }
     if(people.includes(type))return '<img class="character-sprite civilian-sprite" data-character="'+type+'" src="assets/characters/'+type+'.png" alt="" aria-hidden="true" width="1254" height="1254" decoding="async" draggable="false">';
     if(type==='apprentice'){const c=window.BondProfile?.snapshot().character;return BondApprenticePreview.markup(c?.look,c?.weapon);}
@@ -104,8 +104,8 @@
       // Creator portraits are for creator/menu presentation only. In an animated
       // scene, never flash that visibly different figure while the action sheet
       // loads. The boot/creator paths preload this sheet before world entry.
-      canvas.hidden=false;rig.original.hidden=true;rig.original.dataset.artSuperseded='true';
-      rig.sheet.promise.then(ok=>{if(!ok){canvas.hidden=true;rig.original.hidden=false;delete rig.original.dataset.artSuperseded;}});
+      canvas.hidden=false;rig.original.toggleAttribute('hidden',true);rig.original.dataset.artSuperseded='true';
+      rig.sheet.promise.then(ok=>{if(!ok){canvas.hidden=true;rig.original.toggleAttribute('hidden',false);delete rig.original.dataset.artSuperseded;}});
     }
     return rig;
   }
@@ -154,8 +154,8 @@
       if(!s.walking&&!s.channeling&&!s.victory&&!s.fallen&&!rig.action)return;
       rig.sheet=sheet(rig.type,rig.weapon);
     }
-    if(!rig.sheet.ready){if(rig.sheet.error){rig.canvas.hidden=true;rig.original.hidden=false;delete rig.original.dataset.artSuperseded;}return;}
-    rig.canvas.hidden=false;rig.original.hidden=true;rig.original.dataset.artSuperseded='true';
+    if(!rig.sheet.ready){if(rig.sheet.error){rig.canvas.hidden=true;rig.original.toggleAttribute('hidden',false);delete rig.original.dataset.artSuperseded;}return;}
+    rig.canvas.hidden=false;rig.original.toggleAttribute('hidden',true);rig.original.dataset.artSuperseded='true';
     let frame=13,mode='idle';
     const action=rig.action,age=action?s.time-action.born:Infinity;
     if(s.fallen>0){frame=14;mode='defeated';}

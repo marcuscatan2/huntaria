@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import functools
+from datetime import datetime, timedelta, timezone
 from http.server import ThreadingHTTPServer
 import hashlib
 import json
@@ -15,6 +16,70 @@ from browser_check import ROOT, ARTIFACTS, QuietServer, find_browser, sync_playw
 import sys
 sys.path.insert(0, str(ROOT / "scripts"))
 import project
+
+
+def review_scenes(browser, url, check, errors, missing, browser_name):
+    for trainer in ("hunter", "swordsman"):
+        page = browser.new_page(viewport={"width": 1440, "height": 1000})
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        page.on("response", lambda response: missing.append(response.url) if response.status >= 400 else None)
+        now = datetime.now(timezone.utc)
+        page.clock.install(time=now)
+        page.clock.pause_at(now + timedelta(seconds=2))
+        page.goto(url)
+        page.wait_for_function("!!window.BondApp")
+        page.evaluate("""type=>{
+            const P=BondProfile,s=P.fresh();
+            s.character={name:'Sprite QA',weapon:'dagger',look:BondOpening.defaultLook};
+            s.trainerXP=BondProgress.threshold(25);s.progression.specialization=type;
+            s.companions=['emberfox','bloomslime'].map((type,i)=>({id:'sprite:'+i,type,ordinal:1,xp:BondProgress.threshold(25),growth:{},skills:[...BondContent.UNITS[type].default],pact:{map:'clearing-0',trainerClass:'apprentice'}}));
+            Object.assign(s.journey.early,{introFightWon:true,firstSummon:true,secondSummon:true,mageMet:true,mageGate:true,tidecrown:true,demonstrations:Object.values(BondCampaign.DEMONSTRATIONS)});
+            P.testing.replace(s);P.travel('clearing-hub');
+        }""", trainer)
+        page.reload()
+        page.wait_for_function("!!window.BondApp")
+        page.evaluate("BondApp.changeUnit(0,1,'sprite:0');BondApp.changeUnit(0,2,'sprite:1')")
+        page.evaluate("CharacterRig.ready()")
+        page.clock.run_for(200)
+        visible = "selector=>[...document.querySelectorAll(selector+' .character-sprite')].filter(n=>getComputedStyle(n).display!=='none').map(n=>({tag:n.tagName,frame:n.dataset.frame,pose:n.dataset.pose}))"
+        world = page.evaluate(visible, "#region-player")
+        check(f"{trainer} world idle shows exactly one canvas", len(world) == 1 and world[0]["tag"] == "CANVAS" and world[0]["frame"] == "13")
+        before = page.evaluate("BondRegion.inspect().position")
+        frames = []
+        page.keyboard.down("d")
+        for _ in range(4):
+            page.clock.run_for(160)
+            frames.append(page.locator("#region-player canvas.animated-sprite").get_attribute("data-frame"))
+        page.keyboard.up("d")
+        check(f"{trainer} keyboard movement advances visible walk frames", len(set(frames)) >= 3 and page.evaluate("BondRegion.inspect().position") != before and len(page.evaluate(visible, "#region-player")) == 1)
+        page.locator("#region-map").screenshot(path=str(ARTIFACTS / f"{trainer}-world-{browser_name}.png"))
+        started = page.evaluate("type=>{const e=BondProfile.encounter('early:master:'+type);BondProfile.travel(e.map,e);return {ok:BondApp.startRegionBattle(e.id),requirement:BondCampaign.requirement(e,BondProfile.snapshot(),BondApp.getBuild()[0]),error:BondProfile.error()};}", trainer)
+        check(f"{trainer} real player and master battle starts", started["ok"])
+        if not started["ok"]: print(started, flush=True)
+        page.evaluate("CharacterRig.ready()")
+        page.clock.run_for(250)
+        for side in (0, 1):
+            actor = page.evaluate(visible, f'.fighter[data-id="{side}-0"] .fighter-art')
+            check(f"{trainer} combat side {side} shows one animated actor", len(actor) == 1 and actor[0]["tag"] == "CANVAS")
+        check(f"{trainer} battle portraits keep a clipped viewport", page.evaluate("""()=>{
+            const portraits=[...document.querySelectorAll('#arena [data-painted-portrait],#combat-dock [data-painted-portrait]')];
+            return portraits.length>=4&&portraits.every(n=>getComputedStyle(n).overflow==='hidden');
+        }"""))
+        page.locator("#arena").screenshot(path=str(ARTIFACTS / f"{trainer}-combat-{browser_name}.png"))
+        page.evaluate("BondApp.cancelRegionBattle();BondApp.switchTab('region')")
+        page.clock.run_for(200)
+        check(f"{trainer} world return keeps one actor", len(page.evaluate(visible, "#region-player")) == 1)
+        # A pending or failed animation sheet must also keep the static fallback cropped.
+        fallback = page.evaluate("""type=>{
+            const host=document.createElement('div');host.className='fighter-art';host.innerHTML=CharacterRig.art(type);document.body.append(host);
+            const rig=CharacterRig.mount(host,type,{lazy:true});CharacterRig.pose(rig,{time:0,walking:false,reduced:false});
+            const pending=getComputedStyle(rig.original).display!=='none'&&getComputedStyle(rig.original).overflow==='hidden'&&getComputedStyle(rig.canvas).display==='none';
+            rig.sheet={ready:false,error:true};CharacterRig.pose(rig,{time:1,walking:true,reduced:false});
+            const failed=getComputedStyle(rig.original).display!=='none'&&getComputedStyle(rig.original).overflow==='hidden'&&getComputedStyle(rig.canvas).display==='none';
+            host.remove();return pending&&failed;
+        }""", trainer)
+        check(f"{trainer} pending and failed animation retains one clipped fallback", fallback)
+        page.close()
 
 
 def main() -> int:
@@ -52,6 +117,7 @@ def main() -> int:
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(executable_path=find_browser(args.browser), headless=True)
+            review_scenes(browser, f"http://127.0.0.1:{server.server_port}/?test=1", check, errors, missing, args.browser)
             page = browser.new_page(viewport={"width": 1440, "height": 1000})
             page.on("pageerror", lambda error: errors.append(str(error)))
             page.on("response", lambda response: missing.append(response.url) if response.status >= 400 else None)
@@ -71,7 +137,7 @@ def main() -> int:
                     for(const time of [.05,.15,.3,.5])record('cast',time);
                     for(const mode of ['hit','idle','defeated','victory'])record(mode,mode==='hit'?.05:1);
                     const corner=rig.ctx.getImageData(0,0,1,1).data[3];
-                    out.push({key:rig.configKey,corner,portraitOK,walk:new Set(samples.walk).size,attack:new Set(samples.attack).size,cast:new Set(samples.cast).size,originalHidden:rig.original.hidden,canvasVisible:!rig.canvas.hidden});host.remove();
+                    out.push({key:rig.configKey,corner,portraitOK,walk:new Set(samples.walk).size,attack:new Set(samples.attack).size,cast:new Set(samples.cast).size,originalHidden:getComputedStyle(rig.original).display==='none',canvasVisible:!rig.canvas.hidden});host.remove();
                 }
                 const creator=document.createElement('div');document.body.append(creator);const previews=[];
                 for(const choice of [{hair:'crop',face:'calm',hairColor:0,skinColor:0,weapon:'dagger'},{hair:'sweep',face:'bright',hairColor:3,skinColor:2,weapon:'dagger'},{hair:'braid',face:'focused',hairColor:5,skinColor:5,weapon:'bow'}]){
