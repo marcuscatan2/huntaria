@@ -16,6 +16,14 @@ source=hashes()
 def check(name,value,detail=None):
     checks.append({'name':name,'pass':bool(value),'detail':detail})
     if not value: print('FAIL '+name,flush=True)
+def play_until_settled(page, limit=80000):
+    # Stop at settlement before newly aggressive residents can start another hunt.
+    for _ in range(limit//250):
+        page.clock.run_for(250)
+        if page.evaluate('BondApp.getBattle()?.ended&&!BondProfile.snapshot().encounterSave'):
+            return
+    raise AssertionError('Played battle did not settle within the time limit')
+
 with sync_playwright() as pw:
     browser=pw.chromium.launch(executable_path=find_browser(args.browser),headless=True)
     context=browser.new_context(viewport={'width':1440,'height':1000})
@@ -66,7 +74,7 @@ with sync_playwright() as pw:
         walking_frame=page.locator('#region-player canvas.animated-sprite').get_attribute('data-frame')
         page.keyboard.up('d');page.clock.run_for(300)
         check('First movement animates the same sole sprite without a character swap',walking_frame in {'0','1','2','3'} and page.evaluate("""()=>{const art=document.querySelector('#region-player .world-art'),visible=[...art.querySelectorAll('.character-sprite')].filter(n=>getComputedStyle(n).display!=='none');return visible.length===1&&visible[0].classList.contains('animated-sprite')&&art.querySelector('.painted-apprentice-static').hidden;}"""))
-        check('First map renders 96 residents across exactly three low-level species',page.locator('.map-object.wild').count()==96 and page.evaluate('BondProfile.population().every(p=>p.habitat.level>=2&&p.habitat.level<=5)&&new Set(BondProfile.population().map(p=>p.type)).size===3'))
+        check('First map renders 288 residents across exactly three low-level species',page.locator('.map-object.wild').count()==288 and page.evaluate('BondProfile.population().every(p=>p.habitat.level>=2&&p.habitat.level<=5)&&new Set(BondProfile.population().map(p=>p.type)).size===3'))
         check('No initial guide NPC and only one tiny main objective',page.locator('.map-object.guide').count()==0 and not page.locator('#region-objectives').is_visible() and page.locator('#world-quest').is_visible() and page.locator('#world-objective').inner_text()=='Hunt Brimbles for a Soul Echo')
         check('Quest tracker names its destination region and map',page.locator('#world-objective-location').inner_text()=='Mosslight · Firstlight Meadow')
         check('No NPC quest marker appears before an NPC objective',page.locator('.quest-marker').count()==0)
@@ -77,13 +85,21 @@ with sync_playwright() as pw:
         check('Reload preserves identity and does not reopen creator',not page.locator('#character-creation').is_visible() and page.evaluate("BondProfile.snapshot().character.look.skinColor===4&&BondApp.getBuild()[0][0].weapon==='bow'"))
         if not args.smoke:
             checks.extend(page.evaluate((ROOT/'tests/opening_cases.js').read_text(encoding='utf-8')))
-            # Exercise the actual first hunt from the saved apprentice, not a
-            # forced simulator outcome. Only the QA roll/loot seed is controlled.
+            # Pick an isolated resident so this single-hunt loot assertion is not
+            # also a random multi-enemy encounter. Joining has its own played checks.
+            page.evaluate("""()=>{window.qaIsolated=type=>{
+              const all=BondProfile.population().filter(p=>p.present),map=BondProfile.snapshot().map;
+              for(const sp of all.filter(p=>p.type===type))for(let i=0;i<24;i++){
+                const p={x:sp.x+160*Math.cos(i*Math.PI/12),y:sp.y+160*Math.sin(i*Math.PI/12)};
+                if(Math.hypot(sp.x-BondOpening.camp.x,sp.y-BondOpening.camp.y)>1000&&!BondAtlas.collision(map,p)&&BondNav.clear(map,sp,p,20)&&all.every(other=>other.id===sp.id||Math.hypot(other.x-p.x,other.y-p.y)>500))return {sp,p};
+              }
+              throw Error('No isolated '+type+' approach');
+            };}""")
             spawn=page.evaluate("""()=>{
-              const P=BondProfile,sp=P.population().find(x=>x.present&&x.type==='emberfox');
+              const P=BondProfile,{sp,p}=qaIsolated('emberfox');
               const raw=P.snapshot();let seed=1;while(!BondOpening.loot('emberfox','clearing-0',seed).leafdraught)seed++;
               raw.spawns[sp.id].seed=seed;raw.spawns[sp.id].roll=1499;P.testing.replace(raw);
-              P.position(BondAtlas.safePoint('clearing-0',{x:sp.x-170,y:sp.y}));BondApp.switchTab('region');return sp;
+              P.position(p);BondApp.switchTab('region');return sp;
             }""")
             page.clock.run_for(200)
             page.locator('[data-object="'+spawn['id']+'"]').click()
@@ -109,15 +125,15 @@ with sync_playwright() as pw:
             check('Reopening battle details does not duplicate loot',page.evaluate('BondProfile.export()')==before)
             # Reproduce the owner's unassisted first-win / second-loss loop.
             coins=page.evaluate('BondProfile.snapshot().coins')
-            page.evaluate("""()=>{BondApp.switchTab('region');const P=BondProfile,s=P.snapshot();s.vitality.trainer=100;P.testing.replace(s);const sp=P.population().find(p=>p.type==='emberfox'&&p.present);P.position(BondAtlas.safePoint('clearing-0',{x:sp.x-160,y:sp.y}));BondApp.switchTab('region');if(!BondApp.startRegionBattle(P.beginHunt(sp.id).id))throw Error('Second hunt failed');}""")
-            page.clock.run_for(40000)
+            page.evaluate("""()=>{BondApp.switchTab('region');const P=BondProfile,s=P.snapshot();s.vitality.trainer=100;P.testing.replace(s);const {sp,p}=qaIsolated('emberfox');P.position(p);BondApp.switchTab('region');if(!BondApp.startRegionBattle(P.beginHunt(sp.id).id))throw Error('Second hunt failed');}""")
+            play_until_settled(page,40000)
             check('Forced low-health defeat returns to familiar camp without visiting town',page.evaluate('BondApp.getBattle().winner===1&&BondProfile.snapshot().map==="clearing-0"&&!BondProfile.snapshot().visited.includes("clearing-hub")&&BondAdventure.health(BondProfile.snapshot())===10000') and page.evaluate('BondProfile.snapshot().coins')==coins)
             check('Camp and mapped location remain visible after defeat',page.locator('[data-object="sanctuary:clearing-0"]').is_visible() and page.locator('#world-map-name').inner_text().lower()=='firstlight meadow')
             check('Defeat message names camp and confirms full recovery',page.locator('#region-message').inner_text()=='You recover at Forest camp. Your party is fully rested.')
             page.screenshot(path=str(ARTIFACTS/f'opening-camp-{args.browser}.png'))
             page.locator('[data-world-menu="inventory"]').click()
             check('Bag tutorial highlights the earned Brimble Echo',page.evaluate('BondApp.getTab()==="loadout"&&BondMenu.current()==="inventory"') and page.locator('[data-item="echo:emberfox"].tutorial-target').is_visible())
-            page.locator('[data-item="echo:emberfox"]').click()
+            page.locator('.inventory-item[data-item="echo:emberfox"]').click()
             check('Selecting the Echo highlights its Summon action',page.locator('[data-summon="emberfox"].tutorial-target').is_visible())
             page.locator('[data-summon="emberfox"]').click();page.locator('#confirm-summon').click()
             check('Apprentice can summon an earned Echo into an independent companion',page.evaluate("BondProfile.companions('emberfox').length===1&&BondProfile.snapshot().inventory['echo:emberfox']===0"))
@@ -130,15 +146,15 @@ with sync_playwright() as pw:
             check('Mage asks for a second companion and updates the quest',page.locator('#npc-dialog').is_visible() and 'too dangerous' in page.locator('#npc-dialogue').inner_text() and page.locator('#npc-fight').is_disabled() and page.locator('#world-objective').inner_text()=='Get a second companion')
             check('Offer marker clears from field and minimap after the quest is accepted',page.locator('[data-object="early:forest-mage"] .quest-marker').count()==0 and page.evaluate('BondRegion.inspect().questMarkers.length===0'))
             page.locator('#npc-close').click()
-            page.evaluate("""()=>{const P=BondProfile,sp=P.population().find(x=>x.type==='bloomslime'&&x.present);P.position(BondAtlas.safePoint('clearing-0',{x:sp.x-160,y:sp.y}));BondApp.switchTab('region');if(!BondApp.startRegionBattle(P.beginHunt(sp.id).id))throw Error('Bloomslime hunt failed');}""")
-            page.locator('#qa-speed-5').click();page.clock.run_for(80000)
+            page.evaluate("""()=>{const P=BondProfile,{sp,p}=qaIsolated('bloomslime');P.position(p);BondApp.switchTab('region');if(!BondApp.startRegionBattle(P.beginHunt(sp.id).id))throw Error('Bloomslime hunt failed');}""")
+            page.locator('#qa-speed-5').click();play_until_settled(page)
             check('First second-role victory leaves its guaranteed Echo',page.evaluate("BondApp.getTab()==='region'&&BondProfile.snapshot().inventory['echo:bloomslime']===1"))
-            page.locator('[data-world-menu="inventory"]').click();page.locator('[data-item="echo:bloomslime"]').click();page.locator('[data-summon="bloomslime"]').click();page.locator('#confirm-summon').click();page.locator('.frame-destinations [data-menu-close]').click();page.clock.run_for(300)
+            page.locator('[data-world-menu="inventory"]').click();page.locator('.inventory-item[data-item="echo:bloomslime"]').click();page.locator('[data-summon="bloomslime"]').click();page.locator('#confirm-summon').click();page.locator('.frame-destinations [data-menu-close]').click();page.clock.run_for(300)
             check('Second summon fills the remaining party slot and updates the quest',page.evaluate("BondApp.getBuild()[0].slice(1).filter(Boolean).length===2") and page.locator('#world-objective').inner_text()=='Return to the Mage' and page.locator('.world-companion-hp').count()==2)
             check('Mage delivery is marked by a yellow question mark in the field and minimap',page.locator('[data-object="early:forest-mage"][data-quest-marker="delivery"] .quest-marker').inner_text()=='?' and page.evaluate("BondRegion.inspect().questMarkers.some(q=>q.id==='early:forest-mage'&&q.type==='delivery'&&q.symbol==='?')"))
             page.evaluate("""()=>{const e=BondProfile.encounter('early:forest-mage');BondProfile.position(BondAtlas.safePoint('clearing-0',{x:e.x+150,y:e.y}));BondApp.switchTab('region');BondRegion.approachId(e.id);}""");page.clock.run_for(2500)
             check('Mage trial becomes available to a two-companion party',page.locator('#npc-dialog').is_visible() and not page.locator('#npc-fight').is_disabled() and 'Two companions' in page.locator('#npc-dialogue').inner_text())
-            page.locator('#npc-fight').click();page.locator('#qa-speed-5').click();page.clock.run_for(80000)
+            page.locator('#npc-fight').click();page.locator('#qa-speed-5').click();play_until_settled(page)
             mage_result=page.evaluate("()=>({winner:BondApp.getBattle().winner,reason:BondApp.getBattle().reason,enemies:BondApp.getBattle().units.filter(u=>u.side===1).map(u=>({type:u.type,spawnId:u.spawnId||null})),gate:BondProfile.snapshot().journey.early.mageGate,objective:document.querySelector('#world-objective').textContent})")
             check('Mage trial opens the world and advances to existing progression',mage_result['winner']==0 and mage_result['gate'] and page.evaluate("BondAtlas.unlocked(BondProfile.snapshot(),'clearing-hub')") and 'Tavi' in mage_result['objective'],mage_result)
             page.evaluate("""()=>{const P=BondProfile,party=BondApp.getBuild()[0],dead=party[1].instanceId;BondApp.changeUnit(0,2,null);const s=P.snapshot();s.vitality.companions[dead]=0;P.testing.replace(s);BondApp.switchTab('region');const sp=P.population().find(x=>x.type==='emberfox'&&x.present),e=P.beginHunt(sp.id);window.deadSelected=dead;if(!BondApp.startRegionBattle(e.id))throw Error('Dead-companion hunt did not start');}""")
@@ -170,7 +186,7 @@ with sync_playwright() as pw:
                 if page.evaluate('BondApp.getTab()==="battle"&&BondApp.isRunning()'):
                     contact_seen=True;break
             check('Territorial approach starts real combat without a click',contact_seen and page.evaluate('BondApp.getEncounter().includes("stonehorn")'))
-            page.clock.run_for(80000)
+            play_until_settled(page)
             check('Played Firstlight death returns immediately to the forest camp fully healed',page.evaluate('BondApp.getBattle().winner===1&&BondApp.getTab()==="region"&&BondProfile.snapshot().map==="clearing-0"&&BondAdventure.health(BondProfile.snapshot())===10000'))
             page.clock.run_for(300)
             check('Forest camp remains the nearby free recovery service after defeat',page.locator('[data-object="sanctuary:clearing-0"]').count()==1 and page.evaluate('BondProfile.canService("sanctuary")&&BondAdventure.health(BondProfile.snapshot())===10000'))
@@ -261,7 +277,7 @@ with sync_playwright() as pw:
             normal.goto(f'http://127.0.0.1:{server.server_port}/');normal.wait_for_function('!!window.BondApp')
             check('Normal mode exposes neither test controls nor testing commands',normal.locator('.test-controls').count()==0 and normal.locator('#qa-speed-5').count()==0 and normal.evaluate('!BondProfile.TEST&&BondProfile.testing===null&&BondProfile.snapshot().coins===321'))
             check('Normal mode keeps standard travel and rejects 5x playback',normal.evaluate('BondRegion.inspect().speed===BondAtlas.BASE_SPEED&&BondApp.playbackSpeed()===1&&!BondApp.setPlaybackSpeed(5)&&BondApp.playbackSpeed()===1'))
-            normal.evaluate("""()=>{const s=BondProfile.snapshot();s.map='clearing-hub';s.position={...BondAtlas.get(s.map).entry};s.coins=0;s.inventory={};s.vitality.trainer=0;s.journey.early.introFightWon=true;localStorage.setItem(BondProfile.KEY,JSON.stringify(s));}""")
+            normal.evaluate("""()=>{const s=BondProfile.snapshot();s.map='clearing-hub';s.position={...BondAtlas.get(s.map).entry};s.coins=0;s.inventory={};s.vitality.trainer=0;s.trainerXP=BondProgress.threshold(15);s.journey.early.introFightWon=true;localStorage.setItem(BondProfile.KEY,JSON.stringify(s));}""")
             normal.reload();normal.wait_for_function('!!window.BondApp')
             check('Normal-mode city load restores a fallen broke player automatically',normal.evaluate('BondProfile.snapshot().coins===0&&Object.keys(BondProfile.snapshot().inventory).length===0&&BondAdventure.health(BondProfile.snapshot())===10000') and normal.locator('.map-object.sanctuary').count()==0)
             normal.locator('#open-atlas').click();normal.locator('[data-atlas-select="clearing-0"]').click();normal.locator('[data-world-travel="clearing-0"]').click()
@@ -269,6 +285,7 @@ with sync_playwright() as pw:
             normal.clock.run_for(12000)
             normal.wait_for_function('BondProfile.snapshot().map==="clearing-0"',timeout=30000)
             check('Clearly labeled town route reaches the starting meadow',normal.evaluate('BondRegion.inspect().map==="clearing-0"'))
+            check('Normal-mode wildlife is passive when every resident is at least ten levels below the trainer',normal.evaluate('BondRegion.inspect().actors.every(a=>!a.hostile)'))
             normal.evaluate("BondRegion.approachId('sanctuary:clearing-0')")
             for _ in range(8):
                 normal.clock.run_for(5000)

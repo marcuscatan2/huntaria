@@ -1,18 +1,18 @@
 # Player guide — apprentice opening
 
 Fresh adventures now begin with character creation: a name, simple appearance
-choices and a dagger or bow. You wake alone in Firstlight's forest. Click passive
-wildlife to approach and fight. Firstlight has96 residents across three types:
-48 Emberfox Lv2,32 Bloomslime Lv3 and16 territorial Stonehorn Lv5. Tideotter Lv10
-now lives in Fernpath Woods. You start at Forest camp, inside Firstlight. Nearby
-meadows contain Emberfox; the middle grove has Bloomslime; Stonehorn live deeper
-in the eastern forest. Wounds carry between victories. **Return to camp · free rest**
-above the map walks you to the tent for free healing. Firstlight defeats return
-you to this camp fully recovered, with progress kept. Defeats elsewhere still
-return to the regional town with injuries; **Heal party · free** at the sanctuary
-fully heals/revives everyone with no coins or supplies required. In Mosslight,
-**Firstlight Meadow · starting area →** above the map walks through the correct
-gate; use the camp button on arrival. Portable recovery items are sold separately.
+choices and a dagger or bow. You wake alone in Firstlight's forest. Click a
+creature to approach and fight. Roaming monsters attack when you approach unless
+they are at least ten levels below your trainer. You can still choose to fight
+these weaker creatures.
+
+Firstlight has288 residents:144 Brimble Lv2,96 Bloomslime Lv3 and48 Rattlebit Lv5.
+You start at Forest camp. Nearby meadows contain Brimble; the middle grove has
+Bloomslime; Rattlebit live deeper in the eastern forest. Wounds carry between
+victories. **Return to camp ? free rest** walks you to the tent for free healing.
+Firstlight defeats return you to camp fully recovered, with progress kept.
+Defeats elsewhere return to a city; arriving in a city heals your entire party.
+Portable recovery items are sold in city shops.
 First-map drops include supplies.
 
 Apprentices now earn hunting XP before summoning: two Lv2 Emberfox wins reach

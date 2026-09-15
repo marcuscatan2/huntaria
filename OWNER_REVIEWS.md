@@ -26,7 +26,7 @@ not replace technical tests or automatically accept commercial criteria.
 ## What happens next
 
 - **OR-01 — Approve the visual direction with a small creature set** (Needs revision). The owner supplied 100 replacement PNGs and a numbered stable-ID workbook; integration is authorized, final commercial art approval is not recorded. Current source and 100-species contact sheets are routed through features/animation/SUPPLIED_SPRITES.md. Review the supplied starter set in actual world/combat/collection sizes before dependent production.
-- **OR-02 — Approve the first 20–30 minutes and core combat feel** (Pending review packet / decision). Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.
+- **OR-02 — Approve the first 20–30 minutes and core combat feel** (Pending review packet / decision). Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
 
 Coming next: OR-03, OR-04, OR-05, OR-06.
 The AI prepares a named packet before asking for approval. A pending gate
@@ -109,7 +109,7 @@ Priority: **NOW**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
-- Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.
+- Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
 - Use features/opening/PASS26_VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.
 - Replay victory, defeat, a selected fallen sole companion, reload and interrupted-menu routes. Firstlight defeat must preserve bearings at the same forest camp, fully recovered. Confirm ordinary Echo odds remain separate from the two disclosed onboarding guarantees.
 - Review the four class demonstrations, Tidecrown, each easy master acceptance battle and explicit Druid/Mage/Hunter/Swordsman commitment. The current party fights the named master; winning returns to the field. Then review the Lv25 Inner Sea farm, ability-change proof and Lv30 trees. Use features/opening/CLASSES.md and features/inner-sea/FARM_SCOPE.md.
@@ -139,7 +139,7 @@ Priority: **NEXT**. State: **Needs revision**.
 
 **AI prepares:**
 
-- Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.
+- Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
 - AI prepares one coherent village → field → forest/cave slice with roads, bridge, service, landmark, varied enemies and a return route.
 - Show a walk-through and minimap/atlas; measure actual representative crossings and recovery travel, preserving the existing ≥30-second large-map requirement.
 - Use final-candidate art in a small area and blockout elsewhere; do not decorate all 24 fields to request this review.
@@ -169,7 +169,7 @@ Priority: **NEXT**. State: **Needs revision**.
 
 **AI prepares:**
 
-- Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.
+- Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
 - AI presents Druid plus the supplied Brimble (emberfox) and Rattlebit (stonehorn) designs with Mage/ranged/support context: idle, both walking directions, attack, cast, hit, defeat and victory. These new PNGs currently use transform motion; the retired monster frame sheets are not their animation reference.
 - Show actual play at 1× and 2×, crowded combat, Quiet FX and reduced motion. Include impact/sound/HP synchronization evidence.
 - Show the same creatures in the world and inventory, not only the arena.
@@ -228,7 +228,7 @@ Priority: **NEXT**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
-- Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.
+- Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
 - AI proposes a concrete supported desktop/browser baseline and an explicit mobile promise or deferral, with costs/limitations explained.
 - Show the Patch 26 in-frame exploration objective, upper-right minimap/Atlas entry and bottom three-destination menu alongside party picker, skill editing, inventory, summoning and recovery on desktop and a narrow layout.
 - Owner/real testers check the chosen physical devices before certification; emulated viewports alone cannot approve hardware.

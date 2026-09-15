@@ -2,8 +2,9 @@
 
 Review scope: **world-grid-cities-v1**. Implementation requested by the owner;
 final visual, pacing and commercial acceptance are separate owner decisions.
-Current art correction: **city-overhead-v2**, replacing all 21 frontal city
-frames with overhead buildings, residents and roofless room floor plans.
+Current art correction: **city-perspective-v3**. Buildings and roofless rooms
+use overhead scenery; the nine residents use the classes' upright, right-facing
+three-quarter perspective, with clear faces and full standing silhouettes.
 
 ## World contract
 
@@ -52,9 +53,10 @@ flavor interactions without XP or item grants.
 
 `city-art.js` preserves native sprite transparency, measures the source row
 boundaries and keeps each interior's original aspect ratio on desktop and phones.
-Roofs, head crowns, furniture tops and low wall caps establish the overhead view.
-The replacement art uses text-only generation briefs with no third-party image
-inputs. All 21 frames, exact prompts, source hashes and the limits of the local
+Roofs, furniture tops and low wall caps establish the overhead environment view.
+People share the playable trainers' camera and facing. Building/room sources use
+text-only generation; resident edits use this project's NPC and Hunter artwork.
+All 21 frames, exact prompts, source hashes and the limits of the local
 duplicate audit are recorded in `assets/cities/prompts.json`.
 
 ## Recovery, travel and saves
@@ -85,6 +87,6 @@ Screenshots/reports are reproducible under `tests/artifacts/city-*`.
 For owner review: walk from Firstlight into Mosslight, enter its hall/shop, use
 the waystone to visit the library, lodge and knight training hall, then compare
 the atlas with the gate directions. Judge city identity, building readability,
-NPC scale, the overhead perspective and travel/recovery feel before repeating
+NPC scale and class-matched facing, scenery perspective and travel/recovery feel before repeating
 this treatment in more regions. Review all three source sheets in the city gallery.
 OR-02/03/04/06 remain pending; automated tests do not approve art or pacing.

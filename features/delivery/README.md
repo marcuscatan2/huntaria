@@ -44,6 +44,7 @@ The links below point to the actual source; root browser paths remain in use.
 | [tests/experience_check.py](<../../tests/experience_check.py>) | Owned source/configuration; inspect before editing. |
 | [tests/farm_classes_check.py](<../../tests/farm_classes_check.py>) | Owned source/configuration; inspect before editing. |
 | [tests/farm_classes_cases.js](<../../tests/farm_classes_cases.js>) | Owned source/configuration; inspect before editing. |
+| [tests/field_encounters_check.py](<../../tests/field_encounters_check.py>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 

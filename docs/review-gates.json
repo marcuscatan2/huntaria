@@ -85,7 +85,7 @@
       "before": "Before repeating the current combat/progression loop across more regions, monsters and quests.",
       "why": "Boring or unreadable combat, excessive walking, unrewarding hunts or forced recovery become embedded in encounter levels, rewards, quest scripts and content volume.",
       "packet": [
-        "Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.",
+        "Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.",
         "Use features/opening/PASS26_VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.",
         "Replay victory, defeat, a selected fallen sole companion, reload and interrupted-menu routes. Firstlight defeat must preserve bearings at the same forest camp, fully recovered. Confirm ordinary Echo odds remain separate from the two disclosed onboarding guarantees.",
         "Review the four class demonstrations, Tidecrown, each easy master acceptance battle and explicit Druid/Mage/Hunter/Swordsman commitment. The current party fights the named master; winning returns to the field. Then review the Lv25 Inner Sea farm, ability-change proof and Lv30 trees. Use features/opening/CLASSES.md and features/inner-sea/FARM_SCOPE.md."
@@ -135,7 +135,7 @@
       "before": "Before producing the remaining full-detail maps, quest routes or region-wide art placement.",
       "why": "Map scale and visual language constrain camera, gates, collision, pathfinding, prop sizes, spawn density, recovery trips and quest travel.",
       "packet": [
-        "Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.",
+        "Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.",
         "AI prepares one coherent village → field → forest/cave slice with roads, bridge, service, landmark, varied enemies and a return route.",
         "Show a walk-through and minimap/atlas; measure actual representative crossings and recovery travel, preserving the existing ≥30-second large-map requirement.",
         "Use final-candidate art in a small area and blockout elsewhere; do not decorate all 24 fields to request this review."
@@ -191,6 +191,28 @@
               "sha256": "784b12099ec39dbe0d872f8474bcd2a8691bc366e008fbecf8daadd2072bb8f4"
             }
           ]
+        },
+        {
+          "result": "revise",
+          "scope": [
+            "*"
+          ],
+          "reference": "Owner correction of city-overhead-v2 NPC perspective, conversation 2026-09-15; corrected packet city-perspective-v3 remains for owner review",
+          "quote": "Views of npc 'from above' got weird, they should have the same 'facing' perspective as the sprites of classes.",
+          "evidence": [
+            {
+              "path": "assets/cities/prompts.json",
+              "sha256": "6a82559f98d2896a98fdacf91cc948996d4d3b6bdab6cc5310e2d5b2ce9ebe6e"
+            },
+            {
+              "path": "assets/cities/residents.png",
+              "sha256": "4991435a221397292635393c51bdee7608f315a4aa0b6e9a32cfe9f7459b1faf"
+            },
+            {
+              "path": "features/world/CITIES.md",
+              "sha256": "564e7a57a97048403fcbd7999055f1903c2f89c3ce488084d02e873fa8a3ecdd"
+            }
+          ]
         }
       ]
     },
@@ -214,7 +236,7 @@
       "before": "After direction/concept approval, before mass rigging or animation production.",
       "why": "Sprite framing, ground anchors, rig proportions, attack timing and VFX origins get copied into every character package. Fixing the template late means re-exporting many assets.",
       "packet": [
-        "Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.",
+        "Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.",
         "AI presents Druid plus the supplied Brimble (emberfox) and Rattlebit (stonehorn) designs with Mage/ranged/support context: idle, both walking directions, attack, cast, hit, defeat and victory. These new PNGs currently use transform motion; the retired monster frame sheets are not their animation reference.",
         "Show actual play at 1× and 2×, crowded combat, Quiet FX and reduced motion. Include impact/sound/HP synchronization evidence.",
         "Show the same creatures in the world and inventory, not only the arena."
@@ -253,6 +275,28 @@
             {
               "path": "features/world/CITIES.md",
               "sha256": "784b12099ec39dbe0d872f8474bcd2a8691bc366e008fbecf8daadd2072bb8f4"
+            }
+          ]
+        },
+        {
+          "result": "revise",
+          "scope": [
+            "*"
+          ],
+          "reference": "Owner correction of city-overhead-v2 NPC perspective, conversation 2026-09-15; corrected packet city-perspective-v3 remains for owner review",
+          "quote": "Views of npc 'from above' got weird, they should have the same 'facing' perspective as the sprites of classes.",
+          "evidence": [
+            {
+              "path": "assets/cities/prompts.json",
+              "sha256": "6a82559f98d2896a98fdacf91cc948996d4d3b6bdab6cc5310e2d5b2ce9ebe6e"
+            },
+            {
+              "path": "assets/cities/residents.png",
+              "sha256": "4991435a221397292635393c51bdee7608f315a4aa0b6e9a32cfe9f7459b1faf"
+            },
+            {
+              "path": "features/world/CITIES.md",
+              "sha256": "564e7a57a97048403fcbd7999055f1903c2f89c3ce488084d02e873fa8a3ecdd"
             }
           ]
         }
@@ -322,7 +366,7 @@
       "before": "Before locking asset detail/texture budgets or expanding screens and control patterns.",
       "why": "Changing screen density, touch/mouse assumptions or the minimum device later affects asset sizes, camera distance, labels, effects, input, layouts and performance budgets.",
       "packet": [
-        "Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.",
+        "Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.",
         "AI proposes a concrete supported desktop/browser baseline and an explicit mobile promise or deferral, with costs/limitations explained.",
         "Show the Patch 26 in-frame exploration objective, upper-right minimap/Atlas entry and bottom three-destination menu alongside party picker, skill editing, inventory, summoning and recovery on desktop and a narrow layout.",
         "Owner/real testers check the chosen physical devices before certification; emulated viewports alone cannot approve hardware.",
@@ -674,6 +718,39 @@
         {
           "path": "assets/inner-sea/prompts.json",
           "sha256": "ab51ed4c138291de1a555ac934aeec24b040bf244431bb4bde0165c4e94d62ec"
+        }
+      ]
+    },
+    {
+      "id": "npc-perspective-and-wildlife-2026-09-15",
+      "source": "Current owner conversation, 2026-09-15",
+      "scope": [
+        "Correct nine city NPC sprites to class-matched standing perspective",
+        "Repair Windstep cave convergence interaction and shared pack portraits",
+        "Triple existing roaming populations and make all roaming species aggressive except those at least ten levels below the trainer"
+      ],
+      "quotes": [
+        "Views of npc 'from above' got weird, they should have the same 'facing' perspective as the sprites of classes.",
+        "in 'Thunderhowllow Cave' there's a mon with the legend below 'Windstep cave convergence - INTERACTIVE', if you click it, nothing happens and you get stuck and have to reload the game.",
+        "Increase the monster count per map by 3 times. Make all monsters offensive except if they're 10 or more levels below the character's."
+      ],
+      "boundary": "Explicit authority for this local correction and tuning. No final art/pacing acceptance, expanded roster production, permanent online economy or public release is approved. Existing save identities and precommitted rolls are preserved.",
+      "evidence": [
+        {
+          "path": "assets/cities/prompts.json",
+          "sha256": "6a82559f98d2896a98fdacf91cc948996d4d3b6bdab6cc5310e2d5b2ce9ebe6e"
+        },
+        {
+          "path": "assets/cities/residents.png",
+          "sha256": "4991435a221397292635393c51bdee7608f315a4aa0b6e9a32cfe9f7459b1faf"
+        },
+        {
+          "path": "MAP_POPULATIONS.md",
+          "sha256": "20ffa4f7dc4df96e84ab0a93281ab8127a0fc69a080c39e7914dbb3f270821b0"
+        },
+        {
+          "path": "features/shell/ENCOUNTERS.md",
+          "sha256": "ccf534f19282f55eba10d24b611806f913561d1743dc3978cae6af12ac677954"
         }
       ]
     }

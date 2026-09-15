@@ -22,7 +22,7 @@ assert all(len(r['skills'])==5 and len(set(r['defaultSkills']))==3 for r in rows
 assert all(math.isfinite(v) for r in rows for v in r['base'].values())
 stats="""# Creature reference — all 100 species
 
-Generated from [data/creature-reference.json](data/creature-reference.json). Revision 8, 2026-09-13.
+Generated from [data/creature-reference.json](data/creature-reference.json). Revision 9, 2026-09-15.
 Creature identity, design role, element, region, source level, availability and
 attack basis come from the reviewed Bond & Bolt Google Sheet snapshot. Runtime
 stats and kits are captured from the prototype because `mon-skills` is still empty.
@@ -67,7 +67,7 @@ in JSON are not creature spawn points; each life has its own saved random positi
 """
 drops="""# Creature drops and habitats — all 100 species
 
-Generated from [data/creature-reference.json](data/creature-reference.json). Revision 8, 2026-09-13.
+Generated from [data/creature-reference.json](data/creature-reference.json). Revision 9, 2026-09-15.
 Every row below distinguishes **LIVE prototype loot** from **PLANNED, NOT LIVE**.
 Stats/kit definitions: [CREATURE_REFERENCE.md](CREATURE_REFERENCE.md).
 
@@ -86,8 +86,8 @@ use a separate seeded stream per saved spawn life; the same accepted kill cannot
 reroll or pay twice. Other maps do not yet have ordinary supply/material drops.
 
 Species are assigned to maps; creatures are not tied to little habitat clusters.
-Firstlight has48 Brimble,32 Bloomslime and16 Rattlebit (96 residents). Elsewhere,
-per species/map: Common8, Uncommon5, Rare/Very rare1 residents. Ordinary defeated
+Firstlight has144 Brimble,96 Bloomslime and48 Rattlebit (288 residents). Elsewhere,
+per species/map: Common24, Uncommon15, Rare/Very rare3 residents. Ordinary defeated
 lives are replaced immediately elsewhere; rare lives wait60s. No extra availability
 roll. Each replacement is a saved dry, walkable point, at least900 world units from
 its prior position. The initial starter population has one nearby introductory
@@ -95,6 +95,7 @@ Brimble resident. Firstlight replacements sample broad difficulty bands with a
 wildlife-free camp; other maps sample their full walkable area. Towns have no wildlife.
 Pending encounters retain their lives until settled/abandoned. Old surplus slots
 are retired from the map population without removing any owned companions.
+All roaming species attack unless at least ten levels below the trainer.
 Coordinates in JSON/CSV are ecology anchors, not spawn locations.
 
 Six bosses have **no live acquisition source**: the local altars are reward-free

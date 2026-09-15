@@ -9,7 +9,7 @@ Status: **local**. Chooses map-wide spawn positions; persistence owns each life,
 
 `BondPopulation.keys / selected / position; BondProfile.population / beginHunt`
 
-Per-map quotas and saved random positions; Firstlight overrides rarity quotas, guarantees one reachable Emberfox inside the opening ring, and uses BondOpening difficulty bands/camp clearance. That stable first life is the only introductory attacker; the first accepted Firstlight Emberfox kill is the reward trigger even if the player chose another resident. Replacement lives follow ordinary behavior. A new life replaces a dead life elsewhere. Incompatible unreserved positions relocate without rerolling life/seed/loot; reserved lives remain frozen. Spawn ID prefixes are identities, not map authority. Profile owns clocks/RNG/receipts.
+Tripled per-map quotas (Firstlight 144/96/48; other species Common24/Uncommon15/Rare3) and saved random positions; Firstlight overrides rarity quotas, guarantees one reachable Emberfox inside the opening ring, and uses BondOpening difficulty bands/camp clearance. Every roaming species attacks unless at least ten levels below the trainer; the first accepted Firstlight Emberfox kill is the reward trigger even if the player chose another resident. Quota increases fill new slots without rerolling saved lives or positions. A new life replaces a dead life elsewhere. Incompatible unreserved positions relocate without rerolling life/seed/loot; reserved lives remain frozen. Spawn ID prefixes are identities, not map authority. Profile owns clocks/RNG/receipts.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -44,6 +44,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/pass18_check.py --browser chrome` — Current mechanics, population/progression/receipt regressions and content export.
 - `python tests/pass18_campaign.py --browser chrome` — Current campaign/replay assertions (reuses pass16_cases.js).
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
+- `python tests/field_encounters_check.py --browser chrome` — All-map tripled populations, pack preview/cancel/challenge/reload/escape and the current-trainer aggression boundary.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

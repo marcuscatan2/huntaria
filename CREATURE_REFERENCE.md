@@ -1,6 +1,6 @@
 # Creature reference — all 100 species
 
-Generated from [data/creature-reference.json](data/creature-reference.json). Revision 8, 2026-09-13.
+Generated from [data/creature-reference.json](data/creature-reference.json). Revision 9, 2026-09-15.
 Creature identity, design role, element, region, source level, availability and
 attack basis come from the reviewed Bond & Bolt Google Sheet snapshot. Runtime
 stats and kits are captured from the prototype because `mon-skills` is still empty.

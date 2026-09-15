@@ -116,7 +116,7 @@ Trace through: [character-creation.js](<../../character-creation.js>) → [openi
 
 [exploration](<../../features/exploration/README.md>) → [persistence](<../../features/persistence/README.md>)
 
-Notice -> warning -> chase/contact -> reserve existing spawn life. With an active fight, joinBattle saves entry and tick before Battle.addEnemy. In-game tabs/modals do not pause active-fight pursuit; explicit Pause/browser-hidden does. Leash and line of sight apply. No visual reward authority.
+Every roaming species attacks unless at least ten levels below the current trainer. Notice -> warning -> chase/contact -> reserve existing spawn life. Crossing the level boundary returns pursuers home. With an active fight, joinBattle saves entry and tick before Battle.addEnemy. In-game tabs/modals do not pause active-fight pursuit; explicit Pause/browser-hidden does. Leash and line of sight apply. No visual reward authority.
 
 Trace through: [wild-behavior.js](<../../wild-behavior.js>) → [region.js](<../../region.js>) → [profile.js](<../../profile.js>) → [app.js](<../../app.js>) → [map-population.js](<../../map-population.js>).
 

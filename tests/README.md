@@ -9,6 +9,7 @@
 | Full current browser gate | `python scripts/project.py verify --browser chrome` (or edge) |
 | Fresh character and first forest | `python tests/opening_check.py --browser chrome` (or edge) |
 | Post-death/withdrawal clicks, starter XP, first Echo and exits | `python tests/onboarding_check.py --browser chrome` |
+| Pack previews, cave escape, all-map populations and aggression level boundary | `python tests/field_encounters_check.py --browser chrome` |
 | Mechanics and runtime reference export | `python tests/pass18_check.py --browser chrome` |
 | Square maps, cities and teleport/save safety | `python tests/city_world_check.py --browser chrome` |
 | Played UI flows | `python tests/pass18_ui.py --browser chrome` |

@@ -3,10 +3,15 @@
 ## Lifecycle
 
 Clicking a wild creature walks into contact and immediately reserves/starts its
-encounter. The nearby action reads Attack. Territorial wildlife starts the same
-flow when it reaches the trainer. Wild encounters never open an optional
+encounter. The nearby action reads Attack. Every roaming species starts the same
+flow on contact unless it is at least ten levels below the trainer. Wild encounters never open an optional
 confirmation dialog; NPC conversations, pack entries and boss difficulty
 selection remain deliberate interactions.
+
+Pack previews use the first participating monster as their portrait. Opening or
+closing a preview does not reserve its residents; only Challenge reserves the
+selected lives. Cancel returns to walking. This applies to all forest/cave packs,
+including Windstep cave convergence in Thunderhollow Cave.
 
 Only a fallen trainer blocks a new adventure. A selected zero-HP companion stays
 in the saved loadout and follows the trainer in the field with an empty HP line,
@@ -70,6 +75,8 @@ Echo toasts can open that exact item in Inventory; the persistent first-Echo
 world reminder remains available after expiry. Failed saves use a separate
 persistent retry notice; accepted items are displayed only after settlement.
 Notification visibility never controls rewards or removes inventory items.
+Popup art/text let clicks reach the world and Bag beneath them; only their
+explicit Dismiss/Inventory buttons intercept clicks.
 Accepted profile level increases show a 4.2-second accessible LEVEL UP banner,
 the new level and a gold actor ring, including companion levels. Reduced motion
 uses static feedback.

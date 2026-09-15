@@ -82,9 +82,9 @@ function buildObjects(){
   else if(o.kind==='gate')visual='<div class="world-gate-visual"></div><span class="gate-badge" aria-hidden="true">'+(m.neighbors.findIndex(g=>g.id===o.id)+1)+' · '+(o.locked?'LOCKED':'EXIT')+'</span>';
   else visual='<span class="landmark-art">'+({habitat:'❧',cache:'◈',sea:'✧',shop:'⚑',guide:'☷',rest:'⌂',discovery:'✦'}[o.kind])+'</span>';
   if(o.kind==='wild'||o.kind==='npc')visual=visual.replace(' src="',' data-world-src="');
-  const label=o.kind==='wild'?'':'<span class="world-label">'+o.label+'<small>'+(o.kind==='building'?'ENTER':o.kind==='waystone'?'TRAVEL TO A CITY':o.kind==='resident'?'TALK':o.kind==='gate'?o.direction.toUpperCase()+' PORTAL':o.kind==='habitat'?'FIXED SPAWNS':o.kind==='npc'?'TALK / CHALLENGE':o.kind==='cache'?'OPEN':o.kind==='shop'?'BUY SUPPLIES':o.kind==='sanctuary'?'REST':o.roadSign||o.kind==='openingSign'?'READ THE SIGN':'INTERACT')+'</small></span>';
+  const label=o.kind==='wild'?'':'<span class="world-label">'+o.label+'<small>'+(o.kind==='building'?'ENTER':o.kind==='waystone'?'TRAVEL TO A CITY':o.kind==='resident'?'TALK':o.kind==='gate'?o.direction.toUpperCase()+' PORTAL':o.kind==='habitat'?'FIXED SPAWNS':o.kind==='pack'?'CHALLENGE PACK':o.kind==='npc'?'TALK / CHALLENGE':o.kind==='cache'?'OPEN':o.kind==='shop'?'BUY SUPPLIES':o.kind==='sanctuary'?'REST':o.roadSign||o.kind==='openingSign'?'READ THE SIGN':'INTERACT')+'</small></span>';
   const aria=o.kind==='wild'?'Wild creature, level '+(o.habitat?.level||''):o.label;o.baseAria=aria;
-  return '<button class="world-node map-object '+o.kind+(o.kind==='wild'&&BondWildBehavior.policy(m.id,o.type,o)?' hostile':'')+(o.sceneryService?' scenery-service':'')+(o.roadSign?' road-sign':'')+'" data-object="'+o.id+'" aria-label="'+aria+'">'+visual+label+'</button>';
+  return '<button class="world-node map-object '+o.kind+(o.kind==='wild'&&BondWildBehavior.policy(m.id,o.type,o,BondProgress.trainerLevel(state))?' hostile':'')+(o.sceneryService?' scenery-service':'')+(o.roadSign?' road-sign':'')+'" data-object="'+o.id+'" aria-label="'+aria+'">'+visual+label+'</button>';
  }).join('');
  objects.forEach(o=>o.el=layer.querySelector('[data-object="'+o.id+'"]'));
  updateQuestMarkers(state,currentQuest);
@@ -125,7 +125,7 @@ function paint(now){
  followers.forEach((u,i)=>{const live=engaged&&fight?._attemptId===saved.attempt?fight.units.find(v=>v.side===0&&v.instanceId===u.instanceId):null,value=Math.max(0,Math.min(100,live?100*live.hp/live.maxHp:BondAdventure.health(P.snapshot(),u.instanceId)/100)),bar=$('#follower-'+i+' .world-companion-hp');if(!bar)return;bar.dataset.tone=value<35?'red':value<=50?'yellow':'green';bar.setAttribute('aria-valuenow',Math.round(value*10)/10);bar.firstElementChild.style.width=value+'%';});
  $('#region-player').classList.toggle('world-battling',engaged);
  markBattle($('#region-player'),engaged);
- const discovered=new Set(P.snapshot().sights);
+ const discovered=new Set(P.snapshot().sights),trainerLevel=BondProgress.trainerLevel(P.snapshot());
  for(const o of objects){
   const pinned=anchor?.actors?.find(p=>p.id===o.id);o.engaged=engaged&&!!pinned;
   o.el.classList.toggle('world-battling',o.engaged);
@@ -136,7 +136,7 @@ function paint(now){
    if(!A.collision(m.id,q)){o.x=q.x;o.y=q.y;}
    o.el.classList.toggle('facing-left',Math.cos(now/4200+A.hash(o.id)%32)<0);
   }
-  if(o.kind==='wild'){o.el.classList.toggle('alert',o.mode==='alert');o.el.classList.toggle('chase',o.mode==='chase');if(o.mode&&o.mode!=='idle')o.el.classList.toggle('facing-left',!!o.facingLeft);}
+  if(o.kind==='wild'){o.el.classList.toggle('hostile',!!BondWildBehavior.policy(m.id,o.type,o,trainerLevel));o.el.classList.toggle('alert',o.mode==='alert');o.el.classList.toggle('chase',o.mode==='chase');if(o.mode&&o.mode!=='idle')o.el.classList.toggle('facing-left',!!o.facingLeft);}
   place(o.el,o);const q=project(o),visible=q.x>-240&&q.x<width+140&&q.y>-90&&q.y<height+260;o.el.hidden=!visible;o.el.tabIndex=visible?0:-1;if(visible)for(const img of o.el.querySelectorAll('img[data-world-src]')){img.src=img.dataset.worldSrc;delete img.dataset.worldSrc;}o.el.classList.toggle('nearby',distance(pos,o)<=150);
   if(o.sceneryService&&visible){const key=o.sceneryKey||(o.roadSign?o.sightId:o.kind==='shop'?m.id+':shop':m.hero.id),p=WorldRenderer.bounds(key);if(p){o.el.style.left=p.x+'px';o.el.style.top=p.y+'px';o.el.style.width=p.width+'px';o.el.style.height=p.height+'px';o.el.style.marginTop='0';o.el.style.transform='translate(-50%,-94%)';}}
   if(o.kind==='gate'&&visible){WorldRenderer.spriteStyle(o.el.querySelector('.world-gate-visual'),m.theme.id,o.gateKind==='cave'?7:o.gateKind==='forest'?9:o.gateKind==='town'?12:o.gateKind==='boss'?11:15,o.gateKind==='cave'||o.gateKind==='boss'?165:130);}
@@ -178,7 +178,7 @@ function talk(id){
  $('#npc-reward').textContent=e.kind==='wild'?'Per kill: '+(6+Math.floor(e.level/3))+' coins and '+BondAdventure.xp(e.level)+' companion XP.':e.practice?'No rewards in this local boss preview.':P.snapshot().defeated.includes(id)?'Cleared. Rematches give no additional first-win rewards.':'First victory: '+(e.coins||0)+' coins, '+trainerReward+' trainer XP, '+(e.xp||150)+' companion XP and a biscuit.';
  if(e.openingGate)$('#npc-reward').textContent='Win to open the forest road.';
  if(e.authored)$('#npc-reward').textContent='First win: '+e.coins+' coins, '+e.xp+' XP and a biscuit. Repeat: '+e.repeatCoins+' coins and '+e.repeatXP+' XP. Trainer companions never drop Echoes.';
- if(e.packId)$('#npc-reward').textContent=e.enemies.length+' reserved map residents. Each defeated member gives its ordinary coins, XP and precommitted Echo chance, even after a loss. Un-killed members give nothing.';
+ if(e.packId){$('#npc-dialogue').textContent=e.advice;$('#npc-reward').textContent='Earn coins, XP and items from each creature you defeat.';}
  const gatePassed=e.openingGate&&P.snapshot().journey.early.mageGate,requirement=P.requirement(id,party),injury=!e.practice&&!P.snapshot().encounterSave&&BondAdventure.readiness(P.snapshot(),party);if(gatePassed)$('#npc-dialogue').textContent='The forest road is open.';else if(injury)$('#npc-dialogue').textContent=injury;else if(requirement)$('#npc-dialogue').textContent=e.openingGate?'It is too dangerous to go farther with only one ally. Return with two companions.':requirement;else if(e.openingGate)$('#npc-dialogue').textContent='Two companions. Good. Show me your bond, and I will open the road.';else if(e.kind==='wild'&&e.level>BondProgress.trainerLevel(P.snapshot())+3)$('#npc-dialogue').textContent+=' Danger: '+(e.level-BondProgress.trainerLevel(P.snapshot()))+' levels above your trainer. Prepare a full party before challenging it.';
  const trialComplete=e.masterClass&&P.snapshot().journey.early.trials[e.masterClass],canTransform=e.masterClass&&P.canSpecialize(e.masterClass);transformButton.hidden=!trialComplete||!!P.snapshot().progression.specialization;transformButton.disabled=!canTransform;transformButton.textContent=canTransform?'Become '+C.UNITS[e.masterClass].name:'Transformation requires player Lv 20';
  if(trialComplete&&!P.snapshot().progression.specialization)$('#npc-dialogue').textContent=canTransform?'Well fought. You have earned your place. Choose Become '+C.UNITS[e.masterClass].name+' to join us.':'Well fought. Return at player Lv 20 to become a '+C.UNITS[e.masterClass].name+'.';
@@ -251,11 +251,11 @@ function frame(now){
    if(pending&&distance(pos,pending)<=115){const o=pending;interact(o);}else if(dest&&distance(pos,dest)<3){dest=route.shift()||null;if(!dest){if(pending&&distance(pos,pending)<=135)interact(pending);else pending=null;}}
   }
   aggroGrace=Math.max(0,aggroGrace-dt);
- const pursuitProfile=P.snapshot(),protectedFight=fighting&&pursuitProfile.encounterSave?.encounter?.protectedEncounter===true,
+ const pursuitProfile=P.snapshot(),trainerLevel=BondProgress.trainerLevel(pursuitProfile),protectedFight=fighting&&pursuitProfile.encounterSave?.encounter?.protectedEncounter===true,
   canPursue=(fighting?BondApp.isRunning()&&!protectedFight:aggroGrace===0)&&BondAdventure.health(pursuitProfile)>0;
   for(const o of objects.filter(o=>o.kind==='wild')){
    if(pursuitProfile.encounterSave?.encounter.enemies?.some(e=>e.spawnId===o.id&&e.life===o.life))continue;
-   const hit=BondWildBehavior.step(o,pos,dt,{enabled:canPursue,clear:(a,b)=>BondNav.clear(m.id,a,b,20),
+   const hit=BondWildBehavior.step(o,pos,dt,{enabled:canPursue,trainerLevel,clear:(a,b)=>BondNav.clear(m.id,a,b,20),
     move:(q,a)=>!A.collision(m.id,q)?q:!A.collision(m.id,{x:q.x,y:a.y})?{x:q.x,y:a.y}:!A.collision(m.id,{x:a.x,y:q.y})?{x:a.x,y:q.y}:a});
    if(hit&&fighting){BondApp.joinWild(o.id,{x:o.x,y:o.y});continue;}
    if(hit){stop();P.position(pos);const e=P.beginHunt(o.id);if(e&&BondApp.startRegionBattle(e.id))return;aggroGrace=3;break;}
@@ -302,7 +302,7 @@ $('#world-journal').onclick=()=>{stop();const s=P.snapshot();info.innerHTML='<p 
 if(P.TEST){const qa=document.createElement('details');qa.className='qa-panel';qa.innerHTML='<summary>ISOLATED TEST SAVE · QA tools</summary><p>No effect on your normal save. Test grants do not test drop probability.</p><label>Species <select id="qa-species">'+C.MONSTERS.map(t=>'<option value="'+t+'">'+C.UNITS[t].name+'</option>').join('')+'</select></label><label>Echo level <input id="qa-level" type="number" value="1" min="1" max="100"></label><button id="qa-echo" class="button secondary">Grant test Echo</button><p id="qa-status" role="status"></p>';$('#panel-region').prepend(qa);$('#qa-echo').onclick=()=>{const input=$('#qa-level');if(!input.reportValidity())return;const t=$('#qa-species').value;if(P.testing.grantEcho(t,input.valueAsNumber)){$('#qa-status').textContent='Test Echo added. Open Inventory → Echoes → summon it. Assign it manually to your party.';sidebar();}};}
 new ResizeObserver(()=>{if(active)paint(performance.now());}).observe(host);
 window.BondRegion={anchor(encounter){const actors=(encounter?.enemies||[]).map(e=>objects.find(o=>o.id===e.spawnId)).filter(Boolean);const npc=objects.find(o=>o.id===encounter?.id);if(npc)actors.push(npc);return {map:m.id,position:{...pos},actors:actors.map(o=>({id:o.id,x:o.x,y:o.y}))};},enter(build){party=(P.snapshot().encounterSave?.build||build)[0];active=true;loadMap();},leave(){stop();active=false;},frame,notice:message,
- inspect:()=>({map:m.id,position:{...pos},camera:{...camera},destination:dest?{...dest}:null,route:route.map(p=>({...p})),travelPlan:[...travelPlan],graphics,renderer:WorldRenderer.inspect(),visible:objects.filter(o=>!o.el.hidden).map(o=>o.id),followers:followers.map(u=>({...u})),questMarkers:objects.filter(o=>o.questMarker).map(o=>({id:o.id,type:o.questMarker,symbol:o.questMarker==='delivery'?'?':'!',x:o.x,y:o.y})),speed:A.BASE_SPEED*TEST_MOVE_MULTIPLIER,actors:objects.filter(o=>o.kind==='wild').map(o=>({id:o.id,life:o.life,type:o.type,x:o.x,y:o.y,homeX:o.homeX,homeY:o.homeY,mode:o.mode||'idle',hostile:!!BondWildBehavior.policy(m.id,o.type,o)}))}),
+ inspect:()=>({map:m.id,position:{...pos},camera:{...camera},destination:dest?{...dest}:null,route:route.map(p=>({...p})),travelPlan:[...travelPlan],graphics,renderer:WorldRenderer.inspect(),visible:objects.filter(o=>!o.el.hidden).map(o=>o.id),followers:followers.map(u=>({...u})),questMarkers:objects.filter(o=>o.questMarker).map(o=>({id:o.id,type:o.questMarker,symbol:o.questMarker==='delivery'?'?':'!',x:o.x,y:o.y})),speed:A.BASE_SPEED*TEST_MOVE_MULTIPLIER,actors:objects.filter(o=>o.kind==='wild').map(o=>({id:o.id,life:o.life,type:o.type,x:o.x,y:o.y,homeX:o.homeX,homeY:o.homeY,mode:o.mode||'idle',level:o.habitat.level,hostile:!!BondWildBehavior.policy(m.id,o.type,o,BondProgress.trainerLevel(P.snapshot()))}))}),
  escapeGrace(){aggroGrace=6;for(const o of objects.filter(o=>o.kind==='wild')){o.mode='idle';o.warning=0;}},
  moveTo:walkTo,travelTo,approachId:id=>approach(objects.find(o=>o.id===id))};
 })();

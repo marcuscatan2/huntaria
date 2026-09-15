@@ -1,7 +1,7 @@
 /* Earned items rise inside the exploration frame; save failures stay actionable. */
 #loot-notifications{position:absolute;left:50%;bottom:28px;translate:-50% 0;z-index:2080;width:min(470px,calc(100% - 36px));pointer-events:none}
 #loot-toasts{display:flex;align-items:flex-end;justify-content:center;gap:10px}
-.loot-toast{position:relative;display:grid;justify-items:center;align-content:end;flex:1 1 90px;max-width:110px;min-width:0;min-height:112px;padding:0 3px 5px;color:#fff8dc;text-align:center;pointer-events:auto;filter:drop-shadow(0 8px 9px #102d2caa);animation:loot-pickup .52s cubic-bezier(.16,.9,.28,1.25) both}
+.loot-toast{position:relative;display:grid;justify-items:center;align-content:end;flex:1 1 90px;max-width:110px;min-width:0;min-height:112px;padding:0 3px 5px;color:#fff8dc;text-align:center;pointer-events:none;filter:drop-shadow(0 8px 9px #102d2caa);animation:loot-pickup .52s cubic-bezier(.16,.9,.28,1.25) both}
 .loot-toast::before{content:'';position:absolute;left:50%;bottom:32px;width:72px;height:100px;translate:-50% 0;background:linear-gradient(transparent,#ffe9a828 45%,#fff3c800);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);z-index:-1;animation:loot-beam 1.25s ease-out both}
 .loot-toast.echo-drop::before{background:linear-gradient(transparent,#bce8db38 45%,#c6f5eb00)}
 .loot-toast-icon{display:grid;place-items:center;width:54px;height:54px;border:1px solid #f7dfa5;border-radius:50%;font:31px Georgia;color:#ffe199;background:radial-gradient(circle at 35% 30%,#557a62,#183f38 72%);box-shadow:0 0 0 4px #fff0b51f,0 0 24px #ffe49d8c}
@@ -13,6 +13,7 @@
 .loot-dismiss{position:absolute;left:5px;top:8px;width:22px;height:22px;padding:0;border:0;border-radius:50%;background:#193a35b8;color:#f4e9c5;font-size:13px;line-height:20px;opacity:0;transition:opacity .15s}
 .loot-dismiss:focus-visible{opacity:1}
 .loot-inventory{display:block;border:1px solid #eaddab80;border-radius:12px;background:#183a35d9;padding:3px 8px;margin:3px auto 0;min-height:22px;color:#fff2c6;font-size:9px;text-align:center}
+.loot-toast button{pointer-events:auto}
 .loot-toast button:focus-visible,.loot-save-error button:focus-visible{outline:2px solid #ffdf98;outline-offset:2px}
 #loot-errors{position:fixed;right:20px;bottom:20px;z-index:2200;width:min(340px,calc(100vw - 28px));pointer-events:none}
 .loot-save-error{pointer-events:auto;display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #dab56c;border-radius:10px;background:#f6ebd0;color:#563a2b;box-shadow:0 4px 16px #102c3255;font-size:12px}

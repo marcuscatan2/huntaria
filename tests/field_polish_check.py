@@ -38,7 +38,7 @@ with sync_playwright() as pw:
         page.evaluate('qaHunt();BondApp.getBattle().run();BondApp.renderBattle();BondApp.finish()')
         check('Victory returns directly to the field',page.evaluate('BondApp.getTab()==="region"&&!BondProfile.snapshot().encounterSave'))
         saved=page.evaluate('BondProfile.export()')
-        page.evaluate('window.qaFirstToasts=[...document.querySelectorAll(".loot-toast")]');page.locator('.loot-dismiss').first.focus();page.locator('.loot-toast').first.hover()
+        page.evaluate('window.qaFirstToasts=[...document.querySelectorAll(".loot-toast")]');page.locator('.loot-dismiss').first.focus();page.locator('.loot-dismiss').first.hover()
         check('Loot pickups are contained inside the exploration frame',page.evaluate('''()=>{
           const h=document.querySelector('#loot-notifications'),f=document.querySelector('#region-map'),a=h.getBoundingClientRect(),b=f.getBoundingClientRect();
           return h.parentElement===f&&a.left>=b.left&&a.right<=b.right&&a.top>=b.top&&a.bottom<=b.bottom;
@@ -54,11 +54,14 @@ with sync_playwright() as pw:
         # below is unchanged. No fixture grants items through the UI.
         page.evaluate("""()=>{window.qaNotify=result=>{const original=BondProfile.complete,b={};try{BondProfile.complete=()=>result;BondLoot.show(b,'toast-fixture');BondLoot.show(b,'toast-fixture');}finally{BondProfile.complete=original;}};}""")
         page.evaluate('qaNotify({loot:{},coins:6,xp:100})')
-        check('Coins and XP each get their own popup without duplicates',page.locator('.loot-toast').count()==2 and page.locator('[data-item="coins"] .loot-quantity').inner_text()=='+6' and page.locator('[data-item="xp"] .loot-quantity').inner_text()=='+100')
+        check('Coins and XP each get their own popup without duplicates',page.locator('.loot-toast').count()==2 and page.locator('.loot-toast[data-item="coins"] .loot-quantity').inner_text()=='+6' and page.locator('.loot-toast[data-item="xp"] .loot-quantity').inner_text()=='+100')
+        page.locator('[data-world-menu="inventory"]').click()
+        check('Reward popups leave the underlying Bag navigation clickable',page.evaluate('BondApp.getTab()==="loadout"&&BondMenu.current()==="inventory"'))
+        page.locator('.frame-destinations [data-menu-close]').click();page.evaluate("BondApp.switchTab('region')")
         page.clock.run_for(1000);page.evaluate('qaNotify({loot:{leafdraught:2},coins:0,xp:0})')
-        check('An item stack shows its own icon, name and quantity',page.locator('[data-item="leafdraught"] .bag-icon').count()==1 and page.locator('[data-item="leafdraught"] .loot-quantity').inner_text()=='×2')
+        check('An item stack shows its own icon, name and quantity',page.locator('.loot-toast[data-item="leafdraught"] .bag-icon').count()==1 and page.locator('.loot-toast[data-item="leafdraught"] .loot-quantity').inner_text()=='×2')
         page.clock.run_for(2100)
-        check('Later loot neither resets nor inherits earlier timers',page.locator('.loot-toast').count()==1 and page.locator('[data-item="leafdraught"]').is_visible())
+        check('Later loot neither resets nor inherits earlier timers',page.locator('.loot-toast').count()==1 and page.locator('.loot-toast[data-item="leafdraught"]').is_visible())
         page.clock.run_for(1000);check('Later item expires on its own deadline',page.locator('.loot-toast').count()==0)
         page.evaluate('qaNotify({loot:{leafdraught:1,biscuit:1,mossbloom:1,riverstone:1,amberleaf:1,moonshard:1},coins:3,xp:40});window.qaWave=[...document.querySelectorAll(".loot-toast")];')
         check('Large drops display at most four independent popups',page.locator('.loot-toast').count()==4)

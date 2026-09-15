@@ -17,6 +17,7 @@
   const nativeFacing=type=>['rabbit','hound','fox','cat','boar','badger','marten','yak','tapir','ram','deer','bear','rhino','otter','seal','mole','porcupine','snake','wyrm','serpent','dragon','lizard','axolotl','centipede','shrimp','fish','snail','slug'].includes(BondContent.UNITS[type]?.artSpec?.shape)?-1:1;
   function npcAppearance(npc,id=''){
     if(npc.masterClass)return npc.masterClass;
+    if(npc.kind==='pack')return npc.enemies[0].type;
     if(npc.kind&&npc.kind!=='guide')return npc.type||npc.appearance||id;
     if(npc.role==='keeper'||npc.kind==='guide'||npc.id==='early:forest-mage'||id==='early:forest-mage')return 'npc-keeper';
     if(npc.role==='merchant')return 'npc-merchant';

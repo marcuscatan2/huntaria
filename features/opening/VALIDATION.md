@@ -24,7 +24,7 @@ clarity, emotional attachment or correct commercial pacing.
 
 The focused checks establish:
 
-- fresh creation, one-time intro aggression, accepted-victory state and defeat
+- fresh creation, level-based aggression, accepted-victory state and defeat
   recovery at the real Firstlight camp;
 - exactly one first-Firstlight-Brimble Echo and exactly one chosen
   Bloomslime-or-Stonehorn Echo, with ordinary drop odds unchanged;

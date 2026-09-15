@@ -29,9 +29,17 @@ with sync_playwright() as pw:
         check('Approaching a bridge loads and paints its lossless sprite',page.evaluate('WorldRenderer.inspect().bridgesPainted>0&&WorldRenderer.inspect().bridgeAsset.endsWith(".webp")'))
         page.evaluate('BondProfile.position(qaBridgeOrigin);BondApp.switchTab("region")')
         page.evaluate("BondApp.changeUnit(0,0,'mage')")
+        # Single-hunt recovery uses isolated wildlife; onboarding separately checks joins.
         health=[]
         for attempt in range(2):
-            spawn=page.evaluate("""()=>{const P=BondProfile,sp=P.population().find(x=>x.type==='emberfox'&&x.present);P.testing.setRoll(sp.id,1499);P.position(BondAtlas.safePoint(P.snapshot().map,{x:sp.x-170,y:sp.y}));BondApp.switchTab('region');return sp;}""")
+            spawn=page.evaluate("""()=>{const P=BondProfile,all=P.population().filter(x=>x.present),map=P.snapshot().map;
+              for(const sp of all.filter(x=>x.type==='emberfox'))for(let i=0;i<24;i++){
+                const q={x:sp.x+160*Math.cos(i*Math.PI/12),y:sp.y+160*Math.sin(i*Math.PI/12)};
+                if(Math.hypot(sp.x-BondOpening.camp.x,sp.y-BondOpening.camp.y)>1000&&!BondAtlas.collision(map,q)&&BondNav.clear(map,sp,q,20)&&all.every(other=>other.id===sp.id||Math.hypot(other.x-q.x,other.y-q.y)>500)){
+                  P.testing.setRoll(sp.id,1499);P.position(q);BondApp.switchTab('region');return sp;
+                }
+              }
+              throw Error('No isolated single-hunt approach');}""")
             page.clock.run_for(200);page.locator('[data-object="'+spawn['id']+'"]').click();page.clock.run_for(4000)
             check('Wild contact starts immediately without a confirmation dialog '+str(attempt),not page.locator('#npc-dialog').is_visible() and page.evaluate('BondApp.isRunning()&&BondApp.getTab()==="battle"') and '15%' not in page.locator('#battle-description').inner_text())
             for _ in range(160):
@@ -88,7 +96,9 @@ with sync_playwright() as pw:
         page.keyboard.press('Escape')
         # A deliberately low-HP fixture verifies the played defeat/recovery handoff.
         page.evaluate("""()=>{BondApp.changeUnit(0,0,'mage');const P=BondProfile,s=P.snapshot();s.vitality.trainer=50;P.testing.replace(s);P.travel('clearing-0');const sp=P.population().find(x=>x.type==='stonehorn'&&x.present);P.position(BondAtlas.safePoint('clearing-0',{x:sp.x-170,y:sp.y}));BondApp.switchTab('region');if(!BondApp.startRegionBattle(P.beginHunt(sp.id).id))throw Error('QA defeat encounter did not start');}""")
-        page.clock.run_for(80000)
+        for _ in range(320):
+            page.clock.run_for(250)
+            if page.evaluate('BondApp.getBattle().ended&&!BondProfile.snapshot().encounterSave'):break
         check('Played Firstlight defeat returns to the forest camp fully rested',page.evaluate('BondApp.getBattle().ended&&BondApp.getBattle().winner===1&&BondProfile.snapshot().map==="clearing-0"&&BondAdventure.health(BondProfile.snapshot())===10000'))
         check('Defeat now returns immediately to the region',page.evaluate('BondApp.getTab()==="region"'));page.clock.run_for(200);page.locator('.map-object.sanctuary').click();page.clock.run_for(300);page.locator('[data-sanctuary-rest]').click();page.keyboard.press('Escape')
         check('Rescued trainer can recover and continue',page.evaluate('BondAdventure.health(BondProfile.snapshot())===10000'))

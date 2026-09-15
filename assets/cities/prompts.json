@@ -1,23 +1,32 @@
 {
   "tool": "Built-in image_gen.imagegen",
-  "scope": "city-overhead-v2",
+  "scope": "city-perspective-v3",
   "sources": {
     "interiors": "exec-90b3a94a-1bef-4212-9d31-0acf9fe48380.png",
     "buildings": "exec-0de6124f-1732-4009-8657-eed3332d530a.png",
-    "residents": "exec-333749ac-de3d-4d53-9d4d-1a7dfdb531a9.png"
+    "residents": "exec-27931603-3637-4d5c-8798-0ff81ab5d879.png"
   },
   "prompts": {
     "interiors": "Use case: stylized-concept. Create original overhead game environment artwork from this written brief only. Do not use any external image, existing game map, named artist, franchise architecture, logo or copied composition. Deliver ONE square image containing EXACTLY FOUR equally sized room tiles in a 2 by 2 grid; boundaries at exactly 50 percent both axes, no gutters, no text, no people. CRITICAL CAMERA: a bird's-eye view straight DOWN at roofless rooms, camera 80 degrees above the ground, orthographic projection, north at image top. This is a playable top-down RPG floor plan, NOT a frontal interior illustration. Show the TOPS of furniture and wall caps, floor covers 85 percent of every tile. All four room outer footprints are squares aligned to image edges, near and far edges the SAME width, floor tiles parallel without a vanishing point, no horizon, no tall rear wall, no ceiling, no view through a window. Short cutaway perimeter walls only, about 8 percent of room height, clear 18-percent-wide opening in the BOTTOM CENTER. Keep the center 45 percent of every room as empty traversable floor. Warm painterly fantasy game textures, crisp silhouettes, restrained ornament, readable at 500px per room. TOP LEFT: druid seed archive carved into an irregular but square timber platform; overhead walnut floor, seed drawers and open seed tray at left middle, broad circular living-tree stump with ribbon wishes at right middle, planters and leaf-shaped low stools around edges, quiet olive and honey colors. TOP RIGHT: mage reading room, slate-blue tiled floor with an original asymmetric constellation of tiny brass inlays; LOW bookshelves seen from above along north/west edges; OPEN BOOK on reading desk at left middle; BRASS ORBITAL GLOBE at right middle, overhead purple rugs; shelves and desk remain low and do not create a frontal wall. BOTTOM LEFT: hunter tracking lodge, weathered oak floor, broad MAP TABLE viewed from above centered at upper third, bow-and-quiver rack on LEFT middle, boot bench and rolled bedrolls around edges, sage and amber palette, no killed animal trophies. BOTTOM RIGHT: knight practice yard INSIDE a roofless cutaway keep room, pale stone square floor, a LOW wooden cross-shaped PRACTICE DUMMY on RIGHT middle, folded blue ceremonial banners displayed flat on a wide table at TOP middle, weapon racks along left edge, narrow cobalt runner along floor. No heraldic animals, famous symbols, shields with copied emblems, text, sky, horizon, point-of-view hands or first-person view. All four must visibly read as overhead level maps.",
     "buildings": "Use case: stylized-concept. Original fantasy game BUILDING SPRITE ATLAS, designed from this written brief alone. ONE landscape image, EXACTLY FOUR COLUMNS and TWO ROWS, eight equal square cells with exact grid boundaries at 25/50/75 percent width and 50 percent height. One isolated complete building per cell, no overlap, 10 percent clear padding. Actual transparent PNG background, alpha zero, no checkerboard, no ground tiles, no landscape, no text. CRITICAL CAMERA: orthographic bird's-eye camera looking almost straight DOWN, 75 degrees above the ground (15 degrees from vertical), north up. Roof and visible upper footprint occupy at least 75 PERCENT of each building image; only a SHORT south-facing wall strip and entrance threshold below roof, NO tall frontal facades, NO skyline or horizon, NO front elevation illustration. Buildings aligned north/south to image edges, NOT diamond isometric footprints, parallel roof edges no vanishing points. Top surfaces of eaves, chimney openings, tower crenellations and platforms strongly visible. Soft hand-painted materials, clean fine outlines, warm readable 2D fantasy game scenery. Do not base designs on any existing game, famous building, franchise, named artist or logo. TOP ROW left to right: (1) Druid Elderbough Hall, original asymmetric cluster of leaf-roofed timber rooms joined around one open tree canopy, broad visible leaf roofs, small entrance on south center. (2) Mage Starfall Library, squat octagonal teal-purple roof around a low central glass skylight, small brass orbital instrument on roof, reading wings forming a compact square footprint, entrance south center. (3) Hunter Wayfarers Lodge, wide mossy split timber roof with a rope-tied ventilation opening and a little map-reader porch, low wooden walls, entrance south center, no animal trophies. (4) Knight Moonwell Keep, compact pale square stone keep, viewed down INTO open parapet corners and over its broad slate roof, blue fabric roof pennants, low south gatehouse, no copied heraldry. BOTTOM ROW: (1) Druid herbal shop with planted turf roof and square glass greenhouse roof panels; (2) Mage alchemy shop with copper-and-indigo roof, three capped ceramic roof vents, little round blue-glass skylight; (3) Hunter supply shop with broad bark-shingle roof and folded olive canvas awning, tiny overhead crates at threshold; (4) Knight smithy with rust-red low roof, clearly open square chimney seen from above, covered anvil veranda at south edge. Eight distinctly original silhouettes. Same overhead projection on EVERY frame. No people, weapons/logos as coats of arms or modern objects. Preserve true transparency.",
-    "residents": "Use case: stylized-concept. Original top-down fantasy game NPC SPRITE ATLAS from written descriptions only; no external references, named artists, existing game characters, franchise costumes, logos or copied designs. ONE square sheet with EXACTLY NINE isolated people in THREE COLUMNS and THREE ROWS, equal cells, one entire human per cell, 12 percent clear padding on all four sides, no overlap. Genuine transparent PNG alpha zero outside each figure, no checkerboard, no scenery or text. CRITICAL VIEW: bird's-eye orthographic camera 70 degrees above ground looking DOWN at every standing NPC, as seen on an overhead exploration map. Crown of head / TOP of hat and shoulders dominate, shortened torso below, tiny boots partly visible underneath. Face only a SMALL downward-facing strip, do not look UP at camera. NOT eye-level character portraits, NOT tall front-facing full-body illustrations. Every NPC faces toward bottom of sheet, mild south-east twist allowed, same projection and body scale. Friendly warm hand-painted game art, fine outlines, clear small silhouettes. Row 1 left to right: elderly woman herbalist with gray braided bun, patched sage shawl and oval wicker herb basket; dark-skinned young male gardener with rolled green overalls, round straw hat and short watering can; curly auburn female musician in ochre tunic with a small pear-shaped lute, flower hair tie. Row 2: older female librarian with a broad plum beret and rectangular stack of books; brown-skinned male astronomer with short midnight cloak, uncovered curly silver hair and a small brass instrument; young female alchemist with dark hair in two compact buns, leather apron and blue stoppered flask. Row 3: middle-aged female ranger with cropped red hair, moss hood pushed back, side bow and short dark cape; stocky older male smith with balding crown, brown apron and short-handled hammer; female knight captain with braided dark hair, practical silver shoulder armor and plain cobalt half-cape, sword sheathed. Distinct heads, clothes, ages and skin tones without reference to recognizable characters. Show visible crowns, shoulders, tops of held objects in EVERY frame. Compact overhead bodies, not frontal paper dolls."
+    "residents": "Use case: style-transfer. Asset type: replacement fantasy RPG NPC sprite atlas for Bond & Bolt. Input image 1 (assets/cities/residents.png) is the EDIT TARGET: preserve the nine civilian identities, clothing colors, held props, and row/column ordering. Input image 2 (assets/characters/hunter-sheet.png) is the CAMERA, facing, body proportion and hand-painted style reference; do not include the hunter or copy the hunter costume. Primary request: redraw the nine civilians in the same upright, readable three-quarter RIGHT-FACING standing perspective as the hunter idle pose (row 4, column 2), with clear faces, full torsos and legs, visible boots at the bottom, the same camera elevation as that reference. They stand on the same ground plane as the class sprites. The user rejected the previous looking-down overhead human view. All nine turn to screen RIGHT (mild three-quarter front-right), neutral friendly idle poses. Square canvas divided into exactly THREE EQUAL COLUMNS and THREE EQUAL ROWS; nine evenly spaced full-body people, one per cell. Keep 10 percent transparent padding all around each person and no overlap across cell boundaries. Row 1: gray-haired elderly herbalist with sage shawl and wicker herb basket; dark-skinned gardener with straw hat, green overalls and watering can; auburn curly-haired bard in ochre with lute. Row 2: elderly librarian with plum beret and books; brown-skinned silver-haired astronomer with midnight cloak and brass instrument; dark-haired alchemist with two buns, apron and blue flask. Row 3: red-haired female ranger with moss hood pushed back and side bow; stocky older balding smith with brown apron and short hammer; dark-braided knight captain with silver armor and cobalt cape, sword sheathed. Match the hunter sheet's warm painted texture, dark fine outlines and stylized character proportions. Preserve each distinct identity. Genuine transparent PNG alpha-zero outside the figures, including between legs and props. No background, no checkerboard, no ground shadow plates, no text, no borders, no added characters, no overhead head-crown view. Deliver the replacement nine-NPC sheet only."
   },
-  "input_images": [],
-  "provenance": "All three replacements were generated from the recorded text-only briefs. No external images, existing game assets or artist references were supplied to these calls. Selected tool outputs were copied byte-for-byte into this directory.",
+  "input_images": [
+    {
+      "git": "7639063:assets/cities/residents.png",
+      "role": "NPC identity and costume edit target",
+      "sha256": "cf1a567fb83880606fd04c9ead3415b34ebe3c14827e9fb3be5b99dfade9dd4d"
+    },
+    {
+      "path": "assets/characters/hunter-sheet.png",
+      "role": "Standing perspective, right-facing pose, proportions and painted style",
+      "sha256": "f6360aade5fcf433db7330303318ce5385cacadde5b244122853f4eb48f4d9d4"
+    }
+  ],
+  "provenance": "Buildings/interiors retain text-only generation sources. NPC correction uses the recorded in-project references, then transparent-background extraction and spacing edits. The selected RGBA output is copied byte-for-byte into residents.png; discarded source images are not loaded.",
   "originality_review": {
-    "checked_repository_images": 162,
-    "exact_duplicate_repository_paths": [],
     "distinct_frame_pixel_hashes": 21,
-    "limits": "This establishes source provenance and excludes exact local duplicates; it is not an exhaustive similarity search across external artworks."
+    "limits": "Source provenance and distinct local frame hashes do not establish worldwide uniqueness or final owner approval."
   },
   "framing": {
     "buildings": {
@@ -191,8 +200,8 @@
         418,
         414
       ],
-      "rgba_sha256": "04249c0b372a56dd1a8d01a32ccf730626dedaafa26f37bf3587e83c42825322",
-      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+      "rgba_sha256": "6675c402f587ed9df91b8acee7791c5cb09a12c5824a94cea248c8cd1fc6f654",
+      "visual_review": "Upright, full-body three-quarter character facing right, matching the class camera; head, props and boots remain inside the measured crop."
     },
     {
       "kind": "residents",
@@ -204,8 +213,8 @@
         836,
         414
       ],
-      "rgba_sha256": "9e752a1ac8f0ab043a8807d8be49c9f1cdf86a41142cfca3fa8b1ea54a3012d8",
-      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+      "rgba_sha256": "2867cca0dfe28d7149b493c9542cccfde1db0ed036ddb42718d9af22467d13ae",
+      "visual_review": "Upright, full-body three-quarter character facing right, matching the class camera; head, props and boots remain inside the measured crop."
     },
     {
       "kind": "residents",
@@ -217,8 +226,8 @@
         1254,
         414
       ],
-      "rgba_sha256": "5de6dbe38ca60bc4e506a6fb96519261749f2bd5e14829dba0688ee44eec689c",
-      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+      "rgba_sha256": "5a263633fe252f7646318c4c19b103784dd42da8198f365fd2a4b900a5ad8df7",
+      "visual_review": "Upright, full-body three-quarter character facing right, matching the class camera; head, props and boots remain inside the measured crop."
     },
     {
       "kind": "residents",
@@ -230,8 +239,8 @@
         418,
         812
       ],
-      "rgba_sha256": "e92501568e9d5a9603a526add87f71eaa265ef616a62130f46a8fa86f6f8b9a6",
-      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+      "rgba_sha256": "96efaefaea72b9ebddb647c8f2302c0d43b6b5156ab89ae975d658b0ccb370b5",
+      "visual_review": "Upright, full-body three-quarter character facing right, matching the class camera; head, props and boots remain inside the measured crop."
     },
     {
       "kind": "residents",
@@ -243,8 +252,8 @@
         836,
         812
       ],
-      "rgba_sha256": "9dc97130bacf5141656b01c59debb2cae803d122eecf44a407c23687c58e5e27",
-      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+      "rgba_sha256": "03d34ff15b085cc5654437389a6b5202c0a5d7e158b191676cf1d734fc22c8d0",
+      "visual_review": "Upright, full-body three-quarter character facing right, matching the class camera; head, props and boots remain inside the measured crop."
     },
     {
       "kind": "residents",
@@ -256,8 +265,8 @@
         1254,
         812
       ],
-      "rgba_sha256": "98862835180247ea8e1ea36fb7bd4c18aac244fe4d293f990b5283a84b67751f",
-      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+      "rgba_sha256": "1f52b8d5105c5b5806555bfda046904be60c34944ae93a77502b5333034d375d",
+      "visual_review": "Upright, full-body three-quarter character facing right, matching the class camera; head, props and boots remain inside the measured crop."
     },
     {
       "kind": "residents",
@@ -269,8 +278,8 @@
         418,
         1254
       ],
-      "rgba_sha256": "4ff55292c099c222595f2811311b91cae4a627fc931097a2a0b3aa37b4b3d62a",
-      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+      "rgba_sha256": "cba7e356b2a8e0e5baf01eec2705e3b776f925440adcafaaeaa7cb359639daeb",
+      "visual_review": "Upright, full-body three-quarter character facing right, matching the class camera; head, props and boots remain inside the measured crop."
     },
     {
       "kind": "residents",
@@ -282,8 +291,8 @@
         836,
         1254
       ],
-      "rgba_sha256": "710aa9129c7e9612001e4a16ffea08986513282c8c432aa0ee8daf55a107ee73",
-      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+      "rgba_sha256": "5e91bf48155c1ecc5f3f6093573ebbf48c389e5e0e46ccc79da93cc39807e932",
+      "visual_review": "Upright, full-body three-quarter character facing right, matching the class camera; head, props and boots remain inside the measured crop."
     },
     {
       "kind": "residents",
@@ -295,8 +304,8 @@
         1254,
         1254
       ],
-      "rgba_sha256": "703143252c1e23b90be9b65b756afbb8b374a593ac0c29f6da4d13818a0845b0",
-      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+      "rgba_sha256": "454940976dd1a1e0c5b0efa38250777fb16b032df141703708cf0f0103ecba6a",
+      "visual_review": "Upright, full-body three-quarter character facing right, matching the class camera; head, props and boots remain inside the measured crop."
     },
     {
       "kind": "interiors",
@@ -356,6 +365,36 @@
   "sha256": {
     "buildings.png": "e824e8da46b7e44bfa1fbdd6f1420ea4adb787cc9264e941f81424925031128e",
     "interiors.png": "eed7abf3ea637e57223c82a99c8dbe34bc24ca549c5300d0f2e762d8568db896",
-    "residents.png": "cf1a567fb83880606fd04c9ead3415b34ebe3c14827e9fb3be5b99dfade9dd4d"
-  }
+    "residents.png": "4991435a221397292635393c51bdee7608f315a4aa0b6e9a32cfe9f7459b1faf"
+  },
+  "resident_generation": [
+    {
+      "stage": "redraw",
+      "prompt": "Use case: style-transfer. Asset type: replacement fantasy RPG NPC sprite atlas for Bond & Bolt. Input image 1 (assets/cities/residents.png) is the EDIT TARGET: preserve the nine civilian identities, clothing colors, held props, and row/column ordering. Input image 2 (assets/characters/hunter-sheet.png) is the CAMERA, facing, body proportion and hand-painted style reference; do not include the hunter or copy the hunter costume. Primary request: redraw the nine civilians in the same upright, readable three-quarter RIGHT-FACING standing perspective as the hunter idle pose (row 4, column 2), with clear faces, full torsos and legs, visible boots at the bottom, the same camera elevation as that reference. They stand on the same ground plane as the class sprites. The user rejected the previous looking-down overhead human view. All nine turn to screen RIGHT (mild three-quarter front-right), neutral friendly idle poses. Square canvas divided into exactly THREE EQUAL COLUMNS and THREE EQUAL ROWS; nine evenly spaced full-body people, one per cell. Keep 10 percent transparent padding all around each person and no overlap across cell boundaries. Row 1: gray-haired elderly herbalist with sage shawl and wicker herb basket; dark-skinned gardener with straw hat, green overalls and watering can; auburn curly-haired bard in ochre with lute. Row 2: elderly librarian with plum beret and books; brown-skinned silver-haired astronomer with midnight cloak and brass instrument; dark-haired alchemist with two buns, apron and blue flask. Row 3: red-haired female ranger with moss hood pushed back and side bow; stocky older balding smith with brown apron and short hammer; dark-braided knight captain with silver armor and cobalt cape, sword sheathed. Match the hunter sheet's warm painted texture, dark fine outlines and stylized character proportions. Preserve each distinct identity. Genuine transparent PNG alpha-zero outside the figures, including between legs and props. No background, no checkerboard, no ground shadow plates, no text, no borders, no added characters, no overhead head-crown view. Deliver the replacement nine-NPC sheet only.",
+      "source": "exec-4d236c39-2a27-46a4-92d0-46c6d4de4b41.png",
+      "sha256": "6982a86f6cc07191e15c4d7f72835cf26587d902edc61ffaf44ea44920bcfa37",
+      "selected": false
+    },
+    {
+      "stage": "alpha",
+      "prompt": "Use case: background-extraction. Edit target: the supplied nine-NPC standing sprite atlas. Remove the entire gray and white checkerboard and replace it with actual TRANSPARENCY, an RGBA PNG with alpha 0 outside the figures. This is an asset extraction request: the checkerboard is unwanted painted background, not a desired backdrop. Keep all nine characters, their right-facing standing perspective, painted pixels, identities, clothes, poses, sizes and current positions unchanged. Preserve fine hair, fingers and props. Clean transparency between legs and around held items. No checkerboard drawn into the output, no white/gray/black solid background, no scene or added content. Return a genuinely transparent sprite sheet, otherwise identical.",
+      "source": "exec-971721e3-c676-4994-8f05-8524e650bc75.png",
+      "sha256": "4bdb3305675702c67da7c6df7af686d59fe68675ff2a2d9f6e1f02f7e91f3ccc",
+      "selected": false
+    },
+    {
+      "stage": "spacing",
+      "prompt": "Use case: precise-object-edit. Sprite atlas spacing correction ONLY. Preserve the supplied nine standing, right-facing NPCs and their existing hand-painted design. Keep real RGBA transparency. Re-layout into an EXACT three-by-three equal square grid, with each entire figure including hair, hats, props and boots contained INSIDE its own cell. Shrink each person to only 76 percent of its cell's height, leaving a substantial 12 percent EMPTY TRANSPARENT MARGIN above and below each person. This is essential: no boots or hair may reach or cross the invisible grid lines at one-third and two-thirds of the image. First row bottoms must be above 29 percent image height; second row tops below 38 percent and bottoms above 62 percent; last row tops below 71 percent and bottoms above 96 percent. Keep all nine same identities, same colors, same poses, same right-facing perspective, same three-by-three order. Empty space is genuinely transparent alpha zero; no painted checkerboard or solid background. Do not add any text, grid lines or decorations. Prioritize visible transparent separation around ALL nine complete silhouettes.",
+      "source": "exec-e0d9c7db-b0fc-4e59-aa82-514a7deecbb0.png",
+      "sha256": "3f6911540ff97a7b38593ce5b3758fa412849a43a4730e1d735f5673d37712a2",
+      "selected": false
+    },
+    {
+      "stage": "final",
+      "prompt": "Use case: background-extraction. Edit target: the supplied nine-NPC standing sprite atlas. Remove the entire gray and white checkerboard and replace it with actual TRANSPARENCY, an RGBA PNG with alpha 0 outside the figures. This is an asset extraction request: the checkerboard is unwanted painted background, not a desired backdrop. Keep all nine characters, their right-facing standing perspective, painted pixels, identities, clothes, poses, sizes and current positions unchanged. Preserve fine hair, fingers and props. Clean transparency between legs and around held items. No checkerboard drawn into the output, no white/gray/black solid background, no scene or added content. Return a genuinely transparent sprite sheet, otherwise identical. Preserve the current ample transparent spacing and exact 3 by 3 layout. Do not enlarge, reposition or recompose any sprite.",
+      "source": "exec-27931603-3637-4d5c-8798-0ff81ab5d879.png",
+      "sha256": "4991435a221397292635393c51bdee7608f315a4aa0b6e9a32cfe9f7459b1faf",
+      "selected": true
+    }
+  ]
 }

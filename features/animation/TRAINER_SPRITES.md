@@ -46,6 +46,12 @@ actors, dialogue portraits, opponent previews and battle HUD/rigs use the same
 selector. NPC names, combat classes, skills, quests and rewards are unchanged.
 Player characters continue to use their selected class artwork.
 
+City residents use the same upright, right-facing three-quarter view as class
+sprites. `city-art.js` crops the nine fully separated figures from the native
+transparent sheet; standing faces and legs stay visible in streets and rooms.
+Pack encounter portraits select a participating monster's type through this
+same appearance selector. Encounter IDs are not sprite IDs.
+
 Hunter/Swordsman static portraits display frame 13 through an SVG viewport over
 the painted PNG. The viewport explicitly clips overflow, including under combat
 SVG styles. Animated scenes use the same sheet on canvas and hide the replaced

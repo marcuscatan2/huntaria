@@ -1316,7 +1316,7 @@ Accountability: Implementation agent; owner accepts
 Acceptance criteria:
 
 - [ ] F-059-AC1: Each map declares its resident species, per-species count, valid random placement domain, level and respawn timing. All 94 wild species have a source map; six boss sources are separate. Lives are not bound to small fixed spawn groups.
-- [ ] F-059-AC2: Current target quotas are Common8/Uncommon5/Rare or Very rare1 per species/map. Ordinary deaths are replaced elsewhere immediately; rare deaths wait60s. Positions are reachable, avoid blockers and persist per life, at least900 world units from the prior position. Quotas/delays are separate from Echo odds; no old board-route or availability roll.
+- [ ] F-059-AC2: Current target quotas are Common24/Uncommon15/Rare or Very rare3 per species/map; Firstlight overrides these with144 Brimble,96 Bloomslime and48 Rattlebit. Ordinary deaths are replaced elsewhere immediately; rare deaths wait60s. Positions are reachable, avoid blockers and persist per life, at least900 world units from the prior position. Quotas/delays are separate from Echo odds; no old board-route or availability roll.
 - [ ] F-059-AC3: The server issues stable spawn life IDs, reserves an engaged life and enforces death/respawn times. Refresh, region hopping, device changes and overlapping requests cannot accelerate a respawn or duplicate a life/reward.
 - [ ] F-059-AC4: Personal exploration instances prevent kill stealing and cap actors per map/species; realm group bosses follow shared realm schedules. The UI shows current/target counts and real cooldowns. Legacy surplus world slots retire without deleting companions or changing reserved encounter/loot identities; server RNG is not exposed.
 

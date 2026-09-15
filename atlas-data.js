@@ -27,7 +27,7 @@ for(const [r,region] of REGIONS.entries()){
    // Retain Tideotter's spawn prefix so existing individuals/encounters survive relocation.
    const habitatId=type==='tideotter'?'clearing-0:tideotter':id+':'+type;
    m.habitats.push({id:habitatId,type,map:id,x:spot[0],y:spot[1],radius:170,level:BondAdventure.level(m,type,n,region.level),
-    rarity:u.rarity,echoBP:u.echoBP,count:id==='clearing-0'?{emberfox:48,bloomslime:32,stonehorn:16}[type]:u.rarity==='Common'?8:u.rarity==='Uncommon'?5:1,
+    rarity:u.rarity,echoBP:u.echoBP,count:id==='clearing-0'?{emberfox:144,bloomslime:96,stonehorn:48}[type]:u.rarity==='Common'?24:u.rarity==='Uncommon'?15:3,
     respawnSeconds:['Rare','Very rare'].includes(u.rarity)?60:0,spawnBP:10000});
   });
   // Offset copses/rock islands leave clear opposite-edge X and Y corridors.
