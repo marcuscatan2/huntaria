@@ -1,7 +1,7 @@
 # Six Reaches — local world implementation
 Patch20 update over the Pass15 authored world · 2026-09-13. Not commercial acceptance.
 Current topology and city behavior: [Square world and cities](features/world/CITIES.md).
-Adventure tuning: [current rules and owner checks](PASS20_VALIDATION.md).
+Adventure tuning: [current playtest walkthrough](<features/opening/VALIDATION.md>).
 
 ## What is built
 
@@ -22,7 +22,7 @@ Adventure tuning: [current rules and owner checks](PASS20_VALIDATION.md).
 | Adventure stakes | Trainer-only opening values remain intact; lone wilds scale from 1× to 2.6× HP and 1.3× offense as the deployed party grows to three. HP persists across fights/reloads/build changes; Firstlight defeat restores at camp and other defeat rescues restore at their city | Exact scaling fixtures, seeded opening samples, played hunts, health/replay/migration/transaction assertions |
 | Painted bridge and facing | Original timber bitmap aligned to actual crossing polygons, fallback/retry; sprite size independent of directional mirror, followers track actual movement | Pass17 played crossing/screenshots and canvas/portrait/vector left/right checks |
 
-Current detail: [PASS20_VALIDATION.md](PASS20_VALIDATION.md). Historical population/facing detail: [PASS17_VALIDATION.md](PASS17_VALIDATION.md). Source-map species
+Current detail: [current playtest walkthrough](<features/opening/VALIDATION.md>). Historical population/facing detail: [population contract](<MAP_POPULATIONS.md>). Source-map species
 assignments are fixed, but old habitat x/y values are ecology anchors only.
 The world no longer draws fixed-spawn group markers. Birth coordinates live in
 the profile, not the atlas. A four-map bounded connectivity cache avoids repeating
@@ -102,7 +102,7 @@ remain untouched.
 
 ## Owner walkthrough
 
-Use PASS20_VALIDATION.md for the current checklist and exact test evidence.
+Use features/opening/VALIDATION.md for the current checklist and exact test evidence.
 Review Firstlight at the normal start; then use the separate test adventure to
 summon a level100-source QA Echo (owned at the launch cap60) and walk all six biomes. Test mode is isolated from the
 normal profile, not an admin shortcut in a released economy.

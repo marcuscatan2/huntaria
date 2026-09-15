@@ -26,8 +26,7 @@ real multiplayer and payments are not implemented.
 | Inner Sea farming, defense or picture export | [Inner Sea](features/inner-sea/README.md) | A painted homestead inside the game frame connects habitats, training, defenses and care to saved progress. |
 | Other features or an unclear bug | [Feature index](FEATURE_MAP.md) | Symptoms route to the owner and its connecting boundary. |
 
-Feature folders contain focused guidance and links to the actual implementation.
-Browser modules still live at the root; do not create parallel copies.
+Feature guides link to root browser modules; do not create parallel copies.
 For an exact route: `python scripts/project.py context combat`.
 Also accepts `game.js`, `BondGame`, `F-002` or `combat-feedback`.
 
@@ -50,11 +49,11 @@ Keep normal saves untouched. [Setup, browser tests, Git checkpoints and troubles
 - [Remaining scope](features/delivery/REMAINING_SCOPE.md): all 66 cards, delivered work and blocking decisions/resources.
 - [Client package](features/delivery/CLIENT_BUILD.md) / [runtime probe](features/combat/RUNTIME.md): reproducible local build and browser/Node parity.
 - [Development and scaling policy](docs/ENGINEERING.md): architecture decisions, authority and release boundaries.
-- [Documentation index](docs/README.md): active scope, design references and historical evidence.
+- [Documentation index](docs/README.md): active scope and design references; past handoffs live in Git history.
+- [Storage policy](features/delivery/OPERATIONS.md#repository-storage): disposable outputs and Git exclusions.
 - [Tests](tests/README.md), [tools](scripts/README.md), [assets](assets/README.md), [data](data/README.md): container-specific instructions.
 - [Deferred ideas](<Game notes.md>): stashed ideas are not implementation requests.
 
-Keep this file a router, not a feature manual. Update the owning feature's
-contract in [architecture.json](docs/architecture.json); regenerate the index
+Update feature contracts in [architecture.json](docs/architecture.json); regenerate the index
 and feature guides with `python scripts/project.py map --write`.
 `project.py check` rejects stale routes, broken links and oversized entry guides.

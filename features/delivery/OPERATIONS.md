@@ -119,6 +119,24 @@ and affected browser suites. No cosmetic documentation edits when facts are unch
 
 ## Backups, data publication and release
 
+### Repository storage
+
+Keep source, current specifications, review decisions, asset provenance and
+maintained tests in Git. Use Git history for superseded plans and handoffs;
+do not accumulate numbered pass reports or a progress diary in the working tree.
+Keep reusable checks even when an older filename is still used by current suites.
+
+`tests/artifacts/` holds disposable reports, screenshots and runtime exports;
+the full validation command regenerates them. `dist/` holds explicitly requested
+local packages. Both are ignored and may be removed when no process uses them.
+Package validation uses a system temporary directory and removes it on completion,
+including failure. It does not accumulate builds in `dist/`.
+
+Logs, scratch files, backup archives and numbered pass reports are ignored.
+`project.py check` also rejects ignored files already tracked or force-added to
+Git. Ignoring a tracked file alone does not remove it from the index.
+Browser saves are separate from these generated directories.
+
 - Use Git commits for routine source checkpoints; push to the authorized remote
   when requested to retain an off-device copy. Git does not capture uncommitted
   files or browser saves. Keep `backup/` and `backups/` ignored.

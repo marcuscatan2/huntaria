@@ -259,6 +259,7 @@ def run(args, root=ROOT):
 
 def check(root=ROOT):
     errors = validate(root)
+    errors.extend(repository_hygiene(root))
     if errors:
         raise RuntimeError("\n".join(errors))
     run(["-m", "unittest", "discover", "-s", "tests", "-p", "test_project_tools.py"], root)
@@ -266,6 +267,17 @@ def check(root=ROOT):
     run(["-m", "unittest", "discover", "-s", "tests", "-p", "test_navigation.py"], root)
     run(["tests/scope_docs_check.py"], root)
     print("PASS: architecture ownership, boundaries, map, links and planning integrity", flush=True)
+
+
+def repository_hygiene(root=ROOT):
+    """Ignore rules alone do not protect files already added to Git's index."""
+    if not (root / ".git").exists():
+        return []
+    result = subprocess.run(
+        ["git", "ls-files", "--cached", "--ignored", "--exclude-standard", "-z"],
+        cwd=root, capture_output=True, check=True)
+    paths = result.stdout.decode("utf-8").strip("\0").split("\0")
+    return ["Ignored file is tracked/staged in Git: " + path for path in paths if path]
 
 
 def doctor():
@@ -283,10 +295,11 @@ def doctor():
 
 
 def backup(root=ROOT):
-    excluded = {".git", ".venv", "venv", "node_modules", "__pycache__", "backups",
-                ".pytest_cache", "dist", "build", "playwright-report", "test-results"}
+    excluded = {".git", ".venv", "venv", "node_modules", "__pycache__", "backup", "backups",
+                ".pytest_cache", "dist", "build", "playwright-report", "test-results", "scratch", "tmp"}
     secrets = [".env", ".env.*", "*.pem", "*.key", "credentials*.json",
-               "*local-save*.json", "bond-bolt-save*.json", "*.pyc", "*.pyo"]
+               "*local-save*.json", "bond-bolt-save*.json", "*.pyc", "*.pyo",
+               "*.log", "*.tmp", "*.bak", "*.zip", "*.7z", "*.tar", "*.tar.gz"]
     selected = []
     for path in sorted(root.rglob("*")):
         relative = path.relative_to(root)

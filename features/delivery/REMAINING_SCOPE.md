@@ -23,14 +23,14 @@ payments or unrelated stashed ideas. The owner explicitly activated Inner Sea AF
   compressed scenery and on-demand bridge. No deployment or online-rule claims.
 - F-036: checked-in offline Node runner and 1,000-case browser/Node parity corpus,
   including 13 actors and escape. All outcomes match, but the local timing target
-  is not consistently met. Evidence is local, not hosting capacity; see PROGRESS.
+  is not consistently met. Evidence is local, not hosting capacity; see the runtime probe below.
 - F-052: the above regressions join the existing full gate. Save export remains
   local only; it is not F-041's authenticated account-export implementation.
 
 Routes: [preferences/audio](../experience/SETTINGS_AUDIO.md),
 [Inner Sea](../inner-sea/DISPLAY.md), [client build](CLIENT_BUILD.md),
-[runtime probe](../combat/RUNTIME.md). Verification evidence is recorded in
-[PROGRESS.md](../../PROGRESS.md); acceptance checkboxes remain untouched.
+[runtime probe](../combat/RUNTIME.md). Regenerate verification evidence with the commands in [Operations](OPERATIONS.md).
+Acceptance checkboxes remain untouched.
 
 ## Decisions and resources
 

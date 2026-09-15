@@ -110,7 +110,7 @@ Priority: **NOW**. State: **Pending review packet / decision**.
 **AI prepares:**
 
 - Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
-- Use features/opening/PASS26_VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.
+- Use features/opening/VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.
 - Replay victory, defeat, a selected fallen sole companion, reload and interrupted-menu routes. Firstlight defeat must preserve bearings at the same forest camp, fully recovered. Confirm ordinary Echo odds remain separate from the two disclosed onboarding guarantees.
 - Review the four class demonstrations, Tidecrown, each easy master acceptance battle and explicit Druid/Mage/Hunter/Swordsman commitment. The current party fights the named master; winning returns to the field. Then review the Lv25 Inner Sea farm, ability-change proof and Lv30 trees. Use features/opening/CLASSES.md and features/inner-sea/FARM_SCOPE.md.
 - Review sacred-treasures-v1 in features/campaign/SACRED_TREASURES.md: post-class rescue, Echo list, cemetery tower, Tully dialogue and class weapon. The owner explicitly requested this named route; final pacing and world-slice acceptance remain pending before wider expansion.
@@ -127,7 +127,7 @@ Priority: **NOW**. State: **Pending review packet / decision**.
 
 **Reopen when:** Changing combat control model, battle length, progression curve, healing/travel friction or onboarding loop.
 
-**Related specifications:** [Companion stats.md](<Companion stats.md>), [features/opening/PASS26_VALIDATION.md](<features/opening/PASS26_VALIDATION.md>), [PASS24_VALIDATION.md](<PASS24_VALIDATION.md>), [PASS20_VALIDATION.md](<PASS20_VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/opening/DESIGN.md](<features/opening/DESIGN.md>), [features/opening/EARLY_PROGRESSION_SCOPE.md](<features/opening/EARLY_PROGRESSION_SCOPE.md>), [features/opening/VALIDATION.md](<features/opening/VALIDATION.md>), [features/delivery/REMAINING_SCOPE.md](<features/delivery/REMAINING_SCOPE.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>), [features/opening/CLASSES.md](<features/opening/CLASSES.md>), [features/world/CITIES.md](<features/world/CITIES.md>).
+**Related specifications:** [Companion stats.md](<Companion stats.md>), [features/opening/VALIDATION.md](<features/opening/VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/opening/DESIGN.md](<features/opening/DESIGN.md>), [features/opening/EARLY_PROGRESSION_SCOPE.md](<features/opening/EARLY_PROGRESSION_SCOPE.md>), [features/delivery/REMAINING_SCOPE.md](<features/delivery/REMAINING_SCOPE.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>), [features/opening/CLASSES.md](<features/opening/CLASSES.md>), [features/world/CITIES.md](<features/world/CITIES.md>).
 
 <a id="or-03"></a>
 ### OR-03 — Approve one complete world slice before repeating it
@@ -249,7 +249,7 @@ Priority: **NEXT**. State: **Pending review packet / decision**.
 
 **Reopen when:** Minimum hardware, browser promise, input model, UI density or asset budgets change.
 
-**Related specifications:** [ART_BIBLE.md](<ART_BIBLE.md>), [features/opening/PASS26_VALIDATION.md](<features/opening/PASS26_VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/party/GAME_FRAME.md](<features/party/GAME_FRAME.md>), [features/world/CITIES.md](<features/world/CITIES.md>).
+**Related specifications:** [ART_BIBLE.md](<ART_BIBLE.md>), [features/opening/VALIDATION.md](<features/opening/VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/party/GAME_FRAME.md](<features/party/GAME_FRAME.md>), [features/world/CITIES.md](<features/world/CITIES.md>).
 
 <a id="or-07"></a>
 ### OR-07 — Approve release economy and rarity expectations

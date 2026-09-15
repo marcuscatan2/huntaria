@@ -1,87 +1,58 @@
-# Apprentice road — validation and evidence
+# Opening and class-choice review
 
-Status: Patch 26 local prototype implemented; commercial experience approval is
-pending under OR-02. The owner walkthrough is
-[PASS26_VALIDATION.md](PASS26_VALIDATION.md).
+Current owner walkthrough for OR-02. Approval remains pending; automated checks
+do not establish fun, pacing, final art quality or physical-device readiness.
 
-## Isolated test route
+## Firstlight
 
-Serve the repository normally and open `http://127.0.0.1:8765/?test=1`. This
-uses a separate browser save. Choose **Restart progress** when repeating the
-opening; do not reset the owner's normal save.
+Open `http://127.0.0.1:8765/?test=1` and choose **Restart progress**. This uses
+isolated test storage. Test travel, recovery and combat acceleration are described
+in [Operations](../delivery/OPERATIONS.md#test-controls); evaluate normal pacing
+separately. Record elapsed time, deaths, recovery trips and confusing moments.
 
-The complete human review has three sessions:
+1. Create a named dagger Apprentice. Confirm the objective, minimap, Atlas and
+   Explore / Bag / Inner Sea controls fit inside the game frame.
+2. Defeat a Brimble, follow its first guaranteed Echo into Bag, and summon it.
+   Each drop has a temporary notification; Brimble joins the first open party
+   slot, follows the player and shows its HP line.
+3. Find the Forest Mage. Firstlight roads remain locked until the proof battle.
+   The Mage asks for a second companion; summon the guaranteed Bloomslime or
+   Stonehorn Echo, return and win the proof. The roads open and Tavi becomes the
+   next objective.
+4. Confirm the tracker names the destination. Yellow `!` marks an offered
+   objective and `?` marks a ready delivery in both the field and minimap.
+   Accepted but incomplete requirements have no NPC marker.
+5. Repeat with the bow and the other second companion. Check that both weapons
+   feel viable and that the next action is understandable without a guide chain.
 
-- first 30 minutes with both weapons and both second-companion branches;
-- four class demonstrations plus Tidecrown;
-- both class trials, specialization, ability adaptation and the level-30 tree.
+## Classes and the main quest
 
-Record actual elapsed time, deaths, recovery trips, retries and the first moment
-whose purpose was unclear. Automated simulation cannot establish fun, visual
-clarity, emotional attachment or correct commercial pacing.
+1. Follow the class demonstrations through Tavi, Rain, Lina and Wren. Describe
+   how each class fights, then prepare for Tidecrown in Springwater Cave.
+2. After Tidecrown, visit a class master's city courtyard. Win the acceptance
+   fight with the current Apprentice party, then confirm a specialization at
+   player level 20. All four classes are available; see [Classes](CLASSES.md).
+3. Follow [the sacred-treasures walkthrough](../campaign/SACRED_TREASURES.md):
+   master rescue, Echo hunting, the ghost tower, Tully and the class weapon.
+4. Reload between milestones and verify class, companions, inventory and quest
+   progress. The Lv25 farm and Lv30 individual monster trees remain available;
+   the earlier Amber and regional lessons are optional.
 
-## Automated contract
+Review the first moment that feels confusing, unfair or dull. Current owner
+decisions and production boundaries live in [OWNER_REVIEWS](../../OWNER_REVIEWS.md).
 
-The focused checks establish:
+## Regression coverage
 
-- fresh creation, level-based aggression, accepted-victory state and defeat
-  recovery at the real Firstlight camp;
-- exactly one first-Firstlight-Brimble Echo and exactly one chosen
-  Bloomslime-or-Stonehorn Echo, with ordinary drop odds unchanged;
-- atomic Inventory summoning, independent companion identity and automatic use
-  of the first open party slot;
-- independent trainer and companion XP, safe migration at the former displayed
-  level, and exact authored thresholds through level 30;
-- an in-frame objective/Bag tutorial, a visible Forest Mage/two-companion gate,
-  and open roads after its easy proof battle;
-- fixed live/saved field HP lines for trainer and selected companions, plus
-  dead-companion deployment that preserves the loadout and trainer-only hunts;
-- four semantic class demonstrations, fixed progression bosses and master
-  visibility after Tidecrown;
-- temporary three-of-five trials, a level-20 specialization gate and atomic
-  Druid/Mage commitment;
-- a genuine changed-ability requirement and individual monster trees locked
-  until player level 30;
-- all 100 species expose 18 ranked nodes, five named-skill links and an
-  innate-identity node;
-- named skill-power and skill-cooldown nodes change the actual deterministic
-  combat result, including Leadership/DEX interaction and the shared cap;
-- both weapons, both second-companion branches and both launch classes can clear
-  every authored level-1-to-30 encounter at its milestone level.
+`tests/opening_check.py` and `tests/opening_cases.js` cover fresh creation,
+guaranteed opening Echoes, atomic summoning, quest markers, Mage gating, independent
+XP, injuries, isolated test controls, reloads and narrow layouts. A fallen selected
+companion stays in the party but is benched from combat; a fallen trainer must
+recover before starting another encounter. Trial and farm coverage is routed
+through `tests/farm_classes_check.py`; the main continuation uses
+`tests/relic_quest_check.py`.
 
-Run the focused gates from the repository root:
-
-```powershell
-python tests/opening_check.py --browser chrome
-python tests/pass18_check.py --browser chrome
-python tests/pass18_campaign.py --browser chrome
-python tests/pass18_ui.py --browser chrome
-```
-
-Then run `python scripts/project.py verify --browser chrome` for the full project,
-artifact-hash and immutable-client gate. Current exact results and build path are
-recorded at the top of `PROGRESS.md`; do not reuse older counts against changed
-source hashes.
-
-## Evidence boundaries
-
-Tests use disposable browser contexts, deterministic seeds and accelerated
-combat. They do not validate physical mobile hardware, Safari, production save
-authority, online players, payments, live group bosses, economy balance or final
-art. The normal personal browser save is not opened or reset by these commands.
-
-The isolated solo sample may show that a level-one bow Apprentice cannot defeat
-Stonehorn alone. That is not an opening-route failure: only Emberfox is promised
-as a trainer-only target; Stonehorn appears after Emberfox joins the party.
-
-## Unfinished decisions
-
-1. Approve literal class permanence or the recommended persistent commitment
-   with a non-paid server-controlled recovery/migration path.
-2. Choose a bounded non-paid practical use for the level-25 Inner Sea ownership
-   milestone. AFK/daily power remains only in Game Notes.
-3. Approve Emberfox, Bloomslime and Stonehorn trees as the production content
-   pattern before hand-authoring and balancing all remaining species trees.
-
-These decisions do not invalidate the implemented route. They block production
-copy, the missing Inner Sea milestone, and roster-wide final tree content.
+Run these browser suites with `--browser chrome` or use
+`python scripts/project.py verify --browser chrome` for the full current gate.
+Reports and screenshots are regenerated in ignored `tests/artifacts/`. Match
+their source hashes before treating them as current evidence. Durable contracts
+belong in feature guides; past reports and handoffs are recoverable from Git.

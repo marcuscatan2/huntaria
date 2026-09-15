@@ -8,4 +8,6 @@ venv/
 __pycache__/
 node_modules/
 dist/
-docs/scope-v1/
+build/
+scratch/
+tmp/

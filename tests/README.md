@@ -10,6 +10,7 @@
 | Fresh character and first forest | `python tests/opening_check.py --browser chrome` (or edge) |
 | Post-death/withdrawal clicks, starter XP, first Echo and exits | `python tests/onboarding_check.py --browser chrome` |
 | Pack previews, cave escape, all-map populations and aggression level boundary | `python tests/field_encounters_check.py --browser chrome` |
+| Master rescue, Echo hunt, ghost tower and class weapon | `python tests/relic_quest_check.py --browser chrome` |
 | Mechanics and runtime reference export | `python tests/pass18_check.py --browser chrome` |
 | Square maps, cities and teleport/save safety | `python tests/city_world_check.py --browser chrome` |
 | Played UI flows | `python tests/pass18_ui.py --browser chrome` |
@@ -42,5 +43,8 @@ Add a regression in the owner and test its connections; run the full gate for
 cross-cutting changes. Do not alter expected results solely to make a test pass.
 
 `artifacts/` contains generated reports, screenshots and runtime exports.
+It is ignored and disposable; the full gate regenerates current evidence. Package
+tests use automatically cleaned temporary folders, leaving `dist/` for explicitly
+requested builds. See [storage policy](../features/delivery/OPERATIONS.md#repository-storage).
 Never hand-edit reports. Match source hashes before treating browser results as
 current evidence. Documentation checks are not gameplay, art or release acceptance.

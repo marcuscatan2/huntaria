@@ -1,6 +1,6 @@
 # Companion stats — rules v18
 
-Patch20 current level/content/world tuning is described here and in [PASS20_VALIDATION.md](PASS20_VALIDATION.md).
+Patch20 current level/content/world tuning is described here and in [current playtest walkthrough](<features/opening/VALIDATION.md>).
 The15% Echo override is for testing, not an approved launch economy.
 
 Implemented local rules, 2026-09-11. DEC-01/02/07 runtime defaults are frozen here

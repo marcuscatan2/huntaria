@@ -53,7 +53,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 
 ## Specifications and decisions
 
-- [PASS18_VALIDATION.md](<../../PASS18_VALIDATION.md>)
 - [features/world/CITIES.md](<../../features/world/CITIES.md>)
 - Commercial cards: Cross-cutting implementation; no separate acceptance card.
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-07](<../../OWNER_REVIEWS.md#or-07>) Use the live board/preflight for status, not an approval copied here.

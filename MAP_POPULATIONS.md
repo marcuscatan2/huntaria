@@ -36,4 +36,4 @@ Warning, line of sight, leash, modal pause and arrival/escape grace remain in fo
 
 All configured Echo chances are temporarily15% for testing. Release proposals
 remain separately labelled in the generated drop table. For validation and the
-current owner walkthrough, see [PASS20_VALIDATION.md](PASS20_VALIDATION.md).
+current owner walkthrough, see [current playtest walkthrough](<features/opening/VALIDATION.md>).

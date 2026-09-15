@@ -3,6 +3,9 @@
 `python scripts/client_build.py` creates `dist/<content-hash>/`. The same inputs
 reuse the same verified immutable directory; changed input produces a new one.
 Existing builds are never overwritten or deleted. Nothing is published.
+These manually requested packages are disposable and ignored by Git.
+`tests/client_build_check.py` creates its packages in a temporary directory and
+removes them after stopping the browser/server, including on test failure.
 
 The package is deliberately **local-preview**, not a production deployment.
 `data/client-build.json` allowlists HTML scripts/styles and runtime media. The

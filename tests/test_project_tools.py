@@ -4,6 +4,7 @@ import io
 import json
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -22,7 +23,7 @@ class ProjectToolsTests(unittest.TestCase):
         self.model = project.manifest()
         files = set(project.runtime_files(project.ROOT))
         files.update(("README.md", "AGENTS.md", project.MAP, project.MANIFEST,
-                      "FEATURE_BACKLOG.md", "VALIDATION_PLAN.md", "PROGRESS.md",
+                      "FEATURE_BACKLOG.md", "VALIDATION_PLAN.md",
                       "docs/ENGINEERING.md", "scripts/project.py"))
         files.update(("OWNER_REVIEWS.md", "docs/review-gates.json",
                       "data/creature-reference.json", "scripts/review_gates.py"))
@@ -126,11 +127,13 @@ class ProjectToolsTests(unittest.TestCase):
                 project.run(["fake-test.py"])
 
     def test_backup_is_unique_verified_and_excludes_private_generated_data(self):
-        for name in (".env", "credentials-test.json", "bond-bolt-save-user.json"):
+        for name in (".env", "credentials-test.json", "bond-bolt-save-user.json", "debug.log", "old.zip"):
             (self.root / name).write_text("private fixture", encoding="utf-8")
         artifacts = self.root / "tests" / "artifacts"
         artifacts.mkdir(parents=True)
         (artifacts / "generated.json").write_text("{}", encoding="utf-8")
+        (self.root / "backup").mkdir()
+        (self.root / "backup" / "old.txt").write_text("old backup", encoding="utf-8")
         with redirect_stdout(io.StringIO()):
             a, b = project.backup(self.root), project.backup(self.root)
         self.assertNotEqual(a, b)
@@ -138,11 +141,29 @@ class ProjectToolsTests(unittest.TestCase):
             names = archive.namelist()
             self.assertIn("README.md", names)
             self.assertIn("BACKUP_MANIFEST.json", names)
-            self.assertFalse(any(n.startswith(("backups/", "tests/artifacts/")) for n in names))
+            self.assertFalse(any(n.startswith(("backup/", "backups/", "tests/artifacts/")) for n in names))
             self.assertNotIn(".env", names)
             self.assertNotIn("credentials-test.json", names)
             self.assertNotIn("bond-bolt-save-user.json", names)
+            self.assertNotIn("debug.log", names)
+            self.assertNotIn("old.zip", names)
             self.assertTrue(json.loads(archive.read("BACKUP_MANIFEST.json"))["sha256"])
+
+    def test_git_rejects_force_added_ignored_artifacts(self):
+        self.assertEqual(project.repository_hygiene(self.root), [])
+        subprocess.run(["git", "init", "--quiet", str(self.root)], check=True)
+        shutil.copy2(project.ROOT / ".gitignore", self.root / ".gitignore")
+        (self.root / "tests/artifacts").mkdir(parents=True)
+        paths = ["tests/artifacts/report.json", "debug.log", "old.zip", "PASS99_VALIDATION.md"]
+        for name in paths:
+            (self.root / name).write_text("disposable", encoding="utf-8")
+        subprocess.run(["git", "add", "README.md", ".gitignore"], cwd=self.root, check=True)
+        self.assertEqual(project.repository_hygiene(self.root), [])
+        subprocess.run(["git", "add", "--force", *paths], cwd=self.root, check=True)
+        errors = project.repository_hygiene(self.root)
+        self.assertEqual(len(errors), len(paths))
+        for name in paths:
+            self.assertTrue(any(name in error for error in errors))
 
 
 if __name__ == "__main__":

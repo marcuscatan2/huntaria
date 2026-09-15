@@ -4,7 +4,7 @@
 > are **15% for testing**, with faster wild levels/XP and persistent injuries.
 > The visual World Atlas, direct information signs, physical Supply Store and
 > free village recovery, open roads, six spatial boss domains and Sheet-backed
-> creature placement are implemented locally. See [Patch20 delivery and validation](PASS20_VALIDATION.md).
+> creature placement are implemented locally. See [current playtest walkthrough](<features/opening/VALIDATION.md>).
 > The10% /0.01% figures elsewhere remain **release proposals**, not live test odds.
 > This does not accept any commercial criterion or implement online boss loot.
 
@@ -36,7 +36,7 @@ to a release date. The user's $1–2k server/marketing allowance is not an art b
 Pass 15 implements the local world layer: authored route geometry and habitats,
 six illustrated biome atlases, a shared nine-material ground atlas, 30 landmarks,
 physical gate walking, cave collision, chunk rendering and a persistent field journal.
-See [implementation and owner validation](PASS15_VALIDATION.md) for exact coverage
+See [world implementation](<WORLD_IMPLEMENTATION.md>) for exact coverage
 and outstanding quality gates. Production targets below remain targets, not a
 claim of accepted commercial artwork or player-tested pacing. Ordinary material
 drop proposals, final creature animation packages, online authority, groups,
@@ -375,4 +375,4 @@ Current implementation: pass 15 builds the 24 local route layouts and six hubs
 together, with the six shared scene kits. The next acceptance step is an owner
 walkthrough of Firstlight, Rootveil and a contrasting biome. Do not bypass the
 outside-player, final-creature-art, physical-device or online gates just because
-all maps now have illustrated scenery. See PASS15_VALIDATION.md.
+all maps now have illustrated scenery. See WORLD_IMPLEMENTATION.md.

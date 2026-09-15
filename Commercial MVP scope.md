@@ -5,14 +5,14 @@
 > The visual World Atlas, direct information signs, physical Supply Store and
 > free village recovery, the player cap60/engine curve100 boundary, open roads,
 > six boss domains and Sheet-backed creature placement are implemented locally.
-> See [Patch20 delivery and validation](PASS20_VALIDATION.md).
+> See [current playtest walkthrough](<features/opening/VALIDATION.md>).
 > The10% /0.01% figures elsewhere remain **release proposals**, not live test odds.
 > This does not accept any commercial criterion or implement online boss loot.
 
 
-Updated 2026-09-12. Active **commercial requirements**, not a completed release. Supersedes the [archived v1 plan](docs/scope-v1/README.md). The user subsequently authorized F-001–F-016 implementation; [pass 13](PASS13_VALIDATION.md) covers their local playable portions. Online dependencies, production art and commercial acceptance remain pending. No public deployment or purchases were authorized.
+Updated 2026-09-12. Active **commercial requirements**, not a completed release. Supersedes the v1 plan retained in Git history. The user subsequently authorized F-001–F-016 implementation; [current implementation scope](<features/delivery/REMAINING_SCOPE.md>) covers their local playable portions. Online dependencies, production art and commercial acceptance remain pending. No public deployment or purchases were authorized.
 
-Companions: [feature backlog](FEATURE_BACKLOG.md), [validation plan](VALIDATION_PLAN.md), [traceability](FEATURE_TRACEABILITY.md), [current prototype](README.md), [progress](PROGRESS.md), [game notes](<Game notes.md>).
+Companions: [feature backlog](FEATURE_BACKLOG.md), [validation plan](VALIDATION_PLAN.md), [traceability](FEATURE_TRACEABILITY.md), [current prototype](README.md), [current implementation scope](<features/delivery/REMAINING_SCOPE.md>), [game notes](<Game notes.md>).
 
 ## 1. Executive decision
 
@@ -45,8 +45,7 @@ summoning, six local campaign chapters and simulated boss practice. Active fight
 continue behind menus, retain their world anchor, admit reserved aggressive
 joiners and offer a timed Run. Local earned Inner Sea decorations, picture export,
 persistent settings/audio, immutable preview packages and browser/Node simulator
-checks are now implemented. See [current handoff](PROGRESS.md) and the
-[all-card audit](features/delivery/REMAINING_SCOPE.md).
+checks are now implemented. See the [current implementation scope](features/delivery/REMAINING_SCOPE.md).
 
 It does **not** have approved final art/motion, live groups, authoritative
 accounts/loot, payments or commercial acceptance. The expanded class spreadsheet

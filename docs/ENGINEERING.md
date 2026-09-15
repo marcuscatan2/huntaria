@@ -178,7 +178,7 @@ The documentation check catches stale generated guides, missing routes, broken
 local links, oversized root guides and invalid interface ownership. Mutation
 tests exercise those failures and focused context lookup. The manual container
 guides route scripts/tests/assets/data/docs without requiring a whole-repo read.
-Normal rg searches exclude generated artifacts, backups and the scope-v1 archive;
+Normal rg searches exclude generated artifacts, backups and local build folders;
 use an explicit path or `rg --no-ignore` for deliberate evidence/history work.
 
 File/global/event references are observed from code; intent is reviewed text.

@@ -24,8 +24,9 @@ then confirmed: “Stash 2–3; implement 4–9 now.”
 
 User items 2–3 explicitly requested storage for later and are **stashed**.
 Items 4–9 are **authorized for implementation**, confirmed explicitly by the user.
-Their implementation choices and verification are recorded in PROGRESS.md and
-Companion stats.md. Original proposals below are preserved as design history.
+Past implementation choices and verification remain in Git history;
+Companion stats.md describes current formulas. Original proposals below are
+preserved as design history.
 
 Commercial v2 planning update (2026-09-10): the user has now asked to edit the
 features for a large habitat-based world, Soul Echo drops and 100 launch species.

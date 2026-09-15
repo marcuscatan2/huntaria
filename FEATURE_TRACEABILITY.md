@@ -5,25 +5,25 @@
 > The visual World Atlas, direct information signs, physical Supply Store and
 > free village recovery, the player cap60/engine curve100 boundary, open roads,
 > six boss domains and Sheet-backed creature placement are implemented locally.
-> See [Patch20 delivery and validation](PASS20_VALIDATION.md).
+> See [current playtest walkthrough](<features/opening/VALIDATION.md>).
 > The10% /0.01% figures elsewhere remain **release proposals**, not live test odds.
 > This does not accept any commercial criterion or implement online boss loot.
 
 
-Updated 2026-09-13. Commercial traceability, with zero accepted commercial criteria. F-001–F-016 now have a local implementation pass; see [current status](PASS20_VALIDATION.md). Sources: [active scope](<Commercial MVP scope.md>), [feature cards](FEATURE_BACKLOG.md) and [validation](VALIDATION_PLAN.md). [V1 archives](docs/scope-v1/README.md) preserve the former small solo plan and its unchanged evidence context.
+Updated 2026-09-13. Commercial traceability, with zero accepted commercial criteria. F-001–F-016 now have a local implementation pass; see [current playtest walkthrough](<features/opening/VALIDATION.md>). Sources: [active scope](<Commercial MVP scope.md>), [feature cards](FEATURE_BACKLOG.md) and [validation](VALIDATION_PLAN.md). Git history retains superseded plans and their evidence context.
 
 Coverage: **66 features, 64 P0 + two P1, 264 criteria; 28 source items; 18 scope sections; 15 protocols; eight design locks; six release gates.** F-001–F-057 keep their IDs but v2 semantics replace conflicting v1 requirements. New F-058–F-066 address the expanded world, rates, groups, ultra-rare reward economy, roster production, abuse and rebaseline.
 
-Pass 15 adds authored local world layouts, illustrated scenery, physical itinerary
+The local world includes authored layouts, illustrated scenery, physical itinerary
 walking, cave/bridge navigation and persistent landmark discovery. See
-[world delivery and validation](PASS15_VALIDATION.md). This extends local evidence
+[world implementation](<WORLD_IMPLEMENTATION.md>). This extends local evidence
 for F-016/F-017/F-018/F-027/F-058; it does not accept their commercial criteria,
 complete online groups, or approve all 100 creature art packages.
 
 ## 1. Source delivery item → feature cards
 
-Pass16 implements local/partial work for F-017–F-026. See
-[the per-feature matrix](PASS16_VALIDATION.md) for campaign, trainers, packs,
+Local campaign and presentation work covers parts of F-017–F-026. See
+[campaign contract](<features/campaign/README.md>) for campaign, trainers, packs,
 recovery, practice bosses, personal challenges and presentation evidence.
 The real group/realm and production-art requirements remain open; zero
 commercial acceptance boxes have been checked.
@@ -128,7 +128,7 @@ commercial acceptance boxes have been checked.
 | Resource reality | Withdraw old small-MVP schedule/cost allowance; measured pilot and funded rebaseline | F-066 |
 | Optional platforms/language | PT-BR and Safari/iOS remain two P1 cards, not advertised untested | F-056–057 |
 
-Numbers remain commercial requirements, not automatic acceptance. Pass 14 supplies a 100-species local test manifest, independent companions/portrait picker/immediate wild loot and 24-map/six-hub runtime. Production art, kit distinctness, group-boss sources and world-quality review remain pending; see PASS14_VALIDATION.md.
+Numbers remain commercial requirements, not automatic acceptance. Pass 14 supplies a 100-species local test manifest, independent companions/portrait picker/immediate wild loot and 24-map/six-hub runtime. Production art, kit distinctness, group-boss sources and world-quality review remain pending; see features/delivery/REMAINING_SCOPE.md.
 
 ## 5. Superseded and deferred boundaries
 

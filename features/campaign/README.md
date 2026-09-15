@@ -58,9 +58,8 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 
 ## Specifications and decisions
 
-- [PASS16_VALIDATION.md](<../../PASS16_VALIDATION.md>)
 - [features/opening/EARLY_PROGRESSION_SCOPE.md](<../../features/opening/EARLY_PROGRESSION_SCOPE.md>)
-- [PASS24_VALIDATION.md](<../../PASS24_VALIDATION.md>)
+- [features/opening/VALIDATION.md](<../../features/opening/VALIDATION.md>)
 - [features/world/CITIES.md](<../../features/world/CITIES.md>)
 - [features/campaign/SACRED_TREASURES.md](<../../features/campaign/SACRED_TREASURES.md>)
 - Commercial cards: [F-019](<../../FEATURE_BACKLOG.md>), [F-020](<../../FEATURE_BACKLOG.md>), [F-021](<../../FEATURE_BACKLOG.md>), [F-022](<../../FEATURE_BACKLOG.md>), [F-023](<../../FEATURE_BACKLOG.md>), [F-062](<../../FEATURE_BACKLOG.md>)

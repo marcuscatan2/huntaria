@@ -9,10 +9,12 @@ import client_build
 def main():
     p=argparse.ArgumentParser();p.add_argument('--browser',choices=['chrome','edge'],default='chrome');args=p.parse_args()
     checks=[];errors=[];missing=[];server=None;metrics={}
+    build_temp=tempfile.TemporaryDirectory(prefix='bond-client-package-')
+    build_parent=Path(build_temp.name)
     def check(name,ok):checks.append({'name':name,'pass':bool(ok)});print(('PASS ' if ok else 'FAIL ')+name,flush=True)
     try:
-        folder,manifest=client_build.build_to()
-        folder2,manifest2=client_build.build_to()
+        folder,manifest=client_build.build_to(parent=build_parent)
+        folder2,manifest2=client_build.build_to(parent=build_parent)
         check('Unchanged sources reproduce the same immutable build',folder==folder2 and manifest==manifest2)
         check('Every bundled file verifies its declared SHA-256',client_build.verify(folder)==manifest)
         names=manifest['files'];check('No test tools, reference scenes, docs or source metadata shipped',not any(n.startswith(('tests/','docs/','scripts/','.')) or n.endswith('.md') or n in ('test-controls.js','reference-scene.js') for n in names))
@@ -68,6 +70,8 @@ def main():
     except Exception:errors.append(traceback.format_exc())
     finally:
         if server:server.shutdown();server.server_close()
+        build_temp.cleanup()
+    check('Validation removes its temporary game packages',not build_parent.exists())
     check('No package/browser errors',not errors);check('No missing packaged requests',not missing)
     report={'checks':checks,'errors':errors,'missing':missing,'metrics':metrics,'manifest':locals().get('manifest')}
     (ARTIFACTS/f'client-build-{args.browser}.json').write_text(json.dumps(report,indent=2),encoding='utf-8')

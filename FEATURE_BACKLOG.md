@@ -5,30 +5,23 @@
 > The visual World Atlas, direct information signs, physical Supply Store and
 > free village recovery, the player cap60/engine curve100 boundary, open roads,
 > six boss domains and Sheet-backed creature placement are implemented locally.
-> See [Patch20 delivery and validation](PASS20_VALIDATION.md).
+> See [current playtest walkthrough](<features/opening/VALIDATION.md>).
 > The10% /0.01% figures elsewhere remain **release proposals**, not live test odds.
 > This does not accept any commercial criterion or implement online boss loot.
 
 
-Updated 2026-09-12. Status: **Local implementations are not commercial acceptance.**
-See the [all-card implementation/decision audit](features/delivery/REMAINING_SCOPE.md) for current delivery and blocked work.
+Status: **Local implementations are not commercial acceptance.**
+See the [current implementation scope](features/delivery/REMAINING_SCOPE.md)
+for delivered work and remaining decisions.
 
-The user subsequently authorized the first sixteen features. Pass 13 covers their local playable portions; online dependencies, production art and owner acceptance remain unfinished. See [per-feature status and owner validation](PASS13_VALIDATION.md). Other cards are not claimed complete by incidental scaffolding.
+There are **66 feature cards: 64 P0, two optional P1, 264 acceptance criteria**.
+F-001 through F-057 retain their identifiers; v2 criteria supersede v1.
+F-058 through F-066 add the expanded systems. Superseded plans and pass reports
+are retained in Git history, not as additional active requirements.
 
-There are **66 feature cards: 64 P0, two optional P1, 264 acceptance criteria**. F-001–F-057 retain their identifiers but their v2 criteria supersede v1; old evidence does not automatically pass changed criteria. F-058–F-066 add the expanded systems. The unchanged [v1 archive](docs/scope-v1/README.md) is historical, not an additional active requirement.
-
-Read with [scope](<Commercial MVP scope.md>), [validation plan](VALIDATION_PLAN.md), [traceability](FEATURE_TRACEABILITY.md) and [live prototype progress](PROGRESS.md).
-
-The next-ten request maps to F-017–F-026. [Pass16 delivery matrix and evidence](PASS16_VALIDATION.md)
-distinguishes the playable campaign, encounter recovery, practice phases and
-presentation work from missing server groups/rewards and production-art approval.
-No acceptance requirement was removed to make this local batch appear complete.
-
-Pass 15 adds authored local world layouts, illustrated scenery, physical itinerary
-walking, cave/bridge navigation and persistent landmark discovery. See
-[world delivery and validation](PASS15_VALIDATION.md). This extends local evidence
-for F-016/F-017/F-018/F-027/F-058; it does not accept their commercial criteria,
-complete online groups, or approve all 100 creature art packages.
+Read with [scope](<Commercial MVP scope.md>), [validation plan](VALIDATION_PLAN.md)
+and [traceability](FEATURE_TRACEABILITY.md). Current runtime ownership and checks
+are routed through [FEATURE_MAP](FEATURE_MAP.md).
 
 ## Release contract
 
@@ -452,7 +445,7 @@ Required protocols: VP-03, VP-05, VP-13. Evidence: pinned build/rules, fixtures/
 ### F-017 — Spatial entrances linking actual field, forest and cave maps
 
 Priority: P0 · Milestone: M1–M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: Physical gates/atlas and saved-encounter lock verified locally; realm lifecycle/device acceptance pending; see PASS16_VALIDATION.md
+Baseline: Physical gates/atlas and saved-encounter lock verified locally; realm lifecycle/device acceptance pending; see features/campaign/README.md
 Dependencies: F-016
 Source items: MVP-02
 Accountability: Implementation agent; owner accepts
@@ -472,7 +465,7 @@ Required protocols: VP-03, VP-05, VP-13. Evidence: pinned build/rules, fixtures/
 ### F-018 — Explorable cave/forest habitats and return persistence
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: Local cave/forest lives, reserved kill receipts and deterministic encounter resume; no server authority; see PASS16_VALIDATION.md
+Baseline: Local cave/forest lives, reserved kill receipts and deterministic encounter resume; no server authority; see features/campaign/README.md
 Dependencies: F-004, F-009, F-011, F-014, F-017
 Source items: MVP-02, MVP-05, MVP-12
 Accountability: Implementation agent; owner accepts
@@ -492,7 +485,7 @@ Required protocols: VP-01, VP-03, VP-07, VP-13. Evidence: pinned build/rules, fi
 ### F-019 — Six-region progression chapters and an accessible main ending
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: Six chapters / 48 objectives / accessible ending and once-only rewards; common-starter paths covered for all four classes in tests/pass16_cases.js; current evidence in PROGRESS.md
+Baseline: Six chapters / 48 objectives / accessible ending and once-only rewards; common-starter paths covered for all four classes in tests/pass16_cases.js; current evidence in features/delivery/REMAINING_SCOPE.md
 Dependencies: F-016, F-020, F-021
 Source items: MVP-05
 Accountability: Implementation agent; owner accepts
@@ -512,7 +505,7 @@ Required protocols: VP-01, VP-03, VP-10. Evidence: pinned build/rules, fixtures/
 ### F-020 — Sixty authored trainer and faction compositions
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: 60 local trainer lessons with legal regional teams, dialogue and first/repeat rewards; no wild pet drops; see PASS16_VALIDATION.md
+Baseline: 60 local trainer lessons with legal regional teams, dialogue and first/repeat rewards; no wild pet drops; see features/campaign/README.md
 Dependencies: F-004, F-006, F-007
 Source items: MVP-05
 Accountability: Implementation agent; owner accepts
@@ -532,7 +525,7 @@ Required protocols: VP-01, VP-02, VP-10. Evidence: pinned build/rules, fixtures/
 ### F-021 — Twelve pack encounter templates across the world
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: 12 resident-backed forest/cave packs; partial kills persist and untouched lives remain; see PASS16_VALIDATION.md
+Baseline: 12 resident-backed forest/cave packs; partial kills persist and untouched lives remain; see features/campaign/README.md
 Dependencies: F-004, F-006
 Source items: MVP-05
 Accountability: Implementation agent; owner accepts
@@ -552,7 +545,7 @@ Required protocols: VP-02, VP-03, VP-06, VP-13. Evidence: pinned build/rules, fi
 ### F-022 — Six rare group bosses, phases and reward-free practice
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: Six phased reward-free previews, including simulated 2–3-party practice; real groups/realm access/essence not implemented; see PASS16_VALIDATION.md
+Baseline: Six phased reward-free previews, including simulated 2–3-party practice; real groups/realm access/essence not implemented; see features/campaign/README.md
 Dependencies: F-004, F-007, F-009
 Source items: MVP-05, MVP-06, MVP-24, MVP-25
 Accountability: Implementation agent; owner accepts
@@ -572,7 +565,7 @@ Required protocols: VP-02, VP-03, VP-07, VP-14, VP-15. Evidence: pinned build/ru
 ### F-023 — Optional regional mastery and group-hunt challenges
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: 18 personal receipt-based challenges and decorative ribbons; group realm conditions not implemented; see PASS16_VALIDATION.md
+Baseline: 18 personal receipt-based challenges and decorative ribbons; group realm conditions not implemented; see features/campaign/README.md
 Dependencies: F-011, F-019, F-022
 Source items: MVP-05, MVP-06, MVP-09
 Accountability: Implementation agent; owner accepts
@@ -594,7 +587,7 @@ Required protocols: VP-02, VP-03, VP-10. Evidence: pinned build/rules, fixtures/
 ### F-024 — Art bible and approved reference encounter
 
 Priority: P0 · Milestone: M1 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: Art bible and reproducible played reference capture; owner/newcomer/device approval pending; see PASS16_VALIDATION.md
+Baseline: Art bible and reproducible played reference capture; owner/newcomer/device approval pending; see features/campaign/README.md
 Dependencies: F-004, F-008
 Source items: MVP-03
 Accountability: Owner: art/product approval; agent: implementation and evidence
@@ -614,7 +607,7 @@ Required protocols: VP-04, VP-05. Evidence: pinned build/rules, fixtures/seeds, 
 ### F-025 — Animation for 100 species and both trainer classes
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: 3 painted pose rigs, 71 vector-joint rigs, 28 simpler fallbacks; 104-row coverage explicit, production gate open; see PASS16_VALIDATION.md
+Baseline: 3 painted pose rigs, 71 vector-joint rigs, 28 simpler fallbacks; 104-row coverage explicit, production gate open; see features/campaign/README.md
 Dependencies: F-024
 Source items: MVP-04, MVP-26
 Accountability: Implementation agent; owner accepts
@@ -634,7 +627,7 @@ Required protocols: VP-04, VP-06. Evidence: pinned build/rules, fixtures/seeds, 
 ### F-026 — Impact-synchronized VFX and combat feedback
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: 520 explicit visual assignments and shared solo impact deadline; live group/network/device signoff pending; see PASS16_VALIDATION.md
+Baseline: 520 explicit visual assignments and shared solo impact deadline; live group/network/device signoff pending; see features/campaign/README.md
 Dependencies: F-008, F-024
 Source items: MVP-03, MVP-04
 Accountability: Implementation agent; owner accepts
@@ -1462,11 +1455,10 @@ Acceptance criteria:
 
 Validation: Pilot evidence and unit-cost/throughput worksheet, risk/contingency review and owner-approved forecast; repeat before G4/G5.
 Required protocols: VP-06, VP-09, VP-10, VP-11. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
-## Pass 14 design references — not commercial acceptance
+## Design references
 
-The owner's latest request permits duplicate individual companions and replaces
-party dropdowns with visual selection. Current local migration/UX evidence is in
-PASS14_VALIDATION.md. WORLD_DESIGN.md scopes authored maps; CREATURE_DESIGN.md
+Independent companion copies and visual party selection are implemented locally.
+Current delivery boundaries are in features/delivery/REMAINING_SCOPE.md. WORLD_DESIGN.md scopes authored maps; CREATURE_DESIGN.md
 scopes production art and per-species motion. CREATURE_REFERENCE.md and
 CREATURE_DROPS.md enumerate all 100 live definitions separately from proposed
 ordinary materials. Their data is checked against the runtime export.

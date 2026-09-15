@@ -76,8 +76,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [CREATURE_DESIGN.md](<../../CREATURE_DESIGN.md>)
 - [features/animation/SUPPLIED_SPRITES.md](<../../features/animation/SUPPLIED_SPRITES.md>)
 - [features/animation/TRAINER_SPRITES.md](<../../features/animation/TRAINER_SPRITES.md>)
-- [PASS21_VALIDATION.md](<../../PASS21_VALIDATION.md>)
-- [PASS22_VALIDATION.md](<../../PASS22_VALIDATION.md>)
 - [assets/characters/README.md](<../../assets/characters/README.md>)
 - [features/world/CITIES.md](<../../features/world/CITIES.md>)
 - [assets/cities/README.md](<../../assets/cities/README.md>)

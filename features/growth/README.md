@@ -55,6 +55,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 ## Specifications and decisions
 
 - [Companion stats.md](<../../Companion stats.md>)
-- [PASS24_VALIDATION.md](<../../PASS24_VALIDATION.md>)
+- [features/opening/VALIDATION.md](<../../features/opening/VALIDATION.md>)
 - Commercial cards: [F-003](<../../FEATURE_BACKLOG.md>), [F-009](<../../FEATURE_BACKLOG.md>), [F-010](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-07](<../../OWNER_REVIEWS.md#or-07>) Use the live board/preflight for status, not an approval copied here.

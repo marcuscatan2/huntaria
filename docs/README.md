@@ -16,8 +16,8 @@ Do not read all planning/history before a focused fix.
 | Actual stat formulas | [Companion stats](<../Companion stats.md>) |
 | Deferred ideas | [Game notes](<../Game notes.md>); not authorization to implement |
 | How to play | [PLAYER_GUIDE](PLAYER_GUIDE.md); current source wins over outdated pass descriptions |
-| Last handoff or past decisions | [PROGRESS](../PROGRESS.md), root PASS* documents; history, not current proof |
-| Superseded planning | [scope-v1](scope-v1/README.md); retained archive, not current scope |
+| Previous implementations or superseded plans | Git history; current contracts stay in feature guides |
+| Local artifacts and repository cleanup | [Storage policy](../features/delivery/OPERATIONS.md#repository-storage) |
 
 Keep detailed explanations in the owning feature folder or its linked
 specification. Existing root specifications retain their paths to preserve

@@ -22,3 +22,18 @@ bond-bolt-save*.json
 browser-profile*/
 playwright-report/
 test-results/
+# Disposable diagnostics and local packages belong outside source history.
+*.log
+*.tmp
+*.bak
+*.zip
+*.7z
+*.tar
+*.tar.gz
+scratch/
+tmp/
+# Keep current contracts in feature guides; Git retains old pass reports.
+PASS[0-9]*_VALIDATION.md
+PASS[0-9]*_PLAN.md
+PASS[0-9]*_SCOPE.md
+/PROGRESS.md

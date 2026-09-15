@@ -5,16 +5,16 @@
 > The visual World Atlas, direct information signs, physical Supply Store and
 > free village recovery, the player cap60/engine curve100 boundary, open roads,
 > six boss domains and Sheet-backed creature placement are implemented locally.
-> See [Patch20 delivery and validation](PASS20_VALIDATION.md).
+> See [current playtest walkthrough](<features/opening/VALIDATION.md>).
 > The10% /0.01% figures elsewhere remain **release proposals**, not live test odds.
 > This does not accept any commercial criterion or implement online boss loot.
 
 
-Updated 2026-09-11. Acceptance plan; local evidence is tracked separately in [PASS13_VALIDATION.md](PASS13_VALIDATION.md). **No commercial feature is accepted by this document.** Read [scope](<Commercial MVP scope.md>), [66-card backlog](FEATURE_BACKLOG.md) and [traceability](FEATURE_TRACEABILITY.md). The [v1 plan](docs/scope-v1/README.md) is superseded, including its capture guarantees, small roster, replay-only architecture assumptions and cost/effort estimates.
+Updated 2026-09-11. Acceptance plan; local evidence is tracked separately in [current implementation scope](<features/delivery/REMAINING_SCOPE.md>). **No commercial feature is accepted by this document.** Read [scope](<Commercial MVP scope.md>), [66-card backlog](FEATURE_BACKLOG.md) and [traceability](FEATURE_TRACEABILITY.md). Superseded plans, including their capture guarantees, small roster and cost estimates, remain in Git history.
 
-Pass 15 adds authored local world layouts, illustrated scenery, physical itinerary
+The local world includes authored layouts, illustrated scenery, physical itinerary
 walking, cave/bridge navigation and persistent landmark discovery. See
-[world delivery and validation](PASS15_VALIDATION.md). This extends local evidence
+[world implementation](<WORLD_IMPLEMENTATION.md>). This extends local evidence
 for F-016/F-017/F-018/F-027/F-058; it does not accept their commercial criteria,
 complete online groups, or approve all 100 creature art packages.
 
@@ -125,7 +125,7 @@ Pass16 evidence candidate: `tests/pass16_visual.py`, recorded WebM clips and
 `tests/artifacts/pass16-visual-chrome.json`; reference contract in ART_BIBLE.md.
 Headless desktop timing is not owner approval, a novice study, physical-phone
 performance, live group networking or acoustic-onset measurement. See
-[the pass16 matrix](PASS16_VALIDATION.md) for remaining protocol gaps.
+[campaign contract](<features/campaign/README.md>) for remaining protocol gaps.
 
 Approve one played reference encounter plus an Echo/summon sequence using original/cleared art. Score silhouette/identity, consistent scale/ground anchor/depth, readable motion, distinct attack/cast/hit/defeat, impact timing, target/owner clarity, UI hierarchy and effect restraint. Every dimension must be acceptable to the owner; keep video, build and hardware. Impact visual versus presented HP/reaction/audio should differ by ≤50 ms at 1× and ≤100 ms at solo 2×; buffered group presentation uses the same logical event and keeps essential event order. Network transport delay is measured separately, not hidden as animation time. Require character×state coverage for 104 characters, six boss phase sequences, 24 large maps, six hubs, six boss domains and Inner Sea. Test 13-actor effects, overlap, low effects, reduced motion, pause/resume where legal and missing sprites. At least 8/10 novice reference viewers identify the trainer/objective and a useful preparation change. A screenshot or resemblance claim is insufficient.
 
@@ -287,4 +287,4 @@ Gate decision record:
 
 Run `python tests/scope_docs_check.py` for read-only checks of 66 IDs, 264 criteria, 28 source items, 18 scope sections, 15 protocols, eight locks, six gates, dependencies, links and v2 design invariants. It does not execute combat, prove statistical randomness of a deployed RNG, test the database, certify devices or mark any criterion delivered.
 
-Current gameplay remains pass12. The active commercial scope supersedes v1 planning; live README/progress/formula references and the immutable v1 archive remain historical evidence of their respective versions.
+Current implementation and test routes live in feature guides. Git history retains superseded plans and pass reports; old evidence cannot certify changed source.

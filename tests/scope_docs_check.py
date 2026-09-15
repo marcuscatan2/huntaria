@@ -174,12 +174,10 @@ obsolete_positive_clauses = (
 check("Superseded positive commercial requirements are absent", all(
     phrase not in doc for phrase in obsolete_positive_clauses for doc in docs.values()
 ))
-archive = ROOT / "docs" / "scope-v1"
-archive_names = ("Commercial MVP scope.md", "FEATURE_BACKLOG.md", "VALIDATION_PLAN.md",
-                 "FEATURE_TRACEABILITY.md", "scope_docs_check.py", "README.md")
-check("V1 planning archive remains separate with original 57-card baseline",
-      all((archive / name).is_file() for name in archive_names)
-      and len(re.findall(r"^### F-\d{3} —", (archive / "FEATURE_BACKLOG.md").read_text(encoding="utf-8"), re.M)) == 57)
+check("Active scope routes do not depend on superseded archives or pass reports", all(
+    not re.search(r"docs/scope-v1|PASS[0-9]+_(?:VALIDATION|PLAN|SCOPE)\.md|PROGRESS\.md", doc)
+    for doc in [source, *docs.values()]
+))
 
 report = {
     "kind": "documentation-integrity-only",

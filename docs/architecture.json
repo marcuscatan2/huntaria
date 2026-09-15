@@ -65,9 +65,6 @@
         "features/opening/DESIGN.md",
         "features/opening/EARLY_PROGRESSION_SCOPE.md",
         "features/opening/VALIDATION.md",
-        "features/opening/PASS26_VALIDATION.md",
-        "features/opening/PASS27_VALIDATION.md",
-        "PASS24_VALIDATION.md",
         "features/opening/CLASSES.md",
         "features/campaign/SACRED_TREASURES.md"
       ]
@@ -171,7 +168,7 @@
       ],
       "docs": [
         "Companion stats.md",
-        "PASS24_VALIDATION.md"
+        "features/opening/VALIDATION.md"
       ],
       "summary": "Derives levels, attributes and passive bonuses; connects individual progress to combat and menus."
     },
@@ -253,8 +250,6 @@
         "CREATURE_DESIGN.md",
         "features/animation/SUPPLIED_SPRITES.md",
         "features/animation/TRAINER_SPRITES.md",
-        "PASS21_VALIDATION.md",
-        "PASS22_VALIDATION.md",
         "assets/characters/README.md",
         "features/world/CITIES.md",
         "assets/cities/README.md"
@@ -424,7 +419,6 @@
         "city-world"
       ],
       "docs": [
-        "PASS18_VALIDATION.md",
         "features/world/CITIES.md"
       ],
       "summary": "Defines test tuning and recovery UI; connects combat injuries to saved vitality and supplies."
@@ -461,9 +455,8 @@
         "relic-quest"
       ],
       "docs": [
-        "PASS16_VALIDATION.md",
         "features/opening/EARLY_PROGRESSION_SCOPE.md",
-        "PASS24_VALIDATION.md",
+        "features/opening/VALIDATION.md",
         "features/world/CITIES.md",
         "features/campaign/SACRED_TREASURES.md"
       ],
@@ -673,7 +666,7 @@
         "F-066"
       ],
       "entry": "scripts/project.py; Git/CI configuration; future operator services",
-      "contract": "Local architecture/review tooling, Git source checkpoints, on-request ZIP backups and reproducible immutable client packages exist; packages remain local-preview. No deployment, production auth/payment/telemetry, restored cloud backups, certified capacity or external acceptance. Current remaining-work/decision audit is routed in REMAINING_SCOPE.md.",
+      "contract": "Local architecture/review tooling, Git source checkpoints, on-request ZIP backups and reproducible immutable client packages exist; packages remain local-preview. No deployment, production auth/payment/telemetry, restored cloud backups, certified capacity or external acceptance. Current remaining-work/decision audit is routed in REMAINING_SCOPE.md. Generated reports, local packages and pass histories stay outside Git; project checks reject tracked ignored files. Browser package tests use disposable temporary output and clean it up after validation.",
       "tests": [
         "structure",
         "boundaries",
