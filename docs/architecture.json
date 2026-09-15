@@ -26,7 +26,8 @@
         "campaign",
         "boundaries",
         "experience",
-        "game-frame"
+        "game-frame",
+        "relic-quest"
       ],
       "docs": [
         "docs/PLAYER_GUIDE.md",
@@ -57,7 +58,8 @@
         "mechanics",
         "ui",
         "boundaries",
-        "farm-classes"
+        "farm-classes",
+        "relic-quest"
       ],
       "docs": [
         "features/opening/DESIGN.md",
@@ -66,7 +68,8 @@
         "features/opening/PASS26_VALIDATION.md",
         "features/opening/PASS27_VALIDATION.md",
         "PASS24_VALIDATION.md",
-        "features/opening/CLASSES.md"
+        "features/opening/CLASSES.md",
+        "features/campaign/SACRED_TREASURES.md"
       ]
     },
     {
@@ -113,7 +116,8 @@
         "scripts/simulator.cjs",
         "data/simulator-modules.json",
         "tests/runtime_cases.js",
-        "tests/runtime_check.py"
+        "tests/runtime_check.py",
+        "raid-rules.js"
       ],
       "backlog": [
         "F-001",
@@ -123,18 +127,20 @@
         "F-036"
       ],
       "entry": "BondGame.Battle.step / emit / run; BondRules",
-      "contract": "Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective.",
+      "contract": "Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective. Only the class rescue admits seven authored enemies and a Lv80 master. raid-rules.js guarantees player-party defeat at 8 seconds and the master's victory by 32 seconds; saved tick replay uses the same deterministic choreography.",
       "tests": [
         "field-polish",
         "mechanics",
         "campaign",
         "boundaries",
         "runtime",
-        "farm-classes"
+        "farm-classes",
+        "relic-quest"
       ],
       "docs": [
         "Companion stats.md",
-        "features/combat/RUNTIME.md"
+        "features/combat/RUNTIME.md",
+        "features/campaign/SACRED_TREASURES.md"
       ],
       "summary": "Simulates targeting, damage and outcomes; sends events to animation and results to persistence."
     },
@@ -264,7 +270,8 @@
         "atlas-data.js",
         "world-layout.js",
         "world-nav.js",
-        "city-data.js"
+        "city-data.js",
+        "ghost-tower.js"
       ],
       "backlog": [
         "F-016",
@@ -273,18 +280,20 @@
         "F-058"
       ],
       "entry": "BondAtlas.get / maps / collision; BondWorldLayout; BondNav.find",
-      "contract": "36 stable places occupy unique Cartesian cells: 24 existing large maps, six square safe cities and six boss domains. GRID_EDGES owns reciprocal north/east/south/west border portals; world-layout derives physical gates and safe arrivals. City links exist only across their authored shared borders; no field-wide town shortcuts. Firstlight exits stay locked until the Forest Mage proof; subsequent level bands warn of danger. The atlas draws the same grid and plans walking through gates. city-data owns themed city buildings, doorway/service points, civilian companions and the four-city waystone allowlist. Interior view state does not create new world maps or alter field geometry.",
+      "contract": "36 stable places occupy unique Cartesian cells: 24 existing large maps, six square safe cities and six boss domains. GRID_EDGES owns reciprocal north/east/south/west border portals; world-layout derives physical gates and safe arrivals. City links exist only across their authored shared borders; no field-wide town shortcuts. Firstlight exits stay locked until the Forest Mage proof; subsequent level bands warn of danger. The atlas draws the same grid and plans walking through gates. city-data owns themed city buildings, doorway/service points, civilian companions and the four-city waystone allowlist. Interior view state does not create new world maps or alter field geometry. Ghost Tower Entrance retains hollow-2 and its Cartesian borders; four separate saved interiors connect by reciprocal stairs. Primary ghost habitats retain their spawn prefixes; repeated floor populations use distinct IDs. The atlas projects interiors onto the entrance cell.",
       "tests": [
         "mechanics",
         "ui",
         "campaign",
         "boundaries",
-        "city-world"
+        "city-world",
+        "relic-quest"
       ],
       "docs": [
         "WORLD_DESIGN.md",
         "WORLD_IMPLEMENTATION.md",
-        "features/world/CITIES.md"
+        "features/world/CITIES.md",
+        "features/campaign/SACRED_TREASURES.md"
       ],
       "summary": "Defines maps, geometry and paths; supplies exploration and population placement."
     },
@@ -321,7 +330,8 @@
         "boundaries",
         "farm-classes",
         "city-world",
-        "field-encounters"
+        "field-encounters",
+        "relic-quest"
       ],
       "docs": [
         "WORLD_DESIGN.md",
@@ -384,10 +394,12 @@
         "campaign",
         "reference",
         "boundaries",
-        "game-frame"
+        "game-frame",
+        "relic-quest"
       ],
       "docs": [
-        "CREATURE_DROPS.md"
+        "CREATURE_DROPS.md",
+        "features/campaign/SACRED_TREASURES.md"
       ],
       "summary": "Shows inventory and Soul Echo summoning; persistence owns drops and individual creation."
     },
@@ -424,7 +436,9 @@
       "files": [
         "campaign.js",
         "campaign-menu.js",
-        "campaign.css"
+        "campaign.css",
+        "relic-quest.js",
+        "relic-quest-view.js"
       ],
       "backlog": [
         "F-019",
@@ -435,7 +449,7 @@
         "F-062"
       ],
       "entry": "BondCampaign.reconcile / bosses; BondCampaignMenu; BondProfile.reserveBattle / restoreBattle",
-      "contract": "Campaign definitions feed encounters; profile reserves party/seed/supplies and accepted kills. BondCampaign.questMarker deterministically maps the current receipt-backed objective to `offer`, `delivery` or no marker; presentation does not infer or award quest state. The early route records two acquisitions, a Forest Mage meeting/proof gate, four distinct Druid/Mage/Hunter/Swordsman demonstrations, fixed Lv15 Tidecrown, one rewarded master acceptance battle, confirmed Lv20 specialization, an ability-change/counter loop, fixed Lv30 Amber guardian and monster-tree proof. Authored trainer XP reaches thresholds100/600/1500/6600/10500/19000/30000/43500 without repeat grinding; monster XP remains separate. One tiny in-frame current objective and its destination region/map guide the opening; the Mage proof is the only opening road lock and later levels communicate danger without invisible gates. Launch story trainers clamp to the Lv60 player ceiling while preserving sourceLevel. Practice boss scaling is reward-free and separate from progression bosses; no human multiplayer or essence source exists. Hunter and Swordsman are playable specializations. The master fights as its offered class; the player retains the current Apprentice party and confirms after victory at Lv20. Farm establishment joins the route at Lv25. Class masters occupy matching starting-city courtyards; the quest destination after acceptance follows the defeated master’s city. Trial/reward IDs and battle kits are unchanged.",
+      "contract": "Campaign definitions feed encounters; profile reserves party/seed/supplies and accepted kills. BondCampaign.questMarker deterministically maps the current receipt-backed objective to `offer`, `delivery` or no marker; presentation does not infer or award quest state. The early route records two acquisitions, a Forest Mage meeting/proof gate, four distinct Druid/Mage/Hunter/Swordsman demonstrations, fixed Lv15 Tidecrown, one rewarded master acceptance battle, confirmed Lv20 specialization, an ability-change/counter loop, fixed Lv30 Amber guardian and monster-tree proof. Authored trainer XP reaches thresholds100/600/1500/6600/10500/19000/30000/43500 without repeat grinding; monster XP remains separate. One tiny in-frame current objective and its destination region/map guide the opening; the Mage proof is the only opening road lock and later levels communicate danger without invisible gates. Launch story trainers clamp to the Lv60 player ceiling while preserving sourceLevel. Practice boss scaling is reward-free and separate from progression bosses; no human multiplayer or essence source exists. Hunter and Swordsman are playable specializations. The master fights as its offered class; the player retains the current Apprentice party and confirms after victory at Lv20. Farm establishment joins the route at Lv25. Class masters occupy matching starting-city courtyards; the quest destination after acceptance follows the defeated master’s city. Trial/reward IDs and battle kits are unchanged. The current main quest continues immediately after class ascension: a guaranteed Lv80 master rescue against seven Lv60 enemies, a bounded Echo hand-in, active-party Casketot communication with Tully atop four ghost-tower floors, then one class-specific inventory weapon. The final tracker ends here; old regional and Amber lessons remain optional. relic-quest.js owns the stage rules and relic-quest-view.js displays profile-owned actions.",
       "tests": [
         "field-polish",
         "campaign",
@@ -443,13 +457,15 @@
         "ui",
         "boundaries",
         "farm-classes",
-        "city-world"
+        "city-world",
+        "relic-quest"
       ],
       "docs": [
         "PASS16_VALIDATION.md",
         "features/opening/EARLY_PROGRESSION_SCOPE.md",
         "PASS24_VALIDATION.md",
-        "features/world/CITIES.md"
+        "features/world/CITIES.md",
+        "features/campaign/SACRED_TREASURES.md"
       ],
       "summary": "Defines quests, NPC encounters and simulated bosses; connects reservations to combat and rewards."
     },
@@ -462,7 +478,7 @@
       ],
       "backlog": [],
       "entry": "BondProfile.commit (private); normalize / reserveBattle / checkpoint / restoreBattle / settleKills / complete / summon",
-      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions.",
+      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions. Normalized journey.relic stages and critical nearby relicAction transactions own Echo delivery and the one-time class weapon. Rescue settlement restores vitality and advances the story atomically; no raid Echo or repeat loot is issued.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -474,12 +490,14 @@
         "experience",
         "farm-classes",
         "city-world",
-        "field-encounters"
+        "field-encounters",
+        "relic-quest"
       ],
       "docs": [
         "features/persistence/SAVES.md",
         "docs/ENGINEERING.md",
-        "features/world/CITIES.md"
+        "features/world/CITIES.md",
+        "features/campaign/SACRED_TREASURES.md"
       ],
       "summary": "Owns local saves, migrations and receipts; accepts mutations requested by gameplay and UI."
     },
@@ -635,7 +653,8 @@
         "tests/experience_check.py",
         "tests/farm_classes_check.py",
         "tests/farm_classes_cases.js",
-        "tests/field_encounters_check.py"
+        "tests/field_encounters_check.py",
+        "tests/relic_quest_check.py"
       ],
       "backlog": [
         "F-034",
@@ -660,7 +679,8 @@
         "boundaries",
         "client-build",
         "farm-classes",
-        "game-frame"
+        "game-frame",
+        "relic-quest"
       ],
       "docs": [
         "docs/ENGINEERING.md",
@@ -689,7 +709,8 @@
       "BondContent"
     ],
     "game.js": [
-      "BondContent"
+      "BondContent",
+      "BondRaidRules"
     ],
     "creature-art.js": [
       "BondContent"
@@ -718,7 +739,8 @@
     "world-layout.js": [
       "BondAtlas",
       "BondContent",
-      "BondCities"
+      "BondCities",
+      "BondGhostTower"
     ],
     "world-nav.js": [
       "BondAtlas",
@@ -770,7 +792,8 @@
       "BondRoster",
       "BondFarm",
       "BondMoonCalendar",
-      "BondCities"
+      "BondCities",
+      "BondRelicQuest"
     ],
     "world-atlas.js": [
       "BondAtlas",
@@ -816,7 +839,8 @@
       "BondRecovery",
       "BondWildBehavior",
       "BondSettings",
-      "BondCityView"
+      "BondCityView",
+      "BondRelicView"
     ],
     "campaign-menu.js": [
       "BondCampaign",
@@ -920,6 +944,23 @@
       "BondAtlas",
       "CharacterRig",
       "BondRecovery"
+    ],
+    "raid-rules.js": [
+      "BondContent"
+    ],
+    "ghost-tower.js": [
+      "BondAtlas"
+    ],
+    "relic-quest.js": [
+      "BondContent",
+      "BondAtlas",
+      "BondWorld",
+      "BondCampaign",
+      "BondRaidRules"
+    ],
+    "relic-quest-view.js": [
+      "BondProfile",
+      "BondRelicQuest"
     ]
   },
   "unloaded": [
@@ -938,7 +979,9 @@
     "inner-sea-rules.js",
     "inner-sea-farm.js",
     "moon-calendar.js",
-    "city-data.js"
+    "city-data.js",
+    "raid-rules.js",
+    "relic-quest.js"
   ],
   "storage_writers": {
     "profile.js": "Profile document and receipts",
@@ -1094,6 +1137,13 @@
       ],
       "browser": true,
       "purpose": "All-map tripled populations, pack preview/cancel/challenge/reload/escape and the current-trainer aggression boundary"
+    },
+    "relic-quest": {
+      "command": [
+        "tests/relic_quest_check.py"
+      ],
+      "browser": true,
+      "purpose": "Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward"
     }
   },
   "connections": [

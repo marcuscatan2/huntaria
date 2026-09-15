@@ -23,12 +23,12 @@ function sidebar(){
  const s=P.snapshot(),r=A.REGIONS[m.regionIndex];
  encounterNotice.hidden=!s.encounterSave;echoNotice.hidden=!!s.tutorial.summons||!Object.keys(s.inventory).some(k=>k.startsWith('echo:')&&s.inventory[k]>0);
  const fleeing=!!window.BondApp?.getBattle()?.escape&&!window.BondApp?.getBattle()?.ended;
- $('#field-withdraw').disabled=fleeing;$('#field-withdraw').textContent=fleeing?'Running…':'Run';
- exits.innerHTML='<span>MAP EXITS · matching numbers on the minimap</span>'+m.neighbors.map((g,i)=>{const d=A.get(g.to),levels=d.habitats.map(h=>h.level),danger=levels.length?Math.round(levels.reduce((n,v)=>n+v,0)/levels.length):d.level,delta=danger-BondProgress.trainerLevel(s);return '<button class="exit-route" data-exit="'+g.id+'"><b>'+(i+1)+' '+({east:'→',west:'←',north:'↑',south:'↓'}[g.direction])+'</b> '+d.name+'<small>'+(d.kind==='hub'?'Safe town':d.kind==='boss'?'Boss practice domain':delta>5?'Danger · Avg Lv '+danger:delta>0?'Challenge · Avg Lv '+danger:'Avg Lv '+danger)+'</small></button>';}).join('');
+ $('#field-withdraw').disabled=fleeing||BondRaidRules.applies(s.encounterSave?.encounter);$('#field-withdraw').textContent=fleeing?'Running…':'Run';
+ exits.innerHTML='<span>MAP EXITS · matching numbers on the minimap</span>'+m.neighbors.map((g,i)=>{const d=A.get(g.to),levels=d.habitats.map(h=>h.level),danger=levels.length?Math.round(levels.reduce((n,v)=>n+v,0)/levels.length):d.level,delta=danger-BondProgress.trainerLevel(s);return '<button class="exit-route" data-exit="'+g.id+'"><b>'+(i+1)+' '+({east:'→',west:'←',north:'↑',south:'↓',up:'↑',down:'↓'}[g.direction])+'</b> '+d.name+'<small>'+(d.kind==='hub'?'Safe town':d.kind==='boss'?'Boss practice domain':delta>5?'Danger · Avg Lv '+danger:delta>0?'Challenge · Avg Lv '+danger:'Avg Lv '+danger)+'</small></button>';}).join('');
  wayfinding.hidden=!['clearing-0','clearing-hub'].includes(m.id);$('#opening-route').textContent=m.id==='clearing-hub'?'Firstlight Meadow · starting area →':'Return to camp · free rest';$('#opening-location').textContent=m.id==='clearing-hub'?'Mosslight Village · safe town':BondOpening.zone(pos);
  const levels=m.habitats.map(h=>h.level);$('#region-heading').textContent=m.name;$('#region-subtitle').textContent=r.name+' · '+(m.kind==='hub'?BondCities.theme(m).title:m.kind==='boss'?'Boss practice domain':m.kind+' · wildlife level '+Math.min(...levels)+'–'+Math.max(...levels))+' · Local prototype';
  $('.region-map-heading').innerHTML='';$('#world-map-name').textContent=m.name;
- $('#world-route').innerHTML=m.neighbors.map(g=>'<button class="route-gate text-button" data-route="'+g.id+'">'+({east:'→',west:'←',north:'↑',south:'↓'}[g.direction])+' '+g.label+'</button>').join('')+'<small>Choosing a route walks to its gate.</small>';
+ $('#world-route').innerHTML=m.neighbors.map(g=>'<button class="route-gate text-button" data-route="'+g.id+'">'+({east:'→',west:'←',north:'↑',south:'↓',up:'↑',down:'↓'}[g.direction])+' '+g.label+'</button>').join('')+'<small>Choosing a route walks to its gate.</small>';
  const next=BondCampaign.next(s),target=next?.map&&A.get(next.map),targetRegion=target&&A.REGIONS[target.regionIndex];
  $('#world-objective').textContent=next?.label||'Explore the Six Reaches';$('#world-objective-location').textContent=targetRegion?targetRegion.name+' · '+target.name:'';$('#world-objective-location').hidden=!targetRegion;$('#world-quest').dataset.step=next?.id||'free';
  updateQuestMarkers(s,next);
@@ -51,7 +51,7 @@ function buildObjects(){
   objects.push({id:'opening-sign:bloom',kind:'openingSign',...bloom,label:'Bloomgrove',openingText:'Bloomslime restores allies but needs protection. Continue east to find it.'},
    {id:'opening-sign:stone',kind:'openingSign',...stone,label:'Deepwood',openingText:'Stonehorn is a slow frontline protector. Continue east to find it; Bloomslime lives to the west.'});
  }
- for(const e of [...BondCampaign.trainers,...BondCampaign.earlyEncounters.filter(e=>!e.kind)].filter(e=>e.map===m.id&&BondCampaign.visible(e,state)&&!(quiet()&&m.id==='clearing-0')))objects.push({id:e.id,kind:'npc',x:e.x,y:e.y,masterClass:e.masterClass,applicationClass:e.applicationClass,label:e.name+' · '+(e.masterClass?'CLASS MASTER':e.main?'STORY':e.lesson||'CHALLENGE')});
+ for(const e of [...BondCampaign.trainers,...BondCampaign.earlyEncounters.filter(e=>!e.kind),BondRelicQuest.tully].filter(e=>e.map===m.id&&BondCampaign.visible(e,state)&&!(quiet()&&m.id==='clearing-0')))objects.push({id:e.id,kind:'npc',x:e.x,y:e.y,masterClass:e.masterClass,applicationClass:e.applicationClass,label:e.name+' · '+(e.masterClass?'CLASS MASTER':e.storyOnly?'SPIRIT':e.main?'STORY':e.lesson||'CHALLENGE')});
  for(const p of BondCampaign.packs.filter(p=>p.map===m.id&&!(quiet()&&m.id==='clearing-0')))objects.push({...p,kind:'pack',label:p.name});
  if(m.kind==='hub'){
   for(const b of m.buildings)objects.push({id:b.id,kind:'building',...b.door,sceneryService:true,sceneryKey:b.id,label:b.name});
@@ -169,7 +169,7 @@ const bossControls=document.createElement('div');bossControls.id='boss-test-cont
 bossControls.insertAdjacentHTML('beforeend','<label>Practice parties <select id="boss-practice-parties"><option value="1">Your party only</option><option value="2">Two parties · simulated ally</option><option value="3">Three parties · two simulated allies</option></select></label><p>Local training only, not online players. Group scaling and three weaker attendants apply with allies. No coins, XP or essence.</p>');
 const trialControls=document.createElement('div');trialControls.id='trial-skill-controls';trialControls.hidden=true;bossControls.after(trialControls);
 const transformButton=document.createElement('button');transformButton.id='npc-transform';transformButton.className='button primary';transformButton.hidden=true;$('#npc-fight').after(transformButton);
-function talk(id){
+function talk(id){if(BondRelicView.open(id))return;
  stop();dialogId=id;const e=P.encounter(id);if(!e)return;if(e.openingGate&&!P.snapshot().journey.early.mageMet)P.meetOpeningMage();
  $('#npc-portrait').innerHTML=CharacterRig.art(CharacterRig.npcAppearance(e,id));$('#npc-title').textContent=e.name;$('#npc-tier').textContent=e.kind==='wild'?'WILD · Lv '+e.level+' · '+e.rarity:e.title;
  $('#npc-dialogue').textContent=e.kind==='wild'?'Challenge this wild creature.':e.greeting;

@@ -9,7 +9,7 @@ Status: **local-only**. Owns local saves, migrations and receipts; accepts mutat
 
 `BondProfile.commit (private); normalize / reserveBattle / checkpoint / restoreBattle / settleKills / complete / summon`
 
-Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions.
+Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions. Normalized journey.relic stages and critical nearby relicAction transactions own Echo delivery and the one-time class weapon. Rescue settlement restores vitality and advances the story atomically; no raid Echo or repeat loot is issued.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -65,6 +65,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
 - `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, arrival healing, physical teleport authority and save failures.
 - `python tests/field_encounters_check.py --browser chrome` — All-map tripled populations, pack preview/cancel/challenge/reload/escape and the current-trainer aggression boundary.
+- `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -73,5 +74,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [features/persistence/SAVES.md](<../../features/persistence/SAVES.md>)
 - [docs/ENGINEERING.md](<../../docs/ENGINEERING.md>)
 - [features/world/CITIES.md](<../../features/world/CITIES.md>)
+- [features/campaign/SACRED_TREASURES.md](<../../features/campaign/SACRED_TREASURES.md>)
 - Commercial cards: Cross-cutting implementation; no separate acceptance card.
 - Owner review routes: [OR-08](<../../OWNER_REVIEWS.md#or-08>), [OR-11](<../../OWNER_REVIEWS.md#or-11>) Use the live board/preflight for status, not an approval copied here.

@@ -83,8 +83,8 @@ const unlocked=(state,id)=>!!get(id)&&(id==='clearing-0'||state?.map===id||state
 function collision(id,p,radius=20){const m=get(id);return !m||p.x<55||p.y<55||p.x>m.width-55||p.y>m.height-55||m.obstacles.some(o=>Math.hypot(p.x-o.x,p.y-o.y)<o.radius+radius);}
 function validate(){
  const errors=[];
- if(maps.filter(m=>!['hub','boss'].includes(m.kind)).length!==24||maps.filter(m=>m.kind==='hub').length!==6||maps.filter(m=>m.kind==='boss').length!==6)errors.push('World count');
- for(const m of maps){if(!['hub','boss'].includes(m.kind)&&m.crossings.minSeconds<30)errors.push(m.id+' too small');for(const g of m.neighbors)if(!get(g.to)||!Number.isFinite(g.x)||!Number.isFinite(g.y)||collision(g.to,g.arrival))errors.push(m.id+' bad gate '+g.to);}
+ if(maps.filter(m=>!m.interior&&!['hub','boss'].includes(m.kind)).length!==24||maps.filter(m=>m.kind==='hub').length!==6||maps.filter(m=>m.kind==='boss').length!==6)errors.push('World count');
+ for(const m of maps){if(!m.interior&&!['hub','boss'].includes(m.kind)&&m.crossings.minSeconds<30)errors.push(m.id+' too small');for(const g of m.neighbors)if(!get(g.to)||!Number.isFinite(g.x)||!Number.isFinite(g.y)||collision(g.to,g.arrival))errors.push(m.id+' bad gate '+g.to);}
  const reached=new Set(),queue=[maps[0].id];while(queue.length){const id=queue.shift();if(reached.has(id))continue;reached.add(id);for(const g of get(id).neighbors)if(!reached.has(g.to))queue.push(g.to);}
  if(reached.size!==maps.length)errors.push('World graph disconnected');
  for(const type of C.MONSTERS)if(C.UNITS[type].source==='wild'&&!home(type))errors.push('Missing habitat '+type);

@@ -9,7 +9,7 @@ Status: **local-prototype**. Defines maps, geometry and paths; supplies explorat
 
 `BondAtlas.get / maps / collision; BondWorldLayout; BondNav.find`
 
-36 stable places occupy unique Cartesian cells: 24 existing large maps, six square safe cities and six boss domains. GRID_EDGES owns reciprocal north/east/south/west border portals; world-layout derives physical gates and safe arrivals. City links exist only across their authored shared borders; no field-wide town shortcuts. Firstlight exits stay locked until the Forest Mage proof; subsequent level bands warn of danger. The atlas draws the same grid and plans walking through gates. city-data owns themed city buildings, doorway/service points, civilian companions and the four-city waystone allowlist. Interior view state does not create new world maps or alter field geometry.
+36 stable places occupy unique Cartesian cells: 24 existing large maps, six square safe cities and six boss domains. GRID_EDGES owns reciprocal north/east/south/west border portals; world-layout derives physical gates and safe arrivals. City links exist only across their authored shared borders; no field-wide town shortcuts. Firstlight exits stay locked until the Forest Mage proof; subsequent level bands warn of danger. The atlas draws the same grid and plans walking through gates. city-data owns themed city buildings, doorway/service points, civilian companions and the four-city waystone allowlist. Interior view state does not create new world maps or alter field geometry. Ghost Tower Entrance retains hollow-2 and its Cartesian borders; four separate saved interiors connect by reciprocal stairs. Primary ghost habitats retain their spawn prefixes; repeated floor populations use distinct IDs. The atlas projects interiors onto the entrance cell.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -23,6 +23,7 @@ The links below point to the actual source; root browser paths remain in use.
 | [world-layout.js](<../../world-layout.js>) | `BondWorldLayout` |
 | [world-nav.js](<../../world-nav.js>) | `BondNav` |
 | [city-data.js](<../../city-data.js>) | `BondCities` |
+| [ghost-tower.js](<../../ghost-tower.js>) | `BondGhostTower` |
 
 ## Connections
 
@@ -50,6 +51,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/pass18_campaign.py --browser chrome` — Current campaign/replay assertions (reuses pass16_cases.js).
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, arrival healing, physical teleport authority and save failures.
+- `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -58,5 +60,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [WORLD_DESIGN.md](<../../WORLD_DESIGN.md>)
 - [WORLD_IMPLEMENTATION.md](<../../WORLD_IMPLEMENTATION.md>)
 - [features/world/CITIES.md](<../../features/world/CITIES.md>)
+- [features/campaign/SACRED_TREASURES.md](<../../features/campaign/SACRED_TREASURES.md>)
 - Commercial cards: [F-016](<../../FEATURE_BACKLOG.md>), [F-017](<../../FEATURE_BACKLOG.md>), [F-018](<../../FEATURE_BACKLOG.md>), [F-058](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-03](<../../OWNER_REVIEWS.md#or-03>), [OR-09](<../../OWNER_REVIEWS.md#or-09>) Use the live board/preflight for status, not an approval copied here.

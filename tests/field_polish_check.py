@@ -25,7 +25,7 @@ with sync_playwright() as pw:
         page.wait_for_function('!!window.BondApp')
         page.locator('#character-name').fill('Wayfarer');page.locator('#create-character').click()
         setup="""()=>{
-          window.qaHunt=()=>{BondApp.cancelRegionBattle();BondProfile.testing.heal();
+          window.qaHunt=()=>{BondApp.cancelRegionBattle();BondProfile.travel('clearing-0');BondProfile.testing.heal();
             const P=BondProfile,s=P.snapshot();s.apprenticeXP=1000;P.testing.replace(s);
             const sp=P.population().find(p=>p.type==='emberfox'&&p.present);
             P.position(BondAtlas.safePoint(s.map,{x:sp.x-70,y:sp.y}));BondApp.switchTab('region');
@@ -37,6 +37,9 @@ with sync_playwright() as pw:
         # were both capable of cancelling the old timer forever.
         page.evaluate('qaHunt();BondApp.getBattle().run();BondApp.renderBattle();BondApp.finish()')
         check('Victory returns directly to the field',page.evaluate('BondApp.getTab()==="region"&&!BondProfile.snapshot().encounterSave'))
+        # Inspect transient loot in a sanctuary: nearby roaming enemies can otherwise
+        # start another battle and hide the field while a screenshot is settling.
+        page.evaluate("BondProfile.travel('clearing-hub');BondApp.switchTab('region')")
         saved=page.evaluate('BondProfile.export()')
         page.evaluate('window.qaFirstToasts=[...document.querySelectorAll(".loot-toast")]');page.locator('.loot-dismiss').first.focus();page.locator('.loot-dismiss').first.hover()
         check('Loot pickups are contained inside the exploration frame',page.evaluate('''()=>{
@@ -76,6 +79,8 @@ with sync_playwright() as pw:
         page.locator('#loot-notifications').screenshot(path=str(ARTIFACTS/f'loot-items-phone-{args.browser}.png'))
         page.clock.run_for(1200);page.set_viewport_size({'width':1440,'height':1000})
         check('All queued popups disappear without inventory changes',page.locator('.loot-toast').count()==0 and page.evaluate('BondProfile.export()')==saved)
+        # Return to a field before testing injury thresholds: city arrival heals.
+        page.evaluate("BondProfile.travel('clearing-0',BondOpening.start.position);BondApp.switchTab('region')")
         # World health reads saved vitality outside combat and live HP in it.
         for value,tone in [(10000,'green'),(5001,'green'),(5000,'yellow'),(3500,'yellow'),(3499,'red'),(0,'red')]:
             page.evaluate('(hp)=>{const s=BondProfile.snapshot();s.vitality.trainer=hp;BondProfile.testing.replace(s);BondApp.switchTab("region");}',value)
@@ -151,11 +156,11 @@ with sync_playwright() as pw:
         page.evaluate('qaHunt();BondApp.getBattle().run();Storage.prototype.setItem=function(k,v){if(k===BondProfile.KEY)throw Error("QA full");return qaSet.call(this,k,v);};BondApp.renderBattle();BondApp.finish()')
         page.clock.run_for(7000)
         check('Unaccepted rewards remain visible with saving retry',page.locator('.loot-retry').is_visible() and page.evaluate('!!BondProfile.snapshot().encounterSave'))
-        page.evaluate('()=>{Storage.prototype.setItem=qaSet;}');page.locator('.loot-retry').click();page.locator('.loot-dismiss').first.focus();page.clock.run_for(6100)
+        page.evaluate('()=>{Storage.prototype.setItem=qaSet;}');page.locator('.loot-retry').click();page.evaluate("BondProfile.travel('clearing-hub');BondApp.switchTab('region')");page.locator('.loot-dismiss').first.focus();page.clock.run_for(6100)
         check('Accepted retry expires even with focus',page.locator('.loot-toast').count()==0 and page.evaluate('!BondProfile.snapshot().encounterSave'))
         # Escape keeps actual partial kills, not an NPC victory bonus.
         receipts=page.evaluate("""()=>{
-          BondApp.cancelRegionBattle();BondProfile.testing.heal();const P=BondProfile,out=[],test=(name,pass)=>out.push({name,pass:!!pass});
+          BondApp.cancelRegionBattle();BondProfile.travel('clearing-0');BondProfile.testing.heal();const P=BondProfile,out=[],test=(name,pass)=>out.push({name,pass:!!pass});
           const npc=BondCampaign.trainers.find(e=>e.map===P.snapshot().map);BondApp.startRegionBattle(npc.id);
           const b=BondApp.getBattle(),sp=P.population().find(x=>x.present&&x.type==='emberfox');P.testing.setRoll(sp.id,0);
           BondApp.joinWild(sp.id,{x:sp.x,y:sp.y});const enemy=b.units.find(u=>u.spawnId===sp.id),before=P.snapshot().coins;

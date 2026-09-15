@@ -140,16 +140,20 @@ function wildProgress(s,{spawnId,type,map,claim,xp}){
  else if(e.firstSummon&&!e.companionProof){e.companionProof=true;e.proofClaim=claim;trainerXP=200;if(['bloomslime','stonehorn'].includes(type)&&!e.secondChoice){e.secondChoice=type;e.secondClaim=claim;trainerXP+=300;forceEcho=!s.companions.some(m=>m.type===type)&&!(s.echoes[type]||[]).length;}}
  else if(e.companionProof&&!e.secondChoice&&['bloomslime','stonehorn'].includes(type)){e.secondChoice=type;e.secondClaim=claim;trainerXP=300;forceEcho=!s.companions.some(m=>m.type===type)&&!(s.echoes[type]||[]).length;}
  if(s.progression?.specialization&&e.application&&!e.counterEcho&&A.get(map)?.region==='hollow'){e.counterEcho=true;forceEcho=!s.companions.some(m=>m.type===type)&&!(s.echoes[type]||[]).length;}
+ forceEcho ||= root.BondRelicQuest?.forceEcho(s,type,map)||false;
  return {trainerXP,forceEcho};
 }
 function recordSummon(s){const e=s.journey.early||=earlyFresh();e.firstSummon=true;if(s.tutorial.summons>=2)e.secondSummon=true;}
 function recordMageMeeting(s){const e=s.journey.early||=earlyFresh();e.mageMet=true;}
 function recordAbility(s,mon){const e=s.journey.early||=earlyFresh();if(mon&&mon.skills.some((id,i)=>id!==C.UNITS[mon.type].default[i]))e.abilityChanged=true;}
-function recordWin(s,encounter){const e=s.journey.early||=earlyFresh(),demo=DEMONSTRATIONS[encounter.id];if(demo&&!e.demonstrations.includes(demo))e.demonstrations.push(demo);
+function recordWin(s,encounter){if(root.BondRaidRules?.applies(encounter)&&encounter.allyClass===s.progression?.specialization){s.journey.relic={stage:'aftermath',autostart:false};}
+const e=s.journey.early||=earlyFresh(),demo=DEMONSTRATIONS[encounter.id];if(demo&&!e.demonstrations.includes(demo))e.demonstrations.push(demo);
  if(encounter.trialClass){e.trials[encounter.trialClass]=true;e.trialRewarded=true;}
  if(encounter.earlyKey&&Object.hasOwn(e,encounter.earlyKey))e[encounter.earlyKey]=true;
 }
 function requirement(encounter,s,party=null){const e=s.journey?.early||earlyFresh(),wins=s.journey?.wins||{};
+ if(root.BondRaidRules?.applies(encounter)&&(encounter.allyClass!==s.progression?.specialization||BondRelicQuest.state(s).stage!=='raid'))return 'This raid is already resolved.';
+ if(encounter.storyOnly)return 'Speak with this person.';
  if(encounter.openingGate&&!e.mageMet)return 'Speak with the Mage first.';
  if(encounter.requiresWin&&!wins[encounter.requiresWin])return 'Complete the previous class demonstration first.';
  if(encounter.requiresDemonstrations&&e.demonstrations.length<encounter.requiresDemonstrations)return 'Complete the four class demonstrations first.';
@@ -171,7 +175,7 @@ function requirement(encounter,s,party=null){const e=s.journey?.early||earlyFres
 }
 function visible(encounter,s){const e=s.journey?.early||earlyFresh(),spec=s.progression?.specialization;
  if(encounter.openingGate)return e.firstSummon;
- if(encounter.trialClass)return e.tidecrown&&e.demonstrations.length===4&&!spec;
+ if(encounter.trialClass)return spec?encounter.masterClass===spec:e.tidecrown&&e.demonstrations.length===4;
  if(encounter.applicationClass)return spec===encounter.applicationClass&&!e.application;
  if(encounter.id==='early:counter')return e.application&&!e.counter;
  if(encounter.id==='early:ability')return e.counter&&!e.ability;
@@ -182,7 +186,7 @@ function visible(encounter,s){const e=s.journey?.early||earlyFresh(),spec=s.prog
  if(encounter.id==='early:tree-proof')return e.amberBoss&&!e.treeProof;
  return true;
 }
-function earlyNext(s){const e=s.journey?.early||earlyFresh(),wins=s.journey?.wins||{};
+function earlyNext(s){if(root.BondRelicQuest?.active(s))return BondRelicQuest.next(s);const e=s.journey?.early||earlyFresh(),wins=s.journey?.wins||{};
  if(!e.introFightWon)return {id:'ep:intro',label:'Hunt Brimbles for a Soul Echo',map:'clearing-0'};
  if(!e.firstSummon)return {id:'ep:summon1',label:'Summon Brimble from your Bag',map:s.map};
  if(!e.mageMet)return {id:'ep:mage',label:'Find the Mage',map:'clearing-0'};
@@ -210,7 +214,7 @@ function stepsKey(n){return ['keeper','forest','forest-kills','first-duel','cave
 const fresh=()=>({talks:{},wins:{},packs:{},steps:[],chapters:[],challenges:[],sequence:0,early:earlyFresh()});
 function clean(raw){const s=fresh();for(const k of ['talks','wins','packs'])for(const [id,v] of Object.entries(raw?.[k]||{}))if(Number.isSafeInteger(v)&&v>0)s[k][id]=v;
  const known={steps:chapters.flatMap(c=>c.steps.map(s=>s.id)),chapters:chapters.map(c=>c.id),challenges:challenges.map(c=>c.id)};
- for(const k of ['steps','chapters','challenges'])s[k]=[...new Set((Array.isArray(raw?.[k])?raw[k]:[]).filter(id=>known[k].includes(id)))];s.sequence=Number.isSafeInteger(raw?.sequence)?Math.max(0,raw.sequence):0;s.early=earlyClean(raw?.early);return s;}
+ for(const k of ['steps','chapters','challenges'])s[k]=[...new Set((Array.isArray(raw?.[k])?raw[k]:[]).filter(id=>known[k].includes(id)))];s.sequence=Number.isSafeInteger(raw?.sequence)?Math.max(0,raw.sequence):0;s.early=earlyClean(raw?.early);s.relic=root.BondRelicQuest?.clean(raw?.relic)||{stage:'raid'};return s;}
 function facts(s,step){const j=s.journey||fresh();if(step.kind==='talk')return j.talks[step.target]?1:0;if(step.kind==='visit')return s.visited.includes(step.target)?1:0;
  if(step.kind==='kill')return Object.values(s.claims).filter(c=>c.map===step.target).length;
  if(step.kind==='trainer')return j.wins[step.target]||s.defeated.includes(step.target)?1:0;
@@ -226,7 +230,8 @@ function reconcile(s){const j=s.journey||=fresh();j.early=earlyClean(j.early);fo
 }
 function next(s){return earlyNext(s)||chapters.flatMap(c=>c.steps).find(o=>!s.journey?.steps.includes(o.id))||null;}
 function questMarker(subject,s,current=next(s)){
- if(!subject||!current)return null;
+ if(!subject||!current||current.complete)return null;
+ if(root.BondRelicQuest?.active(s)&&subject.id===current.id)return ['aftermath','hunt','report'].includes(BondRelicQuest.state(s).stage)?'delivery':'offer';
  const id=typeof subject==='string'?subject:subject.id,e=s.journey?.early||earlyFresh();
  // Chapter keepers use the map as their stable target; returning is a delivery.
  if(subject.questKeeperMap===current.target){

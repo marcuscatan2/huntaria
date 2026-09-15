@@ -46,13 +46,20 @@ function caveFloor(m){
 }
 function floor(ctx,m){
  const t=m.theme;
- ctx.fillStyle=material(ctx,m.kind==='cave'?8:m.regionIndex,m.kind==='cave'?'#2c353d':t.ground);ctx.fillRect(0,0,m.width,m.height);
+ ctx.fillStyle=material(ctx,m.interior?7:m.kind==='cave'?8:m.regionIndex,m.kind==='cave'?'#2c353d':t.ground);ctx.fillRect(0,0,m.width,m.height);
  ctx.fillStyle=m.kind==='cave'?'#101d29cc':t.ground+'38';ctx.fillRect(0,0,m.width,m.height);
  if(m.kind==='cave'){const p=caveFloor(m);ctx.save();ctx.shadowBlur=24;ctx.shadowColor='#102131';ctx.fillStyle=material(ctx,8,t.stone);ctx.fill(p);ctx.restore();ctx.fillStyle=t.stone+'24';ctx.fill(p);}
 }
 function makeChunk(m,cx,cy){
  const canvas=document.createElement('canvas');canvas.width=canvas.height=RES;const ctx=canvas.getContext('2d',{alpha:false}),t=m.theme;
  ctx.scale(RES/CHUNK,RES/CHUNK);ctx.translate(-cx*CHUNK,-cy*CHUNK);floor(ctx,m);
+ if(m.interior){
+  ctx.strokeStyle='#b4c5ce25';ctx.lineWidth=2;
+  for(let x=cx*CHUNK-(cx*CHUNK%140);x<(cx+1)*CHUNK;x+=140){ctx.beginPath();ctx.moveTo(x,cy*CHUNK);ctx.lineTo(x,(cy+1)*CHUNK);ctx.stroke();}
+  for(let y=cy*CHUNK-(cy*CHUNK%140);y<(cy+1)*CHUNK;y+=140){ctx.beginPath();ctx.moveTo(cx*CHUNK,y);ctx.lineTo((cx+1)*CHUNK,y);ctx.stroke();}
+  ctx.strokeStyle='#2a2e43';ctx.lineWidth=75;ctx.strokeRect(100,100,m.width-200,m.height-200);
+ }
+
  const r=rand(A.hash(m.id+':ground:'+cx+':'+cy));
  // Soft material patches, fine brush flecks and gentle path-edge blends.
  for(let i=0;i<45;i++){const x=(cx+r())*CHUNK,y=(cy+r())*CHUNK,rad=70+r()*230;
@@ -74,6 +81,20 @@ function makeChunk(m,cx,cy){
   ctx.fillStyle=t.deep;ctx.strokeStyle=t.shade;ctx.lineWidth=18;
   if(w.points){path(ctx,w.points);ctx.lineWidth=w.width+24;ctx.stroke();ctx.strokeStyle=t.water;ctx.lineWidth=w.width;ctx.stroke();ctx.strokeStyle=t.deep+'70';ctx.lineWidth=w.width*.48;ctx.stroke();}
   else{ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx+16,w.ry+16,0,0,Math.PI*2);ctx.fillStyle=t.soil;ctx.fill();ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx,w.ry,0,0,Math.PI*2);ctx.fillStyle=t.water;ctx.fill();ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx*.78,w.ry*.70,0,0,Math.PI*2);ctx.fillStyle=t.deep+'65';ctx.fill();}
+ }
+ if(m.cemetery||m.towerFloor===4){
+  const cx=m.interior?m.width/2:m.hero.x,cy=m.interior?1050:m.hero.y;
+  for(const side of [-1,1])for(let row=0;row<4;row++)for(let col=0;col<3;col++){
+   const x=cx+side*(430+col*190),y=cy-440+row*260;
+   ctx.fillStyle='#29384955';ctx.beginPath();ctx.ellipse(x,y+60,65,92,0,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle='#b0b8b4';ctx.strokeStyle='#485b67';ctx.lineWidth=9;ctx.beginPath();ctx.roundRect(x-38,y-45,76,90,[28,28,5,5]);ctx.fill();ctx.stroke();
+   ctx.strokeStyle='#68777e';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(x,y-20);ctx.lineTo(x,y+28);ctx.moveTo(x-15,y-4);ctx.lineTo(x+15,y-4);ctx.stroke();
+  }
+ }
+ for(const g of m.neighbors.filter(g=>g.kind==='stairs')){
+  ctx.fillStyle='#242b42';ctx.fillRect(g.x-94,g.y-100,188,200);
+  for(let n=0;n<7;n++){ctx.fillStyle=n%2?'#a1b4be':'#6f8495';ctx.fillRect(g.x-80,g.y-86+n*25,160,20);}
+  ctx.strokeStyle='#c5e8e4';ctx.lineWidth=6;ctx.strokeRect(g.x-98,g.y-104,196,208);
  }
  for(const b of m.bridges){
   const pad=b.width+30;
@@ -150,7 +171,7 @@ function battleBackdrop(m){
  if(!sheet(m.theme.id).ready)return null;
  const key=m.theme.id+':'+m.kind;if(backdrops.has(key))return backdrops.get(key);
  const c=document.createElement('canvas');c.width=1200;c.height=650;const ctx=c.getContext('2d'),t=m.theme;
- ctx.fillStyle=material(ctx,m.kind==='cave'?8:m.regionIndex,t.ground);ctx.fillRect(0,0,1200,650);
+ ctx.fillStyle=material(ctx,m.interior?7:m.kind==='cave'?8:m.regionIndex,t.ground);ctx.fillRect(0,0,1200,650);
  const g=ctx.createRadialGradient(600,410,50,600,400,660);g.addColorStop(0,t.light+'60');g.addColorStop(1,m.kind==='cave'?'#17273fe8':t.shade+'cc');ctx.fillStyle=g;ctx.fillRect(0,0,1200,650);
  ctx.fillStyle=t.soil+'85';ctx.beginPath();ctx.ellipse(600,500,500,260,0,0,Math.PI*2);ctx.fill();
  drawFrame(ctx,m,m.kind==='cave'?4:0,90,280,360);drawFrame(ctx,m,m.kind==='cave'?7:1,1110,275,340);drawFrame(ctx,m,8+m.index,640,210,260);drawFrame(ctx,m,2,70,660,220);drawFrame(ctx,m,4,1140,640,220);

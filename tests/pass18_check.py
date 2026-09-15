@@ -35,7 +35,7 @@ with sync_playwright() as pw:
         check('Painted city building opens an interior supply shop',page.locator('#city-dialog').is_visible() and page.locator('#recovery-dialog').is_visible() and page.locator('[data-store-buy]').count()==5)
         page.screenshot(path=str(ARTIFACTS/f'pass18-store-{args.browser}.png'),full_page=True)
         page.keyboard.press('Escape')
-        manifest=page.evaluate("""()=>({version:18,species:BondRoster.manifest().map(u=>({...u,habitat:BondAtlas.home(u.id),openingDrops:BondAtlas.home(u.id)?.map==='clearing-0'?(BondOpening.drops[u.id]||[]):[],passiveInfo:BondContent.PASSIVES[u.passive],kit:u.skills.map(id=>({id,...BondContent.SKILLS[id]}))})),maps:BondAtlas.maps.map(({scenery,collisionBuckets,obstacles,...m})=>m),regions:BondAtlas.REGIONS,families:BondRoster.families})""")
+        manifest=page.evaluate("""()=>({version:18,species:BondRoster.manifest().map(u=>({...u,habitat:BondAtlas.home(u.id),habitats:BondAtlas.maps.flatMap(m=>m.habitats).filter(h=>h.type===u.id),openingDrops:BondAtlas.home(u.id)?.map==='clearing-0'?(BondOpening.drops[u.id]||[]):[],passiveInfo:BondContent.PASSIVES[u.passive],kit:u.skills.map(id=>({id,...BondContent.SKILLS[id]}))})),maps:BondAtlas.maps.map(({scenery,collisionBuckets,obstacles,...m})=>m),regions:BondAtlas.REGIONS,families:BondRoster.families})""")
         manifest['source_sha256']=source
         (ARTIFACTS/f'pass18-reference-{args.browser}.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False),encoding='utf-8')
     except Exception:errors.append(traceback.format_exc())

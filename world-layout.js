@@ -46,6 +46,7 @@ function road(m,id,points,width=190,style='trail'){const out={id,points,width,st
 const specs={};let revision=21;
 for(const m of A.maps){
  m.theme=THEMES[m.regionIndex];m.roads=[];m.water=[];m.rooms=[];m.scenery=[];m.obstacles=[];m.landmarks=[];m.bridges=[];m.neighbors=[];m.layoutRevision=revision;
+ if(m.interior){BondGhostTower.layout(m,road);continue;}
  if(m.kind==='hub'){
   BondCities.layout(m,road);
   continue;
@@ -126,10 +127,11 @@ for(const [aId,bId] of A.GRID_EDGES){
  const arrival=(m,v)=>A.clamp(m.id,{x:v.x+(v.x<200?120:v.x>m.width-200?-120:0),y:v.y+(v.y<200?120:v.y>m.height-200?-120:0)});
  addGate(a,b,p,arrival(b,q),direction);addGate(b,a,q,arrival(a,p),opposite);
 }
+BondGhostTower.connect(road);
 function waterAt(m,p){return m.water.some(w=>w.points?pathDistance(p,w.points)<w.width/2:((p.x-w.x)/w.rx)**2+((p.y-w.y)/w.ry)**2<1);}
 function bridgeAt(m,p){return m.bridges.some(b=>segment(p,b.a,b.b)<b.width*.46);}
 function onFloor(m,p,margin=0){return m.kind!=='cave'||m.rooms.some(r=>((p.x-r.x)/(r.rx-margin))**2+((p.y-r.y)/(r.ry-margin))**2<1)||m.roads.some(r=>pathDistance(p,r.points)<r.width/2-margin);}
-function safeClear(m,p,r=80){return m.roads.some(q=>pathDistance(p,q.points)<q.width/2+r)||m.habitats.some(h=>distance(h,p)<310)||distance(p,m.entry)<320||distance(p,m.guide)<180||distance(p,m.cache)<130||m.neighbors.some(g=>distance(p,g)<240);}
+function safeClear(m,p,r=80){if((m.cemetery||m.towerFloor===4)&&Math.abs(p.x-m.hero.x)<1150&&Math.abs(p.y-m.hero.y)<1250)return true;return m.roads.some(q=>pathDistance(p,q.points)<q.width/2+r)||m.habitats.some(h=>distance(h,p)<310)||distance(p,m.entry)<320||distance(p,m.guide)<180||distance(p,m.cache)<130||m.neighbors.some(g=>distance(p,g)<240);}
 for(const m of A.maps){
  // Landmark approaches join before dressing/collision, so their paths stay clear.
  m.landmarks.forEach(l=>{if(!m.roads.some(r=>pathDistance(l,r.points)<100))road(m,'landmark:'+l.id,[closest(l,m.roads[0].points),{x:l.x,y:l.y+150}],170);});
@@ -147,7 +149,7 @@ for(const m of A.maps){
  for(let y=160;y<m.height-100;y+=step)for(let x=130;x<m.width-100;x+=step){
   const seed=A.hash(m.id+':dress:'+x+':'+y),p={x:x+(seed%150)-75,y:y+((seed>>>9)%150)-75};
   if(m.kind==='hub'&&(p.x>320&&p.x<m.width-320&&p.y>300&&p.y<m.height-250)||safeClear(m,p,90)||waterAt(m,p)||!onFloor(m,p))continue;
-  const art=m.kind==='cave'?(seed%3===0?5:4):seed%9<5?seed%4:seed%9===5?4:5;
+  const art=(m.kind==='cave'||m.interior)?(seed%3===0?5:4):seed%9<5?seed%4:seed%9===5?4:5;
   m.scenery.push({key:m.id+':prop'+m.scenery.length,...p,art,size:art<2?270+seed%100:art===3?245:art===2?165:140+seed%65,solid:art<2?36:art===4?40:0,sway:art<4});
  }
  // Close-to-path framing without empty roadside gaps.
@@ -155,7 +157,7 @@ for(const m of A.maps){
   for(let j=1;j<r.points.length;j++){const a=r.points[j-1],b=r.points[j],len=distance(a,b),n=Math.floor(len/520);for(let k=1;k<=n;k++){
    const t=k/(n+1),seed=A.hash(m.id+r.id+j+':'+k),sign=k%2?1:-1,p={x:a.x+(b.x-a.x)*t-(b.y-a.y)/len*(r.width/2+180)*sign,y:a.y+(b.y-a.y)*t+(b.x-a.x)/len*(r.width/2+180)*sign};
    if(p.x<90||p.y<90||p.x>m.width-90||p.y>m.height-90||safeClear(m,p,40)||waterAt(m,p)||!onFloor(m,p))continue;
-   m.scenery.push({key:m.id+':edge'+m.scenery.length,...p,art:m.kind==='cave'?4:seed%4,size:m.kind==='cave'?180:230+seed%130,solid:28,sway:m.kind!=='cave'});
+   m.scenery.push({key:m.id+':edge'+m.scenery.length,...p,art:(m.kind==='cave'||m.interior)?4:seed%4,size:m.kind==='cave'?180:230+seed%130,solid:28,sway:m.kind!=='cave'});
   }}
  }
  // Visible rock rims explain cave boundaries without obstructing corridor mouths.

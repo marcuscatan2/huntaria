@@ -1,5 +1,5 @@
 {
-  "revision": 9,
+  "revision": 10,
   "date": "2026-09-15",
   "statsBasis": "Level 1 species bases before attributes, growth trees, innate effects, elements and encounter overrides",
   "sourceFiles": [
@@ -12,7 +12,9 @@
     "game.js",
     "adventure-rules.js",
     "opening-rules.js",
-    "monster-sprites.js"
+    "monster-sprites.js",
+    "ghost-tower.js",
+    "relic-quest.js"
   ],
   "creatures": [
     {
@@ -155,7 +157,21 @@
       "combatIdentity": "Scrappy melee fighter",
       "sourceWildLevel": 1,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "clearing-0:emberfox",
+          "map": "clearing-0",
+          "mapName": "Firstlight Meadow",
+          "level": 2,
+          "spawnSlots": 144,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 750,
+          "y": 5100,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "stonehorn",
@@ -302,7 +318,21 @@
       "combatIdentity": "Resilient light fighter",
       "sourceWildLevel": 5,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "clearing-0:stonehorn",
+          "map": "clearing-0",
+          "mapName": "Firstlight Meadow",
+          "level": 5,
+          "spawnSlots": 48,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 5200,
+          "y": 6100,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "stormowl",
@@ -439,7 +469,21 @@
       "combatIdentity": "Wind-zone controller",
       "sourceWildLevel": 60,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "rise-0:stormowl",
+          "map": "rise-0",
+          "mapName": "Windstep Prairie",
+          "level": 60,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1406.6000000000001,
+          "y": 5040,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "bloomslime",
@@ -578,7 +622,21 @@
       "combatIdentity": "Absorbing recovery tank",
       "sourceWildLevel": 8,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "clearing-0:bloomslime",
+          "map": "clearing-0",
+          "mapName": "Firstlight Meadow",
+          "level": 3,
+          "spawnSlots": 96,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 2650,
+          "y": 3900,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "frostfang",
@@ -715,7 +773,21 @@
       "combatIdentity": "Melee burst attacker",
       "sourceWildLevel": 40,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "ruins-0:frostfang",
+          "map": "ruins-0",
+          "mapName": "Moonlit Gardens",
+          "level": 40,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1288.8,
+          "y": 4435.2,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "cindrake",
@@ -853,7 +925,21 @@
       "combatIdentity": "Sliding skirmish DPS",
       "sourceWildLevel": 20,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "hollow-0:cindrake",
+          "map": "hollow-0",
+          "mapName": "Amber Heath",
+          "level": 20,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1385.8,
+          "y": 4636.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "ironback",
@@ -987,7 +1073,21 @@
       "combatIdentity": "Directional shelter tank",
       "sourceWildLevel": 8,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "brook-0:ironback",
+          "map": "brook-0",
+          "mapName": "Brookside Fields",
+          "level": 8,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1163.8,
+          "y": 4838.4,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "thornstag",
@@ -1124,7 +1224,21 @@
       "combatIdentity": "Ambush bruiser",
       "sourceWildLevel": 22,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "hollow-0:thornstag",
+          "map": "hollow-0",
+          "mapName": "Amber Heath",
+          "level": 22,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 3304.6,
+          "y": 6854.400000000001,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "tideotter",
@@ -1258,7 +1372,21 @@
       "combatIdentity": "Mobile utility fighter",
       "sourceWildLevel": 10,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "clearing-0:tideotter",
+          "map": "clearing-1",
+          "mapName": "Fernpath Woods",
+          "level": 10,
+          "spawnSlots": 24,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1419.6000000000001,
+          "y": 4424.7,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "lumimoth",
@@ -1392,7 +1520,21 @@
       "combatIdentity": "Mobile recovery support",
       "sourceWildLevel": 10,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "brook-0:lumimoth",
+          "map": "brook-0",
+          "mapName": "Brookside Fields",
+          "level": 10,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3068.2,
+          "y": 3729.6,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "seedhare",
@@ -1529,7 +1671,21 @@
       "combatIdentity": "Evasive melee DPS",
       "sourceWildLevel": 8,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "clearing-2:seedhare",
+          "map": "clearing-2",
+          "mapName": "Elderroot Glade",
+          "level": 8,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1360.8,
+          "y": 4830,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "mossling",
@@ -1663,7 +1819,21 @@
       "combatIdentity": "Regrowing frontline helper",
       "sourceWildLevel": 10,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "clearing-3:mossling",
+          "map": "clearing-3",
+          "mapName": "Rootveil Cave",
+          "level": 10,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1411.2,
+          "y": 5033.7,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "acornboar",
@@ -1800,7 +1970,21 @@
       "combatIdentity": "Frontline guard",
       "sourceWildLevel": 12,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "clearing-1:acornboar",
+          "map": "clearing-1",
+          "mapName": "Fernpath Woods",
+          "level": 12,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3603.6000000000004,
+          "y": 2984.1,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "pebblepup",
@@ -1934,7 +2118,21 @@
       "combatIdentity": "Mobile skirmishing fighter",
       "sourceWildLevel": 14,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "clearing-2:pebblepup",
+          "map": "clearing-2",
+          "mapName": "Elderroot Glade",
+          "level": 14,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3855.6000000000004,
+          "y": 7349.999999999999,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "dewfin",
@@ -2071,7 +2269,21 @@
       "combatIdentity": "Lightweight recovery support",
       "sourceWildLevel": 12,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "clearing-3:dewfin",
+          "map": "clearing-3",
+          "mapName": "Rootveil Cave",
+          "level": 12,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 3763.2000000000003,
+          "y": 3320.1,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "cloverbug",
@@ -2208,7 +2420,21 @@
       "combatIdentity": "Folding-shell tank",
       "sourceWildLevel": 14,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "clearing-1:cloverbug",
+          "map": "clearing-1",
+          "mapName": "Fernpath Woods",
+          "level": 14,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 7207.200000000001,
+          "y": 7100.099999999999,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "ferncoil",
@@ -2342,7 +2568,21 @@
       "combatIdentity": "Ambush plant DPS",
       "sourceWildLevel": 16,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "clearing-2:ferncoil",
+          "map": "clearing-2",
+          "mapName": "Elderroot Glade",
+          "level": 16,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 7824.599999999999,
+          "y": 6615,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "honeybat",
@@ -2479,7 +2719,21 @@
       "combatIdentity": "Song-based sustain support",
       "sourceWildLevel": 18,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "clearing-3:honeybat",
+          "map": "clearing-3",
+          "mapName": "Rootveil Cave",
+          "level": 18,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 7879.200000000001,
+          "y": 6961.5,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "reedwren",
@@ -2616,7 +2870,21 @@
       "combatIdentity": "Ranged ricochet DPS",
       "sourceWildLevel": 16,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "clearing-1:reedwren",
+          "map": "clearing-1",
+          "mapName": "Fernpath Woods",
+          "level": 16,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 9282,
+          "y": 4630.5,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "briarcrab",
@@ -2753,7 +3021,21 @@
       "combatIdentity": "Disruptive melee helper",
       "sourceWildLevel": 18,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "clearing-2:briarcrab",
+          "map": "clearing-2",
+          "mapName": "Elderroot Glade",
+          "level": 18,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 9639,
+          "y": 4200,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "glowcap",
@@ -2887,7 +3169,21 @@
       "combatIdentity": "Area-buff support",
       "sourceWildLevel": 20,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "clearing-3:glowcap",
+          "map": "clearing-3",
+          "mapName": "Rootveil Cave",
+          "level": 20,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 10113.6,
+          "y": 5247.9,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "leafmantis",
@@ -3021,7 +3317,21 @@
       "combatIdentity": "Ambush melee DPS",
       "sourceWildLevel": 22,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "clearing-1:leafmantis",
+          "map": "clearing-1",
+          "mapName": "Fernpath Woods",
+          "level": 22,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 5678.400000000001,
+          "y": 7820.400000000001,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "rillrook",
@@ -3158,7 +3468,21 @@
       "combatIdentity": "Protective soul support",
       "sourceWildLevel": 12,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "brook-0:rillrook",
+          "map": "brook-0",
+          "mapName": "Brookside Fields",
+          "level": 12,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 6559.6,
+          "y": 6652.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "shellsnail",
@@ -3292,7 +3616,21 @@
       "combatIdentity": "Straight-line charge fighter",
       "sourceWildLevel": 14,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "brook-0:shellsnail",
+          "map": "brook-0",
+          "mapName": "Brookside Fields",
+          "level": 14,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 8993,
+          "y": 4737.599999999999,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "brooktoad",
@@ -3426,7 +3764,21 @@
       "combatIdentity": "Local recovery support",
       "sourceWildLevel": 12,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "brook-1:brooktoad",
+          "map": "brook-1",
+          "mapName": "Rainwillow Forest",
+          "level": 12,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1210,
+          "y": 4116,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "glassshrimp",
@@ -3563,7 +3915,21 @@
       "combatIdentity": "Ranged burst DPS",
       "sourceWildLevel": 14,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "brook-1:glassshrimp",
+          "map": "brook-1",
+          "mapName": "Rainwillow Forest",
+          "level": 14,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3740.0000000000005,
+          "y": 2881.2000000000003,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "lotusmanta",
@@ -3697,7 +4063,21 @@
       "combatIdentity": "Wide-area support",
       "sourceWildLevel": 16,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "brook-1:lotusmanta",
+          "map": "brook-1",
+          "mapName": "Rainwillow Forest",
+          "level": 16,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 7370,
+          "y": 6585.6,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "ripplelynx",
@@ -3834,7 +4214,21 @@
       "combatIdentity": "Close-range dash DPS",
       "sourceWildLevel": 18,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "brook-1:ripplelynx",
+          "map": "brook-1",
+          "mapName": "Rainwillow Forest",
+          "level": 18,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 9460,
+          "y": 5556.6,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "rainram",
@@ -3971,7 +4365,21 @@
       "combatIdentity": "Reservoir tank",
       "sourceWildLevel": 16,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "brook-2:rainram",
+          "map": "brook-2",
+          "mapName": "Reedwatch Banks",
+          "level": 16,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1370.3999999999999,
+          "y": 5040,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "driftjelly",
@@ -4105,7 +4513,21 @@
       "combatIdentity": "Ranged slowing support",
       "sourceWildLevel": 18,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "brook-2:driftjelly",
+          "map": "brook-2",
+          "mapName": "Reedwatch Banks",
+          "level": 18,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3882.8,
+          "y": 3885,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "mudmole",
@@ -4242,7 +4664,21 @@
       "combatIdentity": "Entrenched tank",
       "sourceWildLevel": 20,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "brook-2:mudmole",
+          "map": "brook-2",
+          "mapName": "Reedwatch Banks",
+          "level": 20,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 7423,
+          "y": 4200,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "heronveil",
@@ -4379,7 +4815,21 @@
       "combatIdentity": "Precision ranged DPS",
       "sourceWildLevel": 22,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "brook-2:heronveil",
+          "map": "brook-2",
+          "mapName": "Reedwatch Banks",
+          "level": 22,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 9707,
+          "y": 5250,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "siltwyrm",
@@ -4517,7 +4967,21 @@
       "combatIdentity": "Ambush melee DPS",
       "sourceWildLevel": 20,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "brook-3:siltwyrm",
+          "map": "brook-3",
+          "mapName": "Springwater Cave",
+          "level": 20,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1657.6000000000001,
+          "y": 5140.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "coralimp",
@@ -4655,7 +5119,21 @@
       "combatIdentity": "Leaping ranged DPS",
       "sourceWildLevel": 22,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "brook-3:coralimp",
+          "map": "brook-3",
+          "mapName": "Springwater Cave",
+          "level": 22,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 4499.2,
+          "y": 3213,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "lilydeer",
@@ -4789,7 +5267,21 @@
       "combatIdentity": "Terrain support",
       "sourceWildLevel": 24,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "brook-3:lilydeer",
+          "map": "brook-3",
+          "mapName": "Springwater Cave",
+          "level": 24,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 8406.4,
+          "y": 6961.5,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "mistseal",
@@ -4926,7 +5418,21 @@
       "combatIdentity": "Defensive zone support",
       "sourceWildLevel": 26,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "brook-3:mistseal",
+          "map": "brook-3",
+          "mapName": "Springwater Cave",
+          "level": 26,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 10182.4,
+          "y": 5783.400000000001,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "copperhog",
@@ -5063,7 +5569,21 @@
       "combatIdentity": "Pressure brawler",
       "sourceWildLevel": 24,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "hollow-0:copperhog",
+          "map": "hollow-0",
+          "mapName": "Amber Heath",
+          "level": 24,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 7248.8,
+          "y": 3326.4,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "amberkite",
@@ -5197,7 +5717,21 @@
       "combatIdentity": "Aerial ranged DPS",
       "sourceWildLevel": 26,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "hollow-0:amberkite",
+          "map": "hollow-0",
+          "mapName": "Amber Heath",
+          "level": 26,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 8954.4,
+          "y": 4636.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "cindermole",
@@ -5335,7 +5869,21 @@
       "combatIdentity": "Formation melee fighter",
       "sourceWildLevel": 24,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "hollow-1:cindermole",
+          "map": "hollow-1",
+          "mapName": "Copperleaf Forest",
+          "level": 24,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1329.6,
+          "y": 4424.7,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "sunscarab",
@@ -5469,7 +6017,21 @@
       "combatIdentity": "Solar barrier tank",
       "sourceWildLevel": 26,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "hollow-1:sunscarab",
+          "map": "hollow-1",
+          "mapName": "Copperleaf Forest",
+          "level": 26,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3324,
+          "y": 2469.6,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "embersalam",
@@ -5607,7 +6169,21 @@
       "combatIdentity": "Ranged pressure disruptor",
       "sourceWildLevel": 28,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "hollow-1:embersalam",
+          "map": "hollow-1",
+          "mapName": "Copperleaf Forest",
+          "level": 28,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 7645.2,
+          "y": 3807.2999999999997,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "ochrewisp",
@@ -5681,20 +6257,20 @@
       "rarity": "Uncommon",
       "starter": false,
       "habitat": {
-        "map": "hollow-1",
-        "mapName": "Copperleaf Forest",
-        "level": 30,
+        "map": "hollow-2",
+        "mapName": "Ghost Tower Entrance",
+        "level": 22,
         "spawnSlots": 15,
         "spawnChanceBP": 10000,
         "respawnSeconds": 0,
-        "x": 9307.199999999999,
-        "y": 6174,
+        "x": 8049.999999999999,
+        "y": 7244.999999999999,
         "radiusWorldUnits": 200
       },
       "liveLoot": [
         {
           "id": "coins",
-          "quantity": 16,
+          "quantity": 13,
           "chanceBP": 10000
         },
         {
@@ -5703,7 +6279,7 @@
           "chanceBP": 1500
         }
       ],
-      "xpPerParticipatingIndividual": 3300,
+      "xpPerParticipatingIndividual": 2500,
       "configuredEchoBP": 1500,
       "futureBossEssence": null,
       "proposedOrdinaryLoot": [
@@ -5744,7 +6320,57 @@
       "combatIdentity": "Retreat-and-guard tank",
       "sourceWildLevel": 30,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "hollow-1:ochrewisp",
+          "map": "hollow-2",
+          "mapName": "Ghost Tower Entrance",
+          "level": 22,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 8049.999999999999,
+          "y": 7244.999999999999,
+          "radiusWorldUnits": 200
+        },
+        {
+          "id": "ghost-tower-1:ochrewisp",
+          "map": "ghost-tower-1",
+          "mapName": "Ghost Tower · Floor 1",
+          "level": 23,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 2300,
+          "y": 2500,
+          "radiusWorldUnits": 200
+        },
+        {
+          "id": "ghost-tower-2:ochrewisp",
+          "map": "ghost-tower-2",
+          "mapName": "Ghost Tower · Floor 2",
+          "level": 25,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 2300,
+          "y": 2500,
+          "radiusWorldUnits": 200
+        },
+        {
+          "id": "ghost-tower-4:ochrewisp",
+          "map": "ghost-tower-4",
+          "mapName": "Ghost Tower · Floor 4 · Rooftop Cemetery",
+          "level": 28,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1000,
+          "y": 2500,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "bronzebuck",
@@ -5819,7 +6445,7 @@
       "starter": false,
       "habitat": {
         "map": "hollow-2",
-        "mapName": "Sunfall Basin",
+        "mapName": "Ghost Tower Entrance",
         "level": 28,
         "spawnSlots": 3,
         "spawnChanceBP": 10000,
@@ -5882,7 +6508,21 @@
       "combatIdentity": "Resonant guard",
       "sourceWildLevel": 28,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "hollow-2:bronzebuck",
+          "map": "hollow-2",
+          "mapName": "Ghost Tower Entrance",
+          "level": 28,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1380,
+          "y": 4620,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "thistlehare",
@@ -5956,20 +6596,20 @@
       "rarity": "Very rare",
       "starter": false,
       "habitat": {
-        "map": "hollow-2",
-        "mapName": "Sunfall Basin",
-        "level": 30,
+        "map": "ghost-tower-2",
+        "mapName": "Ghost Tower · Floor 2",
+        "level": 26,
         "spawnSlots": 3,
         "spawnChanceBP": 10000,
         "respawnSeconds": 60,
-        "x": 3680,
-        "y": 7455,
+        "x": 1000,
+        "y": 2500,
         "radiusWorldUnits": 200
       },
       "liveLoot": [
         {
           "id": "coins",
-          "quantity": 16,
+          "quantity": 14,
           "chanceBP": 10000
         },
         {
@@ -5978,7 +6618,7 @@
           "chanceBP": 1500
         }
       ],
-      "xpPerParticipatingIndividual": 3300,
+      "xpPerParticipatingIndividual": 2900,
       "configuredEchoBP": 1500,
       "futureBossEssence": null,
       "proposedOrdinaryLoot": [
@@ -6019,7 +6659,21 @@
       "combatIdentity": "Hexing skirmisher",
       "sourceWildLevel": 30,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "hollow-2:thistlehare",
+          "map": "ghost-tower-2",
+          "mapName": "Ghost Tower · Floor 2",
+          "level": 26,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1000,
+          "y": 2500,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "ashporcupine",
@@ -6093,20 +6747,20 @@
       "rarity": "Uncommon",
       "starter": false,
       "habitat": {
-        "map": "hollow-2",
-        "mapName": "Sunfall Basin",
-        "level": 32,
+        "map": "ghost-tower-1",
+        "mapName": "Ghost Tower · Floor 1",
+        "level": 24,
         "spawnSlots": 15,
         "spawnChanceBP": 10000,
         "respawnSeconds": 0,
-        "x": 8049.999999999999,
-        "y": 7244.999999999999,
+        "x": 1000,
+        "y": 2500,
         "radiusWorldUnits": 200
       },
       "liveLoot": [
         {
           "id": "coins",
-          "quantity": 16,
+          "quantity": 14,
           "chanceBP": 10000
         },
         {
@@ -6115,7 +6769,7 @@
           "chanceBP": 1500
         }
       ],
-      "xpPerParticipatingIndividual": 3500,
+      "xpPerParticipatingIndividual": 2700,
       "configuredEchoBP": 1500,
       "futureBossEssence": null,
       "proposedOrdinaryLoot": [
@@ -6156,7 +6810,45 @@
       "combatIdentity": "Sustain support",
       "sourceWildLevel": 32,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "hollow-2:ashporcupine",
+          "map": "ghost-tower-1",
+          "mapName": "Ghost Tower · Floor 1",
+          "level": 24,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1000,
+          "y": 2500,
+          "radiusWorldUnits": 200
+        },
+        {
+          "id": "ghost-tower-3:ashporcupine",
+          "map": "ghost-tower-3",
+          "mapName": "Ghost Tower · Floor 3",
+          "level": 27,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 2300,
+          "y": 2500,
+          "radiusWorldUnits": 200
+        },
+        {
+          "id": "ghost-tower-4:ashporcupine",
+          "map": "ghost-tower-4",
+          "mapName": "Ghost Tower · Floor 4 · Rooftop Cemetery",
+          "level": 29,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 2300,
+          "y": 2500,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "resinroach",
@@ -6231,13 +6923,13 @@
       "starter": false,
       "habitat": {
         "map": "hollow-2",
-        "mapName": "Sunfall Basin",
+        "mapName": "Ghost Tower Entrance",
         "level": 34,
         "spawnSlots": 15,
         "spawnChanceBP": 10000,
         "respawnSeconds": 0,
-        "x": 9890,
-        "y": 4515,
+        "x": 3680,
+        "y": 7455,
         "radiusWorldUnits": 200
       },
       "liveLoot": [
@@ -6293,7 +6985,21 @@
       "combatIdentity": "Fortifying tank",
       "sourceWildLevel": 34,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "hollow-2:resinroach",
+          "map": "hollow-2",
+          "mapName": "Ghost Tower Entrance",
+          "level": 34,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3680,
+          "y": 7455,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "marigoldia",
@@ -6430,7 +7136,21 @@
       "combatIdentity": "Protective soul support",
       "sourceWildLevel": 32,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "hollow-3:marigoldia",
+          "map": "hollow-3",
+          "mapName": "Emberglass Cave",
+          "level": 32,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1430.3999999999999,
+          "y": 4926.6,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "flintjackal",
@@ -6567,7 +7287,21 @@
       "combatIdentity": "Heavy melee brawler",
       "sourceWildLevel": 34,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "hollow-3:flintjackal",
+          "map": "hollow-3",
+          "mapName": "Emberglass Cave",
+          "level": 34,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3576,
+          "y": 7282.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "dunecoil",
@@ -6704,7 +7438,21 @@
       "combatIdentity": "Rolling melee fighter",
       "sourceWildLevel": 36,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "hollow-3:dunecoil",
+          "map": "hollow-3",
+          "mapName": "Emberglass Cave",
+          "level": 36,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 8224.8,
+          "y": 3213,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "saffronmoth",
@@ -6841,7 +7589,21 @@
       "combatIdentity": "Buff-and-cleanse support",
       "sourceWildLevel": 38,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "hollow-3:saffronmoth",
+          "map": "hollow-3",
+          "mapName": "Emberglass Cave",
+          "level": 38,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 10251.2,
+          "y": 4926.6,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "moonrabbit",
@@ -6978,7 +7740,21 @@
       "combatIdentity": "Rest-and-cleanse support",
       "sourceWildLevel": 42,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ruins-0:moonrabbit",
+          "map": "ruins-0",
+          "mapName": "Moonlit Gardens",
+          "level": 42,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 3651.6000000000004,
+          "y": 3729.6,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "runecrab",
@@ -7115,7 +7891,21 @@
       "combatIdentity": "Grappling guard",
       "sourceWildLevel": 44,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ruins-0:runecrab",
+          "map": "ruins-0",
+          "mapName": "Moonlit Gardens",
+          "level": 44,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 6873.6,
+          "y": 3830.4,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "starnewt",
@@ -7252,7 +8042,21 @@
       "combatIdentity": "Ranged burst DPS",
       "sourceWildLevel": 46,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ruins-0:starnewt",
+          "map": "ruins-0",
+          "mapName": "Moonlit Gardens",
+          "level": 46,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 9021.6,
+          "y": 5644.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "veilray",
@@ -7389,7 +8193,21 @@
       "combatIdentity": "Protective spirit tank",
       "sourceWildLevel": 44,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ruins-1:veilray",
+          "map": "ruins-1",
+          "mapName": "Whisperwood",
+          "level": 44,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1339.2,
+          "y": 5145,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "duskmarten",
@@ -7526,7 +8344,21 @@
       "combatIdentity": "Melee skirmisher",
       "sourceWildLevel": 46,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "ruins-1:duskmarten",
+          "map": "ruins-1",
+          "mapName": "Whisperwood",
+          "level": 46,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 3571.2000000000003,
+          "y": 7717.5,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "opalowl",
@@ -7663,7 +8495,21 @@
       "combatIdentity": "Ranged disruption support",
       "sourceWildLevel": 48,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ruins-1:opalowl",
+          "map": "ruins-1",
+          "mapName": "Whisperwood",
+          "level": 48,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 7588.8,
+          "y": 3910.2000000000003,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "lanternslug",
@@ -7800,7 +8646,21 @@
       "combatIdentity": "Collective ranged disruptor",
       "sourceWildLevel": 50,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ruins-1:lanternslug",
+          "map": "ruins-1",
+          "mapName": "Whisperwood",
+          "level": 50,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 9597.6,
+          "y": 3189.9,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "mirrormantis",
@@ -7934,7 +8794,21 @@
       "combatIdentity": "Deceptive melee DPS",
       "sourceWildLevel": 48,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ruins-2:mirrormantis",
+          "map": "ruins-2",
+          "mapName": "Fallen Observatory",
+          "level": 48,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1505.4,
+          "y": 3885,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "crystalurchin",
@@ -8071,7 +8945,21 @@
       "combatIdentity": "Retracting defense tank",
       "sourceWildLevel": 50,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ruins-2:crystalurchin",
+          "map": "ruins-2",
+          "mapName": "Fallen Observatory",
+          "level": 50,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 4400.4,
+          "y": 2940.0000000000005,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "dreamtapir",
@@ -8205,7 +9093,21 @@
       "combatIdentity": "Sleep-and-recovery support",
       "sourceWildLevel": 52,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ruins-2:dreamtapir",
+          "map": "ruins-2",
+          "mapName": "Fallen Observatory",
+          "level": 52,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 8453.4,
+          "y": 3885,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "moongolem",
@@ -8342,7 +9244,21 @@
       "combatIdentity": "Dedicated undead guard",
       "sourceWildLevel": 54,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ruins-2:moongolem",
+          "map": "ruins-2",
+          "mapName": "Fallen Observatory",
+          "level": 54,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 9958.8,
+          "y": 6510,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "astralfox",
@@ -8479,7 +9395,21 @@
       "combatIdentity": "Ranged disruptor",
       "sourceWildLevel": 52,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ruins-3:astralfox",
+          "map": "ruins-3",
+          "mapName": "Moonstone Cave",
+          "level": 52,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1320,
+          "y": 4284,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "echochime",
@@ -8553,20 +9483,20 @@
       "rarity": "Rare",
       "starter": false,
       "habitat": {
-        "map": "ruins-3",
-        "mapName": "Moonstone Cave",
-        "level": 54,
+        "map": "ghost-tower-3",
+        "mapName": "Ghost Tower · Floor 3",
+        "level": 28,
         "spawnSlots": 3,
         "spawnChanceBP": 10000,
         "respawnSeconds": 60,
-        "x": 3720,
-        "y": 2998.8,
+        "x": 1000,
+        "y": 2500,
         "radiusWorldUnits": 200
       },
       "liveLoot": [
         {
           "id": "coins",
-          "quantity": 24,
+          "quantity": 15,
           "chanceBP": 10000
         },
         {
@@ -8575,7 +9505,7 @@
           "chanceBP": 1500
         }
       ],
-      "xpPerParticipatingIndividual": 5700,
+      "xpPerParticipatingIndividual": 3100,
       "configuredEchoBP": 1500,
       "futureBossEssence": null,
       "proposedOrdinaryLoot": [
@@ -8613,7 +9543,21 @@
       "combatIdentity": "Warning-and-cleanse support",
       "sourceWildLevel": 54,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ruins-3:echochime",
+          "map": "ghost-tower-3",
+          "mapName": "Ghost Tower · Floor 3",
+          "level": 28,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1000,
+          "y": 2500,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "pearlwyrm",
@@ -8693,8 +9637,8 @@
         "spawnSlots": 15,
         "spawnChanceBP": 10000,
         "respawnSeconds": 0,
-        "x": 8160.000000000001,
-        "y": 7711.2,
+        "x": 3720,
+        "y": 2998.8,
         "radiusWorldUnits": 200
       },
       "liveLoot": [
@@ -8750,7 +9694,21 @@
       "combatIdentity": "Precision ranged DPS",
       "sourceWildLevel": 56,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "ruins-3:pearlwyrm",
+          "map": "ruins-3",
+          "mapName": "Moonstone Cave",
+          "level": 56,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3720,
+          "y": 2998.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "inksprite",
@@ -8830,8 +9788,8 @@
         "spawnSlots": 15,
         "spawnChanceBP": 10000,
         "respawnSeconds": 0,
-        "x": 10320,
-        "y": 5783.400000000001,
+        "x": 8160.000000000001,
+        "y": 7711.2,
         "radiusWorldUnits": 200
       },
       "liveLoot": [
@@ -8884,7 +9842,21 @@
       "combatIdentity": "Debuffing ranged DPS",
       "sourceWildLevel": 58,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "ruins-3:inksprite",
+          "map": "ruins-3",
+          "mapName": "Moonstone Cave",
+          "level": 58,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 8160.000000000001,
+          "y": 7711.2,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "galeibex",
@@ -9021,7 +9993,21 @@
       "combatIdentity": "Mobile barrier tank",
       "sourceWildLevel": 62,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "rise-0:galeibex",
+          "map": "rise-0",
+          "mapName": "Windstep Prairie",
+          "level": 62,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 3354.2,
+          "y": 6955.2,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "cloudfin",
@@ -9155,7 +10141,21 @@
       "combatIdentity": "Aerial mobility support",
       "sourceWildLevel": 64,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "rise-0:cloudfin",
+          "map": "rise-0",
+          "mapName": "Windstep Prairie",
+          "level": 64,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 7465.799999999999,
+          "y": 3024,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "thunderbeetle",
@@ -9292,7 +10292,21 @@
       "combatIdentity": "Impact melee fighter",
       "sourceWildLevel": 66,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "rise-0:thunderbeetle",
+          "map": "rise-0",
+          "mapName": "Windstep Prairie",
+          "level": 66,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 9197,
+          "y": 3830.4,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "skyrabbit",
@@ -9430,7 +10444,21 @@
       "combatIdentity": "Leaping melee fighter",
       "sourceWildLevel": 64,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "rise-1:skyrabbit",
+          "map": "rise-1",
+          "mapName": "Skybough Forest",
+          "level": 64,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1236.4,
+          "y": 3910.2000000000003,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "razorswift",
@@ -9567,7 +10595,21 @@
       "combatIdentity": "Aerial melee DPS",
       "sourceWildLevel": 66,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "rise-1:razorswift",
+          "map": "rise-1",
+          "mapName": "Skybough Forest",
+          "level": 66,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3709.2000000000003,
+          "y": 2778.3,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "tempestcub",
@@ -9704,7 +10746,21 @@
       "combatIdentity": "Momentum brawler",
       "sourceWildLevel": 68,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "rise-1:tempestcub",
+          "map": "rise-1",
+          "mapName": "Skybough Forest",
+          "level": 68,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 7755.599999999999,
+          "y": 6174,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "bouldereagle",
@@ -9841,7 +10897,21 @@
       "combatIdentity": "Wing-shield tank",
       "sourceWildLevel": 70,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "rise-1:bouldereagle",
+          "map": "rise-1",
+          "mapName": "Skybough Forest",
+          "level": 70,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 9666.4,
+          "y": 6791.400000000001,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "whistleweasel",
@@ -9979,7 +11049,21 @@
       "combatIdentity": "Rhythmic buff support",
       "sourceWildLevel": 68,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "rise-2:whistleweasel",
+          "map": "rise-2",
+          "mapName": "Highwind Escarpment",
+          "level": 68,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1166,
+          "y": 4515,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "stormstilt",
@@ -10116,7 +11200,21 @@
       "combatIdentity": "Spinning melee fighter",
       "sourceWildLevel": 70,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "rise-2:stormstilt",
+          "map": "rise-2",
+          "mapName": "Highwind Escarpment",
+          "level": 70,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3614.6,
+          "y": 2730,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "kitejelly",
@@ -10253,7 +11351,21 @@
       "combatIdentity": "Aerial skirmish DPS",
       "sourceWildLevel": 72,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "rise-2:kitejelly",
+          "map": "rise-2",
+          "mapName": "Highwind Escarpment",
+          "level": 72,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 7229.2,
+          "y": 6930,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "fluffyak",
@@ -10387,7 +11499,21 @@
       "combatIdentity": "Protective sustain tank",
       "sourceWildLevel": 74,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "rise-2:fluffyak",
+          "map": "rise-2",
+          "mapName": "Highwind Escarpment",
+          "level": 74,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 9794.4,
+          "y": 6930,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "zephyrlynx",
@@ -10525,7 +11651,21 @@
       "combatIdentity": "Ambush melee DPS",
       "sourceWildLevel": 72,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "rise-3:zephyrlynx",
+          "map": "rise-3",
+          "mapName": "Thunderhollow Cave",
+          "level": 72,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1449.6,
+          "y": 5355,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "prismwasp",
@@ -10662,7 +11802,21 @@
       "combatIdentity": "Precision ranged DPS",
       "sourceWildLevel": 74,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "rise-3:prismwasp",
+          "map": "rise-3",
+          "mapName": "Thunderhollow Cave",
+          "level": 74,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3865.6,
+          "y": 7711.2,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "skycorolla",
@@ -10796,7 +11950,21 @@
       "combatIdentity": "Aerial ranged DPS",
       "sourceWildLevel": 76,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "rise-3:skycorolla",
+          "map": "rise-3",
+          "mapName": "Thunderhollow Cave",
+          "level": 76,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 7972.8,
+          "y": 2998.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "magmatoad",
@@ -10933,7 +12101,21 @@
       "combatIdentity": "Heat-retaining tank",
       "sourceWildLevel": 80,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ashen-0:magmatoad",
+          "map": "ashen-0",
+          "mapName": "Ashgrass Expanse",
+          "level": 80,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1308,
+          "y": 4636.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "obsidianram",
@@ -11070,7 +12252,21 @@
       "combatIdentity": "Bone-arm bruiser",
       "sourceWildLevel": 82,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ashen-0:obsidianram",
+          "map": "ashen-0",
+          "mapName": "Ashgrass Expanse",
+          "level": 82,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3488,
+          "y": 3427.2000000000003,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "pyrewolf",
@@ -11207,7 +12403,21 @@
       "combatIdentity": "Aggressive melee DPS",
       "sourceWildLevel": 84,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ashen-0:pyrewolf",
+          "map": "ashen-0",
+          "mapName": "Ashgrass Expanse",
+          "level": 84,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 7303,
+          "y": 6148.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "emberorchid",
@@ -11341,7 +12551,21 @@
       "combatIdentity": "Close-range burst DPS",
       "sourceWildLevel": 86,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ashen-0:emberorchid",
+          "map": "ashen-0",
+          "mapName": "Ashgrass Expanse",
+          "level": 86,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 9374,
+          "y": 6048,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "cindercentipede",
@@ -11478,7 +12702,21 @@
       "combatIdentity": "Advancing melee fighter",
       "sourceWildLevel": 84,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ashen-1:cindercentipede",
+          "map": "ashen-1",
+          "mapName": "Cinderwood",
+          "level": 84,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1358.3999999999999,
+          "y": 4013.1000000000004,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "basalturtle",
@@ -11615,7 +12853,21 @@
       "combatIdentity": "Regenerative plant tank",
       "sourceWildLevel": 86,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ashen-1:basalturtle",
+          "map": "ashen-1",
+          "mapName": "Cinderwood",
+          "level": 86,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3622.4,
+          "y": 6791.400000000001,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "ashbasilisk",
@@ -11749,7 +13001,21 @@
       "combatIdentity": "Ranged attrition DPS",
       "sourceWildLevel": 88,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ashen-1:ashbasilisk",
+          "map": "ashen-1",
+          "mapName": "Cinderwood",
+          "level": 88,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 7584.400000000001,
+          "y": 4116,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "glassphoenix",
@@ -11883,7 +13149,21 @@
       "combatIdentity": "Long-range burst DPS",
       "sourceWildLevel": 90,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ashen-1:glassphoenix",
+          "map": "ashen-1",
+          "mapName": "Cinderwood",
+          "level": 90,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 9622,
+          "y": 3292.8,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "coalbadger",
@@ -12020,7 +13300,21 @@
       "combatIdentity": "Space-holding tank",
       "sourceWildLevel": 88,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ashen-2:coalbadger",
+          "map": "ashen-2",
+          "mapName": "Obsidian Approach",
+          "level": 88,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 1174,
+          "y": 5460,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "steamaxolotl",
@@ -12154,7 +13448,21 @@
       "combatIdentity": "Cleansing recovery support",
       "sourceWildLevel": 90,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ashen-2:steamaxolotl",
+          "map": "ashen-2",
+          "mapName": "Obsidian Approach",
+          "level": 90,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3639.4,
+          "y": 7875,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "lavaurchin",
@@ -12292,7 +13600,21 @@
       "combatIdentity": "Protective recovery support",
       "sourceWildLevel": 92,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ashen-2:lavaurchin",
+          "map": "ashen-2",
+          "mapName": "Obsidian Approach",
+          "level": 92,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 8100.599999999999,
+          "y": 6195,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "volcanomoth",
@@ -12429,7 +13751,21 @@
       "combatIdentity": "Regal protective support",
       "sourceWildLevel": 94,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ashen-2:volcanomoth",
+          "map": "ashen-2",
+          "mapName": "Obsidian Approach",
+          "level": 94,
+          "spawnSlots": 3,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 60,
+          "x": 9979,
+          "y": 3674.9999999999995,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "sootimp",
@@ -12567,7 +13903,21 @@
       "combatIdentity": "Close-range pressure fighter",
       "sourceWildLevel": 92,
       "encounterSource": "Wild",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": [
+        {
+          "id": "ashen-3:sootimp",
+          "map": "ashen-3",
+          "mapName": "Deepember Cave",
+          "level": 92,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 1459.2,
+          "y": 4605.3,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "moltencoil",
@@ -12701,7 +14051,21 @@
       "combatIdentity": "Shedding-armor fighter",
       "sourceWildLevel": 94,
       "encounterSource": "Wild",
-      "attackBase": "Dex-Based"
+      "attackBase": "Dex-Based",
+      "habitats": [
+        {
+          "id": "ashen-3:moltencoil",
+          "map": "ashen-3",
+          "mapName": "Deepember Cave",
+          "level": 94,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 3769.6,
+          "y": 2891.7000000000003,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "auroradrake",
@@ -12835,7 +14199,21 @@
       "combatIdentity": "Sustaining mobile fighter",
       "sourceWildLevel": 96,
       "encounterSource": "Wild",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": [
+        {
+          "id": "ashen-3:auroradrake",
+          "map": "ashen-3",
+          "mapName": "Deepember Cave",
+          "level": 96,
+          "spawnSlots": 15,
+          "spawnChanceBP": 10000,
+          "respawnSeconds": 0,
+          "x": 8390.4,
+          "y": 7496.999999999999,
+          "radiusWorldUnits": 200
+        }
+      ]
     },
     {
       "id": "elderroot",
@@ -12944,7 +14322,8 @@
       "combatIdentity": "Entrenched guardian boss",
       "sourceWildLevel": null,
       "encounterSource": "Boss preview — no rewards",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": []
     },
     {
       "id": "tidecrown",
@@ -13053,7 +14432,8 @@
       "combatIdentity": "Defensive zone boss",
       "sourceWildLevel": null,
       "encounterSource": "Boss preview — no rewards",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": []
     },
     {
       "id": "ambercolossus",
@@ -13162,7 +14542,8 @@
       "combatIdentity": "Monumental guard boss",
       "sourceWildLevel": null,
       "encounterSource": "Boss preview — no rewards",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": []
     },
     {
       "id": "moonweaver",
@@ -13271,7 +14652,8 @@
       "combatIdentity": "Web-control boss",
       "sourceWildLevel": null,
       "encounterSource": "Boss preview — no rewards",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": []
     },
     {
       "id": "tempestrook",
@@ -13380,7 +14762,8 @@
       "combatIdentity": "Aerial boss DPS",
       "sourceWildLevel": null,
       "encounterSource": "Boss preview — no rewards",
-      "attackBase": "Strength-based"
+      "attackBase": "Strength-based",
+      "habitats": []
     },
     {
       "id": "cinderempress",
@@ -13489,7 +14872,8 @@
       "combatIdentity": "Close-range pressure boss",
       "sourceWildLevel": null,
       "encounterSource": "Boss preview — no rewards",
-      "attackBase": "Int-Based"
+      "attackBase": "Int-Based",
+      "habitats": []
     }
   ],
   "families": [

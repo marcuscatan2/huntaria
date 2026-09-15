@@ -9,7 +9,7 @@ Status: **local**. Simulates targeting, damage and outcomes; sends events to ani
 
 `BondGame.Battle.step / emit / run; BondRules`
 
-Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective.
+Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective. Only the class rescue admits seven authored enemies and a Lv80 master. raid-rules.js guarantees player-party defeat at 8 seconds and the master's victory by 32 seconds; saved tick replay uses the same deterministic choreography.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -24,13 +24,14 @@ The links below point to the actual source; root browser paths remain in use.
 | [data/simulator-modules.json](<../../data/simulator-modules.json>) | Owned source/configuration; inspect before editing. |
 | [tests/runtime_cases.js](<../../tests/runtime_cases.js>) | Owned source/configuration; inspect before editing. |
 | [tests/runtime_check.py](<../../tests/runtime_check.py>) | Owned source/configuration; inspect before editing. |
+| [raid-rules.js](<../../raid-rules.js>) | `BondRaidRules` |
 
 ## Connections
 
 Observed references include optional and late callbacks, not only boot dependencies.
 
 - Uses: [campaign](<../../features/campaign/README.md>), [content](<../../features/content/README.md>), [growth](<../../features/growth/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [opening](<../../features/opening/README.md>), [party](<../../features/party/README.md>), [recovery](<../../features/recovery/README.md>)
-- Used by: [animation](<../../features/animation/README.md>), [campaign](<../../features/campaign/README.md>), [content](<../../features/content/README.md>), [growth](<../../features/growth/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [opening](<../../features/opening/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>)
+- Used by: [animation](<../../features/animation/README.md>), [campaign](<../../features/campaign/README.md>), [content](<../../features/content/README.md>), [exploration](<../../features/exploration/README.md>), [growth](<../../features/growth/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [opening](<../../features/opening/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>)
 
 - [combat-feedback](<../../docs/architecture/CONNECTIONS.md#combat-feedback>) (combat → animation): Battle.events -> app renderBattle -> CombatView.onEvent -> timing/rig/VFX. Compare event.time/actor/target with impactAudit before changing simulation timing.
 - [encounter-settlement](<../../docs/architecture/CONNECTIONS.md#encounter-settlement>) (combat → persistence): reserveBattle -> seeded Battle -> settleKills/checkpoint -> complete -> map/loot. A returned popup is not a receipt; retries must not pay twice.
@@ -58,6 +59,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/runtime_check.py --browser chrome` — 1,000 canonical Chrome/Edge versus Node battles and local replay CPU.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
+- `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -65,5 +67,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 
 - [Companion stats.md](<../../Companion stats.md>)
 - [features/combat/RUNTIME.md](<../../features/combat/RUNTIME.md>)
+- [features/campaign/SACRED_TREASURES.md](<../../features/campaign/SACRED_TREASURES.md>)
 - Commercial cards: [F-001](<../../FEATURE_BACKLOG.md>), [F-002](<../../FEATURE_BACKLOG.md>), [F-004](<../../FEATURE_BACKLOG.md>), [F-007](<../../FEATURE_BACKLOG.md>), [F-036](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-04](<../../OWNER_REVIEWS.md#or-04>), [OR-08](<../../OWNER_REVIEWS.md#or-08>), [OR-09](<../../OWNER_REVIEWS.md#or-09>) Use the live board/preflight for status, not an approval copied here.

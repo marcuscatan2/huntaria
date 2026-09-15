@@ -50,7 +50,7 @@ def main():
             # A Worker has no document/window/localStorage. Disable ambient IO,
             # clock and unseeded RNG before loading any game module.
             pure = ["content.js", "rules.js", "roster.js", "monster-sprites.js", "opening-rules.js", "adventure-rules.js",
-                    "progression.js", "formation.js", "game.js", "growth.js"]
+                    "progression.js", "formation.js", "raid-rules.js", "game.js", "growth.js"]
             source = """
                 self.fetch=()=>{throw Error('Unexpected network');};
                 self.XMLHttpRequest=class{constructor(){throw Error('Unexpected XHR');}};

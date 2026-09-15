@@ -75,31 +75,33 @@
         u.rank=this.formation[u.slot];u.position={...BondFormation.POSITIONS[u.rank]};u.previousPosition={...u.position};
       }
       this.encounter = options.encounter?.kind ? options.encounter : null;
+      this.rescue=root.BondRaidRules?.applies(this.encounter)||false;
       this.spawnOptions=options;
       this.bossCharge = null; this.nextBossCharge = 8; this.bossPhase = 1;
       if (this.encounter) {
-        if (!['pack','boss','wild'].includes(this.encounter.kind) || !Array.isArray(this.encounter.enemies) || !this.encounter.enemies.length || this.encounter.enemies.length>(this.group?4:5) || (this.encounter.kind==='wild'&&this.encounter.enemies.length!==1)) throw new Error('Invalid encounter');
+        if (!['pack','boss','wild'].includes(this.encounter.kind) || !Array.isArray(this.encounter.enemies) || !this.encounter.enemies.length || this.encounter.enemies.length>(this.rescue?7:this.group?4:5) || (this.encounter.kind==='wild'&&this.encounter.enemies.length!==1)) throw new Error('Invalid encounter');
         const template=this.units.find(u=>u.side===1&&u.slot>0)||this.units.find(u=>u.side===1);
         this.units=this.units.filter(u=>u.side===0).concat(this.encounter.enemies.map((entry,i)=>{
           if(!MONSTERS.includes(entry.type)||!Array.isArray(entry.skills)||entry.skills.length!==3||!entry.skills.every(s=>Object.hasOwn(SKILLS,s)))throw new Error('Invalid encounter monster');
-          const pos={x:68+(i%2)*14,y:35+i*9},def=UNITS[entry.type];
+          const pos={x:68+(i%2)*14,y:35+(i%5)*9},def=UNITS[entry.type];
           const hp=entry.hp||def.hp;
           return {...template,...def,...entry,id:'1-'+(i+1),type:entry.type,side:1,slot:i+1,
             hp,maxHp:hp,position:pos,previousPosition:{...pos},skills:[...entry.skills],cds:[0,0,0],
             status:{},shield:0,shieldUntil:0,actionRemaining:.8+i*.18};
         }));
       }
+      if(this.rescue)BondRaidRules.attach(this);
       this.ritual=null;
       this.catchItem=null;this.elements=!!options.profile||options.elements===true;
       for(const u of this.units) {
-        const profile=u.side===0?this.ownerProfiles[u.ownerIndex]:options.profile;
+        const profile=u.storyMaster?(options.profile||{}):u.side===0?this.ownerProfiles[u.ownerIndex]:options.profile;
         const companion=u.side===0&&u.instanceId?root.BondProgress?.instance(profile||{},u.instanceId):null;
-        if(u.side===0&&u.slot===0&&profile?.character?.name)u.name=profile.character.name;
+        if(u.side===0&&!u.storyMaster&&u.slot===0&&profile?.character?.name)u.name=profile.character.name;
         if(companion)u.name=UNITS[u.type].name+' #'+companion.ordinal;
-        const bonus=u.side===0&&root.BondGrowth?root.BondGrowth.stats(u.type,companion?companion.growth:(profile?.growth||options.growth)?.[u.type]):{hp:0,attack:0,armor:0,move:0,cooldown:0};
+        const bonus=u.side===0&&!u.storyMaster&&root.BondGrowth?root.BondGrowth.stats(u.type,companion?companion.growth:(profile?.growth||options.growth)?.[u.type]):{hp:0,attack:0,armor:0,move:0,cooldown:0};
         u.growth=bonus;
         const base={...UNITS[u.type],...u,hp:u.maxHp};
-        const derived=profile&&root.BondProgress?BondProgress.derived(u.type,profile,base,u.side===1?(u.level||options.enemyLevel||1):null):null;
+        const derived=profile&&root.BondProgress?BondProgress.derived(u.type,profile,base,u.storyMaster?80:u.side===1?(u.level||options.enemyLevel||1):null):null;
         u.level=derived?.level||1;u.element=root.BondProgress?.ELEMENT[u.type]||null;
         u.effective=derived?.effective||{str:0,agi:0,vit:0,int:0,dex:0};u.factors=derived?.factors||{melee:1,ranged:1,magic:1};
         const wildScale=this.adventure&&u.side===1&&this.encounter?.kind==='wild'&&root.BondAdventure?BondAdventure.wildScale(this.wildPartySize):null;
@@ -131,6 +133,7 @@
     team(side) { return this.units.filter(u => u.side === side && u.hp > 0 && !u.eliminated); }
     trainer(side) { return this.units.find(u => u.side === side && u.slot === 0); }
     objective(side) {
+      if(this.rescue&&side===0){const u=this.units.find(u=>u.storyMaster);return {hp:u.hp,maxHp:u.maxHp,label:u.name};}
       if(this.defense){const units=this.units.filter(u=>u.side===side);return {hp:units.reduce((n,u)=>n+Math.max(0,u.hp),0),maxHp:units.reduce((n,u)=>n+u.maxHp,0),label:side?'ATTACKERS':'DEFENDERS'};}
       if(this.group&&side===0){const trainers=this.units.filter(u=>u.side===0&&u.slot===0);return {hp:trainers.reduce((n,u)=>n+Math.max(0,u.hp),0),maxHp:trainers.reduce((n,u)=>n+u.maxHp,0),label:'ALLIED TRAINERS'};}
       const trainer=this.trainer(side);
@@ -145,7 +148,7 @@
     ritualStep(){}
     emit(kind, actor, target, text, amount = 0, details = {}) { this.events.push({time: this.time, kind, actor: actor?.id, target: target?.id, side: actor?.side, text, amount, ...details}); }
     requestEscape() {
-      if(this.defense||this.ended||this.escape||this.trainer(0)?.hp<=0)return false;
+      if(this.rescue||this.defense||this.ended||this.escape||this.trainer(0)?.hp<=0)return false;
       this.escape={tick:this.tick,untilTick:this.tick+60};
       this.emit('escape',this.trainer(0),null,'Retreating! Survive for 3 seconds.');
       this.refreshTargets();return true;
@@ -271,7 +274,7 @@
       // Expiry is checked at the hit too, so processing order cannot extend a shield.
       if (target.shieldUntil <= this.time) target.shield = 0;
       const absorbed = Math.min(target.shield, raw); target.shield -= absorbed; target.blocked += absorbed;
-      const floor=0;
+      const floor=this.rescue?BondRaidRules.floor(this,target):0;
       const dealt = Math.min(Math.max(0,target.hp-floor), raw - absorbed); target.hp -= dealt; if(actor)actor.damage += dealt;
       this.emit('damage', actor, target, `${actor?.name||'Environment'} → ${target.name}: ${label} · ${dealt} damage${absorbed ? ` (${absorbed} shielded)` : ''}.`, dealt, details);
       if (target.hp <= 0) { target.hp = 0; target.shield = 0; target.status = {}; this.emit('defeat', actor, target, `${target.name} fell${this.defense?'.':target.slot === 0 ? '. The bond breaks!' : this.team(target.side).some(u => u.slot > 0) ? '. Remaining monsters still protect their trainer.' : '. No monsters remain to protect the trainer.'}`); }
@@ -404,6 +407,7 @@
       if (this.ended) return;
       this.tick++; this.time = Math.round(this.tick * DT * 100) / 100;
       for (const u of this.units) { u.previousPosition = {...u.position}; u.moving = false; }
+      if(this.rescue){BondRaidRules.step(this);if(this.ended)return;}
       this.refreshTargets();
       if (!this.overcharge && this.time >= 55) { this.overcharge = true; this.emit('overcharge', null, null, 'OVERCHARGE · Healing stops. All damage doubles.'); }
       // Resolve timed effects for everyone before actions. Cooldowns use real battle

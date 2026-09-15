@@ -86,6 +86,9 @@ use a separate seeded stream per saved spawn life; the same accepted kill cannot
 reroll or pay twice. Other maps do not yet have ordinary supply/material drops.
 
 Species are assigned to maps; creatures are not tied to little habitat clusters.
+Selected ghosts repeat across tower floors; each habitat is listed below.
+The sacred-treasures quest guarantees only its outstanding requested Echoes.
+CSV level/loot fields describe the primary habitat; all_habitats_json lists every location.
 Firstlight has144 Brimble,96 Bloomslime and48 Rattlebit (288 residents). Elsewhere,
 per species/map: Common24, Uncommon15, Rare/Very rare3 residents. Ordinary defeated
 lives are replaced immediately elsewhere; rare lives wait60s. No extra availability
@@ -121,19 +124,19 @@ for region in regions:
        number(r['base']['speed'])+' / '+number(r['base']['intervalSeconds']),number(r['base']['arenaMovePerSecond'])+' / '+str(r['base']['reach']),r['passive']['name']] for r in group])+'\n'
     values=[]
     for r in group:
-        h=r['habitat']
-        if h:
-            coins=r['liveLoot'][0]['quantity'];mat=r['proposedOrdinaryLoot'][0]
-            values.append([r['id'],h['mapName']+' ('+h['map']+') / Lv'+str(h['level']),r['rarity']+' / '+str(h['spawnSlots'])+' residents / '+(str(h['respawnSeconds'])+'s' if h['respawnSeconds'] else 'immediate elsewhere'),str(coins)+' coins @100%; 1 '+r['name']+' Echo @'+rate(r['configuredEchoBP'])+''.join('; 1 '+x['id']+' @'+rate(x['chanceBP']) for x in r['liveLoot'][2:]),r['xpPerParticipatingIndividual'],'1 '+mat['name']+' @'+rate(mat['chanceBP'])])
+        if r['habitat']:
+            for h in r['habitats']:
+                coins=6+h['level']//3;mat=r['proposedOrdinaryLoot'][0]
+                values.append([r['id'],h['mapName']+' ('+h['map']+') / Lv'+str(h['level']),r['rarity']+' / '+str(h['spawnSlots'])+' residents / '+(str(h['respawnSeconds'])+'s' if h['respawnSeconds'] else 'immediate elsewhere'),str(coins)+' coins @100%; 1 '+r['name']+' Echo @'+rate(r['configuredEchoBP'])+''.join('; 1 '+x['id']+' @'+rate(x['chanceBP']) for x in r['liveLoot'][2:]),300+100*h['level'],'1 '+mat['name']+' @'+rate(mat['chanceBP'])])
         else: values.append([r['id'],r['region']+' boss / future group encounter','Boss / no wild slot','NONE: reward-free preview',0,'1 '+r['name']+' essence @0.01% per future group victory; ordinary loot TBD'])
     drops+='## '+region+'\n\n'+table(['Species ID','Source / level','Map population / replacement delay','LIVE drops','LIVE XP / individual','PLANNED ONLY'],values)+'\n'
 drops+='## Proposed material uses\n\n'+table(['Region','Material ID / name','Proposed use'],[[g, next(r for r in rows if r['region']==g and r['habitat'])['proposedOrdinaryLoot'][0]['id']+' / '+next(r for r in rows if r['region']==g and r['habitat'])['proposedOrdinaryLoot'][0]['name'],next(r for r in rows if r['region']==g and r['habitat'])['proposedOrdinaryLoot'][0]['use']] for g in regions])
 stream=io.StringIO(newline='')
-columns=['id','name','family','region','design_role','combat_identity','prototype_mechanical_role','element','attack_base','basic_category','base_hp','base_attack','speed','ready_seconds','arena_move_per_second','basic_reach','passive_id','passive','passive_description','five_skills','default_three','habitat','source_level','sheet_source_level','encounter_source','map_species_count','availability_percent','recheck_seconds','echo_percent','live_loot_json','xp_per_participating_individual','future_boss_essence_json','proposed_not_live_loot_json','silhouette_brief','animation_brief','art_status']
+columns=['id','name','family','region','design_role','combat_identity','prototype_mechanical_role','element','attack_base','basic_category','base_hp','base_attack','speed','ready_seconds','arena_move_per_second','basic_reach','passive_id','passive','passive_description','five_skills','default_three','habitat','source_level','sheet_source_level','encounter_source','map_species_count','availability_percent','recheck_seconds','echo_percent','live_loot_json','xp_per_participating_individual','future_boss_essence_json','proposed_not_live_loot_json','silhouette_brief','animation_brief','art_status','all_habitats_json']
 writer=csv.writer(stream,lineterminator='\n');writer.writerow(columns)
 for r in rows:
     h=r['habitat'];b=r['base']
-    writer.writerow([r['id'],r['name'],r.get('visualFamily',r['family']),r['region'],r['designRole'],r['combatIdentity'],r['mechanicalRole'],r['element'],r['attackBase'],r['basicCategory'],b['hp'],b['attack'],b['speed'],b['intervalSeconds'],b['arenaMovePerSecond'],b['reach'],r['passive']['id'],r['passive']['name'],r['passive']['description'],'; '.join(s['id']+'='+s['name'] for s in r['skills']),'; '.join(r['defaultSkills']),h['map'] if h else 'FUTURE GROUP BOSS',h['level'] if h else '',r['sourceWildLevel'] if r['sourceWildLevel'] is not None else '',r['encounterSource'],h['spawnSlots'] if h else '',h['spawnChanceBP']/100 if h else '',h['respawnSeconds'] if h else '',r['configuredEchoBP']/100,json.dumps(r['liveLoot'],ensure_ascii=False),r['xpPerParticipatingIndividual'],json.dumps(r['futureBossEssence'],ensure_ascii=False),json.dumps(r['proposedOrdinaryLoot'],ensure_ascii=False),r['design']['silhouette'],r['design']['animation'],r['design']['assetStatus']])
+    writer.writerow([r['id'],r['name'],r.get('visualFamily',r['family']),r['region'],r['designRole'],r['combatIdentity'],r['mechanicalRole'],r['element'],r['attackBase'],r['basicCategory'],b['hp'],b['attack'],b['speed'],b['intervalSeconds'],b['arenaMovePerSecond'],b['reach'],r['passive']['id'],r['passive']['name'],r['passive']['description'],'; '.join(s['id']+'='+s['name'] for s in r['skills']),'; '.join(r['defaultSkills']),h['map'] if h else 'FUTURE GROUP BOSS',h['level'] if h else '',r['sourceWildLevel'] if r['sourceWildLevel'] is not None else '',r['encounterSource'],h['spawnSlots'] if h else '',h['spawnChanceBP']/100 if h else '',h['respawnSeconds'] if h else '',r['configuredEchoBP']/100,json.dumps(r['liveLoot'],ensure_ascii=False),r['xpPerParticipatingIndividual'],json.dumps(r['futureBossEssence'],ensure_ascii=False),json.dumps(r['proposedOrdinaryLoot'],ensure_ascii=False),r['design']['silhouette'],r['design']['animation'],r['design']['assetStatus'],json.dumps(r['habitats'],ensure_ascii=False)])
 families='# Creature visual families — Sheet-backed roster\n\nCurrent names, visual families, roles, properties, regions and source levels come from the reviewed Bond & Bolt Google Sheet snapshot.\nThe older 25/15/4/1 taxonomy is retained only as legacy runtime metadata.\nAll 100 supplied PNGs are integrated; animation and commercial art review remain pending.\nStable IDs preserve individual XP, builds, trees and Echo inventory through renames.\nSee [sprite source and mapping](features/animation/SUPPLIED_SPRITES.md).\n\n'
 visual_families=list(dict.fromkeys(r.get('visualFamily',r['family']) for r in rows))
 families+=table(['Visual family','Species'],[[f,sum(r.get('visualFamily',r['family'])==f for r in rows)] for f in visual_families])+'\n'
@@ -148,6 +151,7 @@ if args.check:
         assert (ROOT/filename).read_text(encoding='utf-8')==content, 'Generated table drift: '+filename
     live=json.loads((ROOT/'tests/artifacts/pass18-reference-chrome.json').read_text(encoding='utf-8'))
     assert live['version']==18
+    assert all(len(row)==len(columns) for row in list(csv.reader(io.StringIO(stream.getvalue())))[1:]), 'CSV column mismatch'
     for name,digest in live['source_sha256'].items():
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest, 'Stale runtime export: '+name
     lookup={u['id']:u for u in live['species']}
@@ -161,6 +165,9 @@ if args.check:
         assert r['configuredEchoBP']==u['echoBP'] and r['passive']['id']==u['passive'] and r['passive']['description']==u['trait']
         assert [s['id'] for s in r['skills']]==u['skills'] and r['defaultSkills']==u['default']
         assert [(s['name'],s['kind'],s['baseCooldownSeconds']) for s in r['skills']]==[(s['name'],s['kind'],s['cd']) for s in u['kit']]
+        expected=[(h['id'],h['map'],h['level'],h['count'],h['spawnBP'],h['respawnSeconds'],h['x'],h['y']) for h in u['habitats']]
+        actual=[(h['id'],h['map'],h['level'],h['spawnSlots'],h['spawnChanceBP'],h['respawnSeconds'],h['x'],h['y']) for h in r['habitats']]
+        assert actual==expected, 'Habitat mismatch: '+r['id']
         if h:
             assert r['habitat']['spawnSlots']==h['count']
             assert (r['habitat']['map'],r['habitat']['level'],r['habitat']['spawnChanceBP'],r['habitat']['respawnSeconds'],r['habitat']['x'],r['habitat']['y'])==(h['map'],h['level'],h['spawnBP'],h['respawnSeconds'],h['x'],h['y'])

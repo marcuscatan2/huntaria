@@ -92,3 +92,7 @@ The world player has a fixed 46px by 3px HP track and selected companions use
 fixed 40px by 3px tracks: green above 50%, yellow 35–50%, red below 35%. They use
 live combat units when deployed and saved vitality outside combat; character art
 size and facing do not resize or mirror the tracks.
+
+## Authored class rescue
+
+The [post-ascension raid](../campaign/SACRED_TREASURES.md) reserves seven Lv60 enemies and the matching Lv80 master. It continues after the player's party falls, then restores vitality and opens the aftermath dialogue on accepted settlement. Its deterministic rules bound the fight to 32 seconds; Run is disabled for this scene. Pause, leaving the battle view and saved replay remain supported.

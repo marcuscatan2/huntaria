@@ -90,3 +90,7 @@ the atlas with the gate directions. Judge city identity, building readability,
 NPC scale and class-matched facing, scenery perspective and travel/recovery feel before repeating
 this treatment in more regions. Review all three source sheets in the city gallery.
 OR-02/03/04/06 remain pending; automated tests do not approve art or pacing.
+
+## Class quest continuation
+
+After specialization, the chosen master remains in its courtyard for the [sacred treasures quest](../campaign/SACRED_TREASURES.md): automatic raid, Echo hand-in, Tully directions and one class weapon. The cemetery entrance retains `hollow-2` and connects four ghost-tower interiors.

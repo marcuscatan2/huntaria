@@ -45,6 +45,7 @@ The links below point to the actual source; root browser paths remain in use.
 | [tests/farm_classes_check.py](<../../tests/farm_classes_check.py>) | Owned source/configuration; inspect before editing. |
 | [tests/farm_classes_cases.js](<../../tests/farm_classes_cases.js>) | Owned source/configuration; inspect before editing. |
 | [tests/field_encounters_check.py](<../../tests/field_encounters_check.py>) | Owned source/configuration; inspect before editing. |
+| [tests/relic_quest_check.py](<../../tests/relic_quest_check.py>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -65,6 +66,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/client_build_check.py --browser chrome` — Allowlisted immutable bundle, file integrity and packaged-browser loading.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
 - `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
+- `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

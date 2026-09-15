@@ -51,3 +51,7 @@ Use `tests/farm_classes_check.py`, `tests/pass18_campaign.py` and
 `tests/pass18_ui.py`, then the full gate. Owner walkthrough: defeat a master,
 read its acceptance message, return, commit, and verify the class's effect in
 the next fight.
+
+## After ascension
+
+Confirming a class starts the [courtyard raid and sacred treasures quest](../campaign/SACRED_TREASURES.md). The same master joins at Lv80 and guarantees the rescue. The route ends with one inventory weapon for the chosen class.

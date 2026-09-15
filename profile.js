@@ -176,7 +176,7 @@ function reserveBattle(b,id,options){
 }
 function checkpoint(b){if(!b?._attemptId||state.encounterSave?.attempt!==b._attemptId)return false;return commit(s=>{s.encounterSave.tick=b.tick;s.encounterSave.supply=b._supplyReceipt||null;T.record(s,b);},{quiet:true,critical:true});}
 function requestEscape(b){
- if(!b||b.ended||b.escape||!(b.trainer(0)?.hp>0))return false;
+ if(!b||b.rescue||b.ended||b.escape||!(b.trainer(0)?.hp>0))return false;
  if(!b._attemptId)return !state.encounterSave&&b.requestEscape();
  if(state.encounterSave?.attempt!==b._attemptId||state.encounterSave.escape)return false;
  const ok=commit(s=>{const saved=s.encounterSave;saved.escape={tick:b.tick,joins:(saved.joins||[]).length};saved.tick=b.tick;saved.supply=b._supplyReceipt||null;T.record(s,b);return true;},{critical:true});
@@ -238,6 +238,7 @@ function complete(b,id){
  if(!b?.ended)return null;
  settleKills(b,id);if(completeReceipts.has(b))return completeReceipts.get(b);
  const e=encounter(id);if(!e)return null;
+ if(BondRaidRules.applies(e)&&(!b.rescue||!b._attemptId||b.winner!==0))return null;
  let result={coins:0,xp:0,trainerXP:0,loot:{},echo:false,kills:0,type:e.type,local:true,...(b.escaped?{escaped:true}:{})};
  const npcReward={coins:0,xp:0,trainerXP:0,loot:{}};
  if(b._attemptId&&state.encounterReceipts[b._attemptId])return clone(state.encounterReceipts[b._attemptId]);
@@ -269,6 +270,7 @@ function complete(b,id){
     BondCampaign.recordWin(s,e);
    }
    T.record(s,b);
+   if(b.rescue&&b.winner===0){healArrival(s);result.masterRescue=true;}
    if(b.adventure&&b.winner!==0&&!b.escaped){if(e.map===BondOpening.start.map){s.map=BondOpening.start.map;s.area=A.get(s.map).region;s.position={...BondOpening.start.position};s.vitality={trainer:10000,companions:Object.fromEntries(s.companions.map(m=>[m.id,10000]))};result.campRecovery=true;}else{const town=A.get(e.area+'-hub')||A.get(A.get(s.map).region+'-hub');s.map=town.id;s.area=town.region;s.position={...town.entry};healArrival(s);if(!s.visited.includes(town.id))s.visited.push(town.id);}result.rescued=true;}
    if(e.packId&&b.winner===0)s.journey.packs[e.packId]=++s.journey.sequence;
    if(b._attemptId)s.encounterReceipts[b._attemptId]=clone(result);
@@ -311,10 +313,11 @@ root.BondProfile={
  createCharacter(raw){const c=BondOpening.character(raw);if(!c||c.legacy)return false;return commit(s=>{if(s.character||s.encounterSave||s.companions.length||s.tutorial.kills||s.coins)return false;s.character=c;s.attributes=BondOpening.attributes(c.weapon);s.map=BondOpening.start.map;s.area=A.get(s.map).region;s.position=A.safePoint(s.map,BondOpening.start.position);s.visited=[s.map];s.inventory={leafdraught:2};s.growth.apprentice={};return true;},{critical:true,growth:true});},
  nameCharacter(value){const name=BondOpening.name(value);if(!BondOpening.validName(name)||name.toLocaleLowerCase()==='apprentice')return false;return commit(s=>{if(!s.character||!BondOpening.needsIdentity(s.character))return false;s.character=s.character.legacy?{legacy:true,name}:{...s.character,name};return true;},{critical:true});},
  canSpecialize(type){sync();const e=state.journey.early;return BondContent.CLASSES.includes(type)&&!state.progression.specialization&&R.trainerLevel(state)>=20&&e?.tidecrown===true&&e.demonstrations.length===4&&e.trials[type]===true;},
- specialize(type){if(!this.canSpecialize(type))return false;return commit(s=>{if(s.progression.specialization)return false;s.progression.specialization=type;s.growth[type]||={};return {ok:true,type};},{critical:true,growth:true});},
+ specialize(type){if(!this.canSpecialize(type))return false;return commit(s=>{if(s.progression.specialization)return false;s.progression.specialization=type;s.growth[type]||={};s.journey.relic={stage:'raid',autostart:true};healArrival(s);return {ok:true,type};},{critical:true,growth:true});},
  requirement(id,party){const e=encounter(id);return e?BondCampaign.requirement(e,state,party):'Encounter unavailable.';},
  setSkills(id,skills){return commit(s=>{const m=resolve(s,id);if(!m||!validSkills(m.type,skills))return false;m.skills=[...skills];BondCampaign.recordAbility(s,m);},{critical:true,growth:true});},
  migrateParty(team){return team.map((u,slot)=>{if(!slot&&state.character&&!state.character.legacy){const start=BondOpening.build(state.character,state.progression.specialization);if(u?.type===start.type&&(!start.weapon||u.weapon===start.weapon)&&validSkills(start.type,u.skills))start.skills=[...u.skills];return start;}if(!u||!slot)return u;const m=resolve(state,u.instanceId)||(!u.instanceId?state.companions.find(m=>m.type===u.type):null);if(!m||m.type!==u.type)return null;if(!u.instanceId&&validSkills(u.type,u.skills))commit(s=>{resolve(s,m.id).skills=[...u.skills];},{quiet:true,critical:true});return {type:m.type,instanceId:m.id,skills:!u.instanceId&&validSkills(u.type,u.skills)?[...u.skills]:[...m.skills]};});},
+ relicAction(id,action,party){return commit(s=>BondRelicQuest.command(s,id,action,party),{critical:true});},
  encounter,beginHunt,beginPack,hunt,validEncounter,population,settleKills,complete,summon,consumePrepared,transition,teleport,reserveBattle,checkpoint,restoreBattle,abandonBattle,joinBattle,requestEscape,
   talkKeeper(map){return commit(s=>{const m=A.get(map);if(map!==s.map||Math.hypot(s.position.x-m.guide.x,s.position.y-m.guide.y)>150)return false;s.journey.talks[map]=++s.journey.sequence;return true;},{critical:true});},
   meetOpeningMage(){return commit(s=>{if(s.map!=='clearing-0'||!s.journey?.early?.firstSummon)return false;BondCampaign.recordMageMeeting(s);return true;},{critical:true});},

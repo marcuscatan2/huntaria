@@ -19,6 +19,9 @@ use a separate seeded stream per saved spawn life; the same accepted kill cannot
 reroll or pay twice. Other maps do not yet have ordinary supply/material drops.
 
 Species are assigned to maps; creatures are not tied to little habitat clusters.
+Selected ghosts repeat across tower floors; each habitat is listed below.
+The sacred-treasures quest guarantees only its outstanding requested Echoes.
+CSV level/loot fields describe the primary habitat; all_habitats_json lists every location.
 Firstlight has144 Brimble,96 Bloomslime and48 Rattlebit (288 residents). Elsewhere,
 per species/map: Common24, Uncommon15, Rare/Very rare3 residents. Ordinary defeated
 lives are replaced immediately elsewhere; rare lives wait60s. No extra availability
@@ -105,7 +108,7 @@ All economy claims are local only; authoritative online receipts remain pending.
 | dreamtapir | Fallen Observatory (ruins-2) / Lv52 | Uncommon / 15 residents / immediate elsewhere | 23 coins @100%; 1 Dreamtapir Echo @15% | 5500 | 1 Moon Chalk @25% |
 | moongolem | Fallen Observatory (ruins-2) / Lv54 | Uncommon / 15 residents / immediate elsewhere | 24 coins @100%; 1 Cairnkin Echo @15% | 5700 | 1 Moon Chalk @25% |
 | astralfox | Moonstone Cave (ruins-3) / Lv52 | Uncommon / 15 residents / immediate elsewhere | 23 coins @100%; 1 Lunaskein Echo @15% | 5500 | 1 Moon Chalk @25% |
-| echochime | Moonstone Cave (ruins-3) / Lv54 | Rare / 3 residents / 60s | 24 coins @100%; 1 Echochime Echo @15% | 5700 | 1 Moon Chalk @25% |
+| echochime | Ghost Tower · Floor 3 (ghost-tower-3) / Lv28 | Rare / 3 residents / 60s | 15 coins @100%; 1 Echochime Echo @15% | 3100 | 1 Moon Chalk @25% |
 | pearlwyrm | Moonstone Cave (ruins-3) / Lv56 | Uncommon / 15 residents / immediate elsewhere | 24 coins @100%; 1 Pearlweaver Echo @15% | 5900 | 1 Moon Chalk @25% |
 | inksprite | Moonstone Cave (ruins-3) / Lv58 | Uncommon / 15 residents / immediate elsewhere | 25 coins @100%; 1 Inksprite Echo @15% | 6100 | 1 Moon Chalk @25% |
 | moonweaver | Moonwell boss / future group encounter | Boss / no wild slot | NONE: reward-free preview | 0 | 1 Moonweaver essence @0.01% per future group victory; ordinary loot TBD |
@@ -121,11 +124,16 @@ All economy claims are local only; authoritative online receipts remain pending.
 | cindermole | Copperleaf Forest (hollow-1) / Lv24 | Rare / 3 residents / 60s | 14 coins @100%; 1 Cindertroop Echo @15% | 2700 | 1 Amber Resin @25% |
 | sunscarab | Copperleaf Forest (hollow-1) / Lv26 | Uncommon / 15 residents / immediate elsewhere | 14 coins @100%; 1 Sunscarab Echo @15% | 2900 | 1 Amber Resin @25% |
 | embersalam | Copperleaf Forest (hollow-1) / Lv28 | Uncommon / 15 residents / immediate elsewhere | 15 coins @100%; 1 Puffiend Echo @15% | 3100 | 1 Amber Resin @25% |
-| ochrewisp | Copperleaf Forest (hollow-1) / Lv30 | Uncommon / 15 residents / immediate elsewhere | 16 coins @100%; 1 Casketot Echo @15% | 3300 | 1 Amber Resin @25% |
-| bronzebuck | Sunfall Basin (hollow-2) / Lv28 | Rare / 3 residents / 60s | 15 coins @100%; 1 Gonglet Echo @15% | 3100 | 1 Amber Resin @25% |
-| thistlehare | Sunfall Basin (hollow-2) / Lv30 | Very rare / 3 residents / 60s | 16 coins @100%; 1 Pinstitch Echo @15% | 3300 | 1 Amber Resin @25% |
-| ashporcupine | Sunfall Basin (hollow-2) / Lv32 | Uncommon / 15 residents / immediate elsewhere | 16 coins @100%; 1 Wickeep Echo @15% | 3500 | 1 Amber Resin @25% |
-| resinroach | Sunfall Basin (hollow-2) / Lv34 | Uncommon / 15 residents / immediate elsewhere | 17 coins @100%; 1 Resinrook Echo @15% | 3700 | 1 Amber Resin @25% |
+| ochrewisp | Ghost Tower Entrance (hollow-2) / Lv22 | Uncommon / 15 residents / immediate elsewhere | 13 coins @100%; 1 Casketot Echo @15% | 2500 | 1 Amber Resin @25% |
+| ochrewisp | Ghost Tower · Floor 1 (ghost-tower-1) / Lv23 | Uncommon / 15 residents / immediate elsewhere | 13 coins @100%; 1 Casketot Echo @15% | 2600 | 1 Amber Resin @25% |
+| ochrewisp | Ghost Tower · Floor 2 (ghost-tower-2) / Lv25 | Uncommon / 15 residents / immediate elsewhere | 14 coins @100%; 1 Casketot Echo @15% | 2800 | 1 Amber Resin @25% |
+| ochrewisp | Ghost Tower · Floor 4 · Rooftop Cemetery (ghost-tower-4) / Lv28 | Uncommon / 15 residents / immediate elsewhere | 15 coins @100%; 1 Casketot Echo @15% | 3100 | 1 Amber Resin @25% |
+| bronzebuck | Ghost Tower Entrance (hollow-2) / Lv28 | Rare / 3 residents / 60s | 15 coins @100%; 1 Gonglet Echo @15% | 3100 | 1 Amber Resin @25% |
+| thistlehare | Ghost Tower · Floor 2 (ghost-tower-2) / Lv26 | Very rare / 3 residents / 60s | 14 coins @100%; 1 Pinstitch Echo @15% | 2900 | 1 Amber Resin @25% |
+| ashporcupine | Ghost Tower · Floor 1 (ghost-tower-1) / Lv24 | Uncommon / 15 residents / immediate elsewhere | 14 coins @100%; 1 Wickeep Echo @15% | 2700 | 1 Amber Resin @25% |
+| ashporcupine | Ghost Tower · Floor 3 (ghost-tower-3) / Lv27 | Uncommon / 15 residents / immediate elsewhere | 15 coins @100%; 1 Wickeep Echo @15% | 3000 | 1 Amber Resin @25% |
+| ashporcupine | Ghost Tower · Floor 4 · Rooftop Cemetery (ghost-tower-4) / Lv29 | Uncommon / 15 residents / immediate elsewhere | 15 coins @100%; 1 Wickeep Echo @15% | 3200 | 1 Amber Resin @25% |
+| resinroach | Ghost Tower Entrance (hollow-2) / Lv34 | Uncommon / 15 residents / immediate elsewhere | 17 coins @100%; 1 Resinrook Echo @15% | 3700 | 1 Amber Resin @25% |
 | marigoldia | Emberglass Cave (hollow-3) / Lv32 | Rare / 3 residents / 60s | 16 coins @100%; 1 Marigloom Echo @15% | 3500 | 1 Amber Resin @25% |
 | flintjackal | Emberglass Cave (hollow-3) / Lv34 | Uncommon / 15 residents / immediate elsewhere | 17 coins @100%; 1 Cinderknuckle Echo @15% | 3700 | 1 Amber Resin @25% |
 | dunecoil | Emberglass Cave (hollow-3) / Lv36 | Uncommon / 15 residents / immediate elsewhere | 18 coins @100%; 1 Ribwhirl Echo @15% | 3900 | 1 Amber Resin @25% |

@@ -113,6 +113,7 @@ Priority: **NOW**. State: **Pending review packet / decision**.
 - Use features/opening/PASS26_VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.
 - Replay victory, defeat, a selected fallen sole companion, reload and interrupted-menu routes. Firstlight defeat must preserve bearings at the same forest camp, fully recovered. Confirm ordinary Echo odds remain separate from the two disclosed onboarding guarantees.
 - Review the four class demonstrations, Tidecrown, each easy master acceptance battle and explicit Druid/Mage/Hunter/Swordsman commitment. The current party fights the named master; winning returns to the field. Then review the Lv25 Inner Sea farm, ability-change proof and Lv30 trees. Use features/opening/CLASSES.md and features/inner-sea/FARM_SCOPE.md.
+- Review sacred-treasures-v1 in features/campaign/SACRED_TREASURES.md: post-class rescue, Echo list, cemetery tower, Tully dialogue and class weapon. The owner explicitly requested this named route; final pacing and world-slice acceptance remain pending before wider expansion.
 
 **You validate / acceptance:**
 
@@ -143,6 +144,7 @@ Priority: **NEXT**. State: **Needs revision**.
 - AI prepares one coherent village → field → forest/cave slice with roads, bridge, service, landmark, varied enemies and a return route.
 - Show a walk-through and minimap/atlas; measure actual representative crossings and recovery travel, preserving the existing ≥30-second large-map requirement.
 - Use final-candidate art in a small area and blockout elsewhere; do not decorate all 24 fields to request this review.
+- Review sacred-treasures-v1 in features/campaign/SACRED_TREASURES.md: post-class rescue, Echo list, cemetery tower, Tully dialogue and class weapon. The owner explicitly requested this named route; final pacing and world-slice acceptance remain pending before wider expansion.
 
 **You validate / acceptance:**
 

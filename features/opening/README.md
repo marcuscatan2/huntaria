@@ -50,6 +50,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/pass18_ui.py --browser chrome` — Played hunt, loot, recovery, atlas and viewport flows.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
+- `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -62,5 +63,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [features/opening/PASS27_VALIDATION.md](<../../features/opening/PASS27_VALIDATION.md>)
 - [PASS24_VALIDATION.md](<../../PASS24_VALIDATION.md>)
 - [features/opening/CLASSES.md](<../../features/opening/CLASSES.md>)
+- [features/campaign/SACRED_TREASURES.md](<../../features/campaign/SACRED_TREASURES.md>)
 - Commercial cards: [F-029](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-06](<../../OWNER_REVIEWS.md#or-06>), [OR-09](<../../OWNER_REVIEWS.md#or-09>) Use the live board/preflight for status, not an approval copied here.

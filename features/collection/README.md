@@ -30,7 +30,7 @@ The links below point to the actual source; root browser paths remain in use.
 Observed references include optional and late callbacks, not only boot dependencies.
 
 - Uses: [animation](<../../features/animation/README.md>), [content](<../../features/content/README.md>), [experience](<../../features/experience/README.md>), [growth](<../../features/growth/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [recovery](<../../features/recovery/README.md>), [shell](<../../features/shell/README.md>), [world](<../../features/world/README.md>)
-- Used by: [exploration](<../../features/exploration/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>)
+- Used by: [campaign](<../../features/campaign/README.md>), [exploration](<../../features/exploration/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>)
 
 - [echo-to-individual](<../../docs/architecture/CONNECTIONS.md#echo-to-individual>) (collection → persistence): Echo item/receipt -> profile.summon -> consume one Echo and create one instance atomically locally -> refresh collection and picker.
 
@@ -49,11 +49,13 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python scripts/creature_reference.py --check` — Reviewed 100-species snapshot and four generated outputs agree with Chrome export.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
+- `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
 ## Specifications and decisions
 
 - [CREATURE_DROPS.md](<../../CREATURE_DROPS.md>)
+- [features/campaign/SACRED_TREASURES.md](<../../features/campaign/SACRED_TREASURES.md>)
 - Commercial cards: [F-011](<../../FEATURE_BACKLOG.md>), [F-012](<../../FEATURE_BACKLOG.md>), [F-014](<../../FEATURE_BACKLOG.md>), [F-015](<../../FEATURE_BACKLOG.md>), [F-060](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-06](<../../OWNER_REVIEWS.md#or-06>), [OR-07](<../../OWNER_REVIEWS.md#or-07>), [OR-09](<../../OWNER_REVIEWS.md#or-09>) Use the live board/preflight for status, not an approval copied here.

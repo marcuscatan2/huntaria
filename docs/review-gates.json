@@ -88,7 +88,8 @@
         "Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.",
         "Use features/opening/PASS26_VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.",
         "Replay victory, defeat, a selected fallen sole companion, reload and interrupted-menu routes. Firstlight defeat must preserve bearings at the same forest camp, fully recovered. Confirm ordinary Echo odds remain separate from the two disclosed onboarding guarantees.",
-        "Review the four class demonstrations, Tidecrown, each easy master acceptance battle and explicit Druid/Mage/Hunter/Swordsman commitment. The current party fights the named master; winning returns to the field. Then review the Lv25 Inner Sea farm, ability-change proof and Lv30 trees. Use features/opening/CLASSES.md and features/inner-sea/FARM_SCOPE.md."
+        "Review the four class demonstrations, Tidecrown, each easy master acceptance battle and explicit Druid/Mage/Hunter/Swordsman commitment. The current party fights the named master; winning returns to the field. Then review the Lv25 Inner Sea farm, ability-change proof and Lv30 trees. Use features/opening/CLASSES.md and features/inner-sea/FARM_SCOPE.md.",
+        "Review sacred-treasures-v1 in features/campaign/SACRED_TREASURES.md: post-class rescue, Echo list, cemetery tower, Tully dialogue and class weapon. The owner explicitly requested this named route; final pacing and world-slice acceptance remain pending before wider expansion."
       ],
       "owner_accept": [
         "Preparation produces understandable differences, encounters feel like battles, and the trainer-loss rule is clear.",
@@ -138,7 +139,8 @@
         "Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.",
         "AI prepares one coherent village → field → forest/cave slice with roads, bridge, service, landmark, varied enemies and a return route.",
         "Show a walk-through and minimap/atlas; measure actual representative crossings and recovery travel, preserving the existing ≥30-second large-map requirement.",
-        "Use final-candidate art in a small area and blockout elsewhere; do not decorate all 24 fields to request this review."
+        "Use final-candidate art in a small area and blockout elsewhere; do not decorate all 24 fields to request this review.",
+        "Review sacred-treasures-v1 in features/campaign/SACRED_TREASURES.md: post-class rescue, Echo list, cemetery tower, Tully dialogue and class weapon. The owner explicitly requested this named route; final pacing and world-slice acceptance remain pending before wider expansion."
       ],
       "owner_accept": [
         "It feels like a place, not connected pages; destinations and traversable space are legible.",
@@ -751,6 +753,32 @@
         {
           "path": "features/shell/ENCOUNTERS.md",
           "sha256": "ccf534f19282f55eba10d24b611806f913561d1743dc3978cae6af12ac677954"
+        }
+      ]
+    },
+    {
+      "id": "sacred-treasures-2026-09-15",
+      "source": "Current owner conversation, 2026-09-15",
+      "scope": [
+        "Continue the main quest after any class ascension through the class-weapon reward",
+        "Six Lv60 raiders plus a Lv60 boss, matching Lv80 allied master, guaranteed master victory and player-party defeat",
+        "Echo hunt list and delivery, active-party Casketot requirement for Tully",
+        "Convert hollow-2 to a cemetery entrance and connect four ghost-tower floors; relocate selected ghost habitats"
+      ],
+      "quotes": [
+        "Continue the main quest after you change class:",
+        "As soon as ascending to one of the classes, no matter which one, there'll be a fight, against 6 monsters plus a boss. The class master you fought against enters with you.",
+        "Still, make sure the class master can always win this fight.",
+        "The 'Tully' should only react if \"g\" is in the active party with the player.",
+        "Transform some map into a an entrance + 4 floors of ghost tower.",
+        "No need to impleent the equipment feature yet, just make it an item for now.",
+        "This is the end of the main quest so far."
+      ],
+      "boundary": "Explicit implementation authority for sacred-treasures-v1. Broad world-production preflight remains blocked at OR-01/02/03/06; this named request does not approve expanded art, final pacing, target devices, online rewards or release. Existing source identities and normal saves are preserved.",
+      "evidence": [
+        {
+          "path": "features/campaign/SACRED_TREASURES.md",
+          "sha256": "c76752c12af40fe75863b338df5adaf6531d190647010c0afd8aafb89304d01d"
         }
       ]
     }

@@ -12,6 +12,13 @@ classes, commit to one at player level 20, learn to adapt a familiar monster,
 establish the Inner Sea at player level 25, and unlock monster skill trees at
 player level 30.
 
+## Current main quest after class choice
+
+The owner-requested [sacred treasures route](../campaign/SACRED_TREASURES.md)
+continues immediately after ascension and ends with a class weapon. The Amber
+adaptation encounters, farm and monster-tree lessons below remain optional
+progression, with their existing level thresholds and saved receipts.
+
 ## Decisions and adaptations
 
 ### Four launch specializations

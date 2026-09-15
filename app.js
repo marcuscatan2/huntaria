@@ -111,6 +111,7 @@
     $('#combat-log').innerHTML='<li class="empty-log">Every bond has a beginning.</li>';$('#event-count').textContent='0 EVENTS';$('#scoreboard').hidden=true;$('#battle-effects').innerHTML='';$('#arena').classList.remove('overtime');
     $('#result').className='result-card';$('#result').innerHTML='<p class="eyebrow">THE OBJECTIVE</p><h3>Protect the bond.</h3><p>Monster health is a resource.<br>Your trainer’s health is the game.</p>';
     if(npc?.kind)$('#result').innerHTML='<p class="eyebrow">'+npc.kind.toUpperCase()+' ENCOUNTER</p><h3>Protect your trainer.</h3><p>Defeat '+(npc.kind==='boss'?npc.name:npc.kind==='wild'?npc.name:'every wild creature')+' before 75 seconds. No opposing trainer.</p>';
+    $('.combat-note').textContent=battle.rescue?'Your class master fights beside you.':'Automatic combat. Movement and range matter. Select a unit to see its reach. Your trainer falls, your team loses.';
     if(npc?.kind==='wild')$('#result').innerHTML='<p class="eyebrow">WILD ENCOUNTER</p><h3>'+npc.name+'</h3><p>Defeat the enemy.</p>';
     $('#battle-description').textContent='Your choices do the fighting. Keep an eye on the trainers.';renderBattle();updateControls();
   }
@@ -127,7 +128,7 @@
   }
   function updateControls() {
     const escaping=!!battle?.escape&&!battle.ended;
-    $('#run-battle').disabled=!battle||battle.ended||escaping;
+    $('#run-battle').disabled=!battle||battle.rescue||battle.ended||escaping;
     $('#run-battle').textContent=escaping?'Running…':'Run';
     CombatView.setPlaying(running);
     updateAudio();
@@ -164,6 +165,7 @@
     $('#battle-description').textContent=npc.name+' · '+npc.title+(npc.kind?' · Defeat every enemy. Your trainer must survive.':' · A fixed NPC team. Your party is from Party & bag.');
     if(npc.kind==='boss')$('#battle-description').textContent=npc.practice?npc.name+' · Test level '+BondProfile.snapshot().bossLevel+' · '+(battle.group?'Simulated allied parties, NOT online players. All allied trainers must fall to lose.':'Your party alone.')+' Reward-free practice: no coins, XP or essence.':npc.name+' · Lv '+npc.level+' · Defeat the guardian. Your trainer must survive.';
     if(npc.kind==='wild')$('#battle-description').textContent=npc.name+' · Lv '+npc.level;
+    if(battle.rescue){$('#battle-description').textContent='A raid! Your Lv 80 master stands with you against six Lv 60 monsters and their leader.';$('#result').innerHTML='<h3>Stand with your master.</h3><p>The courtyard is under attack.</p>';}
     $('#return-region').focus({preventScroll:true});
     $('#panel-battle').scrollIntoView({block:'start'});
     return true;
@@ -219,7 +221,7 @@
       $('#battle-description').textContent='Running! Enemies can still hit you.';
     }
     $('#clock').innerHTML=`${String(Math.floor(battle.time/60)).padStart(2,'0')}:${String(Math.floor(battle.time%60)).padStart(2,'0')} <small>/ 01:15</small>`;
-    $('#overtime-label').textContent=battle.overcharge?'OVERCHARGE · 2× DAMAGE · NO HEALS':'TRAINER FALLS · BOND BREAKS';$('#arena').classList.toggle('overtime',battle.overcharge);
+    $('#overtime-label').textContent=battle.rescue?'YOUR MASTER STANDS WITH YOU':battle.overcharge?'OVERCHARGE · 2× DAMAGE · NO HEALS':'TRAINER FALLS · BOND BREAKS';$('#arena').classList.toggle('overtime',battle.overcharge);
     for(const u of battle.units){const el=$(`.fighter[data-id="${u.id}"]`);el.classList.toggle('dead',u.hp<=0);el.querySelector('.hp-fill').style.width=100*u.hp/u.maxHp+'%';el.querySelector('.shield-fill').style.width=Math.min(100,100*u.shield/u.maxHp)+'%';el.querySelector('.fighter-hp').setAttribute('aria-valuemax',u.maxHp);el.querySelector('.fighter-hp').setAttribute('aria-valuenow',u.hp);el.querySelector('.hp-text').textContent=u.hp>0?`${u.hp} / ${u.maxHp}${u.shield?' · ⬡ '+u.shield:''}`:'DEFEATED';el.querySelector('.status-row').innerHTML=Object.entries(u.status).filter(([s,v])=>v.until>battle.time).map(([s,v])=>`<span class="status-pill ${s}">${s.toUpperCase()} ${Math.ceil(v.until-battle.time)}s</span>`).join('');el.querySelectorAll('.mini-cd>i').forEach((bar,i)=>{bar.style.width=Math.max(0,100*(1-u.cds[i]/G.SKILLS[u.skills[i]].cd))+'%';bar.parentElement.title=`${G.SKILLS[u.skills[i]].name}: ${u.cds[i]>0?u.cds[i].toFixed(1)+'s':'ready'}`;});}
     const events=battle.events.slice(seenEvents);seenEvents=battle.events.length;
     for(const event of events) {flash(event);if(event.kind==='status')continue;const li=document.createElement('li');li.className=event.kind;const time=document.createElement('time');time.textContent=event.time.toFixed(1)+'s';const text=document.createElement('span');text.textContent=event.text;li.append(time,text);$('#combat-log .empty-log')?.remove();$('#combat-log').prepend(li);}
@@ -262,15 +264,19 @@
     $('#battle-description').textContent='A result is a clue. Swap one skill and see what changes.';
     $('#scoreboard').hidden=false;$('#scoreboard').innerHTML=`<h3>Every companion made a difference.</h3><table><thead><tr><th>Unit</th><th>HP left</th><th>Damage</th><th>Healing</th><th>Shielded</th><th>Skills cast</th></tr></thead><tbody>${[0,1].map(side=>`<tr class="team-divider"><td colspan="6">${guilds[side].toUpperCase()} GUILD</td></tr>${battle.units.filter(u=>u.side===side).map(u=>`<tr><td>${u.slot===0?'♛ ':''}${u.name}</td><td>${u.hp}</td><td>${u.damage}</td><td>${u.healing}</td><td>${u.blocked}</td><td>${u.casts}</td></tr>`).join('')}`).join('')}</tbody></table>`;
     if(winner!==0){const hint=document.createElement('p');hint.className='loss-advice';const trainer=battle.trainer(0),bypass=battle.events.some(e=>e.kind==='damage'&&e.target===trainer.id&&e.text.includes('Hex'));hint.textContent=bypass?'A trainer-targeting spell reached you. Try a guard, shield or defensive formation.':build[0].slice(1).filter(Boolean).length===0?'Your trainer is alone. Try the level-2 Brimble in Firstlight Meadow, allocate attributes, and put a shield or heal in your priorities.':'Try moving your trainer back, adding protection, or changing damage elements. Your accepted wild kills and drops are kept.';$('#result').append(hint);}
+    if(battle.rescue){$('#result').innerHTML='<h3>Your master drives the raiders away.</h3><p>Your party fell, but your master held the courtyard and restored your strength.</p>';$('#battle-description').textContent='The raid is over.';}
     if(encounterId)BondJourney.result(battle,encounterId);
     updateControls();
     const encounter=encounterId&&BondProfile.encounter(encounterId);
     if(encounterId&&(winner===0&&(battle.encounter||encounter?.autoReturn)||winner!==0&&battle.adventure)&&recordedEncounters.has(battle)&&!returnedBattles.has(battle)){
       returnedBattles.add(battle);const finished=battle,id=encounterId;
       if(activeTab!=='loadout')switchTab('region');BondLoot.show(finished,id);if(winner!==0)BondRegion.notice(BondProfile.complete(finished,id).campRecovery?'You recover at Forest camp. Your party is fully rested.': 'You wake in '+BondAtlas.get(BondProfile.snapshot().map).name+'. The free sanctuary is close.');
+      if(finished.rescue)BondRelicView.open(BondRelicQuest.masterId(BondProfile.snapshot()));
     }
   }
+  let rescueRetryAt=0;
   function frame(now) {
+    if(now>=rescueRetryAt&&!running&&!document.querySelector('dialog[open]')){rescueRetryAt=now+1000;const story=BondProfile.snapshot();if(BondRelicQuest.active(story)&&BondRelicQuest.state(story).stage==='raid'&&BondRelicQuest.state(story).autostart&&!story.encounterSave)startRegionBattle(BondRelicQuest.raidId(story));}
     BondRegion.frame(now);
     if(running&&battle){if(!lastFrame)lastFrame=now;elapsed+=Math.min(.04,(now-lastFrame)/1000)*speed;while(elapsed>=G.DT&&!battle.ended&&running){battle.step();elapsed-=G.DT;if(Bonding.shouldPause(battle)){running=false;elapsed=0;updateControls();}}renderBattle();if(battle.ended)finish();}
     CombatView.draw(now, elapsed);
