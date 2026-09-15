@@ -1,5 +1,6 @@
 """Cartesian world, city entry and travel regressions in disposable browser saves."""
 import argparse,functools,hashlib,json,threading,traceback
+from PIL import Image
 from datetime import datetime,timedelta,timezone
 from http.server import ThreadingHTTPServer
 from browser_check import ROOT,ARTIFACTS,QuietServer,find_browser,sync_playwright,legacy_adventure
@@ -13,6 +14,10 @@ def main():
  def check(name,value):
   checks.append({'name':name,'pass':bool(value)})
   print(('PASS ' if value else 'FAIL ')+name,flush=True)
+ packet=json.loads((ROOT/'assets/cities/prompts.json').read_text(encoding='utf-8'))
+ check('All 21 reviewed frames match recorded generation sources',len(packet['frames'])==21 and not packet['input_images'] and all(hashlib.sha256((ROOT/'assets/cities'/name).read_bytes()).hexdigest()==value for name,value in packet['sha256'].items()))
+ check('Every recorded crop retains its own source pixels',all(hashlib.sha256(Image.open(ROOT/'assets/cities'/(f['kind']+'.png')).convert('RGBA').crop(f['crop_px']).tobytes()).hexdigest()==f['rgba_sha256'] for f in packet['frames']))
+ check('Building and resident source sheets have genuine alpha',all(Image.open(ROOT/'assets/cities'/(kind+'.png')).mode=='RGBA' and Image.open(ROOT/'assets/cities'/(kind+'.png')).getchannel('A').getextrema()==(0,255) for kind in ['buildings','residents']))
  try:
   with sync_playwright() as pw:
    browser=pw.chromium.launch(executable_path=find_browser(args.browser),headless=True)
@@ -37,6 +42,8 @@ def main():
     page.evaluate("id=>{const m=BondAtlas.get(id+'-hub'),b=m.buildings.find(b=>b.room==='hall');BondProfile.position({x:b.door.x,y:b.door.y+190});BondApp.switchTab('region');BondRegion.approachId(b.id);}",city)
     page.clock.run_for(1800)
     check(city+' enters its hall by walking to the door',page.locator('#city-dialog').is_visible())
+    page.wait_for_function("document.querySelector('.city-room')?.dataset.cityRoomReady==='true'")
+    check(city+' room keeps its overhead floor proportions',page.locator('.city-room').evaluate('e=>{const r=e.getBoundingClientRect();return Math.abs(r.width/r.height-Number(e.style.getPropertyValue("--city-room-ratio")))<.002;}'))
     page.locator('[data-city-exhibit="0"]').click();check(city+' has readable interior objects',len(page.locator('.city-room-message').inner_text())>30)
     page.screenshot(path=str(ARTIFACTS/f'city-{city}-interior-{args.browser}.png'));page.keyboard.press('Escape')
    for trainer in ['druid','mage','hunter','swordsman']:
@@ -63,16 +70,20 @@ def main():
    page.set_viewport_size({'width':1440,'height':1400});page.screenshot(path=str(ARTIFACTS/f'city-grid-{args.browser}.png'));page.set_viewport_size({'width':1440,'height':1000});page.keyboard.press('Escape')
    page.set_viewport_size({'width':390,'height':844});page.evaluate("()=>{const m=BondAtlas.get('brook-hub');BondProfile.position(m.buildings[0].door);BondApp.switchTab('region');BondCityView.enter(m.buildings[0].id);}");page.clock.run_for(200)
    check('Mobile room fits the viewport and closes with Escape',page.locator('#city-dialog').evaluate('e=>e.getBoundingClientRect().width<=innerWidth'))
+   page.wait_for_function("document.querySelector('.city-room')?.dataset.cityRoomReady==='true'")
+   check('Phone layout preserves the same room proportions',page.locator('.city-room').evaluate('e=>{const r=e.getBoundingClientRect();return Math.abs(r.width/r.height-Number(e.style.getPropertyValue("--city-room-ratio")))<.002;}'))
    page.screenshot(path=str(ARTIFACTS/f'city-mobile-{args.browser}.png'));page.keyboard.press('Escape');check('Leaving restores world controls',not page.locator('#city-dialog').is_visible())
-   check('Nine new resident frames preserve isolated transparent bounds',page.evaluate("BondCityArt.ensure('residents').frames.length===9&&BondCityArt.ensure('residents').frames.every(f=>f.removed>.15&&f.removed<.85)"))
+   check('All 17 isolated sprites preserve native transparent bounds',page.evaluate("[['residents',9],['buildings',8]].every(([kind,count])=>{const fs=BondCityArt.ensure(kind).frames;return fs.length===count&&new Set(fs.map(f=>f.url)).size===count&&fs.every(f=>f.transparent>.15&&f.transparent<.85);})"))
+   check('Runtime uses every measured crop without stretching its source',page.evaluate("frames=>frames.every(f=>{const actual=BondCityArt.ensure(f.kind).frames[f.index],b=f.crop_px;return actual.width===b[2]-b[0]&&actual.height===b[3]-b[1];})",packet['frames']))
    check('No browser runtime errors',not errors);browser.close()
  except Exception:
   errors.append(traceback.format_exc());print(errors[-1],flush=True)
  finally:server.shutdown()
- report={'checks':checks,'errors':errors,'source_sha256':source};(ARTIFACTS/f'city-world-{args.browser}.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+ report={'checks':checks,'errors':errors,'source_sha256':source,'asset_sha256':packet['sha256']};(ARTIFACTS/f'city-world-{args.browser}.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
  if not errors and all(c['pass'] for c in checks):
   cards=''.join('<section><h2>'+name+'</h2><div><img src="city-'+city+'-'+args.browser+'.png" alt="'+name+' streets"><img src="city-'+city+'-interior-'+args.browser+'.png" alt="'+name+' interior"></div></section>' for city,name in [('clearing','Mosslight · Druid grove'),('brook','Willowbrook · Mage academy'),('hollow','Amber Crossing · Hunters’ lodge'),('ruins','Moonwell · Knight kingdom')])
-  gallery='<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Square world and cities · Owner review</title><style>body{margin:0 auto;padding:32px;max-width:1500px;background:#152d2a;color:#f5e8c8;font:16px/1.6 system-ui}h1,h2{font-family:Georgia,serif}a{color:#e8c988}img{display:block;width:100%;border-radius:10px}section{margin:40px 0}section div{display:grid;grid-template-columns:1fr 1fr;gap:20px}.grid{max-width:1000px;margin:auto}@media(max-width:750px){body{padding:16px}section div{grid-template-columns:1fr}}</style><h1>Square world and starting cities</h1><p>Review scope: world-grid-cities-v1 · '+str(len(checks))+' city checks passed in '+args.browser+'.</p><p>Review city identity, doorway readability, NPC scale and interior objects. Screenshots use a disposable QA save. Technical checks do not approve final art or pacing.</p><p><a href="../../?test=1">Open isolated game</a> · <a href="../../features/world/CITIES.md">Behavior and review guide</a> · <a href="../../assets/cities/prompts.json">Generated artwork prompts and hashes</a></p><section class="grid"><h2>36 squares · Cardinal border portals</h2><img src="city-grid-'+args.browser+'.png" alt="Cartesian world atlas"></section>'+cards+'<section class="grid"><h2>Phone layout</h2><img style="max-width:390px" src="city-mobile-'+args.browser+'.png" alt="Mage library on a phone"></section></html>'
+  sheets=''.join('<section class="grid"><h2>'+label+'</h2><a href="../../assets/cities/'+kind+'.png"><img src="../../assets/cities/'+kind+'.png" alt="'+label+' from above"></a></section>' for kind,label in [('buildings','All eight overhead buildings'),('residents','All nine overhead residents'),('interiors','All four overhead rooms')])
+  gallery='<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Square world and cities · Owner review</title><style>body{margin:0 auto;padding:32px;max-width:1500px;background:#152d2a;color:#f5e8c8;font:16px/1.6 system-ui}h1,h2{font-family:Georgia,serif}a{color:#e8c988}img{display:block;width:100%;border-radius:10px}section{margin:40px 0}section div{display:grid;grid-template-columns:1fr 1fr;gap:20px}.grid{max-width:1000px;margin:auto}@media(max-width:750px){body{padding:16px}section div{grid-template-columns:1fr}}</style><h1>Square world and starting cities</h1><p>Review scope: city-overhead-v2 · '+str(len(checks))+' city checks passed in '+args.browser+'.</p><p>Review every frame for overhead perspective, complete silhouettes, readable doors and matching interior objects. The replacements use original text-only briefs with no external image references. Provenance and local duplicate checks do not establish worldwide uniqueness. Screenshots use a disposable QA save. Technical checks do not approve final art or pacing.</p><p><a href="../../?test=1">Open isolated game</a> · <a href="../../features/world/CITIES.md">Behavior and review guide</a> · <a href="../../assets/cities/prompts.json">Generated artwork prompts and hashes</a></p>'+sheets+'<section class="grid"><h2>36 squares · Cardinal border portals</h2><img src="city-grid-'+args.browser+'.png" alt="Cartesian world atlas"></section>'+cards+'<section class="grid"><h2>Phone layout</h2><img style="max-width:390px" src="city-mobile-'+args.browser+'.png" alt="Mage library on a phone"></section></html>'
   (ARTIFACTS/'city-review.html').write_text(gallery,encoding='utf-8')
  return 1 if errors or any(not c['pass'] for c in checks) else 0
 if __name__=='__main__':raise SystemExit(main())

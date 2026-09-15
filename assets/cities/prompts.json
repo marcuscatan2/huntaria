@@ -1,23 +1,361 @@
 {
   "tool": "Built-in image_gen.imagegen",
-  "scope": "world-grid-cities-v1",
+  "scope": "city-overhead-v2",
   "sources": {
-    "residents": "exec-7723af8e-888c-43f1-984c-7745c27e9ca4.png",
-    "buildings": "exec-4ac3ad0a-9b2d-487a-85e3-d731e703fec6.png",
-    "interiors": "exec-cfc58922-5fb9-428d-bb84-9dcd0d7d6b78.png"
+    "interiors": "exec-90b3a94a-1bef-4212-9d31-0acf9fe48380.png",
+    "buildings": "exec-0de6124f-1732-4009-8657-eed3332d530a.png",
+    "residents": "exec-333749ac-de3d-4d53-9d4d-1a7dfdb531a9.png"
   },
   "prompts": {
-    "residents": "Use case: stylized-concept. Asset type: game NPC sprite atlas for Bond & Bolt. Create one square 3 by 3 sprite sheet with exactly nine distinct friendly fantasy town residents, one fully isolated full-body human per equal grid cell, actual transparent background. Match the supplied painted chibi town keeper reference: warm hand-painted shading, clean fine outlines, large expressive head, tiny boots, three-quarter front view, readable at 85 pixels high. Each entire figure including hat and boots fits inside its own cell with 8 percent clear padding, no contact across cells. Row 1: elderly female druid herbalist with leafy shawl and basket; dark-skinned young male gardener with overalls and watering can; smiling female grove musician with lute. Row 2: female mage librarian with spectacles, purple pointed hat and books; bearded male astronomer in midnight blue robes holding brass astrolabe; young brown-skinned female alchemist with apron and blue potion. Row 3: rugged female hunter with feather cap and bow; broad older male blacksmith with leather apron and hammer; female knight captain with silver armor, blue cape and sheathed sword. Different faces, hair, skin tones, ages, clothes and silhouettes. All standing, feet aligned near bottom of respective cell. No text, labels, grid lines, scenery, checkerboard or colored background. Preserve genuine alpha transparency. Original characters.",
-    "buildings": "Use case: stylized-concept. Asset type: fantasy RPG city building atlas. Make a single landscape sprite sheet, EXACTLY four columns and two rows of eight isolated buildings, in equally sized cells. Transparent background with genuine alpha; no checkerboard, ground plane, text, labels, grid lines or shadows crossing cells. Style matches reference painterly warm storybook RPG scenery, three-quarter elevated frontal view, richly detailed cozy architecture with clearly visible front entrance, readable at 300px wide. Each entire building stays within its own cell with at least 6 percent transparent padding on every side. Column 1 DRUID: top a large ancient living tree guildhall with round lit doorway, carved wooden balcony, leafy canopy and hanging plants; bottom a charming herbalist cottage with moss roof, herb pots and glass greenhouse. Column 2 MAGIC: top a grand purple roofed mage library tower with arched entrance, brass armillary, stained glass stars and rows of lit windows; bottom a blue roofed alchemy shop with luminous glass potion windows, stone stairs and chimney. Column 3 HUNTER: top a large timber hunters lodge with carved stag sign, moss roof, bows and feather banners; bottom a rustic ranger outfitter with leather awning, backpacks, bow racks and crates. Column 4 KNIGHT: top a white stone miniature castle keep with two towers, blue banners, crenellations, golden lion crest and broad arched gate; bottom a stone blacksmith workshop with red tile roof, forge chimney, anvil and armor displayed. No people, no copyrighted logos. Entire roofs and bases visible. Flat orthographic 2.5D asset perspective. Original game buildings.",
-    "buildingBackdropEdit": "Background extraction edit ONLY. Remove the gray-and-white checkerboard completely and output TRUE RGBA TRANSPARENCY with alpha 0 around the eight buildings. The checkerboard is unwanted pixels, it is not part of the artwork. Preserve all eight buildings, exact locations, relative scale, entire canvas dimensions, all paint details, all roofs, doors and colors unchanged. Do not draw a new backdrop or checkerboard. Export actual transparent PNG cutouts in the same 4 columns x 2 rows arrangement.",
-    "interiors": "Use case: stylized-concept. Asset type: four fantasy RPG room backgrounds in one square 2 by 2 atlas. Each quadrant is a complete rectangular interior scene viewed from elevated frontal 2.5D perspective, like a cozy hand-painted JRPG, walls at the back and a generous open walkable floor in the lower half, no characters, no text, no UI. HARD exact straight divisions at 50 percent horizontal and vertical. Top left: druid guild treehouse interior with warm timber floors, living trunk pillars, botanical shelves, soft leaf roof, tea table and fern planters. Top right: mage library with purple banners, towering filled bookshelves along back and left walls, brass globe on right, reading lectern near left, star mosaic stone floor. Bottom left: hunters lodge with amber wood floors, trophy carvings, maps on walls (no writing), archery targets to right, bow racks to left, leather packs and a broad table at back. Bottom right: knight keep training hall with blue banners, white stone arches, armor racks to left, two wooden sword practice dummies to right, red and blue carpet and a long stone floor. All four rooms must have empty central floor for game actors and a clear doorway opening at bottom middle. Detailed painterly storybook style, realistic materials but warm stylized proportions, soft ambient lighting, strongly different colors per room. Edge-to-edge scenes; no gutters or white margins. Original fantasy environments."
+    "interiors": "Use case: stylized-concept. Create original overhead game environment artwork from this written brief only. Do not use any external image, existing game map, named artist, franchise architecture, logo or copied composition. Deliver ONE square image containing EXACTLY FOUR equally sized room tiles in a 2 by 2 grid; boundaries at exactly 50 percent both axes, no gutters, no text, no people. CRITICAL CAMERA: a bird's-eye view straight DOWN at roofless rooms, camera 80 degrees above the ground, orthographic projection, north at image top. This is a playable top-down RPG floor plan, NOT a frontal interior illustration. Show the TOPS of furniture and wall caps, floor covers 85 percent of every tile. All four room outer footprints are squares aligned to image edges, near and far edges the SAME width, floor tiles parallel without a vanishing point, no horizon, no tall rear wall, no ceiling, no view through a window. Short cutaway perimeter walls only, about 8 percent of room height, clear 18-percent-wide opening in the BOTTOM CENTER. Keep the center 45 percent of every room as empty traversable floor. Warm painterly fantasy game textures, crisp silhouettes, restrained ornament, readable at 500px per room. TOP LEFT: druid seed archive carved into an irregular but square timber platform; overhead walnut floor, seed drawers and open seed tray at left middle, broad circular living-tree stump with ribbon wishes at right middle, planters and leaf-shaped low stools around edges, quiet olive and honey colors. TOP RIGHT: mage reading room, slate-blue tiled floor with an original asymmetric constellation of tiny brass inlays; LOW bookshelves seen from above along north/west edges; OPEN BOOK on reading desk at left middle; BRASS ORBITAL GLOBE at right middle, overhead purple rugs; shelves and desk remain low and do not create a frontal wall. BOTTOM LEFT: hunter tracking lodge, weathered oak floor, broad MAP TABLE viewed from above centered at upper third, bow-and-quiver rack on LEFT middle, boot bench and rolled bedrolls around edges, sage and amber palette, no killed animal trophies. BOTTOM RIGHT: knight practice yard INSIDE a roofless cutaway keep room, pale stone square floor, a LOW wooden cross-shaped PRACTICE DUMMY on RIGHT middle, folded blue ceremonial banners displayed flat on a wide table at TOP middle, weapon racks along left edge, narrow cobalt runner along floor. No heraldic animals, famous symbols, shields with copied emblems, text, sky, horizon, point-of-view hands or first-person view. All four must visibly read as overhead level maps.",
+    "buildings": "Use case: stylized-concept. Original fantasy game BUILDING SPRITE ATLAS, designed from this written brief alone. ONE landscape image, EXACTLY FOUR COLUMNS and TWO ROWS, eight equal square cells with exact grid boundaries at 25/50/75 percent width and 50 percent height. One isolated complete building per cell, no overlap, 10 percent clear padding. Actual transparent PNG background, alpha zero, no checkerboard, no ground tiles, no landscape, no text. CRITICAL CAMERA: orthographic bird's-eye camera looking almost straight DOWN, 75 degrees above the ground (15 degrees from vertical), north up. Roof and visible upper footprint occupy at least 75 PERCENT of each building image; only a SHORT south-facing wall strip and entrance threshold below roof, NO tall frontal facades, NO skyline or horizon, NO front elevation illustration. Buildings aligned north/south to image edges, NOT diamond isometric footprints, parallel roof edges no vanishing points. Top surfaces of eaves, chimney openings, tower crenellations and platforms strongly visible. Soft hand-painted materials, clean fine outlines, warm readable 2D fantasy game scenery. Do not base designs on any existing game, famous building, franchise, named artist or logo. TOP ROW left to right: (1) Druid Elderbough Hall, original asymmetric cluster of leaf-roofed timber rooms joined around one open tree canopy, broad visible leaf roofs, small entrance on south center. (2) Mage Starfall Library, squat octagonal teal-purple roof around a low central glass skylight, small brass orbital instrument on roof, reading wings forming a compact square footprint, entrance south center. (3) Hunter Wayfarers Lodge, wide mossy split timber roof with a rope-tied ventilation opening and a little map-reader porch, low wooden walls, entrance south center, no animal trophies. (4) Knight Moonwell Keep, compact pale square stone keep, viewed down INTO open parapet corners and over its broad slate roof, blue fabric roof pennants, low south gatehouse, no copied heraldry. BOTTOM ROW: (1) Druid herbal shop with planted turf roof and square glass greenhouse roof panels; (2) Mage alchemy shop with copper-and-indigo roof, three capped ceramic roof vents, little round blue-glass skylight; (3) Hunter supply shop with broad bark-shingle roof and folded olive canvas awning, tiny overhead crates at threshold; (4) Knight smithy with rust-red low roof, clearly open square chimney seen from above, covered anvil veranda at south edge. Eight distinctly original silhouettes. Same overhead projection on EVERY frame. No people, weapons/logos as coats of arms or modern objects. Preserve true transparency.",
+    "residents": "Use case: stylized-concept. Original top-down fantasy game NPC SPRITE ATLAS from written descriptions only; no external references, named artists, existing game characters, franchise costumes, logos or copied designs. ONE square sheet with EXACTLY NINE isolated people in THREE COLUMNS and THREE ROWS, equal cells, one entire human per cell, 12 percent clear padding on all four sides, no overlap. Genuine transparent PNG alpha zero outside each figure, no checkerboard, no scenery or text. CRITICAL VIEW: bird's-eye orthographic camera 70 degrees above ground looking DOWN at every standing NPC, as seen on an overhead exploration map. Crown of head / TOP of hat and shoulders dominate, shortened torso below, tiny boots partly visible underneath. Face only a SMALL downward-facing strip, do not look UP at camera. NOT eye-level character portraits, NOT tall front-facing full-body illustrations. Every NPC faces toward bottom of sheet, mild south-east twist allowed, same projection and body scale. Friendly warm hand-painted game art, fine outlines, clear small silhouettes. Row 1 left to right: elderly woman herbalist with gray braided bun, patched sage shawl and oval wicker herb basket; dark-skinned young male gardener with rolled green overalls, round straw hat and short watering can; curly auburn female musician in ochre tunic with a small pear-shaped lute, flower hair tie. Row 2: older female librarian with a broad plum beret and rectangular stack of books; brown-skinned male astronomer with short midnight cloak, uncovered curly silver hair and a small brass instrument; young female alchemist with dark hair in two compact buns, leather apron and blue stoppered flask. Row 3: middle-aged female ranger with cropped red hair, moss hood pushed back, side bow and short dark cape; stocky older male smith with balding crown, brown apron and short-handled hammer; female knight captain with braided dark hair, practical silver shoulder armor and plain cobalt half-cape, sword sheathed. Distinct heads, clothes, ages and skin tones without reference to recognizable characters. Show visible crowns, shoulders, tops of held objects in EVERY frame. Compact overhead bodies, not frontal paper dolls."
   },
-  "framing": "Residents: equal 3x3 cells. Buildings: four columns, row split at 480/887. Interiors: equal 2x2 cells.",
-  "transparency": "Generated building and resident source PNGs are RGB with neutral checker backdrops. city-art.js isolates edge-connected neutral pixels at load time; the preserved source PNGs are not native RGBA.",
-  "approval": "Requested integration; final visual acceptance remains pending.",
+  "input_images": [],
+  "provenance": "All three replacements were generated from the recorded text-only briefs. No external images, existing game assets or artist references were supplied to these calls. Selected tool outputs were copied byte-for-byte into this directory.",
+  "originality_review": {
+    "checked_repository_images": 162,
+    "exact_duplicate_repository_paths": [],
+    "distinct_frame_pixel_hashes": 21,
+    "limits": "This establishes source provenance and excludes exact local duplicates; it is not an exhaustive similarity search across external artworks."
+  },
+  "framing": {
+    "buildings": {
+      "source_size": [
+        1774,
+        887
+      ],
+      "columns_px": [
+        0,
+        444,
+        887,
+        1331,
+        1774
+      ],
+      "rows_px": [
+        0,
+        444,
+        887
+      ],
+      "source_mode": "RGBA"
+    },
+    "residents": {
+      "source_size": [
+        1254,
+        1254
+      ],
+      "columns_px": [
+        0,
+        418,
+        836,
+        1254
+      ],
+      "rows_px": [
+        0,
+        414,
+        812,
+        1254
+      ],
+      "source_mode": "RGBA"
+    },
+    "interiors": {
+      "source_size": [
+        1254,
+        1254
+      ],
+      "columns_px": [
+        0,
+        627,
+        1254
+      ],
+      "rows_px": [
+        0,
+        580,
+        1254
+      ],
+      "source_mode": "RGB"
+    }
+  },
+  "frames": [
+    {
+      "kind": "buildings",
+      "index": 0,
+      "name": "Elderbough Hall",
+      "crop_px": [
+        0,
+        0,
+        444,
+        444
+      ],
+      "rgba_sha256": "386592d8b7efbe9a258cb2b3a6b5f5e9c76f35ec696c98ce3cb8edb1df986bcf",
+      "visual_review": "Roof, canopy or parapet top dominates; south doorway remains visible below it."
+    },
+    {
+      "kind": "buildings",
+      "index": 1,
+      "name": "Starfall Library",
+      "crop_px": [
+        444,
+        0,
+        887,
+        444
+      ],
+      "rgba_sha256": "84cc152e9fa18c2e4d9a126662d18684c8907af9b02f16d3c61a51db1500c662",
+      "visual_review": "Roof, canopy or parapet top dominates; south doorway remains visible below it."
+    },
+    {
+      "kind": "buildings",
+      "index": 2,
+      "name": "Wayfarers Lodge",
+      "crop_px": [
+        887,
+        0,
+        1331,
+        444
+      ],
+      "rgba_sha256": "9884b645e35a4c9a56fd12b68ddb91af7994d5ae6da4413d0165bb667c2e2d68",
+      "visual_review": "Roof, canopy or parapet top dominates; south doorway remains visible below it."
+    },
+    {
+      "kind": "buildings",
+      "index": 3,
+      "name": "Moonwell Keep",
+      "crop_px": [
+        1331,
+        0,
+        1774,
+        444
+      ],
+      "rgba_sha256": "6808d6dbd613b116ea29399e2f0c5c0edc3fbe205b289c5d850d179396b8bf05",
+      "visual_review": "Roof, canopy or parapet top dominates; south doorway remains visible below it."
+    },
+    {
+      "kind": "buildings",
+      "index": 4,
+      "name": "Fern & Flask",
+      "crop_px": [
+        0,
+        444,
+        444,
+        887
+      ],
+      "rgba_sha256": "4805b7c18eed1288f3df4112d5c93f83ac43f14683d6f7f44f841eb4734d90d1",
+      "visual_review": "Roof, canopy or parapet top dominates; south doorway remains visible below it."
+    },
+    {
+      "kind": "buildings",
+      "index": 5,
+      "name": "Blue Retort",
+      "crop_px": [
+        444,
+        444,
+        887,
+        887
+      ],
+      "rgba_sha256": "414df7626fed9c839bb1873c95dda76cda744ecbd70d30d269839cb48f56ce58",
+      "visual_review": "Roof, canopy or parapet top dominates; south doorway remains visible below it."
+    },
+    {
+      "kind": "buildings",
+      "index": 6,
+      "name": "Trail & Tackle",
+      "crop_px": [
+        887,
+        444,
+        1331,
+        887
+      ],
+      "rgba_sha256": "a0f53b220ab4507c601d238ac666b4b5e32898bf28797f9a140221d40896a479",
+      "visual_review": "Roof, canopy or parapet top dominates; south doorway remains visible below it."
+    },
+    {
+      "kind": "buildings",
+      "index": 7,
+      "name": "Silver Anvil",
+      "crop_px": [
+        1331,
+        444,
+        1774,
+        887
+      ],
+      "rgba_sha256": "d4d94e727156196d4c2bacd1690876a1d8e343eed957c63d0c20b53fac42377e",
+      "visual_review": "Roof, canopy or parapet top dominates; south doorway remains visible below it."
+    },
+    {
+      "kind": "residents",
+      "index": 0,
+      "name": "herbalist",
+      "crop_px": [
+        0,
+        0,
+        418,
+        414
+      ],
+      "rgba_sha256": "04249c0b372a56dd1a8d01a32ccf730626dedaafa26f37bf3587e83c42825322",
+      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+    },
+    {
+      "kind": "residents",
+      "index": 1,
+      "name": "gardener",
+      "crop_px": [
+        418,
+        0,
+        836,
+        414
+      ],
+      "rgba_sha256": "9e752a1ac8f0ab043a8807d8be49c9f1cdf86a41142cfca3fa8b1ea54a3012d8",
+      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+    },
+    {
+      "kind": "residents",
+      "index": 2,
+      "name": "bard",
+      "crop_px": [
+        836,
+        0,
+        1254,
+        414
+      ],
+      "rgba_sha256": "5de6dbe38ca60bc4e506a6fb96519261749f2bd5e14829dba0688ee44eec689c",
+      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+    },
+    {
+      "kind": "residents",
+      "index": 3,
+      "name": "librarian",
+      "crop_px": [
+        0,
+        414,
+        418,
+        812
+      ],
+      "rgba_sha256": "e92501568e9d5a9603a526add87f71eaa265ef616a62130f46a8fa86f6f8b9a6",
+      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+    },
+    {
+      "kind": "residents",
+      "index": 4,
+      "name": "astronomer",
+      "crop_px": [
+        418,
+        414,
+        836,
+        812
+      ],
+      "rgba_sha256": "9dc97130bacf5141656b01c59debb2cae803d122eecf44a407c23687c58e5e27",
+      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+    },
+    {
+      "kind": "residents",
+      "index": 5,
+      "name": "alchemist",
+      "crop_px": [
+        836,
+        414,
+        1254,
+        812
+      ],
+      "rgba_sha256": "98862835180247ea8e1ea36fb7bd4c18aac244fe4d293f990b5283a84b67751f",
+      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+    },
+    {
+      "kind": "residents",
+      "index": 6,
+      "name": "ranger",
+      "crop_px": [
+        0,
+        812,
+        418,
+        1254
+      ],
+      "rgba_sha256": "4ff55292c099c222595f2811311b91cae4a627fc931097a2a0b3aa37b4b3d62a",
+      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+    },
+    {
+      "kind": "residents",
+      "index": 7,
+      "name": "smith",
+      "crop_px": [
+        418,
+        812,
+        836,
+        1254
+      ],
+      "rgba_sha256": "710aa9129c7e9612001e4a16ffea08986513282c8c432aa0ee8daf55a107ee73",
+      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+    },
+    {
+      "kind": "residents",
+      "index": 8,
+      "name": "captain",
+      "crop_px": [
+        836,
+        812,
+        1254,
+        1254
+      ],
+      "rgba_sha256": "703143252c1e23b90be9b65b756afbb8b374a593ac0c29f6da4d13818a0845b0",
+      "visual_review": "Crown or hat top and shoulders visible; body foreshortened below, gaze toward ground."
+    },
+    {
+      "kind": "interiors",
+      "index": 0,
+      "name": "seed archive",
+      "crop_px": [
+        0,
+        0,
+        627,
+        580
+      ],
+      "rgba_sha256": "575411796374fc144a9d4c1b71021e7c96b3ba987c9a235c4602257ee8e88c0d",
+      "visual_review": "Floor plan viewed from above; furniture tops and low cutaway wall caps visible; no horizon or tall rear facade."
+    },
+    {
+      "kind": "interiors",
+      "index": 1,
+      "name": "reading room",
+      "crop_px": [
+        627,
+        0,
+        1254,
+        580
+      ],
+      "rgba_sha256": "a3cb75fefb4683b72f888285f332ba473972c93c729a60ee4debb4f1d82fc10b",
+      "visual_review": "Floor plan viewed from above; furniture tops and low cutaway wall caps visible; no horizon or tall rear facade."
+    },
+    {
+      "kind": "interiors",
+      "index": 2,
+      "name": "tracking lodge",
+      "crop_px": [
+        0,
+        580,
+        627,
+        1254
+      ],
+      "rgba_sha256": "c753978316e6056fd7cf8515ccfcc19d8dcfa7802422528885548f4e5e65d4de",
+      "visual_review": "Floor plan viewed from above; furniture tops and low cutaway wall caps visible; no horizon or tall rear facade."
+    },
+    {
+      "kind": "interiors",
+      "index": 3,
+      "name": "practice hall",
+      "crop_px": [
+        627,
+        580,
+        1254,
+        1254
+      ],
+      "rgba_sha256": "ce4e2c3e1f8d850cbb8c5212774593565592605a47515536d29723dafb698b52",
+      "visual_review": "Floor plan viewed from above; furniture tops and low cutaway wall caps visible; no horizon or tall rear facade."
+    }
+  ],
+  "transparency": "Buildings and residents are native RGBA. Runtime preserves alpha without color-key removal. Interiors are opaque RGB. Crops follow measured source boundaries and retain their aspect ratios.",
+  "approval": "Owner requested overhead-perspective correction and no copying. Replacement art acceptance remains pending. Previous source and prompts remain in Git commit 82bc828.",
   "sha256": {
-    "residents.png": "6e597d9fe0967bd76beedd21fa15836eacee81bcbe36c5d9462b088c3d725f90",
-    "buildings.png": "02f9c5e1c0e1bf646c869deb2d28bd1b82deb9e3d5c39d4e7718b9e144e72b7c",
-    "interiors.png": "093ed326b6e78214813bce0e3dd678ad79095d882b1b84e41eb11b3e32881ec2"
+    "buildings.png": "e824e8da46b7e44bfa1fbdd6f1420ea4adb787cc9264e941f81424925031128e",
+    "interiors.png": "eed7abf3ea637e57223c82a99c8dbe34bc24ca549c5300d0f2e762d8568db896",
+    "residents.png": "cf1a567fb83880606fd04c9ead3415b34ebe3c14827e9fb3be5b99dfade9dd4d"
   }
 }

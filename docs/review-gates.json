@@ -85,7 +85,7 @@
       "before": "Before repeating the current combat/progression loop across more regions, monsters and quests.",
       "why": "Boring or unreadable combat, excessive walking, unrewarding hunts or forced recovery become embedded in encounter levels, rewards, quest scripts and content volume.",
       "packet": [
-        "Review world-grid-cities-v1 in features/world/CITIES.md: the square border graph, four class-themed cities, painted entrances and rooms, nine new citizens, automatic arrival recovery and physical city waystones. Review city identity, readable doors and travel/recovery feel before wider repetition. Implementation was requested; final visual/pacing acceptance is still pending.",
+        "Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.",
         "Use features/opening/PASS26_VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.",
         "Replay victory, defeat, a selected fallen sole companion, reload and interrupted-menu routes. Firstlight defeat must preserve bearings at the same forest camp, fully recovered. Confirm ordinary Echo odds remain separate from the two disclosed onboarding guarantees.",
         "Review the four class demonstrations, Tidecrown, each easy master acceptance battle and explicit Druid/Mage/Hunter/Swordsman commitment. The current party fights the named master; winning returns to the field. Then review the Lv25 Inner Sea farm, ability-change proof and Lv30 trees. Use features/opening/CLASSES.md and features/inner-sea/FARM_SCOPE.md."
@@ -119,7 +119,7 @@
       "id": "OR-03",
       "title": "Approve one complete world slice before repeating it",
       "timing": "next",
-      "state": "pending",
+      "state": "revise",
       "features": [
         "world",
         "exploration",
@@ -135,7 +135,7 @@
       "before": "Before producing the remaining full-detail maps, quest routes or region-wide art placement.",
       "why": "Map scale and visual language constrain camera, gates, collision, pathfinding, prop sizes, spawn density, recovery trips and quest travel.",
       "packet": [
-        "Review world-grid-cities-v1 in features/world/CITIES.md: the square border graph, four class-themed cities, painted entrances and rooms, nine new citizens, automatic arrival recovery and physical city waystones. Review city identity, readable doors and travel/recovery feel before wider repetition. Implementation was requested; final visual/pacing acceptance is still pending.",
+        "Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.",
         "AI prepares one coherent village → field → forest/cave slice with roads, bridge, service, landmark, varied enemies and a return route.",
         "Show a walk-through and minimap/atlas; measure actual representative crossings and recovery travel, preserving the existing ≥30-second large-map requirement.",
         "Use final-candidate art in a small area and blockout elsewhere; do not decorate all 24 fields to request this review."
@@ -169,6 +169,28 @@
               "sha256": "e47c27bd111d3a4dad3b711bea12cd42d574f8f2422ff80bc466c9ce146e569d"
             }
           ]
+        },
+        {
+          "result": "revise",
+          "scope": [
+            "*"
+          ],
+          "reference": "Owner perspective and no-copy correction of world-grid-cities-v1, conversation 2026-09-15; replacement packet city-overhead-v2",
+          "quote": "Revise all the frames you've created and make sure they're from a game that's being seen from above. From the preview it seemed like some of them were to be seen from first person / frontal view, instead of from above...\n\nAlso, make sure NONE of these are copies. They can be heavily inspired in other people's work but NO COPY.",
+          "evidence": [
+            {
+              "path": "assets/cities/prompts.json",
+              "sha256": "18c6720e2ea795d04c5197a9a5d2ce3cb27a68fc2854ee584212a3124f912c71"
+            },
+            {
+              "path": "assets/cities/README.md",
+              "sha256": "5a34e224759ecfcc3afe413669ee66132e6b56a75a6ebb3b081fcd64a31c3678"
+            },
+            {
+              "path": "features/world/CITIES.md",
+              "sha256": "784b12099ec39dbe0d872f8474bcd2a8691bc366e008fbecf8daadd2072bb8f4"
+            }
+          ]
         }
       ]
     },
@@ -176,7 +198,7 @@
       "id": "OR-04",
       "title": "Approve the animation and impact reference",
       "timing": "next",
-      "state": "pending",
+      "state": "revise",
       "features": [
         "animation",
         "combat",
@@ -192,7 +214,7 @@
       "before": "After direction/concept approval, before mass rigging or animation production.",
       "why": "Sprite framing, ground anchors, rig proportions, attack timing and VFX origins get copied into every character package. Fixing the template late means re-exporting many assets.",
       "packet": [
-        "Review world-grid-cities-v1 in features/world/CITIES.md: the square border graph, four class-themed cities, painted entrances and rooms, nine new citizens, automatic arrival recovery and physical city waystones. Review city identity, readable doors and travel/recovery feel before wider repetition. Implementation was requested; final visual/pacing acceptance is still pending.",
+        "Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.",
         "AI presents Druid plus the supplied Brimble (emberfox) and Rattlebit (stonehorn) designs with Mage/ranged/support context: idle, both walking directions, attack, cast, hit, defeat and victory. These new PNGs currently use transform motion; the retired monster frame sheets are not their animation reference.",
         "Show actual play at 1× and 2×, crowded combat, Quiet FX and reduced motion. Include impact/sound/HP synchronization evidence.",
         "Show the same creatures in the world and inventory, not only the arena."
@@ -211,7 +233,30 @@
         "features/world/CITIES.md"
       ],
       "per_species": false,
-      "decisions": []
+      "decisions": [
+        {
+          "result": "revise",
+          "scope": [
+            "*"
+          ],
+          "reference": "Owner perspective and no-copy correction of world-grid-cities-v1, conversation 2026-09-15; replacement packet city-overhead-v2",
+          "quote": "Revise all the frames you've created and make sure they're from a game that's being seen from above. From the preview it seemed like some of them were to be seen from first person / frontal view, instead of from above...\n\nAlso, make sure NONE of these are copies. They can be heavily inspired in other people's work but NO COPY.",
+          "evidence": [
+            {
+              "path": "assets/cities/prompts.json",
+              "sha256": "18c6720e2ea795d04c5197a9a5d2ce3cb27a68fc2854ee584212a3124f912c71"
+            },
+            {
+              "path": "assets/cities/README.md",
+              "sha256": "5a34e224759ecfcc3afe413669ee66132e6b56a75a6ebb3b081fcd64a31c3678"
+            },
+            {
+              "path": "features/world/CITIES.md",
+              "sha256": "784b12099ec39dbe0d872f8474bcd2a8691bc366e008fbecf8daadd2072bb8f4"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "OR-05",
@@ -277,7 +322,7 @@
       "before": "Before locking asset detail/texture budgets or expanding screens and control patterns.",
       "why": "Changing screen density, touch/mouse assumptions or the minimum device later affects asset sizes, camera distance, labels, effects, input, layouts and performance budgets.",
       "packet": [
-        "Review world-grid-cities-v1 in features/world/CITIES.md: the square border graph, four class-themed cities, painted entrances and rooms, nine new citizens, automatic arrival recovery and physical city waystones. Review city identity, readable doors and travel/recovery feel before wider repetition. Implementation was requested; final visual/pacing acceptance is still pending.",
+        "Review city-overhead-v2 in assets/cities/README.md and features/world/CITIES.md: all 21 city frames now use overhead views, native sprite alpha and measured crops; rooms preserve source proportions. Review the three source sheets and actual city/interior/mobile captures in tests/artifacts/city-review.html. Text-only prompts, generation sources, hashes and the limits of the copying audit are documented. The owner requested correction of the prior frontal views; final visual acceptance remains pending.",
         "AI proposes a concrete supported desktop/browser baseline and an explicit mobile promise or deferral, with costs/limitations explained.",
         "Show the Patch 26 in-frame exploration objective, upper-right minimap/Atlas entry and bottom three-destination menu alongside party picker, skill editing, inventory, summoning and recovery on desktop and a narrow layout.",
         "Owner/real testers check the chosen physical devices before certification; emulated viewports alone cannot approve hardware.",

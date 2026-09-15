@@ -10,7 +10,7 @@ const themes=[
 const starters=['clearing-hub','brook-hub','hollow-hub','ruins-hub'];
 const masterCities={druid:'clearing-hub',mage:'brook-hub',hunter:'hollow-hub',swordsman:'ruins-hub'};
 const roomRoles={druid:{merchant:0,annex:1},mage:{merchant:2,annex:1},hunter:{merchant:0,annex:2},swordsman:{merchant:1,annex:0}};
-const exhibitAreas={druid:[[8,20,25,28],[77,25,20,35]],mage:[[8,28,25,28],[77,25,20,35]],hunter:[[29,12,32,27],[3,22,20,33]],swordsman:[[76,26,21,34],[27,2,44,25]]};
+const exhibitAreas={druid:[[6,24,29,37],[62,25,34,44]],mage:[[5,35,26,22],[69,31,28,34]],hunter:[[30,8,43,27],[5,22,20,38]],swordsman:[[69,28,25,31],[24,6,51,20]]};
 const spriteNames=['herbalist','gardener','bard','librarian','astronomer','alchemist','ranger','smith','captain'];
 function theme(map){return themes[map.regionIndex<4?map.regionIndex:map.regionIndex===4?2:3];}
 function layout(m,road){
