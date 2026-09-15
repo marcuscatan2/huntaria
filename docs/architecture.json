@@ -16,7 +16,7 @@
         "F-008"
       ],
       "entry": "BondApp.prepareBattle / renderBattle / finish / switchTab",
-      "contract": "Owns screen transitions, scheduling and settlement. Explore/Loadout do not stop running fights; edits affect future builds. Adventure deployment benches selected fallen companions without removing them from the saved loadout; only the fallen trainer blocks a new adventure. All player Run controls request a saved three-second retreat; successful escape keeps wounds/accepted drops without victory rewards or rescue. Internal cancel is lifecycle/QA cleanup. Browser-hidden/Pause and reload remain resumable. Events feed CombatView; visuals cannot grant rewards. Isolated ?test=1 alone uses 3× world travel, automatic recovery after settled adventure wins/losses and visible 5× playback; normal mode keeps standard travel, 1×/2× playback and normal recovery. Player-visible patch notes announce material progression/world changes. Delegates audio/device preferences to experience; new creation does not mount the old world first.",
+      "contract": "Owns screen transitions, scheduling and settlement. Explore/Loadout do not stop running fights; edits affect future builds. Adventure deployment benches selected fallen companions without removing them from the saved loadout; only the fallen trainer blocks a new adventure. All player Run controls request a saved three-second retreat; successful escape keeps wounds/accepted drops without victory rewards or rescue. Internal cancel is lifecycle/QA cleanup. Browser-hidden/Pause and reload remain resumable. Events feed CombatView; visuals cannot grant rewards. Isolated ?test=1 alone uses 3× world travel, automatic recovery after settled adventure wins/losses and visible 5× playback; normal mode keeps standard travel, 1×/2× playback and normal recovery. Player-visible patch notes announce material progression/world changes. Delegates audio/device preferences to experience; new creation does not mount the old world first. Region and preparation occupy the shared #game-frame; modal bounds follow it. Preparation stops field input while live encounters continue and settle without changing the selected menu.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -25,7 +25,8 @@
         "ui",
         "campaign",
         "boundaries",
-        "experience"
+        "experience",
+        "game-frame"
       ],
       "docs": [
         "docs/PLAYER_GUIDE.md",
@@ -179,23 +180,26 @@
         "formation-menu.js",
         "menu.css",
         "formation.css",
-        "pass14.css"
+        "pass14.css",
+        "game-frame.css"
       ],
       "backlog": [
         "F-005",
         "F-013"
       ],
       "entry": "BondMenu.render; BondPicker; BondFormation.assign; BondApp.changeUnit / changeSkills",
-      "contract": "UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials use a temporary three-of-five trainer build and never overwrite the Apprentice. Formation is an opening position, not a targeting override. Profile owns saved skills/trees.",
+      "contract": "UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials use a temporary three-of-five trainer build and never overwrite the Apprentice. Formation is an opening position, not a targeting override. Profile owns saved skills/trees. Preparation shares the exploration game frame. Native framed menus retain internal scrolling and focus; mobile item details return to their item grid. Homestead, owned companions and catalog are separate Inner Sea views.",
       "tests": [
         "mechanics",
         "ui",
         "boundaries",
         "experience",
-        "farm-classes"
+        "farm-classes",
+        "game-frame"
       ],
       "docs": [
-        "Companion stats.md"
+        "Companion stats.md",
+        "features/party/GAME_FRAME.md"
       ],
       "summary": "Selects individuals, skills and formation; connects saved builds to battle initialization."
     },
@@ -357,7 +361,7 @@
         "F-060"
       ],
       "entry": "BondEchoes.qualifies / key; BondInventory; BondJourney; BondLoot; BondProfile.summon / complete",
-      "contract": "Profile grants once locally; menus and individual in-field pickups display accepted receipts. Inventory stays authoritative after notifications expire. Level gains show a transient accessible LEVEL UP effect with the new level and an actor ring. The accepted first Firstlight Brimble receipt can force one Emberfox Echo; the accepted second-role receipt can force one Bloomslime or Stonehorn Echo. Both use ordinary Echo items, are consumed once and do not change normal drop odds. During the first summon objective, the in-frame Bag destination, owned Brimble Echo and Summon action are highlighted in sequence. Summon consumes one Echo for one independent individual and auto-fills an empty party slot. Player copy never exposes backend odds or receipt language. Each item/coin/XP type has an independent three-second in-frame pickup; overflow waits for its full lifetime.",
+      "contract": "Profile grants once locally; menus and individual in-field pickups display accepted receipts. Inventory stays authoritative after notifications expire. Level gains show a transient accessible LEVEL UP effect with the new level and an actor ring. The accepted first Firstlight Brimble receipt can force one Emberfox Echo; the accepted second-role receipt can force one Bloomslime or Stonehorn Echo. Both use ordinary Echo items, are consumed once and do not change normal drop odds. During the first summon objective, the in-frame Bag destination, owned Brimble Echo and Summon action are highlighted in sequence. Summon consumes one Echo for one independent individual and auto-fills an empty party slot. Player copy never exposes backend odds or receipt language. Each item/coin/XP type has an independent three-second in-frame pickup; overflow waits for its full lifetime. Bag categories, item details and summoning stay in the game frame; up to 850px item inspection replaces the grid until Back to items.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -365,7 +369,8 @@
         "ui",
         "campaign",
         "reference",
-        "boundaries"
+        "boundaries",
+        "game-frame"
       ],
       "docs": [
         "CREATURE_DROPS.md"
@@ -500,15 +505,17 @@
         "F-032"
       ],
       "entry": "BondFarm.advance / command / attack; BondProfile.farmAction / settleFarm; BondFarmView; BondInnerSea.draw / exportPicture",
-      "contract": "Lv25 farm ownership, wooden house and five independently upgraded habitats; each displays the highest-level compatible owned individual. All bag copies train while clean and intact. Power counts the strongest of each species once. Five separate defenders fight real daily monster-only battles at trainer level, scaled by bundled lunar phases. Success settles ordinary attacker loot once; loss removes XP from all owned monsters and damages the farm, suspending training/account bonuses until an item repair. Saved last outcome supplies a read-only replay. Original decoration drafts, styles, legacy selected IDs and local PNG export remain. Future habitat equipment and authoritative online settlement are unimplemented. Haunted cellar compatibility uses current ghost, undead, haunted-object and demon/fiend families before legacy animal shapes; saved cellar upgrades retain their key.",
+      "contract": "Lv25 farm ownership, wooden house and five independently upgraded habitats; each displays the highest-level compatible owned individual. All bag copies train while clean and intact. Power counts the strongest of each species once. Five separate defenders fight real daily monster-only battles at trainer level, scaled by bundled lunar phases. Success settles ordinary attacker loot once; loss removes XP from all owned monsters and damages the farm, suspending training/account bonuses until an item repair. Saved last outcome supplies a read-only replay. Original decoration drafts, styles, legacy selected IDs and local PNG export remain. Future habitat equipment and authoritative online settlement are unimplemented. Haunted cellar compatibility uses current ghost, undead, haunted-object and demon/fiend families before legacy animal shapes; saved cellar upgrades retain their key. Painted homestead scenery and resident placement share the PNG renderer. Clickable habitat labels focus their controls; native frames contain care, owned companions and catalog views.",
       "tests": [
         "experience",
         "boundaries",
-        "farm-classes"
+        "farm-classes",
+        "game-frame"
       ],
       "docs": [
         "features/inner-sea/DISPLAY.md",
-        "features/inner-sea/FARM_SCOPE.md"
+        "features/inner-sea/FARM_SCOPE.md",
+        "assets/inner-sea/README.md"
       ],
       "summary": "Trains the owned collection and stages daily monster defenses; persistence commits farm care, upgrades and rewards."
     },
@@ -630,7 +637,8 @@
         "structure",
         "boundaries",
         "client-build",
-        "farm-classes"
+        "farm-classes",
+        "game-frame"
       ],
       "docs": [
         "docs/ENGINEERING.md",
@@ -1021,6 +1029,13 @@
       ],
       "browser": true,
       "purpose": "Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls"
+    },
+    "game-frame": {
+      "command": [
+        "tests/game_frame_check.py"
+      ],
+      "browser": true,
+      "purpose": "Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement"
     }
   },
   "connections": [

@@ -4,6 +4,16 @@
   const KEY = BondProfile.BUILD_KEY, guilds = ['Grove', 'Dusk'];
   let build = G.soloBuild(), battle = null, running = false, speed = 1, elapsed = 0, lastFrame = 0, seenEvents = 0, saveAvailable = true;
   const tabs = ['region','loadout','battle'], recordedEncounters = new WeakSet();
+  function frameBounds(){
+    const frame=$('#game-frame');if(!frame)return;const r=frame.getBoundingClientRect();
+    const width=Math.max(0,Math.min(innerWidth,r.right)-Math.max(0,r.left))||Math.min(r.width,innerWidth);
+    const height=Math.max(0,Math.min(innerHeight,r.bottom)-Math.max(0,r.top))||Math.min(r.height,innerHeight);
+    const left=Math.max(0,Math.min(r.left,innerWidth-width)),top=Math.max(0,Math.min(r.top,innerHeight-height));
+    for(const [key,value] of Object.entries({left,top,width,height}))document.documentElement.style.setProperty('--game-'+key,value+'px');
+  }
+  new ResizeObserver(frameBounds).observe($('#game-frame'));
+  window.addEventListener('scroll',frameBounds,{passive:true});
+  window.addEventListener('resize',frameBounds);
   let activeTab = 'region', encounterId = null, committed = false;
   let practiceParties=1;
   try { const saved = JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('bond-bolt-build-v3'+(BondProfile.TEST?'-sandbox':''))||(!BondProfile.TEST&&BondProfile.snapshot().migration&&(localStorage.getItem('bond-bolt-build-v2')||localStorage.getItem('bond-bolt-build-v1')))); build = G.migrateBuild(saved)||build; } catch (_) { saveAvailable = false; }
@@ -21,13 +31,18 @@
     if (!tabs.includes(tab)) return;
     activeTab=tab;
     document.body.classList.toggle('combat-mode', tab === 'battle');
-    document.body.classList.toggle('region-mode', tab === 'region');
+    document.body.classList.toggle('region-mode', tab !== 'battle');
+    document.body.classList.toggle('menu-mode', tab === 'loadout');
     if (tab !== 'battle') { if(battle&&encounterId)BondProfile.checkpoint(battle); }
     tabs.forEach(name => { const active=name===tab; $('#tab-'+name).classList.toggle('active',active); $('#tab-'+name).setAttribute('aria-selected',active); $('#tab-'+name).tabIndex=active?0:-1; $('#panel-'+name).hidden=!active; });
+    // Exploration and preparation occupy the same playfield shell.
+    $('#panel-region').hidden=tab==='battle';
+    $('#region-map').hidden=tab!=='region';
     BondLoot.placeLevel();
     if(tab==='region')BondRegion.enter(build);else BondRegion.leave();
     if (tab === 'battle' && !battle) prepareBattle();
     if (tab === 'loadout') renderTeams();
+    frameBounds();
     updateAudio();
   }
   function invalidate() { ensureOwnedBuild();const saved=BondProfile.snapshot().encounterSave;if(battle&&!battle.ended&&(encounterId?saved?.attempt===battle._attemptId:running)){save();renderTeams();return;} battle=null; encounterId=null; running=false; elapsed=0; seenEvents=0; $('#scoreboard').hidden=true;Bonding.reset(); save(); renderTeams(); }

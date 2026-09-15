@@ -18,6 +18,7 @@
 | Reviewed catalog integrity | `python scripts/creature_reference.py --check` |
 | Settings, audio, Inner Sea drafting and PNG export | `python tests/experience_check.py --browser chrome` |
 | Classes, farm training, lunar defense and repairs | `python tests/farm_classes_check.py --browser chrome` |
+| Framed Inventory / Inner Sea, modal focus and responsive navigation | `python tests/game_frame_check.py --browser chrome` |
 | 1,000 browser/Node outcomes and CPU probe | `python tests/runtime_check.py --browser chrome` |
 | Repeatable local package and startup smoke | `python tests/client_build_check.py --browser chrome` |
 

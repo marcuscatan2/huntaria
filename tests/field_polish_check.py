@@ -125,7 +125,7 @@ with sync_playwright() as pw:
         check('Escape grants no unearned coins or recovery',page.evaluate('BondProfile.snapshot().coins')==before and page.evaluate('!BondProfile.complete(BondApp.getBattle(),BondApp.getEncounter()).rescued'))
         check('Escaped-from creature retains its spawn life',page.evaluate('(id)=>BondProfile.snapshot().spawns[id].present',spawn))
         check('Escape with no drops creates no empty loot popup',page.locator('.loot-toast').count()==0)
-        page.locator('#tab-region').click();page.keyboard.down('d');page.clock.run_for(300);page.keyboard.up('d')
+        page.locator('.frame-destinations [data-menu-close]').click();page.keyboard.down('d');page.clock.run_for(300);page.keyboard.up('d')
         check('Exploration accepts walking again after escape',page.evaluate('BondRegion.moveTo(BondOpening.start.position)'))
         # Failure to persist the request must not change the simulation.
         page.evaluate('qaHunt()');page.locator('#pause').click()

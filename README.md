@@ -21,9 +21,9 @@ real multiplayer and payments are not implemented.
 | Maps, signs, walking, quest markers, field HP or scenery crops | [World](features/world/README.md) / [Exploration](features/exploration/README.md) | The 36-place graph connects maps and saved position; campaign state supplies objective destinations and NPC `!`/`?` markers. |
 | Spawn density, wild levels, free healing | [Populations](features/population/README.md) / [Recovery](features/recovery/README.md) | Map quotas and encounter tuning connect to saved lives, camp and village services. |
 | Monsters, skills, levels, builds | [Content](features/content/README.md) / [Growth](features/growth/README.md) / [Party](features/party/README.md) | The reviewed Google Sheet snapshot owns creature identity; stable species/individual IDs and the Lv60 player/Lv100 engine boundary flow into combat. |
-| Inventory, item popups, summoning, lost/duplicate progress | [Collection](features/collection/README.md) / [Persistence](features/persistence/README.md) | Loot presentation reads accepted receipts; profile commits items and individuals. |
+| Inventory, item popups, summoning, lost/duplicate progress | [Collection](features/collection/README.md) / [Game frame](features/party/GAME_FRAME.md) | Framed Bag actions and loot presentation use profile-owned items and individuals. |
 | Sound, Settings, reduced motion | [Preferences/audio](features/experience/README.md) | Device choices affect presentation, never combat rules. |
-| Inner Sea farming, defense or picture export | [Inner Sea](features/inner-sea/README.md) | Habitat residents, AFK training, five-monster defenses, repairs and upgrades connect to saved progress. |
+| Inner Sea farming, defense or picture export | [Inner Sea](features/inner-sea/README.md) | A painted homestead inside the game frame connects habitats, training, defenses and care to saved progress. |
 | Other features or an unclear bug | [Feature index](FEATURE_MAP.md) | Symptoms route to the owner and its connecting boundary. |
 
 Feature folders contain focused guidance and links to the actual implementation.

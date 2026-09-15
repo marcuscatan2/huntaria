@@ -10,6 +10,7 @@
 - [Human sprites](characters/README.md): new class sheets, four civilian NPCs,
   exact built-in generation prompts and selected asset hashes.
 - [Exploration owner](../features/exploration/README.md): scenery and world props.
+- [Inner Sea homestead](inner-sea/README.md): painted farm background and exact generation provenance.
 - [Lossless scenery exports](world-runtime/README.md): pixel-identical runtime encoding; original images remain intact.
 - [Original audio](audio/README.md): procedural scores and reproducible loop files.
 - [Art Bible](../ART_BIBLE.md): visual conventions and acceptance, not an

@@ -9,7 +9,7 @@ Status: **local**. Selects individuals, skills and formation; connects saved bui
 
 `BondMenu.render; BondPicker; BondFormation.assign; BondApp.changeUnit / changeSkills`
 
-UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials use a temporary three-of-five trainer build and never overwrite the Apprentice. Formation is an opening position, not a targeting override. Profile owns saved skills/trees.
+UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials use a temporary three-of-five trainer build and never overwrite the Apprentice. Formation is an opening position, not a targeting override. Profile owns saved skills/trees. Preparation shares the exploration game frame. Native framed menus retain internal scrolling and focus; mobile item details return to their item grid. Homestead, owned companions and catalog are separate Inner Sea views.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -25,6 +25,7 @@ The links below point to the actual source; root browser paths remain in use.
 | [menu.css](<../../menu.css>) | Owned source/configuration; inspect before editing. |
 | [formation.css](<../../formation.css>) | Owned source/configuration; inspect before editing. |
 | [pass14.css](<../../pass14.css>) | Owned source/configuration; inspect before editing. |
+| [game-frame.css](<../../game-frame.css>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -51,11 +52,13 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/experience_check.py --browser chrome` — Preferences/audio lifecycle, owned scene drafting/persistence, PNG export and responsive input.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
+- `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
 ## Specifications and decisions
 
 - [Companion stats.md](<../../Companion stats.md>)
+- [features/party/GAME_FRAME.md](<../../features/party/GAME_FRAME.md>)
 - Commercial cards: [F-005](<../../FEATURE_BACKLOG.md>), [F-013](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-06](<../../OWNER_REVIEWS.md#or-06>), [OR-09](<../../OWNER_REVIEWS.md#or-09>) Use the live board/preflight for status, not an approval copied here.

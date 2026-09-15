@@ -19,7 +19,8 @@
     "assets/monsters/*.png",
     "assets/world-runtime/*.webp",
     "assets/audio/*.wav",
-    "assets/characters/*.png"
+    "assets/characters/*.png",
+    "assets/inner-sea/*.png"
   ],
   "rules": [
     "content.js",

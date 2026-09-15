@@ -394,7 +394,7 @@ def main():
             m = manifest()
             run(["scripts/world_assets.py", "--check"])
             run(["scripts/audio_assets.py", "--check"])
-            for suite in ("boundaries", "mechanics", "ui", "campaign", "opening", "onboarding", "sprites", "trainer-animation", "field-polish", "experience", "farm-classes", "runtime", "client-build"):
+            for suite in ("boundaries", "mechanics", "ui", "campaign", "opening", "onboarding", "sprites", "trainer-animation", "field-polish", "experience", "farm-classes", "game-frame", "runtime", "client-build"):
                 run([*m["suites"][suite]["command"], "--browser", args.browser])
             # Reference validation specifically reads the Chrome runtime export.
             if args.browser == "edge":

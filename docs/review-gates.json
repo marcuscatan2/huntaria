@@ -259,7 +259,8 @@
         "AI proposes a concrete supported desktop/browser baseline and an explicit mobile promise or deferral, with costs/limitations explained.",
         "Show the Patch 26 in-frame exploration objective, upper-right minimap/Atlas entry and bottom three-destination menu alongside party picker, skill editing, inventory, summoning and recovery on desktop and a narrow layout.",
         "Owner/real testers check the chosen physical devices before certification; emulated viewports alone cannot approve hardware.",
-        "Settings/audio and the local three-socket Inner Sea editor/export are available for review; see features/delivery/REMAINING_SCOPE.md (C3) and the feature guides. Automated 320/390/768/1440-width checks do not certify a physical phone. Confirm whether Android is mandatory for the initial launch."
+        "Settings/audio and the local three-socket Inner Sea editor/export are available for review; see features/delivery/REMAINING_SCOPE.md (C3) and the feature guides. Automated 320/390/768/1440-width checks do not certify a physical phone. Confirm whether Android is mandatory for the initial launch.",
+        "Review the owner-requested framed Bag and painted Inner Sea at actual desktop and phone sizes using features/party/GAME_FRAME.md and features/inner-sea/DISPLAY.md. The implementation authorization covers this local UI/art batch; target device promises, expanded screen standards and final art acceptance still require a named decision."
       ],
       "owner_accept": [
         "The intended launch devices are explicitly chosen; essential controls and combat information are readable and usable.",
@@ -272,7 +273,8 @@
       "refs": [
         "ART_BIBLE.md",
         "features/opening/PASS26_VALIDATION.md",
-        "VALIDATION_PLAN.md"
+        "VALIDATION_PLAN.md",
+        "features/party/GAME_FRAME.md"
       ],
       "per_species": false,
       "decisions": []
@@ -576,6 +578,34 @@
         {
           "path": "features/inner-sea/FARM_SCOPE.md",
           "sha256": "bd5ed153dd75a946838cfaf0bcf781d3577c383ac5417aa9ca9db85d71d41c11"
+        }
+      ]
+    },
+    {
+      "id": "in-frame-bag-inner-sea-2026-09-14",
+      "source": "Current owner conversation, 2026-09-14",
+      "scope": [
+        "Move Inventory and Inner Sea into the game frame",
+        "Create responsive UI frames and improve the local Inner Sea artwork"
+      ],
+      "quotes": [
+        "1 - Bring the inventory to 'In frame' instead of a web appliance outside the frame",
+        "2 - Make the inner sea 'in frame' as well and improve the looks of it.",
+        "Create the frames you need for it"
+      ],
+      "boundary": "Implementation authority for this local UI/art batch. Does not approve the final rendered result, device budgets, wider content production or external release.",
+      "evidence": [
+        {
+          "path": "features/party/GAME_FRAME.md",
+          "sha256": "fdc7950330d16480fe2a8e1b0a26220bfa93208b1fcfa4a306a2343517da22f4"
+        },
+        {
+          "path": "features/inner-sea/DISPLAY.md",
+          "sha256": "fb3024cd75bbc2b5c895da5f0de3dd973ed82e2689b14cdb8febfcf6389fb0b6"
+        },
+        {
+          "path": "assets/inner-sea/prompts.json",
+          "sha256": "ab51ed4c138291de1a555ac934aeec24b040bf244431bb4bde0165c4e94d62ec"
         }
       ]
     }

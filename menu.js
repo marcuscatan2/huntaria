@@ -2,7 +2,8 @@
 (function(){
 'use strict';
 const G=BondGame,P=BondProfile,A=BondAtlas,E=BondEchoes,host=document.querySelector('#teams'),art=t=>CharacterRig.art(t);
-let tab='party',side=0,slot=0,priority=0,filter='All',selected='emberfox',query='',page=0,collectionMode='companions',selectedInstance=null;
+let tab='party',side=0,slot=0,priority=0,filter='All',selected='emberfox',query='',page=0,collectionMode='farm',selectedInstance=null;
+const fieldGuide=document.querySelector('#panel-loadout>.field-guide');
 const role=u=>u.role==='Trainer'?'CLASS':(u.designRole||(u.role==='Tank'?'Tank':u.role==='Support'?'Supp':'DPS')).toUpperCase();
 const roleMatch=(u,wanted)=>wanted==='All'||wanted==='Owned'||wanted==='Damage'&&/(DPS|Fighter)/.test(u.designRole||u.role)||wanted==='Tank'&&(u.designRole||u.role).includes('Tank')||wanted==='Support'&&/(Supp|Support)/.test(u.designRole||u.role);
 function source(type){const u=G.UNITS[type],h=A.home(type);return u.source==='boss'?'Group boss · '+A.REGIONS[u.region].name+' (online encounter pending)':h?A.get(h.map).name+' · '+h.count+' map residents':'Trainer class';}
@@ -38,7 +39,8 @@ function catalogView(build){
  return '<div class="haven-banner"><div><p class="eyebrow">A WORLD WITHIN YOU</p><h3>The Inner Sea</h3><p>Your companions make their home here.</p><span>'+state.owned.length+' / '+G.MONSTERS.length+' species summoned</span></div><div class="inner-sea-orbit" aria-hidden="true">✧</div></div><div class="library-heading"><div><h3>Your monster collection</h3><p>Your companions and discovered species.</p></div><div class="menu-filters">'+['All','Owned','Damage','Tank','Support'].map(f=>'<button data-filter="'+f+'" aria-pressed="'+(filter===f)+'" class="'+(filter===f?'selected':'')+'">'+f+'</button>').join('')+'</div></div><label class="collection-search">Search species, family, element or map<input id="collection-search" type="search" value="'+query.replace(/[&<>"]/g,'')+'" placeholder="e.g. Beast, Construct or Mosslight" autocomplete="off"></label><div class="collection-grid">'+shown.map(k=>'<button data-collection="'+k+'" class="collection-card '+(!P.owns(k)?'unbound ':'')+(selected===k?'selected':'')+'" aria-pressed="'+(selected===k)+'" style="--unit-accent:'+G.UNITS[k].color+'"><small>'+role(G.UNITS[k])+' · '+G.UNITS[k].element+' · '+(G.UNITS[k].visualFamily||G.UNITS[k].family)+'</small><div>'+art(k)+'</div><strong>'+G.UNITS[k].name+'</strong><span>'+(build[0].some(u=>u?.type===k)?'IN YOUR PARTY':P.owns(k)?'AT HOME':'UNDISCOVERED')+'</span></button>').join('')+'</div>'+(!ids.length?'<p>No species match these filters.</p>':'')+'<div class="collection-pages"><button class="button secondary" data-page="-1" '+(!page?'disabled':'')+'>← Previous</button><span>'+ids.length+' species · Page '+(page+1)+' / '+pages+'</span><button class="button secondary" data-page="1" '+(page>=pages-1?'disabled':'')+'>Next →</button></div>'+detail(selected);
 }
 function collectionView(build){
- const switcher=BondInnerSea.markup()+'<div class="collection-mode"><button data-collection-mode="companions" class="button secondary '+(collectionMode==='companions'?'selected':'')+'">My companions · '+P.companions().length+'</button><button data-collection-mode="catalog" class="button secondary '+(collectionMode==='catalog'?'selected':'')+'">Species guide · 100</button></div>';
+ const switcher='<nav class="collection-mode" aria-label="Inner Sea areas">'+[['farm','Homestead'],['companions','My companions · '+P.companions().length],['catalog','Species guide']].map(([id,name])=>'<button data-collection-mode="'+id+'" aria-pressed="'+(collectionMode===id)+'" class="button secondary '+(collectionMode===id?'selected':'')+'">'+name+'</button>').join('')+'</nav>';
+ if(collectionMode==='farm')return switcher+BondInnerSea.markup();
  if(collectionMode==='catalog')return switcher+catalogView(build);
  const all=P.companions(),ids=all.filter(mon=>!query||(P.label(mon)+' '+G.UNITS[mon.type].element).toLowerCase().includes(query.toLowerCase())),pages=Math.max(1,Math.ceil(ids.length/20));page=Math.min(page,pages-1);
  if(!all.some(x=>x.id===selectedInstance))selectedInstance=all[0]?.id||null;
@@ -51,7 +53,13 @@ function collectionView(build){
 function render(){
  if(!window.BondApp||BondApp.getTab()!=='loadout')return;
  const state=P.snapshot(),build=BondApp.getBuild();
- host.innerHTML='<div class="adventure-banner"><div><p class="eyebrow">'+(P.TEST?'ISOLATED LOCAL QA SANDBOX':'THE INNER SEA CHRONICLES')+'</p><h3>Better, together.</h3><p>One trainer. A hundred possible bonds.</p></div><div class="banner-stats"><span><b>'+state.companions.length+'</b>COMPANIONS</span><span><b>'+state.tutorial.kills+'</b>WILD KILLS</span><span><b>'+state.coins+'</b>TRAIL COINS</span></div></div><nav class="menu-nav" aria-label="Party and inventory"><div>'+[['party','Your party'],['collection','Inner Sea'],['inventory','Inventory'],['trees','Skill trees'],['trainer','Trainer'],['formation','Formation']].map(([id,name])=>'<button data-menu="'+id+'" aria-pressed="'+(tab===id)+'" class="'+(tab===id?'selected':'')+'">'+name+'</button>').join('')+'</div><span class="prepared-state">'+(state.prepared?'Biscuit prepared · +80 shield':'Three skills · one innate per monster')+'</span></nav><div class="menu-content">'+(tab==='party'?partyView(build):tab==='collection'?collectionView(build):tab==='trees'?BondTree.render():tab==='trainer'?BondJourney.trainer():tab==='formation'?BondFormationView.render():BondInventory.render())+'</div><p id="menu-notice" role="status" aria-live="polite">'+(P.error()||'')+'</p>';
+ const names={party:'Your party',collection:'Inner Sea',inventory:'Inventory',trees:'Skill trees',trainer:'Trainer',formation:'Formation'};
+ const scroll=host.querySelector('.menu-content')?.scrollTop||0,farmScroll=host.querySelector('#farm-panel')?.scrollTop||0;
+ const same=host.dataset.screen===tab;host.dataset.screen=tab;
+ host.innerHTML='<header class="game-menu-heading"><span class="frame-sigil" aria-hidden="true">'+(tab==='collection'?'☽':tab==='inventory'?'◇':'✦')+'</span><div><p class="eyebrow">'+(tab==='collection'?'A WORLD WITHIN YOU':'READY FOR THE ROAD')+'</p><h2>'+names[tab]+'</h2></div><span class="frame-coins" aria-label="'+state.coins+' trail coins"><i aria-hidden="true">●</i> '+state.coins+'<small>TRAIL COINS</small></span><button class="frame-close" data-menu-close aria-label="Close '+names[tab]+' and return to exploration" title="Return to exploration (Esc)">×</button></header><nav class="menu-nav" aria-label="Party and inventory"><div>'+Object.entries(names).map(([id,name])=>'<button data-menu="'+id+'" aria-pressed="'+(tab===id)+'" class="'+(tab===id?'selected':'')+'">'+name+'</button>').join('')+'</div></nav><div class="menu-content" tabindex="-1">'+(tab==='party'?partyView(build):tab==='collection'?collectionView(build):tab==='trees'?BondTree.render():tab==='trainer'?BondJourney.trainer():tab==='formation'?BondFormationView.render():BondInventory.render())+'</div><p id="menu-notice" role="status" aria-live="polite">'+(P.error()||'')+'</p><nav class="frame-destinations" aria-label="Game destinations"><button data-menu-close><span aria-hidden="true">⌁</span> Explore</button><button data-frame-menu="inventory" aria-pressed="'+(tab==='inventory')+'"><span aria-hidden="true">◇</span> Bag</button><button data-frame-menu="collection" aria-pressed="'+(tab==='collection')+'"><span aria-hidden="true">☽</span> Inner Sea</button></nav>';
+ document.querySelector('#panel-loadout').dataset.screen=tab;
+ if(same){host.querySelector('.menu-content').scrollTop=scroll;const farm=host.querySelector('#farm-panel');if(farm)farm.scrollTop=farmScroll;}
+ if(tab==='party')host.querySelector('.menu-content').append(fieldGuide);
  if(tab==='collection')BondInnerSea.refresh();
  if(BondApp.getTab()==='loadout')BondAudio.scene(tab==='collection'?'innersea':'explore');
 }
@@ -74,11 +82,13 @@ function summon(type){
 summonDialog.addEventListener('close',()=>{if(returnFocus?.isConnected)returnFocus.focus({preventScroll:true});});
 host.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
- if(b.dataset.menu){tab=b.dataset.menu;filter='All';page=0;rerender('[data-menu="'+tab+'"]');}
+ if(b.hasAttribute('data-menu-close')){close();return;}
+ if(b.dataset.frameMenu){BondMenu.open(b.dataset.frameMenu);return;}
+ if(b.dataset.menu){if(tab!=='collection'&&b.dataset.menu==='collection')collectionMode='farm';tab=b.dataset.menu;filter='All';page=0;rerender('[data-menu="'+tab+'"]');}
  else if(b.hasAttribute('data-side-toggle')){side=1-side;slot=0;priority=0;rerender('[data-side-toggle]');}
  else if(b.dataset.slot!==undefined){slot=+b.dataset.slot;priority=0;rerender('[data-slot="'+slot+'"]');openPartyPicker(slot);}
  else if(b.hasAttribute('data-replace-unit'))openPartyPicker(slot);
- else if(b.dataset.collectionMode){collectionMode=b.dataset.collectionMode;query='';page=0;render();}
+ else if(b.dataset.collectionMode){collectionMode=b.dataset.collectionMode;query='';page=0;render();host.querySelector('.menu-content').scrollTop=0;host.querySelector('[data-collection-mode="'+collectionMode+'"]')?.focus({preventScroll:true});}
  else if(b.dataset.instance){selectedInstance=b.dataset.instance;priority=0;rerender('[data-instance="'+selectedInstance+'"]');}
  else if(b.dataset.priority!==undefined){priority=+b.dataset.priority;rerender('[data-priority="'+priority+'"]');}
  else if(b.dataset.skill){const mon=tab==='collection'&&collectionMode==='companions'?P.getCompanion(selectedInstance):null,u=mon||BondApp.getBuild()[side][slot];if(!u)return;const i=u.skills.indexOf(b.dataset.skill);if(i>=0)[u.skills[i],u.skills[priority]]=[u.skills[priority],u.skills[i]];else u.skills[priority]=b.dataset.skill;if(mon)P.setSkills(mon.id,u.skills);else BondApp.changeSkills(side,slot,u.skills);host.querySelector('[data-skill="'+b.dataset.skill+'"]')?.focus({preventScroll:true});}
@@ -88,12 +98,14 @@ host.addEventListener('click',e=>{
  else if(b.dataset.page){page=Math.max(0,page+Number(b.dataset.page));rerender('[data-page="'+b.dataset.page+'"]');}
  else if(b.dataset.add){side=0;slot=+b.dataset.add;priority=0;const id=selectedInstance;if(!P.getCompanion(id))return;tab='party';BondApp.changeUnit(0,slot,id);host.querySelector('[data-slot="'+slot+'"]')?.focus({preventScroll:true});}
  else if(b.dataset.summon)summon(b.dataset.summon);
- else if(b.dataset.item){BondInventory.select(b.dataset.item);rerender('[data-item="'+b.dataset.item+'"]');}
+ else if(b.dataset.item){BondInventory.select(b.dataset.item);rerender(matchMedia('(max-width:850px)').matches?'[data-bag-back]':'[data-item="'+b.dataset.item+'"]');}
  else if(b.hasAttribute('data-prepare'))P.prepare();
  else if(b.hasAttribute('data-unprepare'))P.unprepare();
 });
 host.addEventListener('change',e=>{if(e.target.id==='party-type'){BondApp.changeUnit(side,slot,e.target.value);host.querySelector('#party-type')?.focus({preventScroll:true});}});
 host.addEventListener('input',e=>{if(e.target.id==='collection-search'){const pos=e.target.selectionStart;query=e.target.value;page=0;render();const input=host.querySelector('#collection-search');input?.focus();try{input?.setSelectionRange(pos,pos);}catch(_){}}});
+function close(){BondApp.switchTab('region');document.querySelector('[data-world-menu="'+(tab==='inventory'?'inventory':tab==='collection'?'collection':'region')+'"]')?.focus({preventScroll:true});}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&window.BondApp?.getTab()==='loadout'&&!document.querySelector('dialog[open]')){e.preventDefault();close();}});
 document.addEventListener('bond-profile',render);
-window.BondMenu={render,summon,detail,current:()=>tab,open(name){if(!['party','collection','inventory','trees','trainer','formation'].includes(name))return;tab=name;filter='All';page=0;rerender('[data-menu="'+name+'"]');},selectCollection(type){if(!G.MONSTERS.includes(type))return;selected=type;selectedInstance=null;collectionMode='catalog';tab='collection';filter='All';query='';page=Math.floor(G.MONSTERS.indexOf(type)/20);render();},source};
+window.BondMenu={render,summon,detail,current:()=>tab,open(name){if(!['party','collection','inventory','trees','trainer','formation'].includes(name))return;tab=name;if(name==='collection')collectionMode='farm';filter='All';page=0;rerender('[data-menu="'+name+'"]');},selectCollection(type){if(!G.MONSTERS.includes(type))return;selected=type;selectedInstance=null;collectionMode='catalog';tab='collection';filter='All';query='';page=Math.floor(G.MONSTERS.indexOf(type)/20);render();},source};
 })();

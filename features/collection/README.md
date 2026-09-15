@@ -9,7 +9,7 @@ Status: **local**. Shows inventory and Soul Echo summoning; persistence owns dro
 
 `BondEchoes.qualifies / key; BondInventory; BondJourney; BondLoot; BondProfile.summon / complete`
 
-Profile grants once locally; menus and individual in-field pickups display accepted receipts. Inventory stays authoritative after notifications expire. Level gains show a transient accessible LEVEL UP effect with the new level and an actor ring. The accepted first Firstlight Brimble receipt can force one Emberfox Echo; the accepted second-role receipt can force one Bloomslime or Stonehorn Echo. Both use ordinary Echo items, are consumed once and do not change normal drop odds. During the first summon objective, the in-frame Bag destination, owned Brimble Echo and Summon action are highlighted in sequence. Summon consumes one Echo for one independent individual and auto-fills an empty party slot. Player copy never exposes backend odds or receipt language. Each item/coin/XP type has an independent three-second in-frame pickup; overflow waits for its full lifetime.
+Profile grants once locally; menus and individual in-field pickups display accepted receipts. Inventory stays authoritative after notifications expire. Level gains show a transient accessible LEVEL UP effect with the new level and an actor ring. The accepted first Firstlight Brimble receipt can force one Emberfox Echo; the accepted second-role receipt can force one Bloomslime or Stonehorn Echo. Both use ordinary Echo items, are consumed once and do not change normal drop odds. During the first summon objective, the in-frame Bag destination, owned Brimble Echo and Summon action are highlighted in sequence. Summon consumes one Echo for one independent individual and auto-fills an empty party slot. Player copy never exposes backend odds or receipt language. Each item/coin/XP type has an independent three-second in-frame pickup; overflow waits for its full lifetime. Bag categories, item details and summoning stay in the game frame; up to 850px item inspection replaces the grid until Back to items.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -48,6 +48,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/pass18_campaign.py --browser chrome` — Current campaign/replay assertions (reuses pass16_cases.js).
 - `python scripts/creature_reference.py --check` — Reviewed 100-species snapshot and four generated outputs agree with Chrome export.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
+- `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

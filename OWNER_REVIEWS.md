@@ -229,6 +229,7 @@ Priority: **NEXT**. State: **Pending review packet / decision**.
 - Show the Patch 26 in-frame exploration objective, upper-right minimap/Atlas entry and bottom three-destination menu alongside party picker, skill editing, inventory, summoning and recovery on desktop and a narrow layout.
 - Owner/real testers check the chosen physical devices before certification; emulated viewports alone cannot approve hardware.
 - Settings/audio and the local three-socket Inner Sea editor/export are available for review; see features/delivery/REMAINING_SCOPE.md (C3) and the feature guides. Automated 320/390/768/1440-width checks do not certify a physical phone. Confirm whether Android is mandatory for the initial launch.
+- Review the owner-requested framed Bag and painted Inner Sea at actual desktop and phone sizes using features/party/GAME_FRAME.md and features/inner-sea/DISPLAY.md. The implementation authorization covers this local UI/art batch; target device promises, expanded screen standards and final art acceptance still require a named decision.
 
 **You validate / acceptance:**
 
@@ -242,7 +243,7 @@ Priority: **NEXT**. State: **Pending review packet / decision**.
 
 **Reopen when:** Minimum hardware, browser promise, input model, UI density or asset budgets change.
 
-**Related specifications:** [ART_BIBLE.md](<ART_BIBLE.md>), [features/opening/PASS26_VALIDATION.md](<features/opening/PASS26_VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>).
+**Related specifications:** [ART_BIBLE.md](<ART_BIBLE.md>), [features/opening/PASS26_VALIDATION.md](<features/opening/PASS26_VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/party/GAME_FRAME.md](<features/party/GAME_FRAME.md>).
 
 <a id="or-07"></a>
 ### OR-07 — Approve release economy and rarity expectations
