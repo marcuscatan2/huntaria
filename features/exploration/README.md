@@ -9,7 +9,7 @@ Status: **local-prototype**. Handles walking, camera, atlas and scenery; connect
 
 `BondRegion.enter / leave / frame; WorldRenderer.mount / dispose / draw; BondWorldMap`
 
-Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; the designated opening Emberfox is temporarily hostile. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The Forest Mage onboarding trial and four class-master acceptance battles are protected from roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction. Ordinary NPCs and keepers use civilian art; class masters retain their class portrait through the shared CharacterRig appearance selector.
+Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; the designated opening Emberfox is temporarily hostile. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The Forest Mage onboarding trial and four class-master acceptance battles are protected from roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction. Ordinary NPCs and keepers use civilian art; class masters retain their class portrait through the shared CharacterRig appearance selector. City buildings use painted hit bounds and clear doorway proximity. Enterable illustrated rooms contain resident conversations, prop interactions and profile-owned supply purchases; closing/reload returns outside. Cities replace generic markers with painted buildings, people, companions, waystones and chest objects. The Cartesian atlas draws equal squares and actual shared-border routes; waystone travel is a separate physical interaction.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -27,6 +27,8 @@ The links below point to the actual source; root browser paths remain in use.
 | [wild-behavior.js](<../../wild-behavior.js>) | `BondWildBehavior` |
 | [scripts/world_assets.py](<../../scripts/world_assets.py>) | Owned source/configuration; inspect before editing. |
 | [assets/world-runtime/manifest.json](<../../assets/world-runtime/manifest.json>) | Owned source/configuration; inspect before editing. |
+| [city-view.js](<../../city-view.js>) | `BondCityView` |
+| [city.css](<../../city.css>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -60,6 +62,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/pass18_campaign.py --browser chrome` — Current campaign/replay assertions (reuses pass16_cases.js).
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
+- `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, arrival healing, physical teleport authority and save failures.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -68,6 +71,7 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [WORLD_DESIGN.md](<../../WORLD_DESIGN.md>)
 - [WORLD_IMPLEMENTATION.md](<../../WORLD_IMPLEMENTATION.md>)
 - [assets/world-runtime/README.md](<../../assets/world-runtime/README.md>)
+- [features/world/CITIES.md](<../../features/world/CITIES.md>)
 - Art and provenance: [assets/world-v15](<../../assets/world-v15>)
 - Art and provenance: [assets/world-v17](<../../assets/world-v17>)
 - Art and provenance: [assets/world-runtime](<../../assets/world-runtime>)

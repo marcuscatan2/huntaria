@@ -99,6 +99,7 @@ function normalize(raw){
   for(const id of Q.keys(h))if(s.spawns[id])s.spawns[id].activeSlot=selected.has(id);
  }
  s.vitality=T.clean(s,raw.vitality);s.haven=BondHaven.clean(raw.haven,s);s.farm=BondFarm.clean(raw.farm,s);
+ if(A.get(s.map).kind==='hub'&&!s.encounterSave)healArrival(s);
  if(!raw.farm&&raw.haven&&(s.haven.slots.some(Boolean)||s.haven.companions.some(Boolean)))s.farm.owned=true;
  summarize(s);return s;
 }
@@ -130,7 +131,7 @@ function population(mapId=state.map,now=Date.now()){
    const point=Q.position(m,id,seed,occupied,Number.isFinite(old?.x)?old:null,!old&&C.UNITS[h.type].starter&&id.endsWith(':0'));
    if(!point)continue;
    next.spawns[id]={life:(old?.life||0)+1,readyAt:0,present:true,empty:false,activeSlot:true,locationRevision:Q.REVISION,roll:E.roll(),seed,...point};occupied.push(point);change=true;
-  }else if(old?.present&&!held&&(old.locationRevision!==Q.REVISION||!Number.isFinite(old.x)||A.collision(m.id,old)||!BondOpening.groundAllowed(m.id,id,old))){
+  }else if(old?.present&&!held&&(old.locationRevision!==Q.REVISION||!Number.isFinite(old.x)||A.collision(m.id,old,55)||BondWorldLayout.waterAt(m,old)||!BondOpening.groundAllowed(m.id,id,old))){
    const point=Q.position(m,id,old.seed,occupied);
    if(point){Object.assign(old,point,{locationRevision:Q.REVISION});occupied.push(point);change=true;}
   }
@@ -268,7 +269,7 @@ function complete(b,id){
     BondCampaign.recordWin(s,e);
    }
    T.record(s,b);
-   if(b.adventure&&b.winner!==0&&!b.escaped){if(e.map===BondOpening.start.map){s.map=BondOpening.start.map;s.area=A.get(s.map).region;s.position={...BondOpening.start.position};s.vitality={trainer:10000,companions:Object.fromEntries(s.companions.map(m=>[m.id,10000]))};result.campRecovery=true;}else{const town=A.get(e.area+'-hub')||A.get(A.get(s.map).region+'-hub');s.map=town.id;s.area=town.region;s.position=T.service(town,'sanctuary');if(!s.visited.includes(town.id))s.visited.push(town.id);}result.rescued=true;}
+   if(b.adventure&&b.winner!==0&&!b.escaped){if(e.map===BondOpening.start.map){s.map=BondOpening.start.map;s.area=A.get(s.map).region;s.position={...BondOpening.start.position};s.vitality={trainer:10000,companions:Object.fromEntries(s.companions.map(m=>[m.id,10000]))};result.campRecovery=true;}else{const town=A.get(e.area+'-hub')||A.get(A.get(s.map).region+'-hub');s.map=town.id;s.area=town.region;s.position={...town.entry};healArrival(s);if(!s.visited.includes(town.id))s.visited.push(town.id);}result.rescued=true;}
    if(e.packId&&b.winner===0)s.journey.packs[e.packId]=++s.journey.sequence;
    if(b._attemptId)s.encounterReceipts[b._attemptId]=clone(result);
    if(s.encounterSave?.id===id)s.encounterSave=null;
@@ -294,8 +295,11 @@ function summon(type,trainerClass='druid',requestId){
   return {ok:true,type,instanceId,id:echo.id,level:ownedLevel,sourceLevel:echo.level};
  },{critical:true,growth:true});
 }
-function moveTo(map,p,bypassGate=false){return commit(s=>{if(s.encounterSave&&map!==s.map)return false;if(!bypassGate&&!A.unlocked(s,map))return false;const next=A.clamp(map,p);if(A.collision(map,next))return false;s.map=map;s.area=A.get(map).region;s.position=next;if(!s.visited.includes(map))s.visited.push(map);return true;});}
-function transition(id){const m=A.get(state.map),g=m.neighbors.find(g=>g.id===id);if(!g||Math.hypot(state.position.x-g.x,state.position.y-g.y)>135)return false;return moveTo(g.to,g.arrival);}
+function healArrival(s){s.vitality={trainer:10000,companions:Object.fromEntries(s.companions.map(m=>[m.id,10000]))};}
+function arrive(s,map,p){const next=A.clamp(map,p);if(A.collision(map,next))return false;const changed=s.map!==map;s.map=map;s.area=A.get(map).region;s.position=next;if(!s.visited.includes(map))s.visited.push(map);if(changed&&A.get(map).kind==='hub')healArrival(s);return true;}
+function moveTo(map,p,bypassGate=false){return commit(s=>{if(!A.get(map)||s.encounterSave&&map!==s.map||!bypassGate&&!A.unlocked(s,map))return false;return arrive(s,map,p);},{critical:true});}
+function teleport(map){return commit(s=>{if(!BondCities.destinations(s).includes(map))return false;const city=A.get(map),p=A.safePoint(map,{x:city.teleport.x,y:city.teleport.y+110});return arrive(s,map,p);},{critical:true});}
+function transition(id){return commit(s=>{const m=A.get(s.map),g=m.neighbors.find(g=>g.id===id);if(!g||s.encounterSave||Math.hypot(s.position.x-g.x,s.position.y-g.y)>135||!A.unlocked(s,g.to))return false;return arrive(s,g.to,g.arrival);},{critical:true});}
 function consumePrepared(b){
  if(b._supplyReceipt)return b._supplyReceipt;
  const receipt=commit(s=>{const out={biscuit:!!(s.prepared&&s.inventory.biscuit),ration:!!(s.boost&&s.inventory.battlefood)};if(out.biscuit)s.inventory.biscuit--;if(out.ration)s.inventory.battlefood--;s.prepared=false;s.boost=false;if(s.encounterSave)s.encounterSave.supply=out;return out;},{critical:true});
@@ -311,7 +315,7 @@ root.BondProfile={
  requirement(id,party){const e=encounter(id);return e?BondCampaign.requirement(e,state,party):'Encounter unavailable.';},
  setSkills(id,skills){return commit(s=>{const m=resolve(s,id);if(!m||!validSkills(m.type,skills))return false;m.skills=[...skills];BondCampaign.recordAbility(s,m);},{critical:true,growth:true});},
  migrateParty(team){return team.map((u,slot)=>{if(!slot&&state.character&&!state.character.legacy){const start=BondOpening.build(state.character,state.progression.specialization);if(u?.type===start.type&&(!start.weapon||u.weapon===start.weapon)&&validSkills(start.type,u.skills))start.skills=[...u.skills];return start;}if(!u||!slot)return u;const m=resolve(state,u.instanceId)||(!u.instanceId?state.companions.find(m=>m.type===u.type):null);if(!m||m.type!==u.type)return null;if(!u.instanceId&&validSkills(u.type,u.skills))commit(s=>{resolve(s,m.id).skills=[...u.skills];},{quiet:true,critical:true});return {type:m.type,instanceId:m.id,skills:!u.instanceId&&validSkills(u.type,u.skills)?[...u.skills]:[...m.skills]};});},
- encounter,beginHunt,beginPack,hunt,validEncounter,population,settleKills,complete,summon,consumePrepared,transition,reserveBattle,checkpoint,restoreBattle,abandonBattle,joinBattle,requestEscape,
+ encounter,beginHunt,beginPack,hunt,validEncounter,population,settleKills,complete,summon,consumePrepared,transition,teleport,reserveBattle,checkpoint,restoreBattle,abandonBattle,joinBattle,requestEscape,
   talkKeeper(map){return commit(s=>{const m=A.get(map);if(map!==s.map||Math.hypot(s.position.x-m.guide.x,s.position.y-m.guide.y)>150)return false;s.journey.talks[map]=++s.journey.sequence;return true;},{critical:true});},
   meetOpeningMage(){return commit(s=>{if(s.map!=='clearing-0'||!s.journey?.early?.firstSummon)return false;BondCampaign.recordMageMeeting(s);return true;},{critical:true});},
  claimChallenge(id){const c=root.BondCampaign?.challenges.find(c=>c.id===id);return commit(s=>{if(!c||s.journey.challenges.includes(id)||BondCampaign.challengeCount(s,c)<c.count)return false;s.journey.challenges.push(id);s.coins+=c.coins;add(s,c.item);return true;},{critical:true});},

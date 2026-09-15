@@ -9,7 +9,7 @@ Status: **local-only**. Owns local saves, migrations and receipts; accepts mutat
 
 `BondProfile.commit (private); normalize / reserveBattle / checkpoint / restoreBattle / settleKills / complete / summon`
 
-Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save.
+Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -35,6 +35,7 @@ Observed references include optional and late callbacks, not only boot dependenc
 - [created-apprentice](<../../docs/architecture/CONNECTIONS.md#created-apprentice>) (opening → persistence): Fresh path: validated name/palette/weapon -> painted creation preview -> createCharacter atomic local commit at BondOpening.start forest camp -> saved apprentice build and weapon-derived combat. Migration path: an unnamed legacy marker or literal Apprentice placeholder opens a one-time name-only screen -> nameCharacter updates only identity while preserving class/build, appearance, progress, location and encounter; it cannot be repeated. UI cannot create starter items independently.
 - [territorial-encounter](<../../docs/architecture/CONNECTIONS.md#territorial-encounter>) (exploration → persistence): Notice -> warning -> chase/contact -> reserve existing spawn life. With an active fight, joinBattle saves entry and tick before Battle.addEnemy. In-game tabs/modals do not pause active-fight pursuit; explicit Pause/browser-hidden does. Leash and line of sight apply. No visual reward authority.
 - [haven-layout](<../../docs/architecture/CONNECTIONS.md#haven-layout>) (inner-sea → persistence): Owned progress validates three decoration sockets and legacy selections; pure farm rules separately compute training, strongest-species power, daily defenses and habitat residents. Profile settles timestamps, XP, repairs and rewards atomically. Drafts, export and defense replay cannot grant rewards.
+- [city-travel](<../../docs/architecture/CONNECTIONS.md#city-travel>) (world → persistence): Authored doorway/waystone positions authorize proximity-bound room/service interactions and critical city teleport transactions. Arrival heals all owned lives; failed saves retain location/resources; atlas selection only plans physical walking.
 
 Shared shapes: [Profile read and command: profile.js](<../../docs/architecture/CONNECTIONS.md#interface-2>), [Individual: progression.js / profile.js](<../../docs/architecture/CONNECTIONS.md#interface-3>), [Spawn life / reservation: profile.js](<../../docs/architecture/CONNECTIONS.md#interface-4>), [View invalidation signals](<../../docs/architecture/CONNECTIONS.md#interface-5>).
 
@@ -62,6 +63,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/experience_check.py --browser chrome` — Preferences/audio lifecycle, owned scene drafting/persistence, PNG export and responsive input.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
+- `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, arrival healing, physical teleport authority and save failures.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -69,5 +71,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 
 - [features/persistence/SAVES.md](<../../features/persistence/SAVES.md>)
 - [docs/ENGINEERING.md](<../../docs/ENGINEERING.md>)
+- [features/world/CITIES.md](<../../features/world/CITIES.md>)
 - Commercial cards: Cross-cutting implementation; no separate acceptance card.
 - Owner review routes: [OR-08](<../../OWNER_REVIEWS.md#or-08>), [OR-11](<../../OWNER_REVIEWS.md#or-11>) Use the live board/preflight for status, not an approval copied here.

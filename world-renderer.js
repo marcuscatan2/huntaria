@@ -126,7 +126,7 @@ function draw(ctx,m,camera,scale,width,height,now,player,options={}){
    if(mode==='low'&&p.size<180&&![13,14,15].includes(p.art))continue;
    visible.add(p.key);let el=nodes.get(p.key);
    if(!el){el=document.createElement('div');el.className='world-prop';el.setAttribute('aria-hidden','true');parent.append(el);nodes.set(p.key,el);}
-   spriteStyle(el,t.id,p.art,p.size*scale);
+   if(Number.isInteger(p.cityArt))BondCityArt.building(el,p.cityArt,p.size*scale);else spriteStyle(el,t.id,p.art,p.size*scale);
    el.style.left=x+'px';el.style.top=y+'px';el.style.zIndex=String(Math.round(y+300));
    const overlap=[player,options.focus].filter(Boolean).some(subject=>subject.y<p.y&&p.y-subject.y<(p.art<4?250:130)&&Math.abs(subject.x-p.x)<p.size*.30);
    el.style.opacity=overlap?'.34':'1';

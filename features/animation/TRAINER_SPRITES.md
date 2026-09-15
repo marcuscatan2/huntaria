@@ -13,7 +13,7 @@ Hunter/knight art matching the current Druid and Mage on 2026-09-14.
 | Apprentice dagger | `assets/art-v21/apprentice-dagger-sheet.png` | Canonical painted dagger motion; generated neutral backdrop isolated on load |
 | Apprentice bow | `assets/art-v21/apprentice-bow-sheet.png` | Canonical painted bow motion; generated neutral backdrop isolated on load |
 | Hunter / Swordsman | `assets/characters/*-sheet.png` | Native transparent RGBA; 16 painted poses; idle frame also supplies portraits |
-| Civilian NPCs | `assets/characters/npc-*.png` | Four reusable people; transform motion in battle |
+| Civilian NPCs | `assets/characters/npc-*.png` | Four reusable people plus nine city residents in `assets/cities/residents.png`; transform motion in battle |
 | Apprentice creation | `assets/art-v22/apprentice-*-creation.png` | Painted 3x3 hair/expression atlases; palette tint is applied in-browser |
 
 `BondApprenticePreview` owns the creation-only painted preview. Rows select crop,

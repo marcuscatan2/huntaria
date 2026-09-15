@@ -43,23 +43,11 @@ const length=points=>points.slice(1).reduce((n,p,i)=>n+distance(p,points[i]),0);
 const point=(m,x,y)=>({x:x*m.width,y:y*m.height});
 function closest(p,points){return points.reduce((a,b)=>distance(p,a)<distance(p,b)?a:b);}
 function road(m,id,points,width=190,style='trail'){const out={id,points,width,style};m.roads.push(out);return out;}
-const specs={};let revision=20;
+const specs={};let revision=21;
 for(const m of A.maps){
  m.theme=THEMES[m.regionIndex];m.roads=[];m.water=[];m.rooms=[];m.scenery=[];m.obstacles=[];m.landmarks=[];m.bridges=[];m.neighbors=[];m.layoutRevision=revision;
  if(m.kind==='hub'){
-  const hubX=900,hubY=760;
-  m.hero={id:m.id+':hero',name:A.REGIONS[m.regionIndex].hub+' sanctuary',x:900,y:360,art:14,size:320};
-  m.shelter={x:750,y:630};m.cache={x:1090,y:940};m.guide={x:560,y:780};
-  m.info='A peaceful town. The sanctuary restores your whole collection for free. Click the Supply Store trade tent for cheap recovery items. Meet the Keeper, then follow the forest or cave gates. Builds and the Inner Sea remain in Loadout.';
-  road(m,'promenade',[{x:160,y:1010},{x:900,y:940},{x:1650,y:1010}],230,'paving');
-  road(m,'sanctuary',[{x:hubX,y:1100},{x:hubX,y:hubY},{x:hubX,y:490}],220,'paving');
-  road(m,'market',[{x:410,y:800},{x:900,y:760},{x:1350,y:780}],200,'paving');
-  m.scenery.push({...m.hero,key:m.hero.id,solid:80},
-   {key:m.id+':home1',x:370,y:360,art:12,size:330,solid:75},
-   {key:m.id+':home2',x:1450,y:470,art:12,size:290,solid:65},
-   {key:m.id+':shop',x:1260,y:735,art:13,size:235,solid:50},
-   {key:m.id+':board',x:460,y:745,art:15,size:130,solid:22});
-  m.landmarks=[{...m.hero,kind:'hero'}];
+  BondCities.layout(m,road);
   continue;
  }
  if(m.kind==='boss'){
@@ -124,26 +112,20 @@ for(const m of A.maps){
  }
 
 }
-// Authored regional graph: meadow-to-forest/landmark, forest-to-cave,
-// and landmark-to-cave. Town services are a separate safe hub, not a four-page ring.
-const ports={west:m=>({x:80,y:m.height*.5}),east:m=>({x:m.width-80,y:m.height*.5}),north:m=>({x:m.width*.5,y:80}),south:m=>({x:m.width*.5,y:m.height-80}),
- northLeft:m=>({x:m.width*.3,y:80}),northRight:m=>({x:m.width*.7,y:80}),southLeft:m=>({x:m.width*.3,y:m.height-80}),southRight:m=>({x:m.width*.7,y:m.height-80}),
- westUpper:m=>({x:80,y:m.height*.3}),westLower:m=>({x:80,y:m.height*.7}),eastUpper:m=>({x:m.width-80,y:m.height*.3}),eastLower:m=>({x:m.width-80,y:m.height*.7})};
-function addGate(m,to,p,arrival,label){m.neighbors.push({id:m.id+'>'+to.id,to:to.id,...p,arrival,label:label||to.name,kind:to.kind==='cave'?'cave':to.kind==='forest'?'forest':to.kind==='hub'?'town':to.kind==='boss'?'boss':'gate'});road(m,'gate:'+to.id,[closest(p,m.roads[0].points),p],200);}
-function connect(aId,bId,aPort,bPort){const a=A.get(aId),b=A.get(bId),p=ports[aPort](a),q=ports[bPort](b),arrival=(m,v)=>A.clamp(m.id,{x:v.x+(v.x<200?120:v.x>m.width-200?-120:0),y:v.y+(v.y<200?120:v.y>m.height-200?-120:0)});addGate(a,b,p,arrival(b,q));addGate(b,a,q,arrival(a,p));}
-for(const r of A.REGIONS){
- connect(r.id+'-0',r.id+'-1','east','west');connect(r.id+'-0',r.id+'-2','north','south');
- connect(r.id+'-1',r.id+'-3','east','west');connect(r.id+'-1',r.id+'-2','north','east');connect(r.id+'-2',r.id+'-3','west','east');
- connect(r.id+'-3',r.id+'-boss','north','west');
- const hub=A.get(r.id+'-hub');
- for(let i=0;i<4;i++){const m=A.get(r.id+'-'+i),p={x:350,y:m.height/2-140},q={x:420+i*320,y:1100};addGate(m,hub,p,{x:q.x,y:q.y-110},'Return to '+hub.name);addGate(hub,m,q,{x:p.x+110,y:p.y},i===3?'Explore nearby cave':i===1?'Explore nearby forest':m.name);}
+// Every gate lies on the shared border of two adjacent atlas cells.
+const ports={west:m=>({x:80,y:m.height/2}),east:m=>({x:m.width-80,y:m.height/2}),north:m=>({x:m.width/2,y:80}),south:m=>({x:m.width/2,y:m.height-80})};
+function addGate(m,to,p,arrival,direction){
+ m.neighbors.push({id:m.id+'>'+to.id,to:to.id,...p,arrival,direction,label:to.name,kind:to.kind==='hub'?'town':to.kind==='boss'?'boss':to.kind==='cave'?'cave':to.kind==='forest'?'forest':'gate'});
+ road(m,'gate:'+to.id,[closest(p,m.roads[0].points),p],200);
 }
-for(let i=0;i<5;i++)connect(A.REGIONS[i].id+'-2',A.REGIONS[i+1].id+'-0','north','south');
-// Old roads create deliberate, readable danger jumps instead of a single regional ladder.
-connect('clearing-1','hollow-0','southRight','northLeft');
-connect('brook-3','ruins-1','northRight','southLeft');
-connect('hollow-2','rise-0','southRight','westLower');
-connect('ruins-3','ashen-1','southRight','southLeft');
+for(const [aId,bId] of A.GRID_EDGES){
+ const a=A.get(aId),b=A.get(bId),dx=b.grid.x-a.grid.x,dy=b.grid.y-a.grid.y;
+ if(Math.abs(dx)+Math.abs(dy)!==1)throw Error('Nonadjacent world cells: '+aId+' / '+bId);
+ const direction=dx===1?'east':dx===-1?'west':dy===1?'south':'north',opposite={east:'west',west:'east',north:'south',south:'north'}[direction];
+ const p=ports[direction](a),q=ports[opposite](b);
+ const arrival=(m,v)=>A.clamp(m.id,{x:v.x+(v.x<200?120:v.x>m.width-200?-120:0),y:v.y+(v.y<200?120:v.y>m.height-200?-120:0)});
+ addGate(a,b,p,arrival(b,q),direction);addGate(b,a,q,arrival(a,p),opposite);
+}
 function waterAt(m,p){return m.water.some(w=>w.points?pathDistance(p,w.points)<w.width/2:((p.x-w.x)/w.rx)**2+((p.y-w.y)/w.ry)**2<1);}
 function bridgeAt(m,p){return m.bridges.some(b=>segment(p,b.a,b.b)<b.width*.46);}
 function onFloor(m,p,margin=0){return m.kind!=='cave'||m.rooms.some(r=>((p.x-r.x)/(r.rx-margin))**2+((p.y-r.y)/(r.ry-margin))**2<1)||m.roads.some(r=>pathDistance(p,r.points)<r.width/2-margin);}
@@ -164,12 +146,12 @@ for(const m of A.maps){
  const step=m.kind==='hub'?270:330,count=Math.ceil(m.width/step);
  for(let y=160;y<m.height-100;y+=step)for(let x=130;x<m.width-100;x+=step){
   const seed=A.hash(m.id+':dress:'+x+':'+y),p={x:x+(seed%150)-75,y:y+((seed>>>9)%150)-75};
-  if(safeClear(m,p,90)||waterAt(m,p)||!onFloor(m,p))continue;
+  if(m.kind==='hub'&&(p.x>320&&p.x<m.width-320&&p.y>300&&p.y<m.height-250)||safeClear(m,p,90)||waterAt(m,p)||!onFloor(m,p))continue;
   const art=m.kind==='cave'?(seed%3===0?5:4):seed%9<5?seed%4:seed%9===5?4:5;
   m.scenery.push({key:m.id+':prop'+m.scenery.length,...p,art,size:art<2?270+seed%100:art===3?245:art===2?165:140+seed%65,solid:art<2?36:art===4?40:0,sway:art<4});
  }
  // Close-to-path framing without empty roadside gaps.
- for(const r of m.roads.filter(r=>!r.id.startsWith('gate'))){
+ for(const r of m.roads.filter(r=>m.kind!=='hub'&&!r.id.startsWith('gate'))){
   for(let j=1;j<r.points.length;j++){const a=r.points[j-1],b=r.points[j],len=distance(a,b),n=Math.floor(len/520);for(let k=1;k<=n;k++){
    const t=k/(n+1),seed=A.hash(m.id+r.id+j+':'+k),sign=k%2?1:-1,p={x:a.x+(b.x-a.x)*t-(b.y-a.y)/len*(r.width/2+180)*sign,y:a.y+(b.y-a.y)*t+(b.x-a.x)/len*(r.width/2+180)*sign};
    if(p.x<90||p.y<90||p.x>m.width-90||p.y>m.height-90||safeClear(m,p,40)||waterAt(m,p)||!onFloor(m,p))continue;
@@ -185,7 +167,7 @@ for(const m of A.maps){
  // Exact compact collision footprints, not full illustration rectangles.
  m.obstacles=m.scenery.filter(s=>s.solid).filter(s=>!m.habitats.some(h=>distance(h,s)<280)&&!m.neighbors.some(g=>distance(g,s)<180)).map(s=>({id:s.key,x:s.x,y:s.y,radius:s.solid,kind:s.art<4?'tree':'rock'}));
  m.collisionBuckets=new Map();for(const o of m.obstacles){const key=Math.floor(o.x/384)+','+Math.floor(o.y/384);if(!m.collisionBuckets.has(key))m.collisionBuckets.set(key,[]);m.collisionBuckets.get(key).push(o);}
- m.entry={x:190,y:m.height/2};if(m.kind==='hub')m.entry={x:900,y:900};
+ if(m.kind!=='hub')m.entry={x:190,y:m.height/2};
 }
 function collision(id,p,radius=20){
  const m=A.get(id);if(!m||p.x<55||p.y<55||p.x>m.width-55||p.y>m.height-55||!onFloor(m,p,radius))return true;

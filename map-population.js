@@ -1,7 +1,7 @@
 /* Map-wide population leases, distinct from species loot rolls. */
 (function(root){
 'use strict';
-const A=BondAtlas,REVISION=20,distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const A=BondAtlas,REVISION=21,distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const connectedGround=new Map();
 function connected(m,p){
  let anchors=connectedGround.get(m.id);
@@ -34,14 +34,14 @@ function position(m,id,seed,occupied=[],previous=null,first=false){
   const phase=value/4294967296*Math.PI*2,golden=2.399963229728653;
   for(let n=0;n<112;n++){
    const radius=430+(n%8)*20,angle=phase+n*golden;
-   const p={x:BondOpening.start.position.x+Math.cos(angle)*radius,y:BondOpening.start.position.y+Math.sin(angle)*radius};
-   if(valid(p)&&connected(m,p))return {x:Math.round(p.x),y:Math.round(p.y)};
+   const p={x:Math.round(BondOpening.start.position.x+Math.cos(angle)*radius),y:Math.round(BondOpening.start.position.y+Math.sin(angle)*radius)};
+   if(valid(p)&&connected(m,p))return p;
   }
  }
  // Replacements and species outside the opening band sample the whole map.
  for(let n=0;n<500;n++){
-  const p={x:200+random()*(m.width-400),y:200+random()*(m.height-400)};
-  if(valid(p)&&connected(m,p))return {x:Math.round(p.x),y:Math.round(p.y)};
+  const p={x:Math.round(200+random()*(m.width-400)),y:Math.round(200+random()*(m.height-400))};
+  if(valid(p)&&connected(m,p))return p;
  }
  // Finite fallback over connected authored roads, never spawn inside a wall.
  for(const p of m.roads.flatMap(r=>r.points))if(valid(p)&&connected(m,p))return {...p};

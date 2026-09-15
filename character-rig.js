@@ -3,7 +3,7 @@
   'use strict';
   const legacy=new Set(['druid','mage','emberfox','stonehorn','stormowl','bloomslime']);
   const types=new Set([...legacy,'frostfang','cindrake','ironback','thornstag','tideotter','lumimoth','mira','orin','vesper','lark','selene','elderroot']);
-  const painted=new Set(['hunter','swordsman']),people=['npc-keeper','npc-villager','npc-merchant','npc-traveler'];
+  const painted=new Set(['hunter','swordsman']),people=['npc-keeper','npc-villager','npc-merchant','npc-traveler',...BondCities.spriteNames.map(n=>'npc-'+n)];
   const animated=new Set(['druid','mage','apprentice',...painted]),sheets=new Map();
   const supplied=type=>BondMonsterSprites.get(type);
   document.addEventListener('error',event=>{
@@ -25,6 +25,7 @@
     return people[hash%people.length];
   }
   function art(type){
+    if(BondCities.spriteNames.includes(type.replace('npc-','')))return BondCityArt.npc(type);
     if(painted.has(type)){
       const config=BondAnimationData[type],[l,t,r,b]=config.frames[13].rect;
       return '<svg class="character-sprite" data-painted-portrait="true" style="overflow:hidden" data-character="'+type+'" xmlns="http://www.w3.org/2000/svg" viewBox="'+[l,t,r-l,b-t].join(' ')+'" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><image href="assets/characters/'+type+'-sheet.png" width="'+config.width+'" height="'+config.height+'"/></svg>';

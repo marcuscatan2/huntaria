@@ -9,7 +9,7 @@ Status: **local-test-tuning**. Defines test tuning and recovery UI; connects com
 
 `BondAdventure; BondRecovery; BondProfile.buy / recover / rest`
 
-Test odds/XP/level policy is explicit. Health is persisted as basis points per trainer/individual. Forest camp and sanctuary full healing/revival are free, even with zero coins/supplies. Shop/rest need service proximity; portable medicine is separate. Firstlight defeat restores everyone at camp; later defeats retain injuries at town. A fallen trainer blocks adventure; a selected fallen companion remains in the loadout and field party but is benched from new combat and wild scaling until revived. Class/build changes must not heal. Practice remains health-independent.
+Test odds/XP/level policy is explicit. Health persists as basis points per trainer/individual. Entering any city restores trainer and every owned companion for free; existing injured city saves heal on load between encounters. No city sanctuary/heal action is exposed. Firstlight defeat restores everyone at forest camp; other defeats restore everyone at their rescue city. Field camp rest and shop purchases require proximity; portable medicine is separate. A fallen trainer blocks adventure; selected fallen companions remain selected but are benched until revived. Field class/build changes do not heal. Practice is health-independent.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -47,11 +47,13 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/pass18_ui.py --browser chrome` — Played hunt, loot, recovery, atlas and viewport flows.
 - `python scripts/creature_reference.py --check` — Reviewed 100-species snapshot and four generated outputs agree with Chrome export.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
+- `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, arrival healing, physical teleport authority and save failures.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
 ## Specifications and decisions
 
 - [PASS18_VALIDATION.md](<../../PASS18_VALIDATION.md>)
+- [features/world/CITIES.md](<../../features/world/CITIES.md>)
 - Commercial cards: Cross-cutting implementation; no separate acceptance card.
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-07](<../../OWNER_REVIEWS.md#or-07>) Use the live board/preflight for status, not an approval copied here.

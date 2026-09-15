@@ -349,7 +349,7 @@ requirements.
 
 **Encounter and interaction**
 
-- Place four launch masters in Amber Crossing: Druid, Mage, Hunter and Swordsman. Their names remain
+- Place the four launch masters in their themed city courtyards: Druid in Mosslight, Mage in Willowbrook, Hunter in Amber Crossing and Swordsman in Moonwell. Their names remain
   a content dependency; do not invent established lore in implementation.
 - Inspect all four offers before committing. Defeating one master does not permanently
   lock the other until final confirmation.

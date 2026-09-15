@@ -108,7 +108,7 @@ for(const [i,type] of C.CLASSES.entries()){
  addEarly({id:'early:master:'+type,name:name+' Master',appearance:type,title:name+' acceptance battle',level:15,seed:201+i,trialClass:type,masterClass:type,protectedEncounter:true,autoReturn:true,trainerXP:8500,coins:100,
   greeting:"Defeat me in battle and I'll accept you as a "+name+". Don't worry, I'll go very easy on you.",
   advice:'Fight with your current party. After you win, speak to me again to become a '+name+'.',
-  requiresCompanions:2,team:trainerTeam(type).map(entry=>({...entry,power:Math.round(C.UNITS[entry.type].power*.25),skillScale:.25,healthScale:.45})),...placed('hollow-hub',{x:550+(i%2)*650,y:420+Math.floor(i/2)*500})});
+  requiresCompanions:2,team:trainerTeam(type).map(entry=>({...entry,power:Math.round(C.UNITS[entry.type].power*.25),skillScale:.25,healthScale:.45})),...placed(BondCities.masterCities[type],{x:1200,y:1060})});
  addEarly({id:'early:application:'+type,name:'Amber Trialkeeper',appearance:type==='druid'?'mage':'druid',title:'Use your new class',level:20,seed:301+i,applicationClass:type,earlyKey:'application',trainerXP:1500,coins:35,
   greeting:'Show what your new class adds to this team.',advice:({druid:'Heal and shield your companions.',mage:'Control the enemy and follow with magic.',hunter:'Pin a target and focus it with your companions.',swordsman:'Keep your guard up as you close with the frontline.'})[type],
   team:trainerTeam(type==='druid'?'mage':'druid','stonehorn','bloomslime'),...placed('hollow-0')});
@@ -190,8 +190,8 @@ function earlyNext(s){const e=s.journey?.early||earlyFresh(),wins=s.journey?.win
  if(!e.mageGate)return {id:'early:forest-mage',label:'Return to the Mage',map:'clearing-0'};
  for(const [id,label,map] of [['story:clearing:0','Defeat Tavi with two companions','clearing-hub'],['story:brook:1','Face Rain and learn control','brook-0'],['story:brook:3','Face Lina in Rainwillow Forest','brook-1'],['story:brook:4','Face Wren at Reedwatch Banks','brook-2']])if(!wins[id])return {id,label,map};
  if(!e.tidecrown)return {id:'early:boss:tidecrown',label:'Defeat Tidecrown',map:'brook-boss'};
- if(!C.CLASSES.some(type=>e.trials[type]))return {id:'ep:masters',label:'Defeat a class master in Amber Crossing',map:'hollow-hub'};
- if(!s.progression?.specialization)return {id:'ep:transform',label:'Speak to the master you defeated to join their class',map:'hollow-hub'};
+ if(!C.CLASSES.some(type=>e.trials[type]))return {id:'ep:masters',label:'Choose a class master in the starting cities',map:BondCities.starters.includes(s.map)?s.map:'brook-hub'};
+ if(!s.progression?.specialization)return {id:'ep:transform',label:'Speak to the master you defeated to join their class',map:BondCities.masterCities[C.CLASSES.find(type=>e.trials[type])]};
  if(!e.application)return {id:'ep:application',label:'Use your new class in Amber Hollow',map:'hollow-0'};
  if(!e.counter)return {id:'early:counter',label:'Defeat the Amber Pathwarden',map:'hollow-1'};
  if(!e.abilityChanged)return {id:'ep:ability-change',label:'Change one companion ability in Party & bag',map:s.map};

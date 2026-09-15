@@ -112,7 +112,8 @@ These are production caps to test, not justification for making every map identi
 Add one hero landmark per exploration map and one per hub: **30 hero landmarks**.
 
 Town service layout is consistent in function, distinct in architecture:
-arrival → Keeper/information → provisioner → Inner Sea sanctuary.
+arrival → Keeper/information → enterable shops and themed halls → city waystone.
+Current city/grid behavior is owned by [the city contract](features/world/CITIES.md).
 Forest/cave exits are visible physical structures, not a row of text buttons.
 At least one exit is visible on arrival. Reading signs and accessing services is
 possible without crossing hostile habitats.

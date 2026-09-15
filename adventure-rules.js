@@ -13,7 +13,7 @@ function health(s,id='trainer'){return bp(id==='trainer'?s.vitality?.trainer:s.v
 function clean(s,raw){return {trainer:bp(raw?.trainer),companions:Object.fromEntries((s.companions||[]).map(m=>[m.id,bp(raw?.companions?.[m.id])]))};}
 function setHealth(s,id,value){s.vitality=clean(s,s.vitality);if(id==='trainer')s.vitality.trainer=bp(value);else s.vitality.companions[id]=bp(value);}
 function record(s,b){if(!b?.adventure)return;for(const u of b.units.filter(u=>u.side===0&&u.ownerIndex===0)){const id=u.slot===0?'trainer':u.instanceId;if(id&&(id==='trainer'||s.companions.some(m=>m.id===id)))setHealth(s,id,u.hp<=0?0:Math.max(1,Math.min(FULL,Math.round(u.hp/u.maxHp*FULL))));}}
-function readiness(s){return !health(s)?'Your trainer has fallen. Recover at a village sanctuary or use a Revival Salve.':'';}
+function readiness(s){return !health(s)?'Your trainer has fallen. Enter a city, rest at camp or use a Revival Salve.':'';}
 // Fallen companions stay selected in the saved loadout, but are benched until
 // revived. This keeps party editing stable while preventing a corpse from
 // blocking trainer-only encounters or increasing wild-party scaling.
@@ -24,6 +24,6 @@ function wild(type){const u=C.UNITS[type];return type==='emberfox'?{hp:430,power
 // trainer-only opening. Durability carries most of the modifier so danger rises
 // without turning every hit into an abrupt trainer deletion.
 function wildScale(partySize){const n=Math.max(1,Math.min(3,Number.isFinite(partySize)?Math.trunc(partySize):1));return {partySize:n,hp:1+(n-1)*.8,power:1+(n-1)*.15};}
-function service(map,kind){if(map?.id===BondOpening.start.map&&kind==='sanctuary')return {...BondOpening.camp};if(map?.kind!=='hub')return null;return kind==='shop'?{x:1260,y:825}:kind==='sanctuary'?{x:900,y:510}:null;}
+function service(map,kind){if(map?.id===BondOpening.start.map&&kind==='sanctuary')return {...BondOpening.camp};if(map?.kind!=='hub')return null;return map.services?.[kind]?{...map.services[kind]}:null;}
 root.BondAdventure={TEST_ECHO_OVERRIDE,ECHO_BP:1500,FULL,items,prices,health,clean,setHealth,record,readiness,deploy,level,wild,wildScale,xp:level=>300+100*level,service};
 })(globalThis);

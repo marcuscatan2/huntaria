@@ -10,6 +10,7 @@
 | Fresh character and first forest | `python tests/opening_check.py --browser chrome` (or edge) |
 | Post-death/withdrawal clicks, starter XP, first Echo and exits | `python tests/onboarding_check.py --browser chrome` |
 | Mechanics and runtime reference export | `python tests/pass18_check.py --browser chrome` |
+| Square maps, cities and teleport/save safety | `python tests/city_world_check.py --browser chrome` |
 | Played UI flows | `python tests/pass18_ui.py --browser chrome` |
 | Campaign/replay integration | `python tests/pass18_campaign.py --browser chrome` |
 | Boot/headless/presentation boundaries | `python tests/architecture_browser.py --browser chrome` |

@@ -221,7 +221,8 @@
         "scripts/capture_character_reference.py",
         "scripts/monster_sprites.py",
         "tests/monster_sprites_check.py",
-        "tests/trainer_animation_check.py"
+        "tests/trainer_animation_check.py",
+        "city-art.js"
       ],
       "backlog": [
         "F-024",
@@ -229,7 +230,7 @@
         "F-026"
       ],
       "entry": "CharacterRig.mount / pose / trigger; CombatView.onEvent / draw / impactAudit; BondPresentation.timing",
-      "contract": "Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid, Mage, Hunter and Swordsman use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional. Hunter/Swordsman portraits reuse their explicitly clipped sheet idle frame; animated rigs hide replaced HTML/SVG portraits through the DOM hidden attribute; Inner Sea exports receive a cached canvas. NPC appearance routing reserves class art for masters and selects four stable civilian sprites for ordinary people in field, dialogue, previews and combat. Final visual acceptance remains pending.",
+      "contract": "Simulation events determine damage; visual time determines pose/VFX/HP display. Shared rig serves battle, portraits and exploration. All 100 species use supplied PNGs with transform-based motion. Druid, Mage, Hunter and Swordsman use painted 16-pose sheets; Apprentice selects painted dagger/bow action sheets. Character creation, static menus and the Inner Sea use the painted hair/expression atlas with palette tinting. Animated scenes preload and begin on the canonical action-sheet idle frame, never the visibly different creator figure; the same sheet continues through walk/combat and is cached for world return. The retired Apprentice SVG is not loaded. Coverage is not approval. Sound impact callback to BondApp is intentional. Hunter/Swordsman portraits reuse their explicitly clipped sheet idle frame; animated rigs hide replaced HTML/SVG portraits through the DOM hidden attribute; Inner Sea exports receive a cached canvas. NPC appearance routing reserves class art for masters and selects four stable civilian sprites for ordinary people in field, dialogue, previews and combat. Final visual acceptance remains pending. city-art frames nine additional painted human sprites and eight city buildings, isolating the generated neutral backdrop at runtime; original RGB source sheets and exact prompts are retained.",
       "tests": [
         "field-polish",
         "mechanics",
@@ -237,7 +238,8 @@
         "boundaries",
         "sprites",
         "trainer-animation",
-        "farm-classes"
+        "farm-classes",
+        "city-world"
       ],
       "docs": [
         "ART_BIBLE.md",
@@ -246,7 +248,9 @@
         "features/animation/TRAINER_SPRITES.md",
         "PASS21_VALIDATION.md",
         "PASS22_VALIDATION.md",
-        "assets/characters/README.md"
+        "assets/characters/README.md",
+        "features/world/CITIES.md",
+        "assets/cities/README.md"
       ],
       "summary": "Draws characters and combat feedback; consumes combat events and exploration movement."
     },
@@ -258,7 +262,8 @@
         "world-data.js",
         "atlas-data.js",
         "world-layout.js",
-        "world-nav.js"
+        "world-nav.js",
+        "city-data.js"
       ],
       "backlog": [
         "F-016",
@@ -267,16 +272,18 @@
         "F-058"
       ],
       "entry": "BondAtlas.get / maps / collision; BondWorldLayout; BondNav.find",
-      "contract": "36 connected places: 24 large maps, six compact hubs and six compact boss domains; world units differ from arena units. world-layout augments BondAtlas geometry/validation during boot. Atlas neighbors and physical gates must agree. Firstlight exits are visibly locked until the Forest Mage proof; after that, roads remain open and nonlinear cross-region links reduce corridor dependence. The illustrated atlas derives each reach's average habitat level and compares it with trainer level (green at/below, yellow +1–5, red +6 or more); these are danger warnings, never later invisible progression locks. A displayed destination never grants teleport authority.",
+      "contract": "36 stable places occupy unique Cartesian cells: 24 existing large maps, six square safe cities and six boss domains. GRID_EDGES owns reciprocal north/east/south/west border portals; world-layout derives physical gates and safe arrivals. City links exist only across their authored shared borders; no field-wide town shortcuts. Firstlight exits stay locked until the Forest Mage proof; subsequent level bands warn of danger. The atlas draws the same grid and plans walking through gates. city-data owns themed city buildings, doorway/service points, civilian companions and the four-city waystone allowlist. Interior view state does not create new world maps or alter field geometry.",
       "tests": [
         "mechanics",
         "ui",
         "campaign",
-        "boundaries"
+        "boundaries",
+        "city-world"
       ],
       "docs": [
         "WORLD_DESIGN.md",
-        "WORLD_IMPLEMENTATION.md"
+        "WORLD_IMPLEMENTATION.md",
+        "features/world/CITIES.md"
       ],
       "summary": "Defines maps, geometry and paths; supplies exploration and population placement."
     },
@@ -293,14 +300,16 @@
         "world-v15.css",
         "wild-behavior.js",
         "scripts/world_assets.py",
-        "assets/world-runtime/manifest.json"
+        "assets/world-runtime/manifest.json",
+        "city-view.js",
+        "city.css"
       ],
       "backlog": [
         "F-027",
         "F-035"
       ],
       "entry": "BondRegion.enter / leave / frame; WorldRenderer.mount / dispose / draw; BondWorldMap",
-      "contract": "Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; the designated opening Emberfox is temporarily hostile. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The Forest Mage onboarding trial and four class-master acceptance battles are protected from roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction. Ordinary NPCs and keepers use civilian art; class masters retain their class portrait through the shared CharacterRig appearance selector.",
+      "contract": "Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; the designated opening Emberfox is temporarily hostile. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The Forest Mage onboarding trial and four class-master acceptance battles are protected from roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction. Ordinary NPCs and keepers use civilian art; class masters retain their class portrait through the shared CharacterRig appearance selector. City buildings use painted hit bounds and clear doorway proximity. Enterable illustrated rooms contain resident conversations, prop interactions and profile-owned supply purchases; closing/reload returns outside. Cities replace generic markers with painted buildings, people, companions, waystones and chest objects. The Cartesian atlas draws equal squares and actual shared-border routes; waystone travel is a separate physical interaction.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -309,12 +318,14 @@
         "mechanics",
         "campaign",
         "boundaries",
-        "farm-classes"
+        "farm-classes",
+        "city-world"
       ],
       "docs": [
         "WORLD_DESIGN.md",
         "WORLD_IMPLEMENTATION.md",
-        "assets/world-runtime/README.md"
+        "assets/world-runtime/README.md",
+        "features/world/CITIES.md"
       ],
       "summary": "Handles walking, camera, atlas and scenery; connects world geometry to profile and shared rigs."
     },
@@ -388,16 +399,18 @@
       ],
       "backlog": [],
       "entry": "BondAdventure; BondRecovery; BondProfile.buy / recover / rest",
-      "contract": "Test odds/XP/level policy is explicit. Health is persisted as basis points per trainer/individual. Forest camp and sanctuary full healing/revival are free, even with zero coins/supplies. Shop/rest need service proximity; portable medicine is separate. Firstlight defeat restores everyone at camp; later defeats retain injuries at town. A fallen trainer blocks adventure; a selected fallen companion remains in the loadout and field party but is benched from new combat and wild scaling until revived. Class/build changes must not heal. Practice remains health-independent.",
+      "contract": "Test odds/XP/level policy is explicit. Health persists as basis points per trainer/individual. Entering any city restores trainer and every owned companion for free; existing injured city saves heal on load between encounters. No city sanctuary/heal action is exposed. Firstlight defeat restores everyone at forest camp; other defeats restore everyone at their rescue city. Field camp rest and shop purchases require proximity; portable medicine is separate. A fallen trainer blocks adventure; selected fallen companions remain selected but are benched until revived. Field class/build changes do not heal. Practice is health-independent.",
       "tests": [
         "opening",
         "mechanics",
         "ui",
         "reference",
-        "boundaries"
+        "boundaries",
+        "city-world"
       ],
       "docs": [
-        "PASS18_VALIDATION.md"
+        "PASS18_VALIDATION.md",
+        "features/world/CITIES.md"
       ],
       "summary": "Defines test tuning and recovery UI; connects combat injuries to saved vitality and supplies."
     },
@@ -419,19 +432,21 @@
         "F-062"
       ],
       "entry": "BondCampaign.reconcile / bosses; BondCampaignMenu; BondProfile.reserveBattle / restoreBattle",
-      "contract": "Campaign definitions feed encounters; profile reserves party/seed/supplies and accepted kills. BondCampaign.questMarker deterministically maps the current receipt-backed objective to `offer`, `delivery` or no marker; presentation does not infer or award quest state. The early route records two acquisitions, a Forest Mage meeting/proof gate, four distinct Druid/Mage/Hunter/Swordsman demonstrations, fixed Lv15 Tidecrown, one rewarded master acceptance battle, confirmed Lv20 specialization, an ability-change/counter loop, fixed Lv30 Amber guardian and monster-tree proof. Authored trainer XP reaches thresholds100/600/1500/6600/10500/19000/30000/43500 without repeat grinding; monster XP remains separate. One tiny in-frame current objective and its destination region/map guide the opening; the Mage proof is the only opening road lock and later levels communicate danger without invisible gates. Launch story trainers clamp to the Lv60 player ceiling while preserving sourceLevel. Practice boss scaling is reward-free and separate from progression bosses; no human multiplayer or essence source exists. Hunter and Swordsman are playable specializations. The master fights as its offered class; the player retains the current Apprentice party and confirms after victory at Lv20. Farm establishment joins the route at Lv25.",
+      "contract": "Campaign definitions feed encounters; profile reserves party/seed/supplies and accepted kills. BondCampaign.questMarker deterministically maps the current receipt-backed objective to `offer`, `delivery` or no marker; presentation does not infer or award quest state. The early route records two acquisitions, a Forest Mage meeting/proof gate, four distinct Druid/Mage/Hunter/Swordsman demonstrations, fixed Lv15 Tidecrown, one rewarded master acceptance battle, confirmed Lv20 specialization, an ability-change/counter loop, fixed Lv30 Amber guardian and monster-tree proof. Authored trainer XP reaches thresholds100/600/1500/6600/10500/19000/30000/43500 without repeat grinding; monster XP remains separate. One tiny in-frame current objective and its destination region/map guide the opening; the Mage proof is the only opening road lock and later levels communicate danger without invisible gates. Launch story trainers clamp to the Lv60 player ceiling while preserving sourceLevel. Practice boss scaling is reward-free and separate from progression bosses; no human multiplayer or essence source exists. Hunter and Swordsman are playable specializations. The master fights as its offered class; the player retains the current Apprentice party and confirms after victory at Lv20. Farm establishment joins the route at Lv25. Class masters occupy matching starting-city courtyards; the quest destination after acceptance follows the defeated master’s city. Trial/reward IDs and battle kits are unchanged.",
       "tests": [
         "field-polish",
         "campaign",
         "mechanics",
         "ui",
         "boundaries",
-        "farm-classes"
+        "farm-classes",
+        "city-world"
       ],
       "docs": [
         "PASS16_VALIDATION.md",
         "features/opening/EARLY_PROGRESSION_SCOPE.md",
-        "PASS24_VALIDATION.md"
+        "PASS24_VALIDATION.md",
+        "features/world/CITIES.md"
       ],
       "summary": "Defines quests, NPC encounters and simulated bosses; connects reservations to combat and rewards."
     },
@@ -444,7 +459,7 @@
       ],
       "backlog": [],
       "entry": "BondProfile.commit (private); normalize / reserveBattle / checkpoint / restoreBattle / settleKills / complete / summon",
-      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save.",
+      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -454,11 +469,13 @@
         "ui",
         "boundaries",
         "experience",
-        "farm-classes"
+        "farm-classes",
+        "city-world"
       ],
       "docs": [
         "features/persistence/SAVES.md",
-        "docs/ENGINEERING.md"
+        "docs/ENGINEERING.md",
+        "features/world/CITIES.md"
       ],
       "summary": "Owns local saves, migrations and receipts; accepts mutations requested by gameplay and UI."
     },
@@ -675,7 +692,9 @@
     "character-rig.js": [
       "BondContent",
       "BondMonsterSprites",
-      "BondApprenticePreview"
+      "BondApprenticePreview",
+      "BondCities",
+      "BondCityArt"
     ],
     "presentation-contract.js": [
       "BondContent"
@@ -693,7 +712,8 @@
     ],
     "world-layout.js": [
       "BondAtlas",
-      "BondContent"
+      "BondContent",
+      "BondCities"
     ],
     "world-nav.js": [
       "BondAtlas",
@@ -708,7 +728,8 @@
     ],
     "world-renderer.js": [
       "BondAtlas",
-      "BondWorldLayout"
+      "BondWorldLayout",
+      "BondCityArt"
     ],
     "echoes.js": [
       "BondContent"
@@ -723,7 +744,8 @@
       "BondContent",
       "BondGame",
       "BondProgress",
-      "BondGrowth"
+      "BondGrowth",
+      "BondCities"
     ],
     "profile.js": [
       "BondContent",
@@ -742,12 +764,14 @@
       "BondRules",
       "BondRoster",
       "BondFarm",
-      "BondMoonCalendar"
+      "BondMoonCalendar",
+      "BondCities"
     ],
     "world-atlas.js": [
       "BondAtlas",
       "BondProfile",
-      "BondProgress"
+      "BondProgress",
+      "BondCities"
     ],
     "recovery-menu.js": [
       "BondProfile",
@@ -786,7 +810,8 @@
       "BondWorldMap",
       "BondRecovery",
       "BondWildBehavior",
-      "BondSettings"
+      "BondSettings",
+      "BondCityView"
     ],
     "campaign-menu.js": [
       "BondCampaign",
@@ -878,6 +903,18 @@
       "BondProfile",
       "BondProgress",
       "CharacterRig"
+    ],
+    "city-data.js": [],
+    "city-art.js": [
+      "BondCities"
+    ],
+    "city-view.js": [
+      "BondCities",
+      "BondCityArt",
+      "BondProfile",
+      "BondAtlas",
+      "CharacterRig",
+      "BondRecovery"
     ]
   },
   "unloaded": [
@@ -895,7 +932,8 @@
     "wild-behavior.js",
     "inner-sea-rules.js",
     "inner-sea-farm.js",
-    "moon-calendar.js"
+    "moon-calendar.js",
+    "city-data.js"
   ],
   "storage_writers": {
     "profile.js": "Profile document and receipts",
@@ -913,7 +951,8 @@
       "assets/art-v21",
       "assets/art-v22",
       "assets/monsters",
-      "assets/characters"
+      "assets/characters",
+      "assets/cities"
     ],
     "exploration": [
       "assets/world-v15",
@@ -1036,6 +1075,13 @@
       ],
       "browser": true,
       "purpose": "Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement"
+    },
+    "city-world": {
+      "command": [
+        "tests/city_world_check.py"
+      ],
+      "browser": true,
+      "purpose": "Cartesian borders, themed city rooms, arrival healing, physical teleport authority and save failures"
     }
   },
   "connections": [
@@ -1241,6 +1287,18 @@
         "progression.js"
       ],
       "contract": "Explicit UTC phase/attack timestamp + saved five-individual defense loadout -> trainer-free deterministic Battle -> one committed XP/loot/damage outcome and read-only replay. Profile owns clock and storage; ordinary adventures use frozen profile snapshots."
+    },
+    {
+      "id": "city-travel",
+      "from": "world",
+      "to": "persistence",
+      "via": [
+        "city-data.js",
+        "profile.js",
+        "city-view.js",
+        "region.js"
+      ],
+      "contract": "Authored doorway/waystone positions authorize proximity-bound room/service interactions and critical city teleport transactions. Arrival heals all owned lives; failed saves retain location/resources; atlas selection only plans physical walking."
     }
   ],
   "interfaces": [

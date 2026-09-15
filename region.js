@@ -24,11 +24,11 @@ function sidebar(){
  encounterNotice.hidden=!s.encounterSave;echoNotice.hidden=!!s.tutorial.summons||!Object.keys(s.inventory).some(k=>k.startsWith('echo:')&&s.inventory[k]>0);
  const fleeing=!!window.BondApp?.getBattle()?.escape&&!window.BondApp?.getBattle()?.ended;
  $('#field-withdraw').disabled=fleeing;$('#field-withdraw').textContent=fleeing?'Running…':'Run';
- exits.innerHTML='<span>MAP EXITS · matching numbers on the minimap</span>'+m.neighbors.map((g,i)=>{const d=A.get(g.to),levels=d.habitats.map(h=>h.level),danger=levels.length?Math.round(levels.reduce((n,v)=>n+v,0)/levels.length):d.level,delta=danger-BondProgress.trainerLevel(s);return '<button class="exit-route" data-exit="'+g.id+'"><b>'+(i+1)+' ↗</b> '+d.name+'<small>'+(d.kind==='hub'?'Safe town':d.kind==='boss'?'Boss practice domain':delta>5?'Danger · Avg Lv '+danger:delta>0?'Challenge · Avg Lv '+danger:'Avg Lv '+danger)+'</small></button>';}).join('');
+ exits.innerHTML='<span>MAP EXITS · matching numbers on the minimap</span>'+m.neighbors.map((g,i)=>{const d=A.get(g.to),levels=d.habitats.map(h=>h.level),danger=levels.length?Math.round(levels.reduce((n,v)=>n+v,0)/levels.length):d.level,delta=danger-BondProgress.trainerLevel(s);return '<button class="exit-route" data-exit="'+g.id+'"><b>'+(i+1)+' '+({east:'→',west:'←',north:'↑',south:'↓'}[g.direction])+'</b> '+d.name+'<small>'+(d.kind==='hub'?'Safe town':d.kind==='boss'?'Boss practice domain':delta>5?'Danger · Avg Lv '+danger:delta>0?'Challenge · Avg Lv '+danger:'Avg Lv '+danger)+'</small></button>';}).join('');
  wayfinding.hidden=!['clearing-0','clearing-hub'].includes(m.id);$('#opening-route').textContent=m.id==='clearing-hub'?'Firstlight Meadow · starting area →':'Return to camp · free rest';$('#opening-location').textContent=m.id==='clearing-hub'?'Mosslight Village · safe town':BondOpening.zone(pos);
- const levels=m.habitats.map(h=>h.level);$('#region-heading').textContent=m.name;$('#region-subtitle').textContent=r.name+' · '+(m.kind==='hub'?'Town sanctuary':m.kind==='boss'?'Boss practice domain':m.kind+' · wildlife level '+Math.min(...levels)+'–'+Math.max(...levels))+' · Local prototype';
+ const levels=m.habitats.map(h=>h.level);$('#region-heading').textContent=m.name;$('#region-subtitle').textContent=r.name+' · '+(m.kind==='hub'?BondCities.theme(m).title:m.kind==='boss'?'Boss practice domain':m.kind+' · wildlife level '+Math.min(...levels)+'–'+Math.max(...levels))+' · Local prototype';
  $('.region-map-heading').innerHTML='';$('#world-map-name').textContent=m.name;
- $('#world-route').innerHTML=m.neighbors.map(g=>'<button class="route-gate text-button" data-route="'+g.id+'">↗ '+g.label+'</button>').join('')+'<small>Choosing a route walks to its gate.</small>';
+ $('#world-route').innerHTML=m.neighbors.map(g=>'<button class="route-gate text-button" data-route="'+g.id+'">'+({east:'→',west:'←',north:'↑',south:'↓'}[g.direction])+' '+g.label+'</button>').join('')+'<small>Choosing a route walks to its gate.</small>';
  const next=BondCampaign.next(s),target=next?.map&&A.get(next.map),targetRegion=target&&A.REGIONS[target.regionIndex];
  $('#world-objective').textContent=next?.label||'Explore the Six Reaches';$('#world-objective-location').textContent=targetRegion?targetRegion.name+' · '+target.name:'';$('#world-objective-location').hidden=!targetRegion;$('#world-quest').dataset.step=next?.id||'free';
  updateQuestMarkers(s,next);
@@ -54,7 +54,9 @@ function buildObjects(){
  for(const e of [...BondCampaign.trainers,...BondCampaign.earlyEncounters.filter(e=>!e.kind)].filter(e=>e.map===m.id&&BondCampaign.visible(e,state)&&!(quiet()&&m.id==='clearing-0')))objects.push({id:e.id,kind:'npc',x:e.x,y:e.y,masterClass:e.masterClass,applicationClass:e.applicationClass,label:e.name+' · '+(e.masterClass?'CLASS MASTER':e.main?'STORY':e.lesson||'CHALLENGE')});
  for(const p of BondCampaign.packs.filter(p=>p.map===m.id&&!(quiet()&&m.id==='clearing-0')))objects.push({...p,kind:'pack',label:p.name});
  if(m.kind==='hub'){
-  objects.push({id:'shop:'+m.id,kind:'shop',...BondAdventure.service(m,'shop'),sceneryService:true,label:'Supply Store'},{id:'sanctuary:'+m.id,kind:'sanctuary',...BondAdventure.service(m,'sanctuary'),sceneryService:true,label:'Sanctuary · free recovery'});
+  for(const b of m.buildings)objects.push({id:b.id,kind:'building',...b.door,sceneryService:true,sceneryKey:b.id,label:b.name});
+  for(const r of m.residents)objects.push({...r,kind:'resident',label:r.name});
+  if(m.teleport)objects.push({id:m.id+':waystone',kind:'waystone',...m.teleport,sceneryService:true,sceneryKey:m.id+':teleport',label:'City waystone'});
   const keeper=Object.keys(W.NPCS).find(id=>W.NPCS[id].area===m.region&&!W.NPCS[id].kind);
   if(keeper)objects.push({id:keeper,kind:'npc',x:520,y:820,label:W.NPCS[keeper].name});
   // Legacy reward-generating pack removed from the world; new packs use actual resident lives.
@@ -73,12 +75,14 @@ function buildObjects(){
  objects.map(o=>{
   let visual='';
   if(o.sceneryService)visual='';else if(o.kind==='guide')visual='<div class="world-art">'+CharacterRig.art('npc-keeper')+'</div>';else if(o.kind==='wild'||o.kind==='npc')visual='<div class="world-art">'+CharacterRig.art(o.type||CharacterRig.npcAppearance(W.NPCS[o.id],o.id))+'</div>';
-  else if(o.kind==='pack')visual='<span class="landmark-art">⚔</span>';
+  else if(o.kind==='resident')visual='<div class="world-art">'+CharacterRig.art(o.appearance)+'</div><div class="city-pet" aria-hidden="true">'+CharacterRig.art(o.pet)+'</div>';
+  else if(o.kind==='pack')visual='<div class="world-art">'+CharacterRig.art(m.habitats[0]?.type||'emberfox')+'</div>';
+  else if(o.kind==='cache')visual='<span class="world-chest" aria-hidden="true"><i></i></span>';
   else if(o.kind==='openingSign')visual='<span class="opening-sign-art" aria-hidden="true"><i></i><b></b></span>';
   else if(o.kind==='gate')visual='<div class="world-gate-visual"></div><span class="gate-badge" aria-hidden="true">'+(m.neighbors.findIndex(g=>g.id===o.id)+1)+' · '+(o.locked?'LOCKED':'EXIT')+'</span>';
   else visual='<span class="landmark-art">'+({habitat:'❧',cache:'◈',sea:'✧',shop:'⚑',guide:'☷',rest:'⌂',discovery:'✦'}[o.kind])+'</span>';
   if(o.kind==='wild'||o.kind==='npc')visual=visual.replace(' src="',' data-world-src="');
-  const label=o.kind==='wild'?'':'<span class="world-label">'+o.label+'<small>'+(o.kind==='gate'?'PHYSICAL GATE':o.kind==='habitat'?'FIXED SPAWNS':o.kind==='npc'?'TALK / CHALLENGE':o.kind==='cache'?'COLLECT':o.kind==='shop'?'BUY RECOVERY SUPPLIES':o.kind==='sanctuary'?'FREE FULL RECOVERY':o.roadSign||o.kind==='openingSign'?'READ THE SIGN':'INTERACT')+'</small></span>';
+  const label=o.kind==='wild'?'':'<span class="world-label">'+o.label+'<small>'+(o.kind==='building'?'ENTER':o.kind==='waystone'?'TRAVEL TO A CITY':o.kind==='resident'?'TALK':o.kind==='gate'?o.direction.toUpperCase()+' PORTAL':o.kind==='habitat'?'FIXED SPAWNS':o.kind==='npc'?'TALK / CHALLENGE':o.kind==='cache'?'OPEN':o.kind==='shop'?'BUY SUPPLIES':o.kind==='sanctuary'?'REST':o.roadSign||o.kind==='openingSign'?'READ THE SIGN':'INTERACT')+'</small></span>';
   const aria=o.kind==='wild'?'Wild creature, level '+(o.habitat?.level||''):o.label;o.baseAria=aria;
   return '<button class="world-node map-object '+o.kind+(o.kind==='wild'&&BondWildBehavior.policy(m.id,o.type,o)?' hostile':'')+(o.sceneryService?' scenery-service':'')+(o.roadSign?' road-sign':'')+'" data-object="'+o.id+'" aria-label="'+aria+'">'+visual+label+'</button>';
  }).join('');
@@ -101,7 +105,7 @@ function updateQuestMarkers(state=P.snapshot(),current=BondCampaign.next(state))
 function loadMap(){
  const s=P.snapshot();document.body.classList.toggle('quiet-opening',quiet());aggroGrace=s.encounterSave?0:3;m=A.get(s.map);pos=A.safePoint(m.id,s.encounterSave?.anchor?.position||s.position);const opponent=s.encounterSave?.anchor?.actors?.[0];if(opponent)playerLeft=opponent.x<pos.x;stop();lastPopulation=0;lastHud=0;prefetchedGate=null;WorldRenderer.prefetch(m.id);
  followers=party.slice(1).filter(Boolean).map((u,i)=>({type:u.type,instanceId:u.instanceId,...A.clamp(m.id,{x:pos.x-48*(i+1),y:pos.y+28})}));
- buildObjects();sidebar();paint(performance.now());message(s.migration||(quiet()&&!s.tutorial.kills&&m.id==='clearing-0'?BondOpening.text:''));$('#world-weather').textContent=(m.kind==='cave'?'UNDERGROUND · ':m.kind==='hub'?'SANCTUARY · ':m.kind==='boss'?'BOSS DOMAIN · ':'ON THE TRAIL · ')+A.REGIONS[m.regionIndex].name;
+ buildObjects();sidebar();paint(performance.now());message(s.migration||(quiet()&&!s.tutorial.kills&&m.id==='clearing-0'?BondOpening.text:''));$('#world-weather').textContent=(m.kind==='cave'?'UNDERGROUND · ':m.kind==='hub'?'CITY · ':m.kind==='boss'?'BOSS DOMAIN · ':'ON THE TRAIL · ')+A.REGIONS[m.regionIndex].name;
 }
 function project(p){return {x:(p.x-camera.x)*scale,y:(p.y-camera.y)*scale*VERTICAL};}
 function place(el,p){const q=project(p);el.style.left=q.x+'px';el.style.top=q.y+'px';el.style.zIndex=Math.round(q.y+300);}
@@ -195,6 +199,9 @@ function interact(o){
  else if(o.kind==='wild'){const e=beginHunt(o.id);if(e){if(!BondApp.startRegionBattle(e.id))message(BondAdventure.readiness(P.snapshot(),party)||P.error()||'Could not start this hunt. Retry saving the previous encounter.');}else{buildObjects();message(P.error()||(P.snapshot().encounterSave?'You are already in battle.':'That creature is no longer here. Wait for a new spawn.'));}}
  else if(o.kind==='pack'){const e=P.beginPack(o.id);if(e)talk(e.id);else message(P.snapshot().encounterSave?'Finish the battle or use Run first.':'Not enough creatures nearby for this encounter.');}
  else if(o.kind==='npc')talk(o.id);
+ else if(o.kind==='building')BondCityView.enter(o.id);
+ else if(o.kind==='resident')BondCityView.resident(o.id);
+ else if(o.kind==='waystone')BondCityView.teleport();
  else if(o.kind==='shop'||o.kind==='sanctuary')BondRecovery.open(o.kind);
  else if(['guide','discovery','openingSign'].includes(o.kind))exploreInfo(o);
 }

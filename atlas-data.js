@@ -64,21 +64,15 @@ for(const [r,region] of REGIONS.entries()){
   neighbors:[],habitats:[],obstacles:[],landmarks:[],seed:hash(bossId)};
  MAPS[bossId]=bossMap;maps.push(bossMap);
 }
-function gate(from,to,x,y,arrival,label){MAPS[from].neighbors.push({id:from+'>'+to,to,x,y,arrival,label:label||MAPS[to].name,kind:MAPS[to].kind==='cave'?'cave':MAPS[to].kind==='forest'?'forest':'gate'});}
-for(const region of REGIONS){
- for(let i=0;i<4;i++){
-  const m=MAPS[region.id+'-'+i],next=MAPS[region.id+'-'+((i+1)%4)],prev=MAPS[region.id+'-'+((i+3)%4)];
-  gate(m.id,next.id,m.width-80,m.height/2,{x:170,y:next.height/2});
-  gate(m.id,prev.id,80,m.height/2,{x:prev.width-170,y:prev.height/2});
-  gate(m.id,region.id+'-hub',300,m.height/2-80,{x:900,y:1000},'Return to '+region.hub);
- }
- const hub=MAPS[region.id+'-hub'];
- [0,1,2,3].forEach((i,n)=>{const dest=MAPS[region.id+'-'+i];gate(hub.id,dest.id,450+n*300,1100,{x:450,y:dest.height/2},i===3?'Explore nearby cave':i===1?'Explore nearby forest':'Enter '+dest.name);});
-}
-for(let r=0;r<REGIONS.length-1;r++){
- const a=MAPS[REGIONS[r].id+'-2'],b=MAPS[REGIONS[r+1].id+'-0'];
- gate(a.id,b.id,a.width/2,80,{x:b.width/2,y:b.height-170},'Road to '+REGIONS[r+1].name);
- gate(b.id,a.id,b.width/2,b.height-80,{x:a.width/2,y:170},'Road to '+REGIONS[r].name);
+// One occupied Cartesian cell per place. Coordinates increase east and south.
+const GRID_EDGES=[];
+for(const [r,region] of REGIONS.entries()){
+ const x=(r%2)*3,y=4-Math.floor(r/2)*2;
+ const cells={'hub':[0,1],0:[1,1],1:[2,1],2:[2,0],3:[1,0],boss:[0,0]};
+ for(const [suffix,[dx,dy]] of Object.entries(cells))MAPS[region.id+'-'+suffix].grid={x:x+dx,y:y+dy};
+ for(const [a,b] of [['hub',0],[0,1],[0,3],[1,2],[3,2],[3,'boss']])GRID_EDGES.push([region.id+'-'+a,region.id+'-'+b]);
+ if(r%2)GRID_EDGES.push([REGIONS[r-1].id+'-1',region.id+'-hub']);
+ if(r>=2)for(const [a,b] of [[3,0],[2,1]])GRID_EDGES.push([REGIONS[r-2].id+'-'+a,region.id+'-'+b]);
 }
 const get=id=>MAPS[id]||null;
 const home=type=>maps.flatMap(m=>m.habitats).find(h=>h.type===type)||null;
@@ -96,5 +90,5 @@ function validate(){
  for(const type of C.MONSTERS)if(C.UNITS[type].source==='wild'&&!home(type))errors.push('Missing habitat '+type);
  return errors;
 }
-root.BondAtlas={BASE_SPEED,REGIONS,MAPS,maps,get,home,clamp,unlocked,collision,validate,hash};
+root.BondAtlas={BASE_SPEED,REGIONS,MAPS,maps,GRID_EDGES,get,home,clamp,unlocked,collision,validate,hash};
 })(globalThis);

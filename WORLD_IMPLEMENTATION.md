@@ -1,24 +1,25 @@
 # Six Reaches — local world implementation
 Patch20 update over the Pass15 authored world · 2026-09-13. Not commercial acceptance.
-See [current adventure tuning and owner checks](PASS20_VALIDATION.md).
+Current topology and city behavior: [Square world and cities](features/world/CITIES.md).
+Adventure tuning: [current rules and owner checks](PASS20_VALIDATION.md).
 
 ## What is built
 
 | World capability | Implementation | Validation |
 | --- | --- | --- |
-| 24 large maps / six towns / six boss domains | Stable IDs, 24 authored route specifications, six compact boss arenas, open regional graph and physical gate positions | 36-place atlas count/connectivity; reciprocal gates; route fixtures |
-| Readable varied scenery | Six transparent 16-object atlases; nine ground materials; unique hero art per exploration map, biome sanctuary per hub | All 30 rendered in browser; desktop/mobile screenshots; owner art review pending |
+| 24 large maps / six towns / six boss domains | Stable IDs, 24 authored route specifications, six compact boss arenas, Cartesian grid and reciprocal border portals | 36-place atlas count/connectivity; reciprocal gates; route fixtures |
+| Readable varied scenery | Six transparent 16-object atlases; nine ground materials; unique hero art per exploration map, themed enterable city buildings | All 30 rendered in browser; desktop/mobile screenshots; owner art review pending |
 | Continuous exploration | Follow camera, 0.78 oblique Y projection, click routing, keyboard movement, physical multi-gate itineraries | Real movement-loop crossings and gate journey; no atlas teleport |
 | Cave and water navigation | Walkable cave rooms/corridors, visible rock rims, water masks and explicit bridge polygons | Collision and A* reachability to gates, residents, landmarks, rest/cache/guide |
 | Map-wide wildlife populations | 94 wild species retain source maps; Common8/Uncommon5/Rare1 per species, persisted random reachable positions; ordinary0s/rare60s replacement | Pass17 quotas, reachability, death/respawn, reload, reserved legacy-slot and write-failure checks |
 | Environmental motion | Leaf/mote drift, tree sway, pool ripples, bounded idle wander | Reduced-motion/low-effects controls; frame sample; final motion review pending |
 | Layering | Ground chunks below foot-Y-sorted props/actors; nearby occluder fade | Scene walkthrough/screenshots; collision footprint independent from sprite rectangle |
-| Discovery | 72 wilderness + six town journal points; persistent visited maps and sightings | Walk up, discover, dismiss, reload; no hidden stat or loot reward |
-| Town and trail interactions | Physical gates, Keepers, fighting NPCs and direct painted road signs. The painted Supply Store sells earned-coin supplies; sanctuary recovery is free. Edit builds and summon only in Loadout | Pass18 played sign/shop/sanctuary and field-recovery flows; optional packs still use resident lives |
+| Discovery | 72 wilderness + six town landmark identities; persistent visited maps and sightings | Walk up, discover, dismiss, reload; no hidden stat or loot reward |
+| Town and trail interactions | Physical gates, Keepers, fighting NPCs and direct painted road signs. Enterable city shops sell earned-coin supplies; arrival heals the party automatically. City waystones connect the four starting cities. Edit builds and summon only in Loadout | Played city room/shop/waystone and field-recovery flows; optional packs still use resident lives |
 | Battle continuity | Biome/cave-aware arena backgrounds; existing immediate wild-win return and loot popup | Real starter fight plus full pack/duel/save-failure regressions |
 | Delivery resilience | Chunk LRU, two logical scenery sheets, ground fallback, silent progressive loading and concise failure/retry feedback | 100 remounts; aborted asset request/retry; real-time browser sample |
-| World HUD | Illustrated geographic 36-place atlas with actual roads, six organic reach silhouettes, six boss domains, trainer-relative average-level hover/focus cards, local minimap, travel health, recovery and journal | Desktop/mobile, keyboard/modal, graph and exact green/yellow/red boundary checks; danger never becomes an invisible lock |
-| Adventure stakes | Trainer-only opening values remain intact; lone wilds scale from 1× to 2.6× HP and 1.3× offense as the deployed party grows to three. HP persists across fights/reloads/build changes; defeat rescue does not heal | Exact scaling fixtures, seeded opening samples, played hunts, health/replay/migration/transaction assertions |
+| World HUD | Cartesian 36-square atlas with shared-border roads, six boss domains, trainer-relative average-level hover/focus cards, local minimap, travel health, recovery and journal | Desktop/mobile, keyboard/modal, graph and exact green/yellow/red boundary checks; danger never becomes an invisible lock |
+| Adventure stakes | Trainer-only opening values remain intact; lone wilds scale from 1× to 2.6× HP and 1.3× offense as the deployed party grows to three. HP persists across fights/reloads/build changes; Firstlight defeat restores at camp and other defeat rescues restore at their city | Exact scaling fixtures, seeded opening samples, played hunts, health/replay/migration/transaction assertions |
 | Painted bridge and facing | Original timber bitmap aligned to actual crossing polygons, fallback/retry; sprite size independent of directional mirror, followers track actual movement | Pass17 played crossing/screenshots and canvas/portrait/vector left/right checks |
 
 Current detail: [PASS20_VALIDATION.md](PASS20_VALIDATION.md). Historical population/facing detail: [PASS17_VALIDATION.md](PASS17_VALIDATION.md). Source-map species

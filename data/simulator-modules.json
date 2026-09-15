@@ -10,6 +10,7 @@
   "game.js",
   "world-data.js",
   "atlas-data.js",
+  "city-data.js",
   "world-layout.js",
   "world-nav.js",
   "growth.js",

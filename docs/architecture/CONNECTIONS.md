@@ -147,6 +147,15 @@ Explicit UTC phase/attack timestamp + saved five-individual defense loadout -> t
 
 Trace through: [inner-sea-farm.js](<../../inner-sea-farm.js>) → [game.js](<../../game.js>) → [profile.js](<../../profile.js>) → [progression.js](<../../progression.js>).
 
+<a id="city-travel"></a>
+## city-travel
+
+[world](<../../features/world/README.md>) → [persistence](<../../features/persistence/README.md>)
+
+Authored doorway/waystone positions authorize proximity-bound room/service interactions and critical city teleport transactions. Arrival heals all owned lives; failed saves retain location/resources; atlas selection only plans physical walking.
+
+Trace through: [city-data.js](<../../city-data.js>) → [profile.js](<../../profile.js>) → [city-view.js](<../../city-view.js>) → [region.js](<../../region.js>).
+
 ## Shared interface shapes
 
 <a id="interface-1"></a>

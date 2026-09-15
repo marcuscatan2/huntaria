@@ -14,7 +14,10 @@ The four demonstrations are Tavi/Druid, Rain/Mage, Lina/Hunter and
 Wren/Swordsman. Old `druid-area` and `mage-bypass` demonstration receipts migrate
 to the replacement meanings; a progressed save never has to repeat those wins.
 
-After Tidecrown, all four masters appear in Amber Crossing. Each master's actual
+After Tidecrown, masters appear in their city courtyards: Druid in Mosslight,
+Mage in Willowbrook, Hunter in Amber Crossing and Swordsman in Moonwell. The
+city waystones link these four choices; quest directions return to the city of
+the master whose acceptance battle you won. Each master's actual
 opponent class matches the class being offered. The player fights with their
 current Apprentice and real companions. The master says:
 
