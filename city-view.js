@@ -5,7 +5,7 @@ const P=BondProfile,A=BondAtlas,dialog=document.createElement('dialog');dialog.i
 let returnFocus=null,room=null;
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function show(){returnFocus=document.activeElement;if(!dialog.open)dialog.showModal();dialog.querySelector('h2').focus({preventScroll:true});BondCityArt.refresh();}
-function header(eyebrow,title){return '<header class="city-dialog-header"><div><p class="eyebrow">'+escape(eyebrow)+'</p><h2 id="city-title" tabindex="-1">'+escape(title)+'</h2></div><button class="button secondary" data-city-leave>Back outside</button></header>';}
+function header(eyebrow,title){dialog.classList.remove('is-conversation');return '<header class="city-dialog-header"><div><p class="eyebrow">'+escape(eyebrow)+'</p><h2 id="city-title" tabindex="-1">'+escape(title)+'</h2></div><button class="button secondary" data-city-leave>Back outside</button></header>';}
 function enter(id){
  const s=P.snapshot(),b=BondCities.building(s,id);if(!b)return false;room={map:s.map,id};
  const m=A.get(s.map),t=BondCities.theme(m),i=BondCities.themes.indexOf(t),roles=BondCities.roomRoles[t.id],resident=m.residents[b.room==='shop'?roles.merchant:b.room==='annex'?roles.annex:0];
@@ -14,7 +14,7 @@ function enter(id){
  dialog.querySelectorAll('[data-city-exhibit]').forEach((el,n)=>{const [x,y,w,h]=BondCities.exhibitAreas[t.id][n];Object.assign(el.style,{left:x+'%',top:y+'%',width:w+'%',height:h+'%'});});
  BondCityArt.room(dialog.querySelector('.city-room'),i);show();return true;
 }
-function resident(id){const s=P.snapshot(),m=A.get(s.map),r=m?.residents?.find(r=>r.id===id);if(!r||s.encounterSave||Math.hypot(s.position.x-r.x,s.position.y-r.y)>150)return false;room=null;const t=BondCities.theme(m);dialog.innerHTML=header(m.name,r.name)+'<div class="city-conversation"><div>'+CharacterRig.art(r.appearance)+'</div><blockquote>'+escape(r.text)+'</blockquote><div>'+CharacterRig.art(r.pet)+'<small>'+escape(BondContent.UNITS[r.pet].name)+'</small></div></div><p>'+escape(t.title)+'</p>';show();return true;}
+function resident(id){const s=P.snapshot(),m=A.get(s.map),r=m?.residents?.find(r=>r.id===id);if(!r||s.encounterSave||Math.hypot(s.position.x-r.x,s.position.y-r.y)>150)return false;room=null;const t=BondCities.theme(m);dialog.innerHTML=header(m.name,r.name)+'<div class="city-conversation"><div>'+CharacterRig.art(r.appearance)+'</div><blockquote>'+escape(r.text)+'</blockquote><div>'+CharacterRig.art(r.pet)+'<small>'+escape(BondContent.UNITS[r.pet].name)+'</small></div></div><p>'+escape(t.title)+'</p>';dialog.classList.add('is-conversation');show();return true;}
 function teleport(){
  const s=P.snapshot(),destinations=BondCities.destinations(s);if(!destinations.length)return false;room=null;
  dialog.innerHTML=header(A.get(s.map).name,'City waystone')+'<p>Choose a city. The waystone carries your whole party.</p><div class="city-destinations">'+destinations.map(id=>{const m=A.get(id);return '<button data-city-teleport="'+id+'"><strong>'+m.name+'</strong><span>'+BondCities.theme(m).title+'</span></button>';}).join('')+'</div><p class="city-room-message" role="status"></p>';show();return true;

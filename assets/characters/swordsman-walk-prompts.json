@@ -1,0 +1,14 @@
+{
+  "revision": "knight-walk-v1",
+  "tool": "built-in image_gen",
+  "prompt": "Use case: identity-preserve. Asset type: transparent 2D game walking sprite atlas. Input image is the exact existing knight/Swordsman character identity reference, not a layout to copy. Generate one new square PNG sheet with exactly FOUR frames in a 2 by 2 equal-cell grid on a genuinely transparent background. Same brown-haired young knight, navy blue gold-edged tabard/cape, silver armor, brown boots, sword held low in right hand. Same painted chibi proportions, upright three-quarter view facing right, color/detail style as reference. This must be a REAL four-phase walking cycle: top-left left leg well forward/right leg back (contact); top-right legs passing under body with rear knee lifted (passing); bottom-left right leg well forward/left leg back (opposite contact); bottom-right opposite passing pose with other knee lifted. Clearly alternate both legs and arm swing; never repeat a single stride stance. Head/torso identity consistent across frames, small natural cape swing, sword stays safely away from body. Exactly equal character scale, head at same vertical position within each cell, foot baseline near 90 percent cell height; complete silhouette entirely inside its cell with comfortable transparent gutters, full sword and cape uncropped. No text, numerals, grid lines, scenery, ground shadow, background color or checkerboard. Preserve native alpha. Only four individual knight walk poses; no combat, idle or defeated frames.",
+  "reference": "assets/characters/swordsman-sheet.png",
+  "output": "assets/characters/swordsman-walk.png",
+  "source": "exec-70aee9d0-bcf4-41df-95bb-2b4f9fd5eb20.png",
+  "reference_sha256": "5b4d63f87ec385d7161e2d3090758ab7c31551404fd295b1f636f6df233ade33",
+  "output_sha256": "395e6dd4aee7f956c4c555bf1134c9de97389164dcf5bdc27ffcd373100489c6",
+  "frame_grid": [
+    2,
+    2
+  ]
+}

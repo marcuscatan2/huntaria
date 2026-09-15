@@ -5,6 +5,7 @@
   const types=new Set([...legacy,'frostfang','cindrake','ironback','thornstag','tideotter','lumimoth','mira','orin','vesper','lark','selene','elderroot']);
   const painted=new Set(['hunter','swordsman']),people=['npc-keeper','npc-villager','npc-merchant','npc-traveler',...BondCities.spriteNames.map(n=>'npc-'+n)];
   const animated=new Set(['druid','mage','apprentice',...painted]),sheets=new Map();
+  let portraitSerial=0;
   const supplied=type=>BondMonsterSprites.get(type);
   document.addEventListener('error',event=>{
     const img=event.target;if(!(img instanceof HTMLImageElement)||!img.classList.contains('character-sprite')||img.dataset.artFallback)return;
@@ -29,8 +30,8 @@
   function art(type){
     if(BondCities.spriteNames.includes(type.replace('npc-','')))return BondCityArt.npc(type);
     if(painted.has(type)){
-      const config=BondAnimationData[type],[l,t,r,b]=config.frames[13].rect;
-      return '<svg class="character-sprite" data-painted-portrait="true" style="overflow:hidden" data-character="'+type+'" xmlns="http://www.w3.org/2000/svg" viewBox="'+[l,t,r-l,b-t].join(' ')+'" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><image href="assets/characters/'+type+'-sheet.png" width="'+config.width+'" height="'+config.height+'"/></svg>';
+      const config=BondAnimationData[type],[l,t,r,b]=config.frames[13].rect,clip='class-portrait-'+(++portraitSerial);
+      return '<svg class="character-sprite" data-painted-portrait="true" style="overflow:hidden" data-character="'+type+'" xmlns="http://www.w3.org/2000/svg" viewBox="'+[l,t,r-l,b-t].join(' ')+'" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><defs><clipPath id="'+clip+'"><rect x="'+l+'" y="'+t+'" width="'+(r-l)+'" height="'+(b-t)+'"/></clipPath></defs><image clip-path="url(#'+clip+')" href="assets/characters/'+type+'-sheet.png" width="'+config.width+'" height="'+config.height+'"/></svg>';
     }
     if(people.includes(type))return '<img class="character-sprite civilian-sprite" data-character="'+type+'" src="assets/characters/'+type+'.png" alt="" aria-hidden="true" width="1254" height="1254" decoding="async" draggable="false">';
     if(type==='apprentice'){const c=window.BondProfile?.snapshot().character;return BondApprenticePreview.markup(c?.look,c?.weapon);}
@@ -54,14 +55,14 @@
     if(tail<total*.45)throw Error('Generated Apprentice backdrop could not be isolated safely.');
     ctx.putImageData(pixels,0,0);return {canvas,removed:tail/total};
   }
-  function removeDetachedPieces(source){
+  function removeDetachedPieces(source,columns=4){
     const canvas=document.createElement('canvas');canvas.width=source.width;canvas.height=source.height;
     const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(source,0,0);
     const pixels=ctx.getImageData(0,0,canvas.width,canvas.height),data=pixels.data,total=canvas.width*canvas.height;
-    const labels=new Int32Array(total),queue=new Int32Array(Math.ceil(total/16));let label=0,removed=0;
-    const xs=[0,Math.round(canvas.width/4),Math.round(canvas.width/2),Math.round(canvas.width*3/4),canvas.width];
-    const ys=[0,Math.round(canvas.height/4),Math.round(canvas.height/2),Math.round(canvas.height*3/4),canvas.height];
-    for(let row=0;row<4;row++)for(let col=0;col<4;col++){
+    const labels=new Int32Array(total),queue=new Int32Array(Math.ceil(total/(columns*columns)));let label=0,removed=0;
+    const xs=Array.from({length:columns+1},(_,i)=>Math.round(canvas.width*i/columns));
+    const ys=Array.from({length:columns+1},(_,i)=>Math.round(canvas.height*i/columns));
+    for(let row=0;row<columns;row++)for(let col=0;col<columns;col++){
       const components=[];
       for(let y=ys[row];y<ys[row+1];y++)for(let x=xs[col];x<xs[col+1];x++){
         const start=y*canvas.width+x;if(labels[start]||data[start*4+3]<16)continue;
@@ -81,8 +82,8 @@
     const key=type==='apprentice'?'apprentice-'+(weapon==='bow'?'bow':'dagger'):type;
     if(!sheets.has(key)){
       const image=new Image(),entry={key,image,render:image,ready:false,error:false,removed:0};
-      entry.promise=new Promise(resolve=>{image.onload=()=>{try{if(key.startsWith('apprentice-')){const cleaned=removeNeutralBackdrop(image),isolated=removeDetachedPieces(cleaned.canvas);entry.render=isolated.canvas;entry.removed=cleaned.removed;entry.specks=isolated.removed;}else if(key==='mage'){const isolated=removeDetachedPieces(image);entry.render=isolated.canvas;entry.specks=isolated.removed;}entry.ready=true;resolve(true);document.dispatchEvent(new CustomEvent('bond-art-ready'));}catch(_){entry.error=true;resolve(false);}};image.onerror=()=>{entry.error=true;resolve(false);};});
-      image.src=painted.has(key)?'assets/characters/'+key+'-sheet.png':key==='druid'?'assets/art-v10/druid-sheet.png':'assets/art-v21/'+key+'-sheet.png';sheets.set(key,entry);
+      entry.promise=new Promise(resolve=>{image.onload=()=>{try{if(key.startsWith('apprentice-')){const cleaned=removeNeutralBackdrop(image),isolated=removeDetachedPieces(cleaned.canvas);entry.render=isolated.canvas;entry.removed=cleaned.removed;entry.specks=isolated.removed;}else if(key==='mage'||key==='swordsman-walk'){const isolated=removeDetachedPieces(image,key==='swordsman-walk'?2:4);entry.render=isolated.canvas;entry.specks=isolated.removed;}entry.ready=true;resolve(true);document.dispatchEvent(new CustomEvent('bond-art-ready'));}catch(_){entry.error=true;resolve(false);}};image.onerror=()=>{entry.error=true;resolve(false);};});
+      image.src=key==='swordsman-walk'?'assets/characters/swordsman-walk.png':painted.has(key)?'assets/characters/'+key+'-sheet.png':key==='druid'?'assets/art-v10/druid-sheet.png':'assets/art-v21/'+key+'-sheet.png';sheets.set(key,entry);
     }
     return sheets.get(key);
   }
@@ -98,7 +99,7 @@
     }
     if(!rig.animated||!rig.sprite)return rig;
     if(type==='apprentice')BondApprenticePreview.hydrate(node);
-    rig.sheet=options.lazy?null:sheet(type,weapon);rig.original=rig.sprite;
+    rig.sheet=options.lazy?null:sheet(type,weapon);if(type==='swordsman'&&!options.lazy)sheet('swordsman-walk');rig.original=rig.sprite;
     const canvas=document.createElement('canvas');canvas.width=canvas.height=320;
     canvas.className='character-sprite animated-sprite';canvas.dataset.character=type;canvas.setAttribute('aria-hidden','true');canvas.hidden=true;
     if(type==='druid'){canvas.style.setProperty('--sprite-size','1.15');canvas.style.transformOrigin='50% 93.75%';}
@@ -172,9 +173,12 @@
     }else if(!s.reduced&&s.walking){frame=Math.floor(s.time*(rig.type==='stonehorn'?5:7)*(s.rate||1))%4;mode='walk';}
     else if(!s.reduced&&s.windup>.1){frame=4;mode='windup';}
     rig.mode=mode;rig.sprite.dataset.pose=mode;
-    if(frame===rig.frame)return;
+    const sourceKey=rig.type==='swordsman'&&mode==='walk'?'swordsman-walk':rig.configKey;
+    const source=sourceKey===rig.configKey?rig.sheet:sheet(sourceKey);
+    if(!source.ready)return;
+    if(frame===rig.frame&&sourceKey===rig.sourceKey)return;rig.sourceKey=sourceKey;
     rig.frame=frame;rig.sprite.dataset.frame=frame;
-    const im=rig.sheet.render,config=BondAnimationData[rig.configKey],data=config.frames[frame];
+    const im=source.render,config=BondAnimationData[sourceKey],data=config.frames[frame];
     const [left,top,right,bottom]=data.rect,w=right-left,h=bottom-top,k=config.scale;
     rig.ctx.clearRect(0,0,320,320);rig.ctx.imageSmoothingEnabled=true;rig.ctx.imageSmoothingQuality='high';
     // Measured rectangles prevent a neighboring staff or horn bleeding into a pose.
@@ -192,7 +196,7 @@
     return entry.portrait;
   }
   function retry(){for(const img of document.querySelectorAll('img[data-art-fallback]')){const url=img.dataset.artFallback;delete img.dataset.artFallback;img.src=url;}for(const s of sheets.values())if(s.error){s.error=false;s.image.src=s.image.src;}}
-  function preload(type,weapon='dagger'){return animated.has(type)?sheet(type,weapon).promise:Promise.resolve(true);}
+  function preload(type,weapon='dagger'){return type==='swordsman'?Promise.all([sheet(type).promise,sheet('swordsman-walk').promise]).then(r=>r.every(Boolean)):animated.has(type)?sheet(type,weapon).promise:Promise.resolve(true);}
   window.CharacterRig={art,npcAppearance,portraitSource,mount,pose,trigger,retry,preload,ready:()=>Promise.all([...sheets.values()].map(s=>s.promise)),
     inspect:()=>[...sheets].map(([type,s])=>({type,ready:s.ready,error:s.error,removed:s.removed,specks:s.specks||0}))};
 })();

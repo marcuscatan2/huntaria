@@ -72,7 +72,7 @@
       const deployment=options.formation??options.profile?.formation;
       this.formation=deployment&&root.BondFormation?BondFormation.clean(deployment):null;
       if(this.formation&&!this.defense)for(const u of this.units.filter(u=>u.side===0&&u.ownerIndex===0)){
-        u.rank=this.formation[u.slot];u.position={...BondFormation.POSITIONS[u.rank]};u.previousPosition={...u.position};
+        u.rank=this.formation[u.slot];u.position=BondFormation.position(this.formation,u.slot);u.previousPosition={...u.position};
       }
       this.encounter = options.encounter?.kind ? options.encounter : null;
       this.rescue=root.BondRaidRules?.applies(this.encounter)||false;
@@ -101,7 +101,7 @@
         const bonus=u.side===0&&!u.storyMaster&&root.BondGrowth?root.BondGrowth.stats(u.type,companion?companion.growth:(profile?.growth||options.growth)?.[u.type]):{hp:0,attack:0,armor:0,move:0,cooldown:0};
         u.growth=bonus;
         const base={...UNITS[u.type],...u,hp:u.maxHp};
-        const derived=profile&&root.BondProgress?BondProgress.derived(u.type,profile,base,u.storyMaster?80:u.side===1?(u.level||options.enemyLevel||1):null):null;
+        const derived=profile&&root.BondProgress?BondProgress.derived(u.type,profile,base,u.storyMaster?u.level:u.side===1?(u.level||options.enemyLevel||1):null):null;
         u.level=derived?.level||1;u.element=root.BondProgress?.ELEMENT[u.type]||null;
         u.effective=derived?.effective||{str:0,agi:0,vit:0,int:0,dex:0};u.factors=derived?.factors||{melee:1,ranged:1,magic:1};
         const wildScale=this.adventure&&u.side===1&&this.encounter?.kind==='wild'&&root.BondAdventure?BondAdventure.wildScale(this.wildPartySize):null;
@@ -112,7 +112,7 @@
         if(wildScale)u.skillScale=(u.skillScale??1)*wildScale.power;
         u.growth.armor=Math.min(.6,(bonus.armor||0)+(derived?.armor||0));u.growth.cooldown=Math.min(.5,(bonus.cooldown||0)+(derived?.cooldown||0));
         u.speed=(derived?.speed||100/u.interval)*(1+(bonus.speed||0));u.interval=100/u.speed;
-        u.regenPerSecond=u.maxHp*u.effective.vit*.00002;u.regenBuffer=0;
+        u.statRules=!!derived;u.magicRange=derived?.magicRange;u.regenPerSecond=derived?BondProgress.hpRecovery(u.maxHp,u.effective.vit)/6:0;u.regenBuffer=0;
         u.spawnId=u.side===1?(u.spawnId||null):null;
       }
       if(this.adventure&&root.BondAdventure)for(const u of this.units.filter(u=>u.side===0&&u.ownerIndex===0)){const hp=BondAdventure.health(options.profile||{},u.slot===0?'trainer':u.instanceId);u.hp=hp===0?0:Math.max(1,Math.round(u.maxHp*hp/10000));}
@@ -155,19 +155,12 @@
     }
     fleeing(u) {return !!this.escape&&u.side===0&&u.slot===0;}
     target(actor) {
-      // Choosing to run exposes the trainer; ordinary monster-first targeting
-      // is unchanged in fights without an escape request.
-      if(this.escape&&actor.side===1&&this.trainer(0)?.hp>0)return this.trainer(0);
-      const monsters = this.team(1 - actor.side).filter(u => u.slot > 0);
-      if (actor.slot) {
-        const distance = u => (u.position.x - actor.position.x) ** 2 + (u.position.y - actor.position.y) ** 2;
-        return monsters.sort((a, b) => distance(a) - distance(b) || a.slot - b.slot || a.id.localeCompare(b.id))[0] || this.team(1-actor.side).find(u=>u.slot===0);
-      }
-      return monsters.sort((a, b) => a.hp/a.maxHp - b.hp/b.maxHp || a.slot - b.slot || a.id.localeCompare(b.id))[0] || this.team(1-actor.side).find(u=>u.slot===0);
+      const distance = u => (u.position.x - actor.position.x) ** 2 + (u.position.y - actor.position.y) ** 2;
+      return this.team(1-actor.side).sort((a,b)=>distance(a)-distance(b)||a.slot-b.slot||a.id.localeCompare(b.id))[0];
     }
     refreshTargets() {
       if (this.ended) return;
-      for (const actor of this.units.filter(u => u.slot > 0 && u.hp > 0)) {
+      for (const actor of this.units.filter(u => u.hp > 0 && !u.eliminated)) {
         const target = this.target(actor), previousTarget = actor.targetId;
         if(!target)continue;
         actor.targetId = target.id;
@@ -265,11 +258,12 @@
         if (guard) {
           const redirected = Math.round(raw * 0.6); raw -= redirected;
           // Reverse the overtime multiplier because recursive damage applies it once.
-          this.damage(actor, guard, redirected / (this.overcharge ? 2 : 1), 'Guard intercept', false, {elementApplied:true});
+          this.damage(actor, guard, redirected / (this.overcharge ? 2 : 1), 'Guard intercept', false, {elementApplied:true,category:details.category});
           this.emit('guard', guard, target, `${guard.name} intercepted ${redirected} damage for ${target.name}.`, redirected);
         }
       }
       if(target.growth?.armor)raw=Math.round(raw*(1-target.growth.armor));
+      if(details.category&&target.statRules){const defense=details.category==='magic'?BondProgress.classic(target.effective,target.level).magicDefense:BondProgress.physicalDefense(target.effective.vit,this.random());raw=Math.max(1,raw-defense);}
       if (target.passive==='granite') raw = Math.round(raw * .9);
       // Expiry is checked at the hit too, so processing order cannot extend a shield.
       if (target.shieldUntil <= this.time) target.shield = 0;
@@ -277,7 +271,7 @@
       const floor=this.rescue?BondRaidRules.floor(this,target):0;
       const dealt = Math.min(Math.max(0,target.hp-floor), raw - absorbed); target.hp -= dealt; if(actor)actor.damage += dealt;
       this.emit('damage', actor, target, `${actor?.name||'Environment'} → ${target.name}: ${label} · ${dealt} damage${absorbed ? ` (${absorbed} shielded)` : ''}.`, dealt, details);
-      if (target.hp <= 0) { target.hp = 0; target.shield = 0; target.status = {}; this.emit('defeat', actor, target, `${target.name} fell${this.defense?'.':target.slot === 0 ? '. The bond breaks!' : this.team(target.side).some(u => u.slot > 0) ? '. Remaining monsters still protect their trainer.' : '. No monsters remain to protect the trainer.'}`); }
+      if (target.hp <= 0) { target.hp = 0; target.shield = 0; target.status = {}; this.emit('defeat', actor, target, `${target.name} fell.`); }
       if(target.hp<=0&&target.slot===0&&this.group){for(const companion of this.units.filter(u=>u.side===target.side&&u.owner===target.owner&&u.slot>0)){companion.eliminated=true;companion.moving=false;this.emit('eliminate',target,companion,companion.name+' withdraws because their trainer fell.');}}
       this.checkEnd();
       if (!this.ended && target.hp>0 && target.hp<target.maxHp*.4 && target.passive==='lastgrove' && !target.passiveUsed) {
@@ -317,13 +311,14 @@
       if (!this.inRange(actor, target, skill)||actor.eliminated) return false;
       const category=skill?.category||actor.basicCategory;
       if(!skill)actor.basics++;
-      const chance=root.BondRules?.dodgeChance(target.effective,actor.effective,category)||0;
+      const chance=root.BondRules?.dodgeChance(target.effective,actor.effective,category,target.level,actor.level)||0;
       if(chance>0&&this.random()<chance){this.emit('dodge',actor,target,target.name+' dodges '+actor.name+' — '+label+'.',0,{category,chance});return true;}
       this.lastStrikeHit=true;
       if(actor.passive==='kindling' && this.has(target,'burn')) amount*=1.15;
       if(actor.passive==='winter' && this.has(target,'slow')) amount*=1.2;
       if(!skill&&actor.passive==='charged'&&actor.basics%3===0)amount+=35;
       if(skill)amount*=(actor.factors?.[category]||1)*(actor.skillScale??1)*(1+(actor.growth?.skillPower?.[this.skillId(actor,skill)]||0));
+      if(category==='magic'&&actor.magicRange){const [min,max]=actor.magicRange,mean=(min+max)/2;if(max>min)amount*=(min+Math.floor(this.random()*(Math.floor(max-min)+1)))/(skill?mean:Math.round(mean));}
       amount*=1+(actor.growth?.attack||0);
       this.damage(actor, target, amount, label, true, {distance: this.distance(actor, target), reach: this.reach(actor, skill),category});
       return true;
@@ -406,7 +401,7 @@
     step() {
       if (this.ended) return;
       this.tick++; this.time = Math.round(this.tick * DT * 100) / 100;
-      for (const u of this.units) { u.previousPosition = {...u.position}; u.moving = false; }
+      for (const u of this.units) { u.previousPosition = {...u.position}; u.wasMoving=u.moving; u.moving = false; }
       if(this.rescue){BondRaidRules.step(this);if(this.ended)return;}
       this.refreshTargets();
       if (!this.overcharge && this.time >= 55) { this.overcharge = true; this.emit('overcharge', null, null, 'OVERCHARGE · Healing stops. All damage doubles.'); }
@@ -416,11 +411,10 @@
         if (u.hp <= 0 || u.eliminated || this.ended) continue;
         u.cds = u.cds.map(cd => Math.max(0, cd - DT));
         if (u.shieldUntil <= this.time) u.shield = 0;
-        if(!this.overcharge&&u.hp<u.maxHp&&u.regenPerSecond>0){
-          u.regenBuffer+=u.regenPerSecond*DT;
-          const gain=Math.min(u.maxHp-u.hp,Math.floor(u.regenBuffer+1e-9));
-          if(gain>0){u.regenBuffer-=gain;u.hp+=gain;this.emit('regen',u,u,u.name+' regenerates '+gain+' HP.',gain);}
-        }else if(u.hp>=u.maxHp)u.regenBuffer=0;
+        if(!this.overcharge&&u.hp<u.maxHp&&u.regenPerSecond>0&&!u.wasMoving){
+          u.regenBuffer+=DT;
+          if(u.regenBuffer>=6-1e-9){u.regenBuffer-=6;const gain=Math.min(u.maxHp-u.hp,BondProgress.hpRecovery(u.maxHp,u.effective.vit));u.hp+=gain;this.emit('regen',u,u,u.name+' regenerates '+gain+' HP.',gain);}
+        }else u.regenBuffer=0;
         const burn = u.status.burn;
         if (burn && burn.next <= this.time + 0.001 && burn.next <= burn.until + 0.001) { burn.next += 1; const source = this.units.find(v => v.id === burn.source); this.damage(source, u, 12, 'Burn'); }
         if (u.hp <= 0 || this.ended) continue;

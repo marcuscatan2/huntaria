@@ -1,136 +1,108 @@
-# Companion stats — rules v18
+# Companion stats
 
-Patch20 current level/content/world tuning is described here and in [current playtest walkthrough](<features/opening/VALIDATION.md>).
-The15% Echo override is for testing, not an approved launch economy.
+## Classic attributes and allocation
 
-Implemented local rules, 2026-09-11. DEC-01/02/07 runtime defaults are frozen here
-for reproducible tests; owner acceptance and commercial balance remain pending.
-This replaces the pass-11 generic ranged-damage formula. Ragnarok-inspired
-allocation is an original approximation, not an exact port.
+STR, AGI, VIT, INT and DEX use classic/pre-Renewal stat contributions. Leadership
+keeps Huntaria's companion-sharing rule and supplies no LUK, critical-hit or
+perfect-dodge bonus. Class bases, skill kits, XP, level scaling, elements and
+Leadership remain game-specific. Equipment, SP and spells with cast times are
+not introduced by this revision.
 
-## Attributes and allocation
+Raw attributes start at 1 and cap at 99. All classes share the allocation.
+There are 48 initial points; reaching level L grants `3 + floor(L/5)` points.
+Raising n to n+1 costs `2 + floor((n-1)/10)`. Imports preserve legal allocations;
+malformed allocations normalize within the level budget. Reset is free.
 
-Six raw attributes begin at 1 and cap at 99. Druid, Mage, Hunter and Swordsman share one allocation.
-There are 48 initial spendable points. Reaching level L ≥ 2 grants
-3 + floor(L / 5) points. Raising n to n+1 costs 2 + floor((n−1) / 10).
-Allocation rejects unknown attributes and overspending; imported malformed
-values normalize to a legal allocation. Free reset returns all points.
+Trainer effective attributes equal raw values. Each companion receives raw
+attribute times Leadership times 0.005, once. Integer stat formulas floor that
+contribution. Leadership, derived damage, HP, trees and account bonuses do not
+transfer. For example, STR30 and Leadership20 give a companion STR3.
 
-| Attribute | Implemented effects |
-| --- | --- |
-| STR | Melee physical basic attacks/skills only |
-| DEX | Ranged physical basic attacks/skills, physical accuracy, cooldown reduction |
-| INT | Magic basic attacks/skills and healing |
-| AGI | All ready-action opportunities, plus tiny physical dodge |
-| VIT | Maximum HP, tiny armor, fractional passive regeneration |
-| Leadership | Shares the five other raw attributes once with each owned companion |
+## Stat formulas
 
-Trainer effective attribute = raw − 1.
-Companion effective attribute = trainer raw × raw Leadership × 0.005.
-Leadership itself, level, trees, derived HP/damage and received bonuses do not
-transfer. No recursive sharing or stashed account-mastery bonus exists.
-Example: Leadership 20 and STR 30 share 3 effective STR, not 30% damage.
-
-## Explicit damage categories
-
-Every basic and direct damaging skill declares melee, ranged or magic.
-Range, sprite/projectile style and role labels never pick the scaling attribute.
-Mixed kits use each skill's declared category: Stonehorn's slam is melee/STR,
-Boulder Toss is ranged/DEX, while its wards do no damage.
-
-For level L and effective attributes S/A/V/I/D:
+Let S/A/V/I/D be nonnegative integer effective STR/AGI/VIT/INT/DEX and L be level.
 
 ```text
-level HP factor = 1 + 0.04 × (L−1)
-level offense factor = 1 + 0.025 × (L−1)
-melee factor = level offense factor × (1 + 0.01 × S)
-ranged factor = level offense factor × (1 + 0.01 × D)
-magic factor = level offense factor × (1 + 0.01 × I)
-
-leveled HP = round(base HP × level HP factor × (1 + 0.01 × V))
-maximum HP = round(leveled HP × (1 + tree HP))
-basic power = round(base power × its declared category factor)
-skill strike power = skill amount × its declared category factor × encounter skillScale
-healing scale = level offense factor × (1 + 0.01 × I) × (1 + tree healing)
-attribute armor = min(0.10, V × 0.0005)
-attribute cooldown reduction = min(0.50, D × 0.00667)
+melee stat ATK = S + floor(S/10)^2 + floor(D/5)
+ranged stat ATK = D + floor(D/10)^2 + floor(S/5)
+minimum stat MATK = I + floor(I/7)^2
+maximum stat MATK = I + floor(I/5)^2
+HIT = L + D
+FLEE = L + A
+maximum HP multiplier = 1 + V/100
+attack delay multiplier = 1 - (4*A + D)/1000
+soft MDEF = I + floor(V/2)
+HP recovery every 6 standing seconds = floor(V/5) + max(1, floor(maxHP/200))
+healing item multiplier = 1 + 0.02*V
 ```
 
-Tree attack multiplies strikes; menu ATK shows the rounded tree-adjusted basic
-power before element/defense. The model keeps the underlying basic power and
-applies the tree at the hit. Tree and attribute armor add, capped at 60%;
-cooldown reductions add, capped at 50%. A stronger existing shield cannot be
-replaced or prolonged by a weaker one. Shield amounts are fixed, not INT-scaled.
+These follow the pre-Renewal branches of
+[rAthena's stat implementation](https://github.com/rathena/rathena/blob/master/src/map/status.cpp).
+This is a primary implementation reference, not an assertion of identical
+Ragnarok class, equipment or server behavior.
 
-Hit order: category scaling → eligible offensive innate/tree multipliers →
-element and Overcharge → round → guard split → armor round → Granite round →
-shield absorption → remaining HP clamp. Basic power has its earlier rounding.
-Guard transfers 60% of adjusted damage; element and Overcharge are not applied
-a second time against the guard. Group simulation guards protect their own owner.
+Physical hit probability is `clamp((80 + attacker HIT - defender FLEE)/100,
+0.05, 0.95)`. Magic bypasses this roll. Physical soft defense is
+`floor(0.3*V) + floor(0.5*V) + randomInteger(0, max(0, floor(V*V/150) - floor(0.3*V) - 1))`.
+See the pre-Renewal player branch of
+[rAthena's battle implementation](https://github.com/rathena/rathena/blob/master/src/map/battle.cpp).
+We apply that stat rule to companion contributions too; monsters' authored
+base stats are separate from the player's allocation.
 
-Healing rounds after INT/tree/Tender (×1.15), caps at missing HP, and cannot
-revive or operate during Overcharge. Trail Ration adds 10% max/current HP after
-initial derived HP; it applies only to present allies and is consumed once.
+DEX cast time is `baseSeconds * max(0, 1-D/150)`, exposed by
+`BondProgress.castTime`. It never changes a skill's cooldown. No existing
+instant skill acquires a cast time. The future spell cast clock must be separate
+from cooldown and action readiness, following the
+[pre-Renewal cast calculation](https://github.com/rathena/rathena/blob/master/src/map/skill.cpp).
 
-## Speed, cooldown clocks and movement
+## Integration with the current combat engine
+
+`progression.js` owns pure stat derivation; `rules.js` owns physical accuracy;
+`game.js` applies seeded rolls, damage and recovery. `journey.js` and `menu.js`
+present the same derived values. Actor levels and authored bases remain:
 
 ```text
-base Speed = 100 / original interval
-derived Speed = base Speed × (1 + 0.008 × A) × (1 + tree Speed)
-effective Speed = derived Speed × Slow × Haste
-seconds per ready action = 100 / effective Speed
-skill cooldown on cast = base cooldown × (1 − combined cooldown reduction)
-arena movement = original moveSpeed × 8 × (1 + tree movement) × Slow × Haste
-world walking = 210 world units/second (no AGI/tree walking boost)
+level HP factor = 1 + 0.04*(L-1)
+innate attack = base power * (1 + 0.025*(L-1))
+category attack = innate attack + corresponding stat ATK/MATK
+category factor = category attack / base power
+maximum HP = round(base HP * level HP factor * HP multiplier * farm HP factor)
+basic power = round(category attack)
+skill strike = skill amount * category factor * encounter skillScale
+healing scale = (1 + 0.025*(L-1)) * (1 + 0.01*I) * tree healing factor
 ```
 
-Slow = 0.6; Haste = 1.3; both = 0.78. They change readiness and travel, not the
-cooldown clock, which ticks in battle seconds. AGI affects skills' opportunity
-to act as well as basics, not their cooldown durations. Speed 50 gives 2s per
-ready action, or 1.53846s while hasted. Cooldowns/seconds shown in menus use the
-actual reduction; casting still needs a useful skill and legal range.
+Magic power displays the average of its range. Each magic strike samples the
+integer MATK contribution with the encounter RNG. Each damaging skill declares
+its category; range, art and role do not select an attribute. STR therefore also
+adds a small ranged bonus, while DEX adds a small melee bonus.
 
-Each effective DEX point removes exactly 0.667% of the base cooldown. The
-trainer's first raw point is the universal baseline, so allocation begins to
-contribute at raw DEX 2. Attribute and tree reductions add and stop at the 50%
-total safety cap.
+The `campaign.js` trainingTuning table keeps early demonstrations and optional
+lessons viable for starter parties under these stat and targeting rules.
+Tree attack and eligible innates multiply strikes. Hit order is category/skill
+scaling, offensive bonuses, element and Overcharge, round, Guard split, tree
+armor, soft DEF/MDEF, Granite, shields, remaining HP. Positive direct damage
+has a minimum of one after soft defense. Guard applies element and Overcharge
+once; its redirected damage is already adjusted. A stronger existing shield
+cannot be replaced or prolonged by a weaker one. Shields do not scale with INT.
 
-Simulation ticks at 0.05s. Starting meters retain short slot-based offsets.
-A ready attack waits for range and banks at most one action. 2× is presentation
-playback for solo; it does not change tick rules or rewards. At 55s Overcharge
-stops healing/regen and doubles damage; at 75s uncleared wild/boss/pack fights
-lose. Trainer duels use remaining trainer HP percentage.
+Attack intervals use the stat delay multiplier and tree Speed, with a 0.2-second
+minimum. Slow (0.6) and Haste (1.3) affect readiness and movement. Skill cooldowns
+advance in fixed battle seconds; only explicit tree/skill bonuses reduce them,
+with the existing 50% cap. AGI and DEX do not change world walking speed.
 
-## Physical accuracy and dodge — DEC-01
+A miss consumes the action and cooldown, suppressing attached on-hit effects.
+Charged Feathers counts basic attempts; its third-attempt bonus requires a hit.
+Cinder Heart remains cast-triggered. Healing caps at missing HP, cannot revive,
+and stops in Overcharge. Six-second HP recovery requires standing, resets on
+movement/full health, and cannot trigger healing passives or metrics.
+Leaf Draught recovery includes VIT; Revival Salve keeps its authored revival HP.
 
-```text
-physical dodge probability =
-  clamp(defender effective AGI × 0.0005 − attacker effective DEX × 0.00035,
-        0, 0.05)
-```
-
-Melee and ranged physical basics/direct hits are eligible. Magic, Burn ticks,
-guard interception and arena-wide boss quakes are unavoidable. No critical hits.
-A physical miss spends the normal ready action and active cooldown, emits DODGE,
-and applies no hit damage, hit-triggered bonus or attached Slow/Burn.
-
-Stormowl's Charged Feathers counts basic **attempts**; its third-attempt bonus
-requires that third attack to land. Cinder Heart is explicitly **cast-triggered**,
-so an offensive cast may heal its caster even if a physical strike misses.
-Kindling/Winter multipliers apply only to landed strikes against the relevant
-status. Local combat uses a seeded 32-bit LCG; saved wild spawn lives keep their
-combat seed across retries. This is deterministic simulation, not secure RNG.
-
-VIT regeneration = maximum HP × effective VIT × 0.00002 HP per second.
-Fractional accumulation is retained until it yields an integer HP, capped at
-missing HP. Full HP clears the buffer. Defeat/elimination/Overcharge stops regen;
-it cannot invoke Tender, Moon Ward, healing metrics or healing-passive loops.
-
-Burn is 12 base damage per second, including its final tick at expiry. It does
-not scale with attributes/tree attack and cannot dodge; it remains a status
-effect, not a direct strike. Element, armor, shields and Overcharge still apply.
-Timed units are resolved by stable ID before actions. Refresh replaces status
-duration/source; statuses do not stack additive copies.
+The 20-Hz seeded simulation resolves timed units by stable ID. Burn remains
+12 base damage each second through its expiry tick, with no direct-strike dodge
+or stat ATK. At 55 seconds Overcharge stops healing/recovery and doubles damage;
+at 75 seconds uncleared wild/pack/boss encounters lose, and trainer duels compare
+trainer HP percentages. Playback speed does not change these rules.
 
 ## XP, levels and skill trees — DEC-02
 
@@ -241,8 +213,11 @@ transactions and server-secure rewards remain pending later online features.
 
 ## Formation and boss previews
 
-Ranks are positions, not bonuses. At most one slot per rank; occupied selections
-swap, while unoccupied companion slots remain absent.
+Rows set starting positions. Every slot independently chooses Front, Middle or
+Back; all three can share a row. Shared rows spread members vertically so their
+starting positions do not overlap. Empty companion slots remain absent. Normal
+attacks choose the closest living enemy, including trainers. Explicit skills
+may choose another target.
 
 | Rank | Starting X | Starting Y |
 | --- | ---: | ---: |
@@ -340,7 +315,7 @@ current replay tick commit together. Abandon keeps checkpointed injuries.
 
 Village Supply Store prices: Leaf Draught3 coins, Revival Salve6, biscuit15,
 Memory Fruit30, Trail Ration20. Purchases require distance≤150 world units from
-the town tent approach. Leaf Draught adds4,500 BP to a living non-full target,
+the town tent approach. Leaf Draught adds `round(4500 * (1 + 0.02 * effective VIT))` BP to a living non-full target,
 clamped10,000; salve changes a fallen target from0 to5,000 BP. Exactly one owned
 item is consumed. Invalid targets/full HP/living salve targets consume nothing.
 Supply transactions and recovery fail atomically if a persistent save cannot be

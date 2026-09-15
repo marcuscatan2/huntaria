@@ -54,4 +54,11 @@ the next fight.
 
 ## After ascension
 
-Confirming a class starts the [courtyard raid and sacred treasures quest](../campaign/SACRED_TREASURES.md). The same master joins at Lv80 and guarantees the rescue. The route ends with one inventory weapon for the chosen class.
+Confirming a class opens the alarm dialogue before the [courtyard raid and sacred treasures quest](../campaign/SACRED_TREASURES.md). The same master joins at Lv100 and guarantees the rescue. The route ends with one inventory weapon for the chosen class.
+
+After Tidecrown, four illustrated cards show each class and city. The in-frame
+tracker lists all four routes until specialization. Choosing a card starts
+physical travel; it does not grant a class. A master first asks for the desired
+class, explains the test, and waits for `Ok`. After victory, the player confirms
+permanent ascension in the same dialogue frame. `swordsman` remains the Knight's
+stable ID. NPC dialogue has no advice button or reward preview.

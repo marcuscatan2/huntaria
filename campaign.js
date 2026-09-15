@@ -9,7 +9,7 @@ const LESSONS=[
  ['sustain','A long breath','A full health bar is not a victory. Find the opening between heals.','Focus damage; healing stops at 55 seconds. Do not bring only healers.', ['Support','Tank'],'druid',[0,4,2]],
  ['bypass','Watch your bond','Some spells ignore the monsters and reach the trainer.','Keep your trainer back and use guard or ward against explicit trainer strikes.', ['DPS','Support'],'mage',[4,0,1]],
  ['armor','The stone test','Armor makes small strikes feel smaller.','Compare damage elements. A faster attack is not necessarily a harder one.', ['Tank','Tank'],'druid',[2,0,3]],
- ['tempo','A quicker answer','Speed fills the next-action meter, not the skill cooldowns.','Haste improves attacks and movement; DEX shortens skill cooldowns.', ['DPS','Tank'],'druid',[3,1,4]],
+ ['tempo','A quicker answer','Speed fills the next-action meter, not the skill cooldowns.','Haste improves attacks and movement. AGI and DEX improve attack speed.', ['DPS','Tank'],'druid',[3,1,4]],
  ['area','No safe crowd','Spread your preparation against sweeping attacks.','Team shields and healing help against area damage; keep an attacker equipped.', ['Support','DPS'],'mage',[3,2,0]],
  ['attrition','Court quartermaster','These stolen wards keep our patrol on this road.','Break through their sustain before Overcharge. You do not need rare monsters.', ['Tank','Support'],'mage',[2,4,1]],
  ['final','The road is yours','Show me a bond that can stand without the Court.','Use a balanced common party, allocate attributes and spend your tree points.', ['DPS','Tank'],'druid',[4,3,0]]
@@ -127,6 +127,13 @@ addEarly({id:'early:boss:amber',name:C.UNITS[ambercolossus].name,appearance:ambe
 addEarly({id:'early:tree-proof',name:'Amber Naturalist',appearance:'druid',title:'Skill-tree proof',level:30,seed:3060,earlyKey:'treeProof',trainerXP:0,coins:20,requiresTreeInvestment:true,
  greeting:'Let your companion show what changed.',advice:'Spend one point in an owned companion tree, then return.',team:trainerTeam('druid','stonehorn','bloomslime'),...placed('hollow-hub',{x:900,y:1120})});
 
+// Training opponents preserve a viable starter route under classic stat scaling.
+const trainingTuning={
+ 'story:clearing:1':[.85,.7],'story:clearing:3':[.85,.7],'story:brook:6':[.85,.7],'story:hollow:3':[.85,.7],
+ 'story:brook:3':[.6,.75],'story:brook:4':[.6,.75],
+ 'early:counter':[.75,.65],'early:ability':[.75,.65],'early:resolution':[.75,.65]
+};
+for(const [id,[power,health]] of Object.entries(trainingTuning))W.NPCS[id].team=W.NPCS[id].team.map(u=>({...u,power:Math.round(C.UNITS[u.type].power*power),skillScale:power,healthScale:health}));
 const earlyFresh=()=>({introFightWon:false,introClaim:null,firstSummon:false,companionProof:false,proofClaim:null,secondChoice:null,secondClaim:null,secondSummon:false,mageMet:false,mageGate:false,demonstrations:[],tidecrown:false,trials:Object.fromEntries(C.CLASSES.map(type=>[type,false])),trialRewarded:false,abilityChanged:false,application:false,counter:false,counterEcho:false,ability:false,resolution:false,amber1:false,amber2:false,amber3:false,amberBoss:false,treeProof:false});
 function earlyClean(raw){const e=earlyFresh();if(!raw||typeof raw!=='object')return e;for(const k of ['introFightWon','firstSummon','companionProof','secondSummon','mageMet','mageGate','tidecrown','trialRewarded','abilityChanged','application','counter','counterEcho','ability','resolution','amber1','amber2','amber3','amberBoss','treeProof'])e[k]=raw[k]===true;
  for(const k of ['introClaim','proofClaim','secondClaim'])if(typeof raw[k]==='string'&&raw[k].length<220)e[k]=raw[k];if(['bloomslime','stonehorn'].includes(raw.secondChoice))e.secondChoice=raw.secondChoice;
@@ -186,6 +193,7 @@ function visible(encounter,s){const e=s.journey?.early||earlyFresh(),spec=s.prog
  if(encounter.id==='early:tree-proof')return e.amberBoss&&!e.treeProof;
  return true;
 }
+function classChoices(){return C.CLASSES.map(type=>{const map=BondCities.masterCities[type],name=type==='swordsman'?'Knight':C.UNITS[type].name;return {type,map,name,label:'Go to '+A.get(map).name+' to become a '+name.toLowerCase()};});}
 function earlyNext(s){if(root.BondRelicQuest?.active(s))return BondRelicQuest.next(s);const e=s.journey?.early||earlyFresh(),wins=s.journey?.wins||{};
  if(!e.introFightWon)return {id:'ep:intro',label:'Hunt Brimbles for a Soul Echo',map:'clearing-0'};
  if(!e.firstSummon)return {id:'ep:summon1',label:'Summon Brimble from your Bag',map:s.map};
@@ -194,8 +202,8 @@ function earlyNext(s){if(root.BondRelicQuest?.active(s))return BondRelicQuest.ne
  if(!e.mageGate)return {id:'early:forest-mage',label:'Return to the Mage',map:'clearing-0'};
  for(const [id,label,map] of [['story:clearing:0','Defeat Tavi with two companions','clearing-hub'],['story:brook:1','Face Rain and learn control','brook-0'],['story:brook:3','Face Lina in Rainwillow Forest','brook-1'],['story:brook:4','Face Wren at Reedwatch Banks','brook-2']])if(!wins[id])return {id,label,map};
  if(!e.tidecrown)return {id:'early:boss:tidecrown',label:'Defeat Tidecrown',map:'brook-boss'};
- if(!C.CLASSES.some(type=>e.trials[type]))return {id:'ep:masters',label:'Choose a class master in the starting cities',map:BondCities.starters.includes(s.map)?s.map:'brook-hub'};
- if(!s.progression?.specialization)return {id:'ep:transform',label:'Speak to the master you defeated to join their class',map:BondCities.masterCities[C.CLASSES.find(type=>e.trials[type])]};
+ if(!C.CLASSES.some(type=>e.trials[type]))return {id:'ep:masters',label:'Choose your class',choices:classChoices(),map:BondCities.starters.includes(s.map)?s.map:'brook-hub'};
+ if(!s.progression?.specialization)return {id:'ep:transform',label:'Speak to the master you defeated to join their class',choices:classChoices(),map:BondCities.masterCities[C.CLASSES.find(type=>e.trials[type])]};
  if(!e.application)return {id:'ep:application',label:'Use your new class in Amber Hollow',map:'hollow-0'};
  if(!e.counter)return {id:'early:counter',label:'Defeat the Amber Pathwarden',map:'hollow-1'};
  if(!e.abilityChanged)return {id:'ep:ability-change',label:'Change one companion ability in Party & bag',map:s.map};
@@ -252,5 +260,5 @@ function validate(){const errors=[];if(trainers.length!==60||packs.length!==12||
  for(const p of packs)if(!A.get(p.map).habitats.length||A.collision(p.map,p))errors.push(p.id+' no habitat');
  const ids=new Set(chapters.flatMap(c=>c.steps.map(s=>s.id)));for(const c of chapters)for(const s of c.steps)if(!A.get(s.map)||(s.prerequisite&&!ids.has(s.prerequisite)))errors.push(s.id+' bad objective');
  for(const e of earlyEncounters){if(!A.get(e.map)||A.collision(e.map,e))errors.push(e.id+' unreachable');if(e.team&&!BondGame.validTeam(e.team))errors.push(e.id+' illegal team');}return errors;}
-root.BondCampaign={trainers,packs,chapters,challenges,bosses,earlyEncounters,DEMONSTRATIONS,fresh,clean,facts,challengeCount,reconcile,next,earlyNext,questMarker,wildProgress,recordSummon,recordMageMeeting,recordAbility,recordWin,requirement,visible,validate};
+root.BondCampaign={classChoices,trainers,packs,chapters,challenges,bosses,earlyEncounters,DEMONSTRATIONS,fresh,clean,facts,challengeCount,reconcile,next,earlyNext,questMarker,wildProgress,recordSummon,recordMageMeeting,recordAbility,recordWin,requirement,visible,validate};
 })(globalThis);

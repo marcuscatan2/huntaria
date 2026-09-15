@@ -52,7 +52,8 @@ def main():
     page.locator('[data-city-exhibit="0"]').click();check(city+' has readable interior objects',len(page.locator('.city-room-message').inner_text())>30)
     page.screenshot(path=str(ARTIFACTS/f'city-{city}-interior-{args.browser}.png'));page.keyboard.press('Escape')
    for trainer in ['druid','mage','hunter','swordsman']:
-    page.evaluate("type=>{const P=BondProfile,s=P.snapshot();s.journey.early.tidecrown=true;s.journey.early.demonstrations=Object.values(BondCampaign.DEMONSTRATIONS);P.testing.replace(s);const e=BondCampaign.earlyEncounters.find(e=>e.masterClass===type);P.travel(e.map,e);BondApp.switchTab('region');}",trainer);page.clock.run_for(300)
+    page.evaluate("type=>{const P=BondProfile,s=P.snapshot();s.journey.early.tidecrown=true;s.journey.early.demonstrations=Object.values(BondCampaign.DEMONSTRATIONS);P.testing.replace(s);const e=BondCampaign.earlyEncounters.find(e=>e.masterClass===type);P.travel(e.map,e);BondApp.switchTab('region');}",trainer);page.clock.run_for(1200)
+    if page.locator('#class-choice-dialog').is_visible(): page.locator('#class-choice-close').click()
     page.locator('[data-object="early:master:'+trainer+'"]').click();page.clock.run_for(200)
     check(trainer+' master is directly clickable in the matching city courtyard',page.locator('#npc-dialog').is_visible() and page.evaluate('BondAtlas.get(BondProfile.snapshot().map).cityTheme')==trainer)
     page.locator('#npc-close').click()

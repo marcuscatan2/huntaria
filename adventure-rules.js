@@ -4,7 +4,7 @@
 const C=BondContent,TEST_ECHO_OVERRIDE=true,FULL=10000;
 for(const type of C.MONSTERS){const u=C.UNITS[type];u.releaseEchoBP=u.echoBP;if(TEST_ECHO_OVERRIDE)u.echoBP=1500;u.starter=type==='emberfox';}
 const items={
- leafdraught:{name:'Leaf Draught',icon:'♧',category:'Supplies',price:3,recovery:4500,description:'Between encounters: restore 45% maximum HP to one living trainer or companion. Cannot revive. No use at full health.'},
+ leafdraught:{name:'Leaf Draught',icon:'♧',category:'Supplies',price:3,recovery:4500,description:'Between encounters: restore HP to one living trainer or companion, improved by VIT. Cannot revive. No use at full health.'},
  revivalsalve:{name:'Revival Salve',icon:'✚',category:'Supplies',price:6,revive:5000,description:'Between encounters: revive one fallen trainer or companion at 50% maximum HP. Only usable on a fallen target.'}
 };
 const prices={leafdraught:3,revivalsalve:6,biscuit:15,trailfood:30,battlefood:20};
@@ -25,5 +25,9 @@ function wild(type){const u=C.UNITS[type];return type==='emberfox'?{hp:430,power
 // without turning every hit into an abrupt trainer deletion.
 function wildScale(partySize){const n=Math.max(1,Math.min(3,Number.isFinite(partySize)?Math.trunc(partySize):1));return {partySize:n,hp:1+(n-1)*.8,power:1+(n-1)*.15};}
 function service(map,kind){if(map?.id===BondOpening.start.map&&kind==='sanctuary')return {...BondOpening.camp};if(map?.kind!=='hub')return null;return map.services?.[kind]?{...map.services[kind]}:null;}
-root.BondAdventure={TEST_ECHO_OVERRIDE,ECHO_BP:1500,FULL,items,prices,health,clean,setHealth,record,readiness,deploy,level,wild,wildScale,xp:level=>300+100*level,service};
+function recovery(s,id,item){
+ const raw=BondProgress.attributes(s),vit=id==='trainer'?raw.vit:Math.floor(raw.vit*raw.leadership*.005);
+ return Math.round(item.recovery*(1+vit*.02));
+}
+root.BondAdventure={recovery,TEST_ECHO_OVERRIDE,ECHO_BP:1500,FULL,items,prices,health,clean,setHealth,record,readiness,deploy,level,wild,wildScale,xp:level=>300+100*level,service};
 })(globalThis);

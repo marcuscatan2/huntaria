@@ -31,7 +31,7 @@ Brimble resident. Firstlight replacements sample broad difficulty bands with a
 wildlife-free camp; other maps sample their full walkable area. Towns have no wildlife.
 Pending encounters retain their lives until settled/abandoned. Old surplus slots
 are retired from the map population without removing any owned companions.
-All roaming species attack unless at least ten levels below the trainer.
+All roaming species attack outside Firstlight, regardless of trainer level.
 Coordinates in JSON/CSV are ecology anchors, not spawn locations.
 
 Six bosses have **no live acquisition source**: the local altars are reward-free

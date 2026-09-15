@@ -33,7 +33,7 @@ function validate(content=C){
  }
  return errors;
 }
-// Physical avoidance is deliberately tiny: at most 5%; DEX offsets it.
-const dodgeChance=(defender,attacker,category)=>category==='magic'?0:Math.max(0,Math.min(.05,(defender?.agi||0)*.0005-(attacker?.dex||0)*.00035));
+// Classic physical hit chance: 80 + HIT - FLEE, bounded to 5–95 percent.
+const dodgeChance=(defender,attacker,category,defenderLevel=1,attackerLevel=1)=>category==='magic'?0:1-Math.max(.05,Math.min(.95,(80+attackerLevel+Math.floor(attacker?.dex||0)-defenderLevel-Math.floor(defender?.agi||0))/100));
 root.BondRules={VERSION:13,categories,categoryLabel,damaging,rng,validate,dodgeChance};
 })(globalThis);

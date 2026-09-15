@@ -23,11 +23,18 @@ function layout(m,road){
  m.layoutKind='tower';m.info=m.towerFloor===4?'The rooftop cemetery overlooks Amber Hollow. Tully keeps his silent watch.':'Climb the haunted halls toward the rooftop cemetery.';
  m.theme={...towerTheme(),id:'moonwell'};
  m.hero={id:m.id+':hero',name:m.towerFloor===4?"Tully's memorial":'Hall of the departed',x:1800,y:620,art:8,size:480};
- m.guide={x:480,y:1460};m.cache={x:560,y:2050};m.shelter={x:480,y:2200};
- road(m,'main',[{x:300,y:1800},{x:1800,y:1800},{x:3300,y:1800}],240,'stone');
- road(m,'memorial',[{x:1800,y:1800},{x:1800,y:780}],260,'stone');
- road(m,'circuit',[{x:900,y:1800},{x:900,y:2800},{x:2700,y:2800},{x:2700,y:1800}],220,'stone');
- m.habitats.forEach((h,i)=>{h.x=1000+i*1300;h.y=2500;h.radius=200;road(m,'habitat:'+h.type,[{x:h.x,y:1800},h],180,'stone');});
+ m.guide={x:500,y:2350};m.cache={x:850,y:2800};m.shelter={x:500,y:3100};
+ m.stairDown={x:500,y:2700};m.stairUp={x:3000,y:m.towerFloor%2?650:2850};m.entry={x:650,y:2700};
+ const center={x:1100,y:1800},junction={x:2550,y:1800};
+ road(m,'main',[m.stairDown,{x:1100,y:2700},center,junction,{x:2550,y:m.stairUp.y},m.stairUp],240,'stone');
+ road(m,'memorial',[junction,{x:2550,y:900},{x:1800,y:900},{x:1800,y:780}],230,'stone');
+ m.towerWalls=[{a:{x:1500,y:300},b:{x:1500,y:1450}},{a:{x:1500,y:2150},b:{x:1500,y:3300}},
+  {a:{x:1500,y:1450},b:{x:2250,y:1450}},{a:{x:2850,y:1450},b:{x:3300,y:1450}}];
+ for(const [i,w] of m.towerWalls.entries()){
+  const length=Math.hypot(w.b.x-w.a.x,w.b.y-w.a.y),steps=Math.ceil(length/70);
+  for(let j=0;j<=steps;j++)m.scenery.push({key:m.id+':wall:'+i+':'+j,x:w.a.x+(w.b.x-w.a.x)*j/steps,y:w.a.y+(w.b.y-w.a.y)*j/steps,art:4,size:120,solid:64,towerWall:true});
+ }
+ m.habitats.forEach((h,i)=>{h.x=i?2700:850;h.y=i?2350:950;h.radius=200;road(m,'habitat:'+h.type,[i?junction:center,{x:h.x,y:1800},h],180,'stone');});
  m.axisRoutes={horizontal:m.roads[0].points,vertical:[{x:1800,y:300},{x:1800,y:3300}]};
  m.crossings={horizontal:3000,vertical:3000,minSeconds:3000/A.BASE_SPEED};
  m.scenery.push({...m.hero,key:m.hero.id,solid:95});
@@ -41,10 +48,10 @@ function connect(road){
  const link=(a,b,p,q)=>{
   a.neighbors.push({id:a.id+'>'+b.id,to:b.id,...p,arrival:{x:q.x+150,y:q.y},direction:'up',label:b.name,kind:'stairs'});
   b.neighbors.push({id:b.id+'>'+a.id,to:a.id,...q,arrival:{x:p.x-150,y:p.y},direction:'down',label:a.name,kind:'stairs'});
-  for(const [m,point] of [[a,p],[b,q]])road(m,'stairs:'+a.id+':'+b.id,[m.roads[0].points[1],point],240,'stone');
+  if(!a.interior)road(a,'stairs:'+a.id+':'+b.id,[a.roads[0].points[1],p],240,'stone');
  };
- link(e,A.get('ghost-tower-1'),{x:e.hero.x,y:e.hero.y+270},{x:300,y:1800});
- for(let i=1;i<4;i++)link(A.get('ghost-tower-'+i),A.get('ghost-tower-'+(i+1)),{x:3300,y:1800},{x:300,y:1800});
+ link(e,A.get('ghost-tower-1'),{x:e.hero.x,y:e.hero.y+270},A.get('ghost-tower-1').stairDown);
+ for(let i=1;i<4;i++)link(A.get('ghost-tower-'+i),A.get('ghost-tower-'+(i+1)),A.get('ghost-tower-'+i).stairUp,A.get('ghost-tower-'+(i+1)).stairDown);
 }
 root.BondGhostTower={ENTRANCE,species,layout,connect};
 })(globalThis);

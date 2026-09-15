@@ -7,8 +7,8 @@ explains how to restart the server.
 ## Begin an adventure
 
 Create a named Apprentice with a dagger or bow. Click to move or approach a
-monster. Roaming monsters attack unless they are at least ten levels below your
-trainer. You can still choose to hunt weaker creatures.
+monster. Firstlight residents wait for you to begin a hunt. Roaming monsters on
+other maps attack when you approach, even if you are much stronger.
 
 Follow the small quest tracker. Defeat a Brimble, open **Bag**, select its first
 guaranteed Soul Echo and summon it. Your first companion joins the party

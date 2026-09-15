@@ -1,9 +1,9 @@
-/* Rules v13. Pure formulas; allocation and category scaling are independent. */
+/* Classic stat formulas, separate from authored class bases and Leadership. */
 (function(root){
 'use strict';
 const C=root.BondContent, ATTRS=['str','agi','vit','int','dex','leadership'];
 const ENGINE_LEVEL_CAP=100,PLAYER_LEVEL_CAP=60;
-const DEX_COOLDOWN_RATE=.00667,MAX_COOLDOWN_REDUCTION=.5;
+const MAX_COOLDOWN_REDUCTION=.5;
 const ELEMENTS=['Water','Fire','Earth','Wind'];
 const ELEMENT=Object.fromEntries(Object.entries(C.UNITS).map(([id,u])=>[id,u.element||(id==='druid'?'Earth':id==='mage'?'Fire':'Earth')]));
 const threshold=l=>{const n=Math.max(1,Math.min(ENGINE_LEVEL_CAP,l));return 50*(n-1)*n;};
@@ -28,16 +28,28 @@ function cleanAttributes(raw,l){const a=Object.fromEntries(ATTRS.map(k=>[k,1]));
 function validAttributes(raw,l){return !!raw&&ATTRS.every(k=>Number.isInteger(raw[k])&&raw[k]>=1&&raw[k]<=99)&&spent(raw)<=statBudget(l);}
 const attributes=s=>cleanAttributes(s.attributes,trainerLevel(s));
 const multiplier=(attack,defend)=>!ELEMENTS.includes(attack)||!ELEMENTS.includes(defend)?1:ELEMENTS[(ELEMENTS.indexOf(attack)+1)%4]===defend?1.2:ELEMENTS[(ELEMENTS.indexOf(defend)+1)%4]===attack?.8:1;
+const stat=n=>Math.max(0,Math.floor(n||0));
+function classic(a,level=1){
+ const str=stat(a.str),agi=stat(a.agi),vit=stat(a.vit),int=stat(a.int),dex=stat(a.dex);
+ return {melee:str+Math.floor(str/10)**2+Math.floor(dex/5),ranged:dex+Math.floor(dex/10)**2+Math.floor(str/5),
+  magicMin:int+Math.floor(int/7)**2,magicMax:int+Math.floor(int/5)**2,
+  hit:level+dex,flee:level+agi,magicDefense:int+Math.floor(vit/2),hpMultiplier:1+vit/100,
+  delayMultiplier:Math.max(.1,1-(4*agi+dex)/1000),castMultiplier:Math.max(0,1-dex/150),healingItemMultiplier:1+vit*.02};
+}
+function physicalDefense(vit,roll=0){const v=stat(vit);return Math.floor(v*.3)+Math.floor(v*.5)+Math.floor(Math.max(0,Math.min(.999999999,roll))*(Math.max(0,Math.floor(v*v/150)-Math.floor(v*.3)-1)+1));}
+const hpRecovery=(hp,vit)=>Math.floor(stat(vit)/5)+Math.max(1,Math.floor(hp/200));
+const castTime=(seconds,dex)=>Math.max(0,seconds)*Math.max(0,1-stat(dex)/150);
 function derived(type,s,base=C.UNITS[type],enemyLevel=null){
  const trainer=base.role==='Trainer',l=enemyLevel??(trainer?trainerLevel(s):monLevel(s,base.instanceId||type));
- const source=attributes(s),a=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,enemyLevel!==null?0:trainer?source[k]-1:source[k]*source.leadership*.005]));
- const hpScale=(1+.04*(l-1))*(1+a.vit*.01),levelOffense=1+.025*(l-1);
- const factors={melee:levelOffense*(1+a.str*.01),ranged:levelOffense*(1+a.dex*.01),magic:levelOffense*(1+a.int*.01)};
+ const source=attributes(s),a=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,enemyLevel!==null?0:trainer?source[k]:source[k]*source.leadership*.005])),stats=classic(a,l);
+ const hpScale=(1+.04*(l-1))*stats.hpMultiplier,levelOffense=1+.025*(l-1),innate=base.power*levelOffense;
+ const magicRange=[innate+stats.magicMin,innate+stats.magicMax];
+ const factors={melee:(innate+stats.melee)/base.power,ranged:(innate+stats.ranged)/base.power,magic:(magicRange[0]+magicRange[1])/2/base.power};
  const offense=factors[base.basicCategory],farmHP=enemyLevel===null?(root.BondFarm?.bonuses(s).hp||0):0,hp=Math.round(base.hp*hpScale*(1+farmHP));
- return {level:l,element:ELEMENT[type],hp,power:Math.round(base.power*offense),offense,factors,effective:a,
-  healing:levelOffense*(1+a.int*.01),speed:100/base.interval*(1+a.agi*.008),
-  armor:Math.min(.1,a.vit*.0005),cooldown:Math.min(MAX_COOLDOWN_REDUCTION,a.dex*DEX_COOLDOWN_RATE),regenPerSecond:hp*a.vit*.00002,shared:trainer?null:a};
+ return {level:l,element:ELEMENT[type],hp,power:Math.round(base.power*offense),offense,factors,effective:a,stats,magicRange,
+  healing:levelOffense*(1+stat(a.int)*.01),speed:100/(Math.max(.2,base.interval*stats.delayMultiplier)),
+  armor:0,cooldown:0,regenPerSecond:hpRecovery(hp,a.vit)/6,shared:trainer?null:a};
 }
 for(const [id,u] of Object.entries(C.UNITS)){u.speed=100/u.interval;u.element=ELEMENT[id];}
-root.BondProgress={instance,ATTRS,ELEMENT,ELEMENTS,DEX_COOLDOWN_RATE,MAX_COOLDOWN_REDUCTION,ENGINE_LEVEL_CAP,PLAYER_LEVEL_CAP,ENGINE_MAX_XP,PLAYER_MAX_XP,multiplier,clampXP,clampPlayerXP,threshold,engineLevel,level,monLevel,trainerLevel,statBudget,cost,spent,cleanAttributes,validAttributes,attributes,derived};
+root.BondProgress={classic,physicalDefense,hpRecovery,castTime,instance,ATTRS,ELEMENT,ELEMENTS,MAX_COOLDOWN_REDUCTION,ENGINE_LEVEL_CAP,PLAYER_LEVEL_CAP,ENGINE_MAX_XP,PLAYER_MAX_XP,multiplier,clampXP,clampPlayerXP,threshold,engineLevel,level,monLevel,trainerLevel,statBudget,cost,spent,cleanAttributes,validAttributes,attributes,derived};
 })(globalThis);

@@ -39,9 +39,9 @@ def main():
             })""")
             check('Every map fills its tripled quota on valid ground; cities and boss domains stay wildlife-free',
                   all(p['expected'] == p['actual'] and p['valid'] for p in populations), populations)
-            check('All species obey the nine/ten-level boundary, including the introductory resident', page.evaluate("""()=>BondAtlas.maps.flatMap(m=>m.habitats).every(h=>{
+            check('All species are aggressive outside the starting map at every player level', page.evaluate("""()=>BondAtlas.maps.flatMap(m=>m.habitats).every(h=>{
               const actor={type:h.type,habitat:h,introHostile:h.type==='emberfox'},f=level=>BondWildBehavior.policy(h.map,h.type,actor,level);
-              return f(h.level)&&f(h.level+9)&&!f(h.level+10)&&!f(h.level+20)&&f(Math.max(1,h.level-1));
+              return [1,h.level,h.level+9,h.level+10,60,100].every(level=>!!f(level)===(h.map!=='clearing-0'));
             })"""))
             for pack in page.evaluate('BondCampaign.packs.map(p=>({id:p.id,map:p.map,name:p.name}))'):
                 page.evaluate("id=>{const p=BondCampaign.packs.find(p=>p.id===id);BondProfile.travel(p.map,p);BondApp.switchTab('region');}", pack['id'])
@@ -79,15 +79,18 @@ def main():
               window.passiveId=P.population().find(p=>p.type==='emberfox').id;const sp=P.population().find(p=>p.id===passiveId);
               P.position({x:sp.x+70,y:sp.y});BondApp.switchTab('region');}""")
             page.clock.run_for(6000)
-            check('A monster exactly ten levels below does not attack at contact range', page.evaluate("!BondProfile.snapshot().encounterSave&&!BondRegion.inspect().actors.find(a=>a.id===passiveId).hostile"))
-            check('Level changes update hostility on the same loaded map', page.evaluate("()=>{const P=BondProfile,s=P.snapshot();s.trainerXP=BondProgress.threshold(11);P.testing.replace(s);return BondRegion.inspect().actors.find(a=>a.id===passiveId).hostile;}"))
+            check('Starting-map monsters do not attack at contact range', page.evaluate("!BondProfile.snapshot().encounterSave&&!BondRegion.inspect().actors.find(a=>a.id===passiveId).hostile"))
+            check('The starting map stays passive when player level changes', page.evaluate("()=>{const P=BondProfile,s=P.snapshot();s.trainerXP=BondProgress.threshold(11);P.testing.replace(s);return !BondRegion.inspect().actors.find(a=>a.id===passiveId).hostile;}"))
             page.clock.run_for(1600)
-            check('A monster nine levels below initiates a real battle', page.evaluate('!!BondProfile.snapshot().encounterSave&&BondApp.isRunning()'))
+            check('Passive wildlife keeps waiting after a level change', page.evaluate('!BondProfile.snapshot().encounterSave&&!BondApp.isRunning()'))
             page.evaluate("()=>{BondApp.cancelRegionBattle();const s=BondProfile.snapshot();s.trainerXP=BondProgress.threshold(12);BondProfile.testing.replace(s);const sp=BondProfile.population().find(p=>p.id===passiveId);BondProfile.position({x:sp.x+70,y:sp.y});BondApp.switchTab('region');}")
             page.clock.run_for(100)
             passive_id = page.evaluate('passiveId')
             page.locator('[data-object="'+passive_id+'"]').click()
             check('Passive monsters remain available for a deliberate hunt', page.evaluate('BondApp.isRunning()&&!!BondProfile.snapshot().encounterSave'))
+            page.evaluate("""()=>{BondApp.cancelRegionBattle();const s=BondProfile.snapshot();s.trainerXP=BondProgress.threshold(60);BondProfile.testing.replace(s);BondProfile.travel('clearing-1');const sp=BondProfile.population()[0];BondProfile.position({x:sp.x+70,y:sp.y});BondApp.switchTab('region');}""")
+            page.clock.run_for(6000)
+            check('Low-level wildlife outside the starting map initiates a real battle against Lv60', page.evaluate('!!BondProfile.snapshot().encounterSave&&BondApp.isRunning()'))
             check('Runtime source stayed unchanged during the check', source == hashes())
             browser.close()
     except Exception:

@@ -1,16 +1,16 @@
 /* Deterministic choreography for the class master's rescue. */
 (function(root){
 'use strict';
-const SCENARIO='class-master-rescue',FALL_TICK=160,FINISH_TICK=640;
-function applies(e){return e?.scenario===SCENARIO&&BondContent.CLASSES.includes(e.allyClass)&&e.enemies?.length===7;}
+const SCENARIO='class-master-rescue',FALL_TICK=160,FINISH_TICK=280;
+function applies(e){return e?.scenario===SCENARIO&&BondContent.CLASSES.includes(e.allyClass)&&[3,7].includes(e.enemies?.length);}
 function attach(b){
  const type=b.encounter.allyClass,base=BondContent.UNITS[type],template=b.trainer(0);
  b.units.push({...template,...base,id:'0-master',type,instanceId:null,weapon:undefined,side:0,slot:0,owner:'class-master',ownerIndex:1,
-  storyMaster:true,name:base.name+' Master',level:80,hp:base.hp,maxHp:base.hp,position:{x:28,y:56},previousPosition:{x:28,y:56},
+  storyMaster:true,name:base.name+' Master',level:100,hp:base.hp,maxHp:base.hp,healthScale:4,skillScale:2,position:{x:28,y:56},previousPosition:{x:28,y:56},
   skills:[...base.default],cds:[0,0,0],status:{},shield:0,shieldUntil:0,actionRemaining:.5,growth:{},damage:0,healing:0,blocked:0,casts:0});
 }
 function floor(b,u){
- if(u.storyMaster)return Math.max(1,Math.round(u.maxHp*.08));
+ if(u.storyMaster)return Math.max(1,Math.round(u.maxHp*.4));
  if(u.side===1&&u.boss&&b.tick<FALL_TICK)return 1;
  return 0;
 }

@@ -3,15 +3,12 @@
 'use strict';
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 function policy(map,type,actor=null,trainerLevel=1){
- if(trainerLevel-(actor?.habitat?.level??actor?.level??1)>=10)return null;
- if(actor?.introHostile)return {notice:420,speed:150,leash:760,warning:1.1};
- return map==='clearing-0'&&type==='stonehorn'?{notice:290,speed:135,leash:700,warning:.85}:
-  map==='clearing-1'&&type==='tideotter'?{notice:320,speed:175,leash:780,warning:.85}:{notice:320,speed:150,leash:760,warning:.85};
+ if(map==='clearing-0')return null;
+ return {notice:320,speed:150,leash:760,warning:.85};
 }
 function step(actor,player,dt,{enabled=true,trainerLevel=1,clear=()=>true,move=p=>p}={}){
  const aggressive=policy(actor.habitat?.map,actor.type,actor,trainerLevel);
- // Leveling out of danger releases pursuit, using its normal speed to return home.
- const p=aggressive||policy(actor.habitat?.map,actor.type,actor);enabled=enabled&&!!aggressive;
+ const p=aggressive||{notice:320,speed:150,leash:760,warning:.85};enabled=enabled&&!!aggressive;
  dt=Math.max(0,Math.min(.05,dt));actor.mode||='idle';actor.warning||=0;
  const home={x:actor.homeX,y:actor.homeY},range=distance(actor,player);
  if(actor.mode==='idle'&&enabled&&range<p.notice&&clear(actor,player)){actor.mode='alert';actor.warning=p.warning;}

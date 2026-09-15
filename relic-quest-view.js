@@ -1,6 +1,7 @@
 /* Story dialogue presents profile-owned actions and their saved results. */
 (function(root){
 'use strict';
+const announced=new Set();
 const P=BondProfile,Q=BondRelicQuest,dialog=document.createElement('dialog');
 dialog.id='relic-dialog';dialog.className='relic-dialog';dialog.setAttribute('aria-labelledby','relic-speaker');document.body.append(dialog);
 function open(id){
@@ -32,5 +33,6 @@ function open(id){
  };
  render();if(!dialog.open)dialog.showModal();return true;
 }
-root.BondRelicView={open};
+document.addEventListener('bond-profile',()=>{const s=P.snapshot();if(!Q.active(s)||Q.state(s).stage!=='raid')announced.clear();});
+root.BondRelicView={open,announceRaid(){const id=Q.masterId(P.snapshot());if(announced.has(id))return false;announced.add(id);return open(id);}};
 })(globalThis);

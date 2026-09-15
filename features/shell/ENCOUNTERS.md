@@ -4,7 +4,7 @@
 
 Clicking a wild creature walks into contact and immediately reserves/starts its
 encounter. The nearby action reads Attack. Every roaming species starts the same
-flow on contact unless it is at least ten levels below the trainer. Wild encounters never open an optional
+flow on contact outside Firstlight; the starting map stays passive. Wild encounters never open an optional
 confirmation dialog; NPC conversations, pack entries and boss difficulty
 selection remain deliberate interactions.
 
@@ -37,8 +37,7 @@ an encounter. Crossed swords identify participants; clicking one opens combat.
 Run starts a three-second retreat (60 simulation ticks, affected by playback
 speed). Trainers stop acting and move left; companions keep fighting. During
 retreat, enemies may target the player's trainer directly using ordinary range,
-movement, cooldowns, damage, shields and dodge. This is an explicit exception to
-monster-first targeting. Survive the window to escape; a lethal hit still loses
+movement, cooldowns, damage, shields and dodge. Enemies continue to target their closest living opponent during escape. Survive the window to escape; a lethal hit still loses
 the encounter, and defeating the enemy first still wins normally.
 
 The battle and field Run buttons, and Story & challenges' Run action, use the
@@ -95,4 +94,4 @@ size and facing do not resize or mirror the tracks.
 
 ## Authored class rescue
 
-The [post-ascension raid](../campaign/SACRED_TREASURES.md) reserves seven Lv60 enemies and the matching Lv80 master. It continues after the player's party falls, then restores vitality and opens the aftermath dialogue on accepted settlement. Its deterministic rules bound the fight to 32 seconds; Run is disabled for this scene. Pause, leaving the battle view and saved replay remain supported.
+The [post-ascension raid](../campaign/SACRED_TREASURES.md) reserves three Lv60 enemies and the matching Lv100 master. It continues after the player's party falls, then restores vitality and opens the aftermath dialogue on accepted settlement. Its deterministic rules bound the fight to 14 seconds; Run is disabled for this scene. Pause, leaving the battle view and saved replay remain supported.

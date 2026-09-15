@@ -35,5 +35,16 @@ button.onclick=()=>{opener=document.activeElement;render();dialog.showModal();};
 const hint=document.createElement('p');hint.className='campaign-next';document.querySelector('#region-objectives').after(hint);
 function update(){const s=P.snapshot(),n=C.earlyNext(s);hint.textContent=n?'NEXT → '+n.label+' · '+A.get(n.map).name:'EARLY PATH COMPLETE · Continue into the Six Beacons.';}
 document.addEventListener('bond-profile',update);update();
-window.BondCampaignMenu={open:()=>button.click(),render};
+const choiceDialog=document.createElement('dialog');choiceDialog.id='class-choice-dialog';choiceDialog.setAttribute('aria-labelledby','class-choice-title');document.body.append(choiceDialog);
+let choicesAnnounced=false;
+document.addEventListener('bond-profile',()=>{if(!P.snapshot().journey.early.tidecrown)choicesAnnounced=false;});
+function chooseClass(){
+ const s=P.snapshot();if(!s.journey.early.tidecrown||s.progression.specialization)return false;
+ choiceDialog.innerHTML='<p class="eyebrow">A NEW PATH</p><h2 id="class-choice-title">Time to choose</h2><p>Tidecrown has fallen. Meet a class master and pass their test.</p><div class="class-choice-cards">'+C.classChoices().map(c=>'<button data-class-map="'+c.map+'"><span class="class-choice-art">'+CharacterRig.art(c.type)+'</span><strong>'+c.name+'</strong><span>'+c.label+'</span></button>').join('')+'</div><button class="button secondary" id="class-choice-close">I will decide later</button>';
+ choiceDialog.querySelector('#class-choice-close').onclick=()=>choiceDialog.close();
+ choiceDialog.querySelectorAll('[data-class-map]').forEach(b=>b.onclick=()=>{choiceDialog.close();BondRegion.travelTo(b.dataset.classMap);});
+ choicesAnnounced=true;choiceDialog.showModal();return true;
+}
+choiceDialog.addEventListener('close',()=>document.querySelector('#region-map')?.focus({preventScroll:true}));
+window.BondCampaignMenu={open:()=>button.click(),render,chooseClass,announceClasses:()=>!choicesAnnounced&&chooseClass()};
 })();

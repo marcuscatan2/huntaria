@@ -2,7 +2,7 @@
 (function(root){
 'use strict';
 const P=BondProfile,R=BondProgress,W=BondWorld,$=s=>document.querySelector(s);
-const descriptions={str:'Melee physical damage · +1% per point',agi:'Ready-action Speed +0.8%; up to 5% tiny physical dodge',vit:'HP +1%; armor +0.05%; regeneration +0.002% max HP/s',int:'Magic damage and healing · +1% per point',dex:'Ranged physical +1%; cooldown −0.667% per effective point; accuracy offsets dodge · 50% total cooldown cap',leadership:'Share 0.5% of the other five raw attributes per point'};
+const descriptions={str:'Melee attack, with a bonus at every 10 STR; a small ranged attack bonus',agi:'Attack speed and physical evasion',vit:'Maximum HP, physical defense, magic defense and HP recovery',int:'Magic attack, magic defense and healing',dex:'Accuracy, ranged attack, attack speed and a small melee attack bonus',leadership:'Share 0.5% of the other five raw attributes per point'};
 function trainer(){
  const s=P.snapshot(),l=R.trainerLevel(s),a=R.attributes(s),left=R.statBudget(l)-R.spent(a),build=BondApp.getBuild(),type=build[0][0].type;
  const atCap=l===R.PLAYER_LEVEL_CAP,into=s.trainerXP-R.threshold(l),need=atCap?1:R.threshold(l+1)-R.threshold(l);

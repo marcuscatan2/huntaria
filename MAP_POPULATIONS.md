@@ -27,11 +27,9 @@ The increased quotas add slots while retaining existing life IDs, positions,
 seeds, loot rolls and reserved encounters. Cities and boss domains have no
 roaming wildlife. Pack challenges select existing residents and do not add lives.
 
-[wild-behavior.js](wild-behavior.js) makes every roaming species aggressive when
-its level is less than ten below the trainer's level. The trainer's current level,
-not companion levels, controls this rule. A Lv2 creature attacks a Lv11 trainer
-but stays passive at Lv12. Leveling across that boundary stops an alert/chase
-and returns the creature home. Passive creatures still accept clicked hunts.
+[wild-behavior.js](wild-behavior.js) makes every roaming species aggressive
+outside Firstlight (`clearing-0`), regardless of the trainer's level. Firstlight
+residents stay passive and accept clicked hunts, including the first quest hunt.
 Warning, line of sight, leash, modal pause and arrival/escape grace remain in force.
 
 All configured Echo chances are temporarily15% for testing. Release proposals

@@ -132,7 +132,7 @@
     $('#selected-description').textContent = guild(u) + ' · ' + (u.hp > 0 ? u.hp + ' HP · ' + (battle.ended ? 'finished' : moving ? 'moving' : 'holding') : 'defeated');
     if(bonded(u))$('#selected-description').textContent='Inner Haven · bonded';
     $('#selected-movement').textContent = 'Lv ' + u.level + ' · ' + (u.element||'Neutral') + ' · '+BondRules.categoryLabel(u.basicCategory)+' · Speed ' + (u.speed*battle.rate(u)).toFixed(1) + ' ('+(100/(u.speed*battle.rate(u))).toFixed(2)+'s) · Move ' + battle.speed(u).toFixed(1) + ' · Reach ' + attackRange;
-    $('#selected-movement').title = 'Arena units. Dashed ellipse shows current attack reach. ' + (intent.skill?.kind === 'trainer' ? intent.skill.name + ' pursues ' + (intent.target?.name||'No target') + ' directly.' : 'Normal monster-first pursuit.');
+    $('#selected-movement').title = 'Arena units. Dashed ellipse shows current attack reach. ' + (intent.skill?.kind === 'trainer' ? intent.skill.name + ' pursues ' + (intent.target?.name||'No target') + ' directly.' : 'Pursues the closest living enemy.');
     if (!battle.ended && u.hp > 0 && intent.skill?.kind === 'trainer') {
       $('#selected-target').textContent = (moving ? 'Pursue → ' : 'Strike → ') + (intent.target?.name||'No target');
       $('#selected-target').title = intent.skill.name + ' targets the trainer directly. Normal focus: ' + battle.target(u).name + '.';

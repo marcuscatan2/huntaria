@@ -47,7 +47,7 @@ Accountability labels allocate future work; they do not spawn agents or authoriz
 | Feature | Priority | Workstream | Title |
 | --- | --- | --- | --- |
 | [F-001](#f-001) | P0 | M0 | Explicit damage categories and STR / DEX / INT |
-| [F-002](#f-002) | P0 | M0 | Speed, accuracy, tiny dodge and VIT regeneration |
+| [F-002](#f-002) | P0 | M0 | Classic attack speed, accuracy, defense and VIT recovery |
 | [F-003](#f-003) | P0 | M0 | Trainer allocation, Leadership and stat previews |
 | [F-004](#f-004) | P0 | M0 | Automatic combat with trainer-only, party and group modes |
 | [F-005](#f-005) | P0 | M1 | Party selection, three-skill priorities and formation |
@@ -128,7 +128,7 @@ Accountability: Implementation agent; owner accepts
 Acceptance criteria:
 
 - [ ] F-001-AC1: Every basic attack and every damaging skill declares melee physical, ranged physical or magic. Validation rejects missing/unknown categories; projectile appearance or distance cannot choose the category.
-- [ ] F-001-AC2: With other inputs held fixed, STR changes melee physical scaling only, DEX ranged physical scaling only, and INT magic scaling only. A mixed kit can use different attributes for its separate skills.
+- [ ] F-001-AC2: With other inputs held fixed, STR and DEX supply their classic primary and secondary physical attack bonuses; INT supplies classic MATK minimum/maximum contributions. A mixed kit can use different attributes for its separate skills.
 - [ ] F-001-AC3: Skill cards and the selected-fighter inspector display the actual category and governing attribute. Healing's INT relationship is explicitly documented rather than inferred from range.
 - [ ] F-001-AC4: Independent numeric fixtures match the formula version in Companion stats.md before rounding and after final damage rounding; no old generic DEX damage bonus remains.
 
@@ -137,11 +137,10 @@ Required protocols: VP-01, VP-02. Evidence: pinned build/rules, fixtures/seeds, 
 
 <a id="f-002"></a>
 
-### F-002 — Speed, accuracy, tiny dodge and VIT regeneration
+### F-002 — Classic attack speed, accuracy, defense and VIT recovery
 
 Priority: P0 · Milestone: M0 · Status: Local implementation / commercial criteria incomplete.
-Baseline: Local Speed/dodge/VIT regeneration; DEX cooldown is 0.667% per
-effective point with a 50% combined safety cap; remaining tuning pending
+Baseline: Classic/pre-Renewal stat contributions; DEX affects cast time independently of cooldowns; Leadership remains custom. Final pacing acceptance is pending
 Dependencies: F-001, F-004
 Source items: MVP-01
 Accountability: Implementation agent; owner accepts
@@ -149,11 +148,11 @@ Accountability: Implementation agent; owner accepts
 Acceptance criteria:
 
 - [ ] F-002-AC1: The locked rule sheet states whether AGI changes all ready-action opportunities or basic attacks only. The UI shows Speed and seconds consistently; AGI does not silently reduce cooldowns or increase travel speed.
-- [ ] F-002-AC2: DEX reduces active cooldowns and counters AGI dodge under the recorded physical-hit formula. Magic, damage-over-time and unavoidable effects obey explicit eligibility rules. Bounds and coefficients are frozen in DEC-01 before verification.
+- [ ] F-002-AC2: DEX scales cast time without reducing cooldowns and supplies HIT against AGI-derived FLEE. Magic, damage-over-time and unavoidable effects obey explicit eligibility rules. Bounds and coefficients are frozen in DEC-01 before verification.
 - [ ] F-002-AC3: A dodged strike consumes its normal action/cooldown, shows a miss/dodge outcome and does not apply damage, on-hit Slow/Burn or hit-triggered bonuses. Cast-triggered and attempt-count passives follow their documented trigger, not accidental hit success.
-- [ ] F-002-AC4: VIT increases HP and the recorded small defense/regen benefits. Fractional regen is retained, capped at maximum HP, stops on defeat and Overcharge, and cannot create healing-passive feedback loops. Same inputs/seed reproduce the same dodge sequence.
+- [ ] F-002-AC4: VIT increases HP, soft defense and standing HP recovery. Recovery uses six-second intervals, caps at maximum HP, stops on movement, defeat and Overcharge, and cannot create healing-passive feedback loops. Same inputs/seed reproduce the same dodge sequence.
 
-Validation: Use forced hit/miss RNG fixtures, boundary stats, 1×/2× playback, full/partial/dead HP, fractional multi-tick recovery and Overcharge transitions. Compare action counts and actual cooldown clocks separately.
+Validation: Use forced hit/miss RNG fixtures, boundary stats, 1×/2× playback, full/partial/dead HP, six-second recovery boundaries and Overcharge transitions. Compare action counts and actual cooldown clocks separately.
 Required protocols: VP-02, VP-03. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
 
 <a id="f-003"></a>
@@ -189,7 +188,7 @@ Accountability: Implementation agent; owner accepts
 Acceptance criteria:
 
 - [ ] F-004-AC1: Solo parties contain one trainer and zero, one or two owned monsters; an empty companion slot is legal. Trainer death ends that player's solo attempt immediately. Group elimination rules are defined by F-062.
-- [ ] F-004-AC2: Ordinary monster attacks choose the closest eligible living enemy monster with stable tie-breaking, then a trainer only when protection is absent; explicitly labeled exceptions remain. Wild encounters have no enemy trainer.
+- [ ] F-004-AC2: Ordinary monster attacks choose the closest eligible living enemy, including trainers, with stable tie-breaking; explicitly labeled exceptions remain. Wild encounters have no enemy trainer.
 - [ ] F-004-AC3: Movement respects range, bounds, obstacles and separation; dead units cannot act. Engaging a fixed habitat creature snapshots its spawn identity; aggressive nearby monsters can join the same anchored fight through an explicitly reserved spawn life and recorded join command; passive/unrelated creatures do not join.
 - [ ] F-004-AC4: Solo 1×/2×/pause cannot alter accepted results. Group combat uses one server timeline, no unilateral pause/speed/restart. All modes terminate with valid state, including up to thirteen actors in the group-boss stress fixture.
 
@@ -209,11 +208,11 @@ Accountability: Implementation agent; owner accepts
 Acceptance criteria:
 
 - [ ] F-005-AC1: Created characters begin as apprentices; legacy/prepared specialized teams use Druid or Mage, pending the separate class-specialization decision. The player selects zero to two different owned individuals; two of the same species are legal, enabling trainer-alone hunting. Each present character has five skill choices and exactly three distinct equipped priorities; absent slots remain absent. Clicking a party slot opens a searchable/filterable portrait picker; selecting an equipped individual swaps slots.
-- [ ] F-005-AC2: Front/middle/back has at most one member per position. Occupied-rank selection swaps; empty ranks are legal. Preview and initial coordinates agree without inventing monsters or changing the trainer defeat objective.
-- [ ] F-005-AC3: Full parties support all six formations; partial parties retain rank and identity across class/individual changes and restore without being forced into a starter pair.
+- [ ] F-005-AC2: Every member independently chooses Front, Middle or Back. Shared rows spread actors vertically; empty rows are legal. Preview and initial coordinates agree without inventing monsters or changing the trainer defeat objective.
+- [ ] F-005-AC3: Full parties support all 27 formations; partial parties retain rank and identity across class/individual changes and restore without being forced into a starter pair.
 - [ ] F-005-AC4: Solo edits change future builds only; the active fight continues with its saved build and persistent spawn/loot identities. Group readiness locks the submitted build; post-ready edits require unready before the pull. Focus and saves remain correct.
 
-Validation: Zero/one/two companion loadouts, all six full formations, empty-rank swaps, reload and invalid input; ready/unready and post-pull mutation tests. Do not fill an empty slot from the legacy default.
+Validation: Zero/one/two companion loadouts, all 27 full formations, shared and empty rows, reload and invalid input; ready/unready and post-pull mutation tests. Do not fill an empty slot from the legacy default.
 Required protocols: VP-02, VP-03. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
 
 <a id="f-006"></a>

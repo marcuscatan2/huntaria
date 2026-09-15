@@ -51,6 +51,8 @@ def review_scenes(browser, url, check, errors, missing, browser_name):
             page.clock.run_for(160)
             frames.append(page.locator("#region-player canvas.animated-sprite").get_attribute("data-frame"))
         page.keyboard.up("d")
+        if trainer=='swordsman':
+            check('Knight uses the dedicated walking source',page.evaluate("CharacterRig.inspect().some(s=>s.type==='swordsman-walk'&&s.ready)"))
         check(f"{trainer} keyboard movement advances visible walk frames", len(set(frames)) >= 3 and page.evaluate("BondRegion.inspect().position") != before and len(page.evaluate(visible, "#region-player")) == 1)
         page.locator("#region-map").screenshot(path=str(ARTIFACTS / f"{trainer}-world-{browser_name}.png"))
         started = page.evaluate("type=>{const e=BondProfile.encounter('early:master:'+type);BondProfile.travel(e.map,e);return {ok:BondApp.startRegionBattle(e.id),requirement:BondCampaign.requirement(e,BondProfile.snapshot(),BondApp.getBuild()[0]),error:BondProfile.error()};}", trainer)
@@ -111,6 +113,8 @@ def main() -> int:
         source_image = Image.open(ROOT / asset["path"])
         check(f"{asset['key']} source has native transparent alpha", source_image.mode == "RGBA" and source_image.getchannel("A").getextrema() == (0, 255))
 
+    walk=json.loads((ROOT/'assets/characters/swordsman-walk-prompts.json').read_text(encoding='utf-8'))
+    check('Knight walk has reproducible built-in generation provenance',walk['frame_grid']==[2,2] and hashlib.sha256((ROOT/walk['output']).read_bytes()).hexdigest()==walk['output_sha256'])
     before = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in project.runtime_files(ROOT)}
     server = ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(QuietServer, directory=str(ROOT)))
     threading.Thread(target=server.serve_forever, daemon=True).start()

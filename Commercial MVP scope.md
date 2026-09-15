@@ -77,15 +77,15 @@ GN-001 account-wide species-level buffs and GN-002 quest evolution remain stashe
 
 Solo parties contain the trainer and **zero, one or two** companions. A fresh profile creates a named level-1 Apprentice alone, chooses a dagger or bow and starts in the forest without a guide chain. Both weapons must defeat the introductory Emberfox without a paid/rare consumable. Druid, Mage, Hunter and Swordsman are the launch specializations: four demonstrations, Tidecrown and easy master acceptance battles lead to a confirmed choice at player Lv20. Legacy Druid/Mage profiles remain usable. General menus accept zero-to-two companions; authored party trials may require two.
 
-Each actor has five active choices and equips three in priority order. Each species has one innate passive. Front/middle/back sets initial deployment; movement, range and target changes then happen normally. Ordinary monster attacks choose the nearest living enemy monster before a trainer. Only explicitly labeled skills/passives bypass that rule. Wild fights with no enemy trainer have valid fallback targets.
+Each actor has five active choices and equips three in priority order. Each species has one innate passive. Front/middle/back sets initial deployment; movement, range and target changes then happen normally. All party members may share a row. Ordinary attacks choose the nearest living enemy, including trainers. Explicit skills/passives can select another target. Wild fights with no enemy trainer have valid fallback targets.
 
 | Attribute | Required identity |
 | --- | --- |
-| STR | Physical melee damage |
-| DEX | Ranged physical/finesse damage, accuracy and 0.667% active cooldown reduction per effective point (50% combined cap) |
-| INT | Magic damage; healing relationship explicitly specified |
-| AGI | Attack speed and a tiny dodge benefit, not movement or hidden cooldown reduction |
-| VIT | HP, tiny defense and HP regeneration |
+| STR | Classic melee ATK, multiples-of-ten bonus and secondary ranged ATK |
+| DEX | Classic ranged ATK, secondary melee ATK, HIT, attack speed and cast-time scaling; no cooldown reduction |
+| INT | Classic MATK minimum/maximum and soft MDEF; authored healing relationship specified |
+| AGI | Classic attack-delay reduction and FLEE |
+| VIT | Classic HP multiplier, soft defense, standing HP recovery and healing-item bonus |
 | Leadership | Share eligible raw stats once with the trainer's own monsters |
 
 Every damaging basic/skill declares melee physical, ranged physical or magic; a projectile alone does not imply DEX or INT. Keep Speed displayed as seconds per ready action: current reference is 100 / Speed. DEC-01 locks whether AGI affects all readiness or basics only, exact coefficients, bounds, dodge and regen. Provisional Leadership remains 0.5% per point of the five other eligible raw attributes, excluding itself, derived stats, tree bonuses and received shares.
@@ -299,7 +299,7 @@ The feature decomposition has **66 cards, 64 P0 + two P1, and 264 individually n
 
 | Item | Priority | Delivery | Acceptance summary |
 | --- | --- | --- | --- |
-| MVP-01 | P0 | Correct six attributes | Typed damage, Speed/seconds, tiny dodge/regen, Leadership and numeric tests agree |
+| MVP-01 | P0 | Correct six attributes | Classic stat contributions, Speed/seconds, accuracy/recovery, Leadership and numeric tests agree |
 | MVP-02 | P0 | Spatial world entrances | Actual field/forest/cave maps reached by visible gates, with safe return and durable populations |
 | MVP-03 | P0 | Reference combat and visual bible | Played fight, Echo/summon and group readability pass an owner-approved original-art rubric |
 | MVP-04 | P0 | 100-species presentation | All species/classes animate and all six bosses meet phase/readability requirements |

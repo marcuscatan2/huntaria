@@ -155,17 +155,17 @@ with sync_playwright() as pw:
         page.locator('#exploration-title').locator('..').screenshot(path=str(ARTIFACTS/f'onboarding-sign-{args.browser}.png'))
         page.locator('#explore-close').click()
         page.evaluate("""()=>{
-          BondProfile.testing.heal();
-          const P=BondProfile,pop=P.population(),fox=pop.find(x=>x.type==='emberfox'&&x.present);
+          const P=BondProfile,s=P.snapshot();s.journey.early.mageGate=true;s.trainerXP=BondProgress.threshold(20);P.testing.replace(s);P.travel('clearing-1');P.testing.heal();
+          const map=P.snapshot().map,pop=P.population(),fox=pop.find(x=>x.present);
           BondApp.switchTab('region');BondRegion.escapeGrace();
           const actors=BondRegion.inspect().actors,distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
-          let fixture=null;
+          let fixture=null;if(map!=='clearing-1')throw Error('Joining fixture must leave passive Firstlight');
           // Random residents need a clear approach, outside contact and isolated from other pursuers.
-          for(const stone of pop.filter(x=>x.type==='stonehorn'&&x.present)){
+          for(const stone of pop.filter(x=>x.id!==fox.id&&x.present)){
             const actor=actors.find(x=>x.id===stone.id&&x.life===stone.life);if(!actor)continue;
             for(const [dx,dy] of [[-110,0],[110,0],[0,-110],[0,110]]){
-              const point=BondAtlas.safePoint('clearing-0',{x:actor.x+dx,y:actor.y+dy}),gap=distance(actor,point);
-              if(gap>=90&&gap<=140&&BondNav.clear('clearing-0',actor,point,55)&&
+              const point=BondAtlas.safePoint(map,{x:actor.x+dx,y:actor.y+dy}),gap=distance(actor,point);
+              if(gap>=90&&gap<=140&&BondNav.clear(map,actor,point,55)&&
                  actors.every(o=>!o.hostile||o.id===actor.id||distance(o,point)>400)){
                 fixture={actor,point};break;
               }
@@ -182,7 +182,7 @@ with sync_playwright() as pw:
         check('Territorial monster reaches and joins while viewing Loadout',page.evaluate('live.units.some(u=>u.spawnId===joinId)&&BondProfile.snapshot().encounterSave.joins.length===1'))
         check('Join does not replace the battle or move its anchor',page.evaluate('BondApp.getBattle()===live&&JSON.stringify(BondProfile.snapshot().encounterSave.anchor.position)===JSON.stringify(anchorStart)'))
         check('Joining preserves existing animated actor nodes',page.evaluate('document.querySelector(\'.fighter[data-id="0-0"]\')===liveNode&&CombatView.inspect().rigs===live.units.length'))
-        check('Same spawn cannot join twice',page.evaluate('!BondProfile.joinBattle(live,joinId,anchorStart)'))
+        check('Same spawn cannot join twice',page.evaluate('!BondApp.joinWild(joinId,anchorStart)'))
         page.evaluate('BondProfile.checkpoint(live)')
         check('Join replay restores identical combat state',page.evaluate("""()=>{
           const replay=BondProfile.restoreBattle(joinEncounter);
@@ -193,7 +193,7 @@ with sync_playwright() as pw:
         page.locator('#region-map').screenshot(path=str(ARTIFACTS/f'onboarding-anchored-{args.browser}.png'))
         page.locator('#field-withdraw').click()
         page.clock.run_for(3400)
-        page.evaluate('BondProfile.testing.heal()');fox=page.evaluate('qaApproach()')
+        page.evaluate("BondProfile.travel('clearing-0');BondProfile.testing.heal()");fox=page.evaluate('qaApproach()')
         page.locator('[data-object="'+fox+'"]').click();page.locator('#tab-loadout').click();page.evaluate('qaFinish()')
         check('Background victory does not pull player out of Loadout',page.evaluate('BondApp.getTab()==="loadout"&&!BondProfile.snapshot().encounterSave'))
         check('Reward notification is nonmodal',page.evaluate('document.querySelectorAll(".loot-toast").length>0&&!document.querySelector("#loot-popup")'))

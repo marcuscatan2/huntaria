@@ -3,15 +3,15 @@
 'use strict';
 const C=BondContent,A=BondAtlas,W=BondWorld,GHOST='ochrewisp',TULLY='relic:tully';
 const HUNTS=[{type:'copperhog',map:'hollow-0',count:2},{type:'sunscarab',map:'hollow-1',count:2},{type:'amberkite',map:'hollow-0',count:1}];
-const WEAPONS={druid:['Warden\'s Branch','A living staff entrusted to you by the Druid Master.'],mage:['Emberglass Wand','A wand entrusted to you by the Mage Master.'],hunter:['Watchkeeper Bow','A bow entrusted to you by the Hunter Master.'],swordsman:['Oathkeeper Blade','A sword entrusted to you by the Swordsman Master.']};
+const WEAPONS={druid:['Warden\'s Branch','A living staff entrusted to you by the Druid Master.'],mage:['Emberglass Wand','A wand entrusted to you by the Mage Master.'],hunter:['Watchkeeper Bow','A bow entrusted to you by the Hunter Master.'],swordsman:['Oathkeeper Blade','A sword entrusted to you by the Knight Master.']};
 for(const [type,[name,description]] of Object.entries(WEAPONS))W.ITEMS['weapon:class:'+type]={name,description,icon:type==='hunter'?'➶':type==='swordsman'?'⚔':'✦',category:'Weapons'};
 const masterId=s=>'early:master:'+s.progression?.specialization;
 const raidId=s=>'relic:raid:'+s.progression?.specialization;
 for(const type of C.CLASSES){
- const master=W.NPCS['early:master:'+type],monsters=['copperhog','copperhog','cindermole','cindermole','cindrake','cindrake','ambercolossus'];
+ const master=W.NPCS['early:master:'+type],monsters=['copperhog','cindrake','ambercolossus'];
  W.NPCS['relic:raid:'+type]={id:'relic:raid:'+type,name:'Raid at the class courtyard',title:'Stand with your master',kind:'pack',scenario:BondRaidRules.SCENARIO,
   allyClass:type,level:60,seed:6070,protectedEncounter:true,autoReturn:true,noReward:true,map:master.map,area:master.area,x:master.x,y:master.y,
-  enemies:monsters.map((id,i)=>({type:id,skills:[...C.UNITS[id].default],level:60,hp:i===6?2000:C.UNITS[id].hp,power:i===6?100:C.UNITS[id].power,boss:i===6,passive:C.UNITS[id].passive}))};
+  enemies:monsters.map((id,i)=>({type:id,skills:[...C.UNITS[id].default],level:60,hp:i===2?2000:C.UNITS[id].hp,power:i===2?100:C.UNITS[id].power,boss:i===2,passive:C.UNITS[id].passive}))};
 }
 const top=A.get('ghost-tower-4');
 const tully={id:TULLY,name:'Tully',appearance:'npc-captain',title:'Hero of the sacred watch',storyOnly:true,map:top.id,area:top.region,x:top.width/2,y:780};
@@ -44,7 +44,7 @@ function dialogue(s,id,party){
   return {lines:['Casketot raises its spectral arms. Tully turns toward you.','Tully: Oh, the relics are in the hatch right below the knight\'s room. Mind the loose stair on your way out.'],action:'hear-tully',button:'Remember the location'};
  }
  if(!isMaster)return null;
- if(stage==='raid')return {lines:['The alarm! A raid is coming. Stay close to me.'],action:'raid',button:'Stand with your master'};
+ if(stage==='raid')return {lines:['You: Monsters attacking!?','Master: A raid! Stay close. I will protect you and your companions.'],action:'raid',button:'Stand with your master'};
  if(stage==='aftermath')return {lines:['Easy now. You and your companions are safe. I have restored your strength.','The monster raids have been constant. We could really use your help gathering a few Echoes. Hunt these creatures and bring their Echoes back to me.'],list:HUNTS,action:'accept-hunt',button:'Take the hunt list'};
  if(stage==='hunt')return {lines:[ready(s)?'You have the Echoes. May I take them?':'We still need the Echoes on this list.'],list:HUNTS,action:ready(s)?'deliver':null,button:'Give the Echoes'};
  if(stage==='briefing')return {lines:['We need the sacred treasures in this time of crisis. Ask Tully where he hid them.','You: Where can I find him?',"Master: Oh, he's dead of course, didn't you know? He's a hero, how did you not get this news?",'You: How will I ask a dead person then!?','Master: … Of course, with any ghost type mon? Go catch Casketot. Its spectral arms can reach him.','You will find Casketot around the Ghost Tower entrance in the cemetery. Summon it and keep it in your active party. Tully waits at the top, on the fourth floor.'],action:'seek-tully',button:'Find Casketot and Tully'};

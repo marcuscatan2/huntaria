@@ -7,10 +7,11 @@ does not approve commercial pacing, final art or online rewards.
 
 ## Route
 
-1. Confirm any of the four classes with its defeated master. The courtyard raid
-   starts immediately, including after a reload between class choice and combat.
-2. Six Lv60 monsters and a Lv60 Ambercolossus attack. The same class master joins
-   at Lv80. The player's party falls; the master wins and restores the party.
+1. Confirm any of the four classes with its defeated master. The alarm conversation
+   appears immediately, including after a reload between class choice and combat.
+   Combat begins when the player chooses to stand with the master.
+2. Two Lv60 monsters and a Lv60 Ambercolossus attack. The same class master joins
+   at Lv100. The player's party falls; the master wins and restores the party.
 3. Accept the master's hunt list: two Bellowsnout Echoes in Amber Heath, two
    Sunscarab Echoes in Copperleaf Forest, and one Amberkite Echo in Amber Heath.
    The tracker says `Hunt for <creature> in <map>` with the outstanding count.
@@ -30,7 +31,7 @@ does not approve commercial pacing, final art or online rewards.
 | Druid | Warden's Branch | `weapon:class:druid` |
 | Mage | Emberglass Wand | `weapon:class:mage` |
 | Hunter | Watchkeeper Bow | `weapon:class:hunter` |
-| Swordsman | Oathkeeper Blade | `weapon:class:swordsman` |
+| Knight | Oathkeeper Blade | `weapon:class:swordsman` |
 
 Weapons are inventory items. Equipment slots and combat bonuses are outside this
 scope. The final tracker and Journey screen state that the main quest is complete.
@@ -43,6 +44,8 @@ connects it to four separate interiors, `ghost-tower-1` through `ghost-tower-4`.
 Each floor has a return stair; floors 1–3 also have an upward stair. The atlas
 retains 36 world squares and projects interior locations onto the entrance square.
 Floor positions, discoveries, populations and encounter anchors save normally.
+Offset stone stairways connect divided rooms; solid internal walls have open
+doorways, and paths reach each habitat, return stair and rooftop memorial.
 
 | Place | Ghost populations |
 | --- | --- |
@@ -71,13 +74,14 @@ combat element is introduced; Casketot is the chosen coffin spirit.
   nearby NPC interactions, Echo consumption and the once-only weapon grant.
 - `journey.relic.stage` is normalized to a known stage. Old specialized saves
   begin at the raid objective without an unexpected forced fight; their master
-  remains available. New specialization saves an automatic-start flag atomically.
+  remains available. New specialization saves an alarm-dialogue flag atomically. The player
+  reads the alarm exchange and chooses to stand with the master before combat.
 - `raid-rules.js` owns the bounded rescue choreography. At 4 seconds the boss
   warns; at 8 seconds its howl defeats every player-owned combatant. The master
   remains alive and, if enemies remain, ends the raid with a class finisher at
-  32 seconds. The boss cannot fall before the howl. These guarantees belong only
+  14 seconds. The boss cannot fall before the howl. These guarantees belong only
   to this authored story encounter; ordinary combat rules stay independent.
-- The seven enemies and master are real simulation units. Reserved build,
+- The three enemies and master are real simulation units. Reserved build,
   encounter, seed and tick replay through the same rules after reload. The raid
   has no wild spawn lives, Echo drops or repeat rewards. Run is disabled during
   the rescue; pause, leaving the battle view and resuming remain available.
@@ -94,7 +98,7 @@ rescue outcomes, replay, automatic ascension, dialogue, transaction failures,
 active-party checks, tower access and the final item. Run the full project gate
 for changes crossing combat, persistence and exploration.
 
-Review **sacred-treasures-v1** in the local game: the rescue pace, hunt directions,
+Review **class-flow-v2** in the local game: the rescue pace, hunt directions,
 tower navigation and dialogue. The named implementation request authorizes this
 route. Wider quest/map production still needs the opening/world review decisions;
 final visual acceptance, devices and release work remain separate gates.

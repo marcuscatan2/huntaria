@@ -131,7 +131,7 @@ BondGhostTower.connect(road);
 function waterAt(m,p){return m.water.some(w=>w.points?pathDistance(p,w.points)<w.width/2:((p.x-w.x)/w.rx)**2+((p.y-w.y)/w.ry)**2<1);}
 function bridgeAt(m,p){return m.bridges.some(b=>segment(p,b.a,b.b)<b.width*.46);}
 function onFloor(m,p,margin=0){return m.kind!=='cave'||m.rooms.some(r=>((p.x-r.x)/(r.rx-margin))**2+((p.y-r.y)/(r.ry-margin))**2<1)||m.roads.some(r=>pathDistance(p,r.points)<r.width/2-margin);}
-function safeClear(m,p,r=80){if((m.cemetery||m.towerFloor===4)&&Math.abs(p.x-m.hero.x)<1150&&Math.abs(p.y-m.hero.y)<1250)return true;return m.roads.some(q=>pathDistance(p,q.points)<q.width/2+r)||m.habitats.some(h=>distance(h,p)<310)||distance(p,m.entry)<320||distance(p,m.guide)<180||distance(p,m.cache)<130||m.neighbors.some(g=>distance(p,g)<240);}
+function safeClear(m,p,r=80){if(m.towerWalls?.some(w=>segment(p,w.a,w.b)<180+r))return true;if((m.cemetery||m.towerFloor===4)&&Math.abs(p.x-m.hero.x)<1150&&Math.abs(p.y-m.hero.y)<1250)return true;return m.roads.some(q=>pathDistance(p,q.points)<q.width/2+r)||m.habitats.some(h=>distance(h,p)<310)||distance(p,m.entry)<320||distance(p,m.guide)<180||distance(p,m.cache)<130||m.neighbors.some(g=>distance(p,g)<240);}
 for(const m of A.maps){
  // Landmark approaches join before dressing/collision, so their paths stay clear.
  m.landmarks.forEach(l=>{if(!m.roads.some(r=>pathDistance(l,r.points)<100))road(m,'landmark:'+l.id,[closest(l,m.roads[0].points),{x:l.x,y:l.y+150}],170);});
@@ -169,7 +169,7 @@ for(const m of A.maps){
  // Exact compact collision footprints, not full illustration rectangles.
  m.obstacles=m.scenery.filter(s=>s.solid).filter(s=>!m.habitats.some(h=>distance(h,s)<280)&&!m.neighbors.some(g=>distance(g,s)<180)).map(s=>({id:s.key,x:s.x,y:s.y,radius:s.solid,kind:s.art<4?'tree':'rock'}));
  m.collisionBuckets=new Map();for(const o of m.obstacles){const key=Math.floor(o.x/384)+','+Math.floor(o.y/384);if(!m.collisionBuckets.has(key))m.collisionBuckets.set(key,[]);m.collisionBuckets.get(key).push(o);}
- if(m.kind!=='hub')m.entry={x:190,y:m.height/2};
+ if(m.kind!=='hub'&&!m.interior)m.entry={x:190,y:m.height/2};
 }
 function collision(id,p,radius=20){
  const m=A.get(id);if(!m||p.x<55||p.y<55||p.x>m.width-55||p.y>m.height-55||!onFloor(m,p,radius))return true;

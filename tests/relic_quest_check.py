@@ -30,6 +30,7 @@ def main():
             page.wait_for_function('!!window.BondApp')
             check('Tully stays silent before class choice and never opens a battle preview', page.evaluate("BondRelicQuest.dialogue(BondProfile.snapshot(),BondRelicQuest.TULLY,[]).action===null&&!!BondCampaign.requirement(BondRelicQuest.tully,BondProfile.snapshot())"))
             check('World and campaign validate with 36 atlas cells and four tower interiors', page.evaluate("!BondAtlas.validate().length&&!BondCampaign.validate().length&&BondAtlas.maps.filter(m=>!m.interior).length===36&&BondAtlas.maps.filter(m=>m.interior).length===4"))
+            check('Tower walls block shortcuts and every stair, habitat and memorial remains reachable',page.evaluate("""()=>BondAtlas.maps.filter(m=>m.interior).every(m=>m.towerWalls.length>=4&&m.towerWalls.every(w=>BondAtlas.collision(m.id,{x:(w.a.x+w.b.x)/2,y:(w.a.y+w.b.y)/2}))&&[...m.neighbors,...m.habitats,{x:1800,y:780}].every(p=>BondNav.find(m.id,m.entry,p).ok)&&m.neighbors.every(g=>g.kind==='stairs'))"""))
             check('Selected ghosts move exclusively to the cemetery and tower, retaining their primary spawn IDs', page.evaluate("""()=>BondGhostTower.species.every(type=>{
               const homes=BondAtlas.maps.flatMap(m=>m.habitats).filter(h=>h.type===type);
               return homes.length&&homes.every(h=>h.map==='hollow-2'||BondAtlas.get(h.map).interior)&&new Set(homes.map(h=>h.id)).size===homes.length;
@@ -40,24 +41,48 @@ def main():
                 s.companions=['emberfox','stonehorn'].map((type,i)=>({id:'test:'+i,type,ordinal:1,xp:BondProgress.threshold(level),growth:{},skills:[...BondContent.UNITS[type].default]}));
                 const team=[{type,skills:[...BondContent.UNITS[type].default]},...s.companions.map(m=>({type:m.type,instanceId:m.id,skills:m.skills}))],build=[team,BondGame.defaultBuild()[1]],e=BondWorld.NPCS['relic:raid:'+type];
                 const options={encounter:e,profile:s,seed,enemyLevel:60},b=new BondGame.Battle(build,options);b.run();const replay=new BondGame.Battle(build,options).run();
-                out.push({type,level,seed,time:b.time,ok:b.winner===0&&b.units.filter(u=>u.side===0&&!u.storyMaster).every(u=>u.hp===0)&&b.units.find(u=>u.storyMaster).hp>0&&b.units.find(u=>u.storyMaster).level===80&&b.units.filter(u=>u.side===1).length===7&&b.units.filter(u=>u.side===1).every(u=>u.level===60)&&JSON.stringify(b.events)===JSON.stringify(replay.events)});
+                out.push({type,level,seed,time:b.time,ok:b.winner===0&&b.units.filter(u=>u.side===0&&!u.storyMaster).every(u=>u.hp===0)&&b.units.find(u=>u.storyMaster).hp>=b.units.find(u=>u.storyMaster).maxHp*.39&&b.units.find(u=>u.storyMaster).level===100&&b.units.filter(u=>u.side===1).length===3&&b.units.filter(u=>u.side===1).every(u=>u.level===60)&&JSON.stringify(b.events)===JSON.stringify(replay.events)});
               }return out;
             }""")
-            check('Every class survives through its Lv80 master; player and companions fall; 64 seeded replays match', all(r['ok'] and r['time'] <= 32 for r in results), [r for r in results if not r['ok']])
+            check('Every class survives through its Lv100 master; player and companions fall; 64 seeded replays match', all(r['ok'] and r['time'] <= 14 for r in results), [r for r in results if not r['ok']])
             page.evaluate("""()=>{
               const s=BondProfile.snapshot();s.character={name:'Relic Tester',weapon:'dagger',legacy:false};s.trainerXP=BondProgress.threshold(20);s.journey.early={...s.journey.early,firstSummon:true,secondSummon:true,introFightWon:true,mageMet:true,mageGate:true,tidecrown:true,demonstrations:Object.values(BondCampaign.DEMONSTRATIONS),trials:{druid:false,mage:true,hunter:false,swordsman:false}};
-              s.journey.wins=Object.fromEntries(Object.keys(BondCampaign.DEMONSTRATIONS).map(id=>[id,1]));s.progression.specialization=null;
-              BondProfile.testing.replace(s);const m=BondWorld.NPCS['early:master:mage'];BondProfile.travel(m.map,{x:m.x,y:m.y+100});BondApp.switchTab('region');
+              s.journey.wins=Object.fromEntries(Object.keys(BondCampaign.DEMONSTRATIONS).map(id=>[id,1]));s.progression.specialization=null;s.companions=['emberfox','stonehorn'].map((type,i)=>({id:'story:'+i,type,ordinal:1,xp:BondProgress.threshold(20),growth:{},skills:[...BondContent.UNITS[type].default]}));
+              BondProfile.testing.replace(s);BondApp.changeUnit(0,1,'story:0');BondApp.changeUnit(0,2,'story:1');const m=BondWorld.NPCS['early:master:mage'];BondProfile.travel(m.map,{x:m.x,y:m.y+100});BondApp.switchTab('region');
             }""")
+            page.clock.run_for(100)
+            check('Tidecrown completion presents four illustrated class destinations',page.evaluate("document.querySelector('#class-choice-dialog').open&&document.querySelectorAll('[data-class-map]').length===4&&document.querySelectorAll('.class-choice-art .character-sprite').length===4&&document.querySelectorAll('.class-directions li').length===4"))
+            page.set_viewport_size({'width':393,'height':852})
+            page.clock.run_for(100)
+            bounded="""selector=>{const d=document.querySelector(selector),r=d.getBoundingClientRect(),f=document.querySelector('#game-frame').getBoundingClientRect();return r.left>=Math.max(0,f.left)&&r.right<=Math.min(innerWidth,f.right)&&r.top>=Math.max(0,f.top)&&r.bottom<=Math.min(innerHeight,f.bottom)&&d.scrollWidth<=d.clientWidth;}"""
+            check('Four class choices fit inside the phone game frame',page.evaluate(bounded,'#class-choice-dialog'))
+            page.screenshot(path=str(ARTIFACTS / f'class-choice-phone-{args.browser}.png'))
+            page.locator('#class-choice-close').click()
+            page.evaluate("""()=>{window.beforeKnight=BondProfile.snapshot();const m=BondWorld.NPCS['early:master:swordsman'];BondProfile.travel(m.map,{x:m.x,y:m.y+100});BondApp.switchTab('region');}""")
+            page.clock.run_for(100)
+            page.locator('[data-object="early:master:swordsman"]').click()
+            check('Knight asks explicitly for the chosen class without advice or rewards',page.locator('#npc-fight').inner_text()=='Yes, I want to be a knight' and page.evaluate("!document.querySelector('#npc-advice')&&!document.querySelector('#npc-reward')"))
+            check('NPC conversation fits the phone frame',page.evaluate(bounded,'#npc-dialog'))
+            page.locator('#npc-fight').click()
+            check('Class acceptance explains the test and waits for Ok',page.locator('#npc-fight').inner_text()=='Ok' and page.evaluate("!BondApp.isRunning()&&document.querySelector('#npc-dialogue').textContent.includes('Defeat me')"))
+            page.screenshot(path=str(ARTIFACTS / f'knight-dialogue-phone-{args.browser}.png'))
+            page.locator('#npc-fight').click()
+            check('Ok starts the knight test',page.evaluate("BondApp.isRunning()&&BondProfile.snapshot().encounterSave.id==='early:master:swordsman'"))
+            page.evaluate("BondApp.cancelRegionBattle();BondProfile.testing.replace(beforeKnight);BondApp.switchTab('region')")
             page.clock.run_for(100)
             page.locator('[data-object="early:master:mage"]').click()
             page.on('dialog', lambda d: d.accept())
             page.locator('#npc-transform').click()
+            page.locator('#npc-transform').click()
             page.clock.run_for(1200)
-            check('Confirming ascension automatically starts the rescue battle', page.evaluate("BondApp.getBattle()?.rescue&&BondApp.isRunning()&&BondProfile.snapshot().encounterSave?.id==='relic:raid:mage'"))
+            check('Ascension shows the alarm conversation before starting combat',page.evaluate("!BondApp.isRunning()&&document.querySelector('#relic-dialog').open&&document.querySelector('.relic-line').textContent.includes('Monsters attacking!?')"))
+            check('Raid conversation fits inside the phone frame',page.evaluate(bounded,'#relic-dialog'))
+            page.locator('#relic-next').click()
+            page.locator('#relic-next').click()
+            check('Accepting the alarm conversation starts the rescue battle', page.evaluate("BondApp.getBattle()?.rescue&&BondApp.isRunning()&&BondProfile.snapshot().encounterSave?.id==='relic:raid:mage'"))
             page.locator('#pause').click()
             page.screenshot(path=str(ARTIFACTS / f'relic-raid-{args.browser}.png'))
-            check('The authored rescue cannot be escaped and exposes the master at Lv80', page.evaluate("document.querySelector('#run-battle').disabled&&!BondApp.runFromBattle()&&BondApp.getBattle().units.find(u=>u.storyMaster).level===80"))
+            check('The authored rescue cannot be escaped and exposes the master at Lv100', page.evaluate("document.querySelector('#run-battle').disabled&&!BondApp.runFromBattle()&&BondApp.getBattle().units.find(u=>u.storyMaster).level===100"))
             replay = page.evaluate("""()=>{const b=BondApp.getBattle();for(let i=0;i<180;i++)b.step();BondProfile.checkpoint(b);const c=BondProfile.restoreBattle('relic:raid:mage');return {ok:JSON.stringify(b.events)===JSON.stringify(c.events)&&b.units.every((u,i)=>u.hp===c.units[i].hp),attempt:b._attemptId};}""")
             check('Checkpoint/replay preserves the master and fallen party exactly', replay['ok'])
             page.reload()

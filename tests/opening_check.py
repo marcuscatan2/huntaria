@@ -174,18 +174,13 @@ with sync_playwright() as pw:
             page.clock.run_for(6000)
             check('An open menu prevents territorial attacks',page.evaluate('BondApp.getTab()==="region"&&!BondApp.isRunning()') and page.locator('#settings-dialog').is_visible())
             page.keyboard.press('Escape')
-            warning_seen=False
+            page.clock.run_for(6000)
+            check('Starting wildlife stays passive after closing a menu',page.evaluate('BondApp.getTab()==="region"&&!BondApp.isRunning()') and page.locator('.wild.alert,.wild.chase').count()==0)
+            page.locator('[data-object="'+actor['id']+'"]').click()
             for _ in range(80):
                 page.clock.run_for(50)
-                if page.locator('.wild.alert,.wild.chase').count()>0:
-                    warning_seen=True;break
-            check('Territorial creature shows a warning before contact',warning_seen and page.evaluate('BondApp.getTab()==="region"'))
-            contact_seen=False
-            for _ in range(240):
-                page.clock.run_for(50)
-                if page.evaluate('BondApp.getTab()==="battle"&&BondApp.isRunning()'):
-                    contact_seen=True;break
-            check('Territorial approach starts real combat without a click',contact_seen and page.evaluate('BondApp.getEncounter().includes("stonehorn")'))
+                if page.evaluate('BondApp.getTab()==="battle"&&BondApp.isRunning()'):break
+            check('A deliberate starting-map hunt still starts real combat',page.evaluate('BondApp.getTab()==="battle"&&BondApp.isRunning()&&BondApp.getEncounter().includes("stonehorn")'))
             play_until_settled(page)
             check('Played Firstlight death returns immediately to the forest camp fully healed',page.evaluate('BondApp.getBattle().winner===1&&BondApp.getTab()==="region"&&BondProfile.snapshot().map==="clearing-0"&&BondAdventure.health(BondProfile.snapshot())===10000'))
             page.clock.run_for(300)
@@ -285,7 +280,7 @@ with sync_playwright() as pw:
             normal.clock.run_for(12000)
             normal.wait_for_function('BondProfile.snapshot().map==="clearing-0"',timeout=30000)
             check('Clearly labeled town route reaches the starting meadow',normal.evaluate('BondRegion.inspect().map==="clearing-0"'))
-            check('Normal-mode wildlife is passive when every resident is at least ten levels below the trainer',normal.evaluate('BondRegion.inspect().actors.every(a=>!a.hostile)'))
+            check('Normal-mode Firstlight wildlife stays passive',normal.evaluate('BondRegion.inspect().actors.every(a=>!a.hostile)'))
             normal.evaluate("BondRegion.approachId('sanctuary:clearing-0')")
             for _ in range(8):
                 normal.clock.run_for(5000)

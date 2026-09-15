@@ -12,7 +12,7 @@ Hunter/knight art matching the current Druid and Mage on 2026-09-14.
 | Mage | `assets/art-v21/mage-sheet.png` | Native transparent RGBA; 16 painted poses |
 | Apprentice dagger | `assets/art-v21/apprentice-dagger-sheet.png` | Canonical painted dagger motion; generated neutral backdrop isolated on load |
 | Apprentice bow | `assets/art-v21/apprentice-bow-sheet.png` | Canonical painted bow motion; generated neutral backdrop isolated on load |
-| Hunter / Swordsman | `assets/characters/*-sheet.png` | Native transparent RGBA; 16 painted poses; idle frame also supplies portraits |
+| Hunter / Knight | `assets/characters/*-sheet.png` | Native transparent RGBA; idle frame also supplies portraits; Knight walking uses the dedicated 2x2 sheet below |
 | Civilian NPCs | `assets/characters/npc-*.png` | Four reusable people plus nine city residents in `assets/cities/residents.png`; transform motion in battle |
 | Apprentice creation | `assets/art-v22/apprentice-*-creation.png` | Painted 3x3 hair/expression atlases; palette tint is applied in-browser |
 
@@ -97,3 +97,13 @@ creature animation, impact synchronization, selected cosmetics in action frames,
 other future class designs or commercial production assets. Review the new
 human sheet and actual NPC/master scenes before commissioning more variants;
 technical fixes can continue while broader art/release gates remain pending.
+
+## Dedicated Knight walk cycle
+
+`assets/characters/swordsman-walk.png` is a native-alpha 2x2 cycle. The rig loads
+it with the Knight, uses it only while walking, and includes the source key when
+caching the last rendered frame. Returning to idle/combat switches back to the
+original sheet. The [asset provenance](../../assets/characters/README.md)
+records the exact built-in generation prompt and hashes. Static class portraits
+clip their source rectangle explicitly so tall dialogue containers cannot expose
+neighboring frames.

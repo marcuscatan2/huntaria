@@ -40,8 +40,8 @@ is 210 units/s, not this Move column. Property means the Sheet-listed element.
 Design role and attack basis are Sheet-owned. Prototype mechanic profile describes
 the older simulation archetype still used by current skills; it is not allowed to
 overwrite the design role.
-All species have zero base armor and no critical-hit system; innate reductions
-and VIT/tree armor are separate. Physical dodge depends on effective AGI/DEX.
+All species have zero base armor and no critical-hit system; innate reductions,
+VIT defense and tree armor are separate. Physical dodge uses level and AGI/DEX.
 No independent species STR/DEX/etc. distribution or randomized IVs is invented.
 
 See [Companion stats.md](<Companion stats.md>) for exact level, attributes,
@@ -98,7 +98,7 @@ Brimble resident. Firstlight replacements sample broad difficulty bands with a
 wildlife-free camp; other maps sample their full walkable area. Towns have no wildlife.
 Pending encounters retain their lives until settled/abandoned. Old surplus slots
 are retired from the map population without removing any owned companions.
-All roaming species attack unless at least ten levels below the trainer.
+All roaming species attack outside Firstlight, regardless of trainer level.
 Coordinates in JSON/CSV are ecology anchors, not spawn locations.
 
 Six bosses have **no live acquisition source**: the local altars are reward-free

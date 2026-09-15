@@ -78,7 +78,7 @@
   unit('druid','Druid','Keeper of the grove','Trainer',800,28,1.8,1,4,'#57a386','mend bark bramble renewal entangle','mend bramble bark');
   unit('mage','Mage','Weaver of the arcane','Trainer',720,39,1.8,1,4,'#a39ad9','frost nova hex aegis comet','frost nova aegis');
   unit('hunter','Hunter','A steady bow and a watchful pack','Trainer',780,43,1.65,1.15,4,'#91ac65','huntersmark volley longshot huntingcall trailward','huntersmark longshot trailward');
-  unit('swordsman','Swordsman','Steel beside your companions','Trainer',1080,50,1.65,1.2,1,'#739cad','cleave swordlunge parry rallyingcry secondwind','cleave parry swordlunge');
+  unit('swordsman','Knight','Steel beside your companions','Trainer',1080,50,1.65,1.2,1,'#739cad','cleave swordlunge parry rallyingcry secondwind','cleave parry swordlunge');
   unit('emberfox','Emberfox','A spark with sharp teeth','Melee DPS',610,49,1.55,1.5,1,'#df8858','pounce burn pierce quickstep firefan','burn pounce quickstep','kindling');
   unit('stonehorn','Stonehorn','A steadfast little mountain','Tank',1100,26,2.3,.6,1,'#8c9c86','guard fortify slam boulder rally','guard slam fortify','granite');
   unit('stormowl','Stormowl','Quiet wings. Loud thunder.','Ranged DPS',570,46,1.65,1.1,4,'#91b6d0','chain snipe gust staticbolt tailwind','chain snipe gust','charged');

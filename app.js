@@ -276,7 +276,7 @@
   }
   let rescueRetryAt=0;
   function frame(now) {
-    if(now>=rescueRetryAt&&!running&&!document.querySelector('dialog[open]')){rescueRetryAt=now+1000;const story=BondProfile.snapshot();if(BondRelicQuest.active(story)&&BondRelicQuest.state(story).stage==='raid'&&BondRelicQuest.state(story).autostart&&!story.encounterSave)startRegionBattle(BondRelicQuest.raidId(story));}
+    if(now>=rescueRetryAt&&!running&&!document.querySelector('dialog[open]')){rescueRetryAt=now+1000;const story=BondProfile.snapshot();if(story.journey.early.tidecrown&&!story.progression.specialization)BondCampaignMenu.announceClasses();if(BondRelicQuest.active(story)&&BondRelicQuest.state(story).stage==='raid'&&BondRelicQuest.state(story).autostart&&!story.encounterSave)BondRelicView.announceRaid();}
     BondRegion.frame(now);
     if(running&&battle){if(!lastFrame)lastFrame=now;elapsed+=Math.min(.04,(now-lastFrame)/1000)*speed;while(elapsed>=G.DT&&!battle.ended&&running){battle.step();elapsed-=G.DT;if(Bonding.shouldPause(battle)){running=false;elapsed=0;updateControls();}}renderBattle();if(battle.ended)finish();}
     CombatView.draw(now, elapsed);

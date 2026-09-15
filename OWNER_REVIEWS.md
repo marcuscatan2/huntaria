@@ -26,7 +26,7 @@ not replace technical tests or automatically accept commercial criteria.
 ## What happens next
 
 - **OR-01 — Approve the visual direction with a small creature set** (Needs revision). The owner supplied 100 replacement PNGs and a numbered stable-ID workbook; integration is authorized, final commercial art approval is not recorded. Current source and 100-species contact sheets are routed through features/animation/SUPPLIED_SPRITES.md. Review the supplied starter set in actual world/combat/collection sizes before dependent production.
-- **OR-02 — Approve the first 20–30 minutes and core combat feel** (Pending review packet / decision). Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
+- **OR-02 — Approve the first 20–30 minutes and core combat feel** (Pending review packet / decision). Review class-flow-v2 in the local game: four-city class choice, explicit class confirmation, the alarm and shorter Lv100-master rescue, closest-target combat, shared rows and classic stat contributions. Firstlight stays passive; all other roaming wildlife attacks at every level. The current owner request authorizes this revision; final pacing acceptance remains pending.
 
 Coming next: OR-03, OR-04, OR-05, OR-06.
 The AI prepares a named packet before asking for approval. A pending gate
@@ -109,11 +109,8 @@ Priority: **NOW**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
-- Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
-- Use features/opening/VALIDATION.md for the current fresh-save walkthrough. Review both weapons, the first guaranteed Brimble Echo, in-frame Bag guidance, automatic party placement, the Forest Mage's two-companion proof and the visibly locked-then-open Firstlight roads.
-- Replay victory, defeat, a selected fallen sole companion, reload and interrupted-menu routes. Firstlight defeat must preserve bearings at the same forest camp, fully recovered. Confirm ordinary Echo odds remain separate from the two disclosed onboarding guarantees.
-- Review the four class demonstrations, Tidecrown, each easy master acceptance battle and explicit Druid/Mage/Hunter/Swordsman commitment. The current party fights the named master; winning returns to the field. Then review the Lv25 Inner Sea farm, ability-change proof and Lv30 trees. Use features/opening/CLASSES.md and features/inner-sea/FARM_SCOPE.md.
-- Review sacred-treasures-v1 in features/campaign/SACRED_TREASURES.md: post-class rescue, Echo list, cemetery tower, Tully dialogue and class weapon. The owner explicitly requested this named route; final pacing and world-slice acceptance remain pending before wider expansion.
+- Review class-flow-v2 in the local game: four-city class choice, explicit class confirmation, the alarm and shorter Lv100-master rescue, closest-target combat, shared rows and classic stat contributions. Firstlight stays passive; all other roaming wildlife attacks at every level. The current owner request authorizes this revision; final pacing acceptance remains pending.
+- The broader opening review remains due: both starting weapons, first Echo and Bag guidance, second-companion choice, Forest Mage proof, camp recovery, reloads, and the sacred-treasures route. Use features/opening/VALIDATION.md, features/opening/CLASSES.md and features/campaign/SACRED_TREASURES.md.
 
 **You validate / acceptance:**
 
@@ -171,10 +168,8 @@ Priority: **NEXT**. State: **Needs revision**.
 
 **AI prepares:**
 
-- Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
-- AI presents Druid plus the supplied Brimble (emberfox) and Rattlebit (stonehorn) designs with Mage/ranged/support context: idle, both walking directions, attack, cast, hit, defeat and victory. These new PNGs currently use transform motion; the retired monster frame sheets are not their animation reference.
-- Show actual play at 1× and 2×, crowded combat, Quiet FX and reduced motion. Include impact/sound/HP synchronization evidence.
-- Show the same creatures in the world and inventory, not only the arena.
+- Review the dedicated Knight walk cycle in assets/characters/swordsman-walk.png at world and combat sizes; exact prompt and hashes are in swordsman-walk-prompts.json. Combat poses remain on the existing class sheet. Broader creature-animation direction still requires its named approval.
+- The broader animation packet still needs the supplied starter creatures in world, combat and inventory: idle, both walking directions, attack, cast, hit, defeat and victory at 1x/2x, crowded combat, Quiet FX and reduced motion. Their current transform motion does not establish an approved creature frame-animation standard.
 
 **You validate / acceptance:**
 
@@ -230,12 +225,8 @@ Priority: **NEXT**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
-- Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
-- AI proposes a concrete supported desktop/browser baseline and an explicit mobile promise or deferral, with costs/limitations explained.
-- Show the Patch 26 in-frame exploration objective, upper-right minimap/Atlas entry and bottom three-destination menu alongside party picker, skill editing, inventory, summoning and recovery on desktop and a narrow layout.
-- Owner/real testers check the chosen physical devices before certification; emulated viewports alone cannot approve hardware.
-- Settings/audio and the local three-socket Inner Sea editor/export are available for review; see features/delivery/REMAINING_SCOPE.md (C3) and the feature guides. Automated 320/390/768/1440-width checks do not certify a physical phone. Confirm whether Android is mandatory for the initial launch.
-- Review the owner-requested framed Bag and painted Inner Sea at actual desktop and phone sizes using features/party/GAME_FRAME.md and features/inner-sea/DISPLAY.md. The implementation authorization covers this local UI/art batch; target device promises, expanded screen standards and final art acceptance still require a named decision.
+- Review class-flow-v2 conversations and the four-class panel on the intended phones. game-frame.css bounds dialogue to the playfield, with internal scrolling and touch-size actions. Target-device and final layout approval remain pending.
+- Review the framed Bag, painted Inner Sea, recovery, settings and exploration HUD on the chosen physical devices. Emulated viewport checks do not certify hardware; the supported desktop/browser baseline and Android launch requirement remain owner decisions. Use features/party/GAME_FRAME.md and features/inner-sea/DISPLAY.md.
 
 **You validate / acceptance:**
 

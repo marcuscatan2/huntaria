@@ -35,3 +35,16 @@ Owner review: follow Bag → select an item → summon, then Inner Sea → Homes
 the intended device before adopting this as the wider UI standard. The current
 request authorizes implementation; device certification and final visual
 acceptance remain separate decisions under OR-06.
+
+## Conversations and class choice
+
+`game-frame.css` bounds master, relic and resident conversations to the visible
+playfield. Conversations sit near its lower edge with a compact portrait and
+44px-or-larger actions; long dialogue scrolls inside the panel. The class-choice
+panel uses four columns on desktop and two on phones. `region.js` owns class-test
+confirmation; `campaign-menu.js` displays four city directions after Tidecrown;
+`relic-quest-view.js` opens the alarm before starting the reserved raid.
+
+Formation selectors are independent: any number of party slots can share a row.
+The preview displays every assigned member; combat spreads shared-row actors at
+separate Y coordinates. Nearest-target combat uses actual positions, not row names.

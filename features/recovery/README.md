@@ -9,7 +9,7 @@ Status: **local-test-tuning**. Defines test tuning and recovery UI; connects com
 
 `BondAdventure; BondRecovery; BondProfile.buy / recover / rest`
 
-Test odds/XP/level policy is explicit. Health persists as basis points per trainer/individual. Entering any city restores trainer and every owned companion for free; existing injured city saves heal on load between encounters. No city sanctuary/heal action is exposed. Firstlight defeat restores everyone at forest camp; other defeats restore everyone at their rescue city. Field camp rest and shop purchases require proximity; portable medicine is separate. A fallen trainer blocks adventure; selected fallen companions remain selected but are benched until revived. Field class/build changes do not heal. Practice is health-independent.
+Test odds/XP/level policy is explicit. Health persists as basis points per trainer/individual. Entering any city restores trainer and every owned companion for free; existing injured city saves heal on load between encounters. No city sanctuary/heal action is exposed. Firstlight defeat restores everyone at forest camp; other defeats restore everyone at their rescue city. Field camp rest and shop purchases require proximity; portable medicine is separate. A fallen trainer blocks adventure; selected fallen companions remain selected but are benched until revived. Field class/build changes do not heal. Practice is health-independent. Leaf Draught recovery gains 2% per integer effective VIT; revival remains fixed.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -26,7 +26,7 @@ The links below point to the actual source; root browser paths remain in use.
 
 Observed references include optional and late callbacks, not only boot dependencies.
 
-- Uses: [animation](<../../features/animation/README.md>), [content](<../../features/content/README.md>), [opening](<../../features/opening/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>), [world](<../../features/world/README.md>)
+- Uses: [animation](<../../features/animation/README.md>), [content](<../../features/content/README.md>), [growth](<../../features/growth/README.md>), [opening](<../../features/opening/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>), [world](<../../features/world/README.md>)
 - Used by: [collection](<../../features/collection/README.md>), [combat](<../../features/combat/README.md>), [exploration](<../../features/exploration/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>), [world](<../../features/world/README.md>)
 
 - [injury-and-supplies](<../../docs/architecture/CONNECTIONS.md#injury-and-supplies>) (recovery → persistence): Battle injury ratios -> checkpoint/complete -> vitality. Firstlight defeat records campRecovery and full camp revival; later defeats rescue to regional town with injuries. Before a new adventure, deploy removes selected zero-HP companions from the encounter copy but never from the saved loadout; trainer health remains the readiness gate. Buy/recover/rest validate proximity, resources and no active reservation; forest camp is a real rest service.
