@@ -35,7 +35,7 @@ separately. Record elapsed time, deaths, recovery trips and confusing moments.
 3. Follow [the sacred-treasures walkthrough](../campaign/SACRED_TREASURES.md):
    master rescue, Echo hunting, the ghost tower, Tully and the class weapon.
 4. Reload between milestones and verify class, companions, inventory and quest
-   progress. The Lv25 farm and Lv30 individual monster trees remain available;
+   progress. The farm opens at Lv25; individual monster trees open on ownership;
    the earlier Amber and regional lessons are optional.
 
 Review the first moment that feels confusing, unfair or dull. Current owner
@@ -50,6 +50,11 @@ companion stays in the party but is benched from combat; a fallen trainer must
 recover before starting another encounter. Trial and farm coverage is routed
 through `tests/farm_classes_check.py`; the main continuation uses
 `tests/relic_quest_check.py`.
+
+Firstlight's Brimble has an explicit encounter modifier, separate from its owned
+CSV stats. Both starter weapons must win all 30 introductory regression seeds,
+finish within 40 seconds and retain more than 25% HP; average remaining HP stays
+below 80% so recovery has a purpose.
 
 Run these browser suites with `--browser chrome` or use
 `python scripts/project.py verify --browser chrome` for the full current gate.

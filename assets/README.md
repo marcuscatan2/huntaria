@@ -9,7 +9,7 @@
   Mage, Hunter, Swordsman and weapon-specific Apprentice atlas routing.
 - [Human sprites](characters/README.md): new class sheets, four civilian NPCs,
   exact built-in generation prompts and selected asset hashes.
-- [Combat summons](summons/manifest.json): 20 entity images, built-in generation
+- [Combat summons](summons/manifest.json): 23 entity/variant images, built-in generation
   prompts, references and source hashes; [runtime contract](../features/content/COMBAT_WORKBOOKS.md).
 - [Exploration owner](../features/exploration/README.md): scenery and world props.
 - [Inner Sea homestead](inner-sea/README.md): painted farm background and exact generation provenance.

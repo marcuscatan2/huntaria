@@ -9,6 +9,7 @@ function render(scope='class'){
  const owned=!!mon||s.character?.legacy&&BondContent.CLASSES.includes(ref)||spec===ref,r=mon?mon.growth:s.growth[type]||{},points=G.budget(s,ref),stats=G.stats(type,r),nodes=G.nodes(type),used=G.used(r),unlocked=G.unlocked(s,ref);
  const classButton=s.character&&!s.character.legacy?'<button class="button secondary" data-class-tree="'+(spec||'apprentice')+'">'+BondGame.UNITS[spec||'apprentice'].name+'</button>':BondContent.CLASSES.map(type=>'<button class="button secondary" data-class-tree="'+type+'">'+BondContent.UNITS[type].name+'</button>').join('');
  if(G.classTree(type))return BondTalentView.render({type,nodes,ranks:r,points,used,owned,unlocked,name:u.name,classPicker:s.character?.legacy?classButton:''});
+ if(G.companionTree(type))return BondTalentView.render({type,nodes,ranks:r,points,used,owned,unlocked,name:mon?P.label(mon):u.name,classPicker:'<button class="button secondary" data-collection-mode="companions">Back to companions</button>'});
  const bonuses=Object.entries(G.classTree(type)?{}:stats).filter(([,v])=>typeof v==='number').map(([k,v])=>'<span>'+k+' '+Math.round(v*100)+'%</span>').join('');
  const nodeMarkup=n=>{
   const rank=r[n.id]||0,locked=!G.gate(type,n.id,r),parent=nodes.find(x=>x.id===n.parent);
@@ -22,8 +23,8 @@ function render(scope='class'){
 document.querySelector('#teams').addEventListener('click',e=>{
  if(e.target.matches('.talent-dialog')){const rect=e.target.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)BondTalentView.close();return;}
  const b=e.target.closest('button');if(!b)return;
- if(b.dataset.talentNode){BondTalentView.choose(ref,b.dataset.talentNode);BondMenu.render();BondTalentView.focusNode();BondTalentView.inspect();}
- if(b.hasAttribute('data-talent-branch')){BondTalentView.branch(ref,Number(b.dataset.talentBranch));BondMenu.render();document.querySelector('[data-talent-branch="'+b.dataset.talentBranch+'"]')?.focus({preventScroll:true});}
+ if(b.dataset.talentNode){BondTalentView.choose(P.getCompanion(ref)?.type||ref,b.dataset.talentNode);BondMenu.render();BondTalentView.focusNode();BondTalentView.inspect();}
+ if(b.hasAttribute('data-talent-branch')){BondTalentView.branch(P.getCompanion(ref)?.type||ref,Number(b.dataset.talentBranch));BondMenu.render();document.querySelector('[data-talent-branch="'+b.dataset.talentBranch+'"]')?.focus({preventScroll:true});}
  if(b.dataset.talentLearn){const dialogOpen=!!document.querySelector('.talent-dialog')?.open;P.learn(ref,b.dataset.talentLearn);BondMenu.render();if(dialogOpen)BondTalentView.inspect();const next=document.querySelector((dialogOpen?'.talent-dialog':'.talent-inspector')+' [data-talent-learn]:not(:disabled)');if(next)next.focus({preventScroll:true});else if(!dialogOpen)BondTalentView.focusNode();}
  if(b.hasAttribute('data-talent-close'))BondTalentView.close();
  if(b.dataset.classTree){ref=b.dataset.classTree;BondMenu.render();}

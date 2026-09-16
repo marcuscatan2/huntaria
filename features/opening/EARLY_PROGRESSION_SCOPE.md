@@ -9,15 +9,16 @@ detailed rationale, target pacing and human validation gates.
 The purpose of this sequence is to take a fresh player from an unexplained
 arrival to a stable personal loop: recruit companions, understand four launch
 classes, commit to one at player level 20, learn to adapt a familiar monster,
-establish the Inner Sea at player level 25, and unlock monster skill trees at
-player level 30.
+establish the Inner Sea at player level 25, and develop individual monster trees.
+The supplied companion CSVs supersede the original Lv30 tree unlock and ranked
+topology; [the current contract](../growth/COMPANION_TREES.md) owns those rules.
 
 ## Current main quest after class choice
 
 The owner-requested [sacred treasures route](../campaign/SACRED_TREASURES.md)
 continues immediately after ascension and ends with a class weapon. The Amber
 adaptation encounters, farm and monster-tree lessons below remain optional
-progression, with their existing level thresholds and saved receipts.
+progression, with saved receipts. Monster trees are available on ownership.
 
 ## Decisions and adaptations
 
@@ -78,7 +79,7 @@ the next required milestone.
 | First creature boss | 2-3 h | 10,500 / Lv15 | Tidecrown defeated; route to masters established |
 | Class trial and transformation | 3-5 h | 19,000 / Lv20 | Player joins one of four classes |
 | Counter-building and ability lesson | 5-8 h | 30,000 / Lv25 | Player adapts a monster and earns Inner Sea ownership |
-| Amber Hollow progression | 8-12 h | 43,500 / Lv30 | Species-specific monster trees unlock |
+| Amber Hollow progression | 8-12 h | 43,500 / Lv30 | Further levels and individual tree points |
 
 Recommended authored minimum reward slices:
 
@@ -504,27 +505,19 @@ attacker loot and a read-only replay.
 clock/save contracts, migration, validation and the later habitat-equipment batch.
 Decoration never sells power. Equipment from bosses/dungeons remains future work.
 
-### EP-11 - Species-specific monster trees at player Lv30
+### EP-11 - Individual species trees
 
 **Entry conditions**
 
-- Player Lv30. Ability selection remains separate and continues to work.
+- Own the companion. Ability selection remains separate and continues to work.
 
 **Encounter and interaction**
 
-- Before Lv30, monster detail shows only a restrained `Skill tree - unlocks at
-  player Lv30` preview. It does not display a wall of unusable nodes.
-- At Lv30, introduce the tree through a monster already used by the player. Spend
-  one point and run a short proof encounter showing its consequence.
-- Retain the existing 18-node, ranked, per-individual model and current point
-  resource. Do not add a new currency solely for onboarding.
-- Replace the current one-size-fits-all tree with data-driven species definitions:
-  - 18 nodes per launch species;
-  - ranks use the existing 3/5/10 patterns;
-  - general survivability/offense branches may share tested effect primitives;
-  - at least six nodes per species must express that species' passive or named
-    abilities, so trees are genuinely species-specific;
-  - no tree may invalidate the monster's initial role or require a single build.
+- The Inner Sea opens each owned companion's tree. Node inspection shows the
+  effect and its requirements before a separate Learn action spends a point.
+- Use the supplied 24-node, three-branch species definitions and 15-point budget
+  described in [Companion trees](../growth/COMPANION_TREES.md). The innate is free;
+  single-rank talents modify named abilities, resources and role interactions.
 - Points remain attached to each independent individual. A newly summoned
   high-level monster receives the point budget appropriate to its own level; it
   is not made useless by account age.
@@ -534,13 +527,12 @@ Decoration never sells power. Equipment from bosses/dungeons remains future work
 
 **Reward and state change**
 
-- Set the player-level feature unlock at Lv30. Purchases remain individual,
+- Ownership unlocks the tree. Purchases remain individual,
   validated and persisted through existing growth commands.
 
 **Progression gate**
 
-- Player Lv30 for access; existing individual point/prerequisite rules for node
-  purchases.
+- Ownership for access; individual point/prerequisite rules for node purchases.
 
 **Validation gates**
 
@@ -563,7 +555,7 @@ Minimum saved state:
 - set of class-demonstration IDs;
 - chosen/active/completed class trial and permanent specialization receipt;
 - ability-lesson completion;
-- `farm.owned` and the player-level monster-tree access rule;
+- `farm.owned` and individual talent allocations;
 - tutorial/hint acknowledgement only for presentation, never as progression proof.
 
 Migration rules:
@@ -571,11 +563,12 @@ Migration rules:
 1. On first migration, initialize trainer XP at the threshold of the trainer level
    shown by the old build. This avoids level loss, after which progression is
    independent.
-2. Preserve every companion's XP, source level, build, tree, health and identity.
+2. Preserve every companion's XP, source level, build, health and identity.
+   Preserve valid current talent IDs; refund retired generic tree allocations.
 3. Existing Druid/Mage saves remain specialized and do not replay transformation.
 4. Existing saves with a persisted Inner Sea layout are grandfathered as owners.
-5. Existing saves with invested monster-tree nodes retain access and effects even
-   if their migrated trainer level is below 30.
+5. Every existing companion retains tree access regardless of trainer level.
+   Reserved legacy battles retain their frozen generic-tree effects until settled.
 6. Introductory guarantees are never retroactively awarded to progressed saves.
 7. Active/reserved encounters either resume under their saved rules version or
    settle before migration; never change their party or reward table mid-fight.
@@ -607,13 +600,12 @@ Migration rules:
 | 8 | Post-class counter loop | campaign, world, collection | One bounded acquisition/counter sequence and mini-boss |
 | 9 | Ability-selection lesson | party, campaign, content | Dynamic familiar-monster lesson and proof fight |
 | 10 | Inner Sea Lv25 farm | inner-sea, growth, persistence, combat | Farm establishment, training, power, five-defender daily attacks, upgrades, repairs and replay |
-| 11 | Species-tree Lv30 system | growth, content, collection | Unlock, first lesson and batchable species definitions |
+| 11 | Individual species trees | growth, content, collection | Ownership access, authored talents and individual points |
 | 12 | Full regression and playtest packet | delivery and all affected owners | Automated invariants plus human pacing evidence |
 
-Packages 1-11 are implemented locally. Habitat equipment is the next farm batch. Species trees use
-the shared stable18-node topology with five named-skill nodes and one innate
-identity node for all100 runtime species; commercial content/balance approval is
-still required by roster batch.
+Packages 1-11 are implemented locally. Habitat equipment is the next farm batch.
+All100 species use the supplied 24-node trees; commercial content/balance approval
+is still required by roster batch.
 
 ## Automated acceptance
 
@@ -630,7 +622,7 @@ still required by roster batch.
 - Ability selection works from first summon and prior discovery skips redundant
   menu instruction.
 - Inner Sea establishment checks Lv25 and saves ownership once.
-- Monster trees check player Lv30, while node budget/prerequisites use the owned
+- Monster trees check ownership, while node budget/prerequisites use the owned
   individual's state; duplicate species do not share purchases.
 - Defeat, retreat, background navigation, loadout use, reload and critical-save
   failure cannot strand or duplicate any progression step.
@@ -669,9 +661,9 @@ Players should recognize why they changed a monster ability and see its effect i
 the proof fight. Owning a different viable solution must not create a dead end or
 force a duplicate acquisition.
 
-### Gate F - Lv25/Lv30 comprehension
+### Gate F - Farm and companion-tree comprehension
 
-When those batches exist, players distinguish Inner Sea cosmetics from practical
+Players distinguish Inner Sea cosmetics from practical
 benefits, and distinguish equipped abilities from species-tree development. New
 monsters must still feel worth recruiting after the tree tutorial.
 

@@ -55,6 +55,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
 - `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
 - `python tests/player_experience_check.py --browser chrome` — Concise player copy, Inner Sea/class-tree routing, dummy DPS/healing/shield rates, save isolation, responsive reports and one-time NPC victory return.
+- `python tests/monster_progression_check.py --browser chrome` — Exact 10,000-row CSV stats, 100 talent kits, quest budgets, shared shields, effect regressions, legacy/current encounter replay and responsive individual trees.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

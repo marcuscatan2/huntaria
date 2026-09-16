@@ -11,9 +11,9 @@ The listed species Echo uses a persisted0..9999 draw: below1500 succeeds (15%).
 This is a temporary TEST override for all species. Release proposals remain
 10% for the original starters and0.01% for others, preserved in releaseEchoBP;
 they are not the current live odds. Each success grants exactly one Echo.
-XP = 300 + 100 x reserved source level to each participating individual, not an inventory item;
-created apprentices also earn hunting XP up to1000 total (Lv5), even solo.
-Beyond that starter floor trainer level follows companions. Rarity labels do not increase power.
+XP = 300 + 100 x reserved source level to the trainer and each participating
+companion. Their levels are independent and owned levels stop at60.
+Rarity labels do not increase power.
 Firstlight's three species can also drop the listed recovery items. Their rolls
 use a separate seeded stream per saved spawn life; the same accepted kill cannot
 reroll or pay twice. Other maps do not yet have ordinary supply/material drops.

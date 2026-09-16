@@ -2,7 +2,7 @@
 
 Implemented local scope requested by the owner on 2026-09-15. The current main
 quest ends with a class weapon in the Bag. Regional chapters, Amber training,
-the Lv25 Inner Sea and Lv30 monster trees remain optional progression. This
+the Lv25 Inner Sea and individual monster trees remain optional progression. This
 does not approve commercial pacing, final art or online rewards.
 
 ## Route

@@ -39,8 +39,21 @@ function classic(a,level=1){
 function physicalDefense(vit,roll=0){const v=stat(vit);return Math.floor(v*.3)+Math.floor(v*.5)+Math.floor(Math.max(0,Math.min(.999999999,roll))*(Math.max(0,Math.floor(v*v/150)-Math.floor(v*.3)-1)+1));}
 const hpRecovery=(hp,vit)=>Math.floor(stat(vit)/5)+Math.max(1,Math.floor(hp/200));
 const castTime=(seconds,dex)=>Math.max(0,seconds)*Math.max(0,1-stat(dex)/150);
-function derived(type,s,base=C.UNITS[type],enemyLevel=null){
+function derived(type,s,base=C.UNITS[type],enemyLevel=null,legacyMonster=false){
  const trainer=base.role==='Trainer',l=enemyLevel??(trainer?trainerLevel(s):monLevel(s,base.instanceId||type));
+ const row=!trainer&&!legacyMonster?root.BondMonsterProgression?.levels[type]?.[Math.max(1,Math.min(100,Math.floor(l)))-1]:null;
+ if(row){
+  const intrinsic=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,row[root.BondMonsterProgression.columns.indexOf(k)]]));
+  const source=attributes(s),shared=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,enemyLevel!==null?0:source[k]*source.leadership*.005]));
+  const a=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,intrinsic[k]+shared[k]])),stats=classic(a,l),original=classic(intrinsic,l);
+  const powerScale=base.power/C.UNITS[type].power,hpScale=base.hp/C.UNITS[type].hp;
+  const melee=(row[6]+stats.melee-original.melee)*powerScale,ranged=(row[6]+stats.ranged-original.ranged)*powerScale;
+  const magicRange=[stats.magicMin*powerScale,stats.magicMax*powerScale],factors={melee:melee/base.power,ranged:ranged/base.power,magic:(magicRange[0]+magicRange[1])/2/base.power};
+  const farmHP=enemyLevel===null?(root.BondFarm?.bonuses(s).hp||0):0,hp=Math.round(row[5]*hpScale*stats.hpMultiplier/original.hpMultiplier*(1+farmHP)),offense=factors[base.basicCategory];
+  return {level:l,element:ELEMENT[type],hp,power:Math.round(base.power*offense),offense,factors,effective:a,intrinsic,stats,magicRange,shared,
+   healing:1+stat(a.int)*.01,speed:100/Math.max(.2,base.interval*stats.delayMultiplier),hardDefense:row[7]/100,
+   armor:0,cooldown:0,regenPerSecond:hpRecovery(hp,a.vit)/6};
+ }
  const source=attributes(s),a=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,enemyLevel!==null?0:trainer?source[k]:source[k]*source.leadership*.005])),stats=classic(a,l);
  const hpScale=(1+.04*(l-1))*stats.hpMultiplier,levelOffense=1+.025*(l-1),innate=base.power*levelOffense;
  const magicRange=[innate+stats.magicMin,innate+stats.magicMax];

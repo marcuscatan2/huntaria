@@ -25,7 +25,7 @@ are routed through [FEATURE_MAP](FEATURE_MAP.md).
 
 ## Release contract
 
-- At least 100 distinct summonable species; planning allocation 94 wild and six boss species. Four trainer classes, five skills/three equipped each, one innate per species, 18 passive nodes per character type.
+- At least 100 distinct summonable species; planning allocation 94 wild and six boss species. Four trainer classes, five skills/three equipped each, one innate per species, 24 companion talents per species and15 class talents per class.
 - Planning baseline: 24 large maps across six regions, six compact hubs. Large maps must take at least 30 seconds to cross at base walking speed; target 45–90 seconds. Hubs are exempt.
 - Trainer can begin alone. Starter Echo drops: 10%. Designated mid/late Echoes and every very-rare drop: 0.01%. A legal Echo summon: 100%. No pity or second summoning roll.
 - Two–three-player optional boss fights; one 0.01% group essence roll on every eligible victory. Boss essences are extremely rare but have no server-wide copy limit; previous drops/ownership/summons do not change the chance.
@@ -309,8 +309,8 @@ Accountability: Implementation agent; owner accepts
 
 Acceptance criteria:
 
-- [ ] F-010-AC1: Each of the four classes exposes 15 workbook talents with stable IDs, rank-2 upgrades and rank-1 capstones across three connected branches. At least100 monster species retain eighteen ranked nodes with caps3/5/10. Monster trees unlock at player Lv30; each species has five named-skill nodes and an innate-identity node over shared validated effect primitives.
-- [ ] F-010-AC2: Each individual owns separate ranked investment in its species template. Class trees unlock with Lv20 transformation: two points at20, one every three levels through59, capped at15. No purchase exceeds budget/cap or bypasses prerequisites. Free respec refunds exactly; migration resets retired class ranks and preserves valid class and companion investments and grandfathered access.
+- [ ] F-010-AC1: Each of the four classes exposes 15 workbook talents with stable IDs, rank-2 upgrades and rank-1 capstones across three connected branches. At least100 monster species expose24 single-rank talents across three connected eight-node branches. Owned companions unlock their tree immediately; the innate is free and branch capstones are mutually exclusive.
+- [ ] F-010-AC2: Each individual owns separate investment in its species template: one starting point, one per five levels through60, one for Tidecrown and one for the relic quest, capped at15. Class trees unlock with Lv20 transformation: two points at20, one every three levels through59, capped at15. No purchase exceeds budget/cap or bypasses prerequisites. Free respec refunds exactly; migration refunds retired generic nodes and preserves valid class/companion talents, earned budgets and frozen encounter rules.
 - [ ] F-010-AC3: Every offered branch has a usable effect for that character, including healing branches. Previewed rank changes agree with battle values and cap interactions.
 - [ ] F-010-AC4: At the locked progression budgets, at least two distinct development paths per class are viable and every species has one documented useful path. Unlimited respec remains free; the UI does not imply all nodes can be maxed.
 
@@ -695,7 +695,7 @@ Acceptance criteria:
 
 - [ ] F-029-AC1: Explore, Party & Bag and Battle remain primary destinations with coherent access to inventory, 100-species collection, trees, formation, Inner Sea, atlas and optional group lobby.
 - [ ] F-029-AC2: A fresh profile starts with the trainer alone; a named Apprentice with a dagger/bow wakes in the forest without a guide chain. The first attacker, one-time Echo receipt, Inventory summon and signed Bloomslime/Stonehorn fork are concise and in-world. The first fight starts within the VP-10 two-minute target.
-- [ ] F-029-AC3: Zero, one and two owned/equipped companion states are useful rather than errors. First/second summons fill empty slots; portrait selection remains authoritative. Four demonstrations, fixed Tidecrown, temporary class trials, Lv20 confirmation, an ability-change proof and Lv30 tree proof each expose one current objective without closing roads.
+- [ ] F-029-AC3: Zero, one and two owned/equipped companion states are useful rather than errors. First/second summons fill empty slots; portrait selection remains authoritative. Four demonstrations, fixed Tidecrown, temporary class trials, Lv20 confirmation, an ability-change proof and companion tree proof each expose one current objective without closing roads.
 - [ ] F-029-AC4: Empty, loading, offline, login-expired, map-unavailable, group-disconnected, no-drop, additional-copy summon and pending-receipt states have truthful recovery actions; neither UI nor tutorial invents ownership.
 
 Validation: Fresh and returning-user task scripts, skipped/restarted tutorial, all specified UI states, keyboard/touch walkthrough; late Inner Sea/shop screens inherit and are checked under the same navigation Soul Echo summoning.
@@ -1407,7 +1407,7 @@ Accountability: Implementation agent; owner accepts
 
 Acceptance criteria:
 
-- [ ] F-064-AC1: The launch manifest lists at least100 genuinely distinct summonable species (94 wild/six boss). The initial100 use25 land,15 bird,4 frog,1 mythic,15 insect,3 spider,12 aquatic,10 reptile/newt,6 plant/fungus,6 spirit/construct and3 other-invertebrate inspirations. Each records source map, element, role, silhouette/art, five skills, innate,18-node tree and acquisition rules; skins/recolors do not count.
+- [ ] F-064-AC1: The launch manifest lists at least100 genuinely distinct summonable species (94 wild/six boss). The initial100 use25 land,15 bird,4 frog,1 mythic,15 insect,3 spider,12 aquatic,10 reptile/newt,6 plant/fungus,6 spirit/construct and3 other-invertebrate inspirations. Each records source map, element, role, silhouette/art, active skills, innate,24-node tree and acquisition rules; skins/recolors do not count.
 - [ ] F-064-AC2: All 520 skill assignments, 100 innates and 104 trees totaling 1,872 nodes are defined and validated. Shared mechanics and tree templates are allowed; each species needs a coherent identity and at least one tested useful build, with stronger balance sampling across class/role matchups.
 - [ ] F-064-AC3: Produce and accept batches of ten after a first reference batch; each has animation/event clips, provenance, collision/anchor checks, working Echo summon and loadout tests. Completion is species-by-species, not a numeric placeholder counter.
 - [ ] F-064-AC4: Commercial gates require all 100 complete; the final batch receives the same rubric. A smaller free prototype/pilot is explicitly labeled a test, never presented as satisfying this launch floor; boss species are tested in isolated grant-enabled realms.

@@ -7,6 +7,9 @@
 *.py text eol=lf
 *.yml text eol=lf
 *.csv text eol=lf
+# Preserve the supplied files byte-for-byte for their recorded source hashes.
+"docs/Huntaria - Mons-by-level.csv" -text whitespace=cr-at-eol
+"docs/Huntaria - mon-skills.csv" -text whitespace=cr-at-eol
 .githooks/* text eol=lf
 *.png binary
 *.jpg binary

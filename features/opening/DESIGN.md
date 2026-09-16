@@ -92,21 +92,15 @@ decision; do not add a paid class-change product by assumption.
 
 ## Ability and tree lesson
 
-Ability selection is available from the first summon: five known active skills,
+Ability selection is available from the first summon: known active skills,
 three equipped priorities. The Amber lesson records a genuine changed companion
 build and then requires an accepted proof encounter.
 
-Monster trees remain visible as a small locked preview before player Lv30.
-At Lv30 every individual can spend its own budget in its species tree:
-
-- eighteen stable ranked node IDs and existing 3/5/10 caps;
-- five nodes modify that species' named skills (power or cooldown);
-- one node uses the species' innate identity;
-- other nodes use shared offense, defense, movement and support primitives;
-- duplicate species never share purchases or resets.
-
-Previously invested migrated trees are grandfathered. The committed trainer
-class tree unlocks at transformation and remains separate from monster trees.
+Every owned companion can spend its own budget in its 24-node species tree.
+The [companion tree contract](../growth/COMPANION_TREES.md) owns source data,
+point awards, prerequisites and migration refunds. Duplicate species never share
+purchases or resets. The committed trainer class tree unlocks at transformation
+and remains separate from companion trees.
 
 ## Intentionally deferred
 
@@ -128,4 +122,4 @@ python scripts/project.py verify --browser chrome
 
 Then perform the human gates in the scope: first-30-minute discovery with both
 weapons/second-role branches, class readability, Tidecrown telegraph response,
-Druid/Mage commitment comprehension, ability adaptation and Lv30 tree clarity.
+class commitment comprehension, ability adaptation and individual tree clarity.

@@ -125,7 +125,7 @@ with sync_playwright() as pw:
             check('Reopening battle details does not duplicate loot',page.evaluate('BondProfile.export()')==before)
             # Reproduce the owner's unassisted first-win / second-loss loop.
             coins=page.evaluate('BondProfile.snapshot().coins')
-            page.evaluate("""()=>{BondApp.switchTab('region');const P=BondProfile,s=P.snapshot();s.vitality.trainer=100;P.testing.replace(s);const {sp,p}=qaIsolated('emberfox');P.position(p);BondApp.switchTab('region');if(!BondApp.startRegionBattle(P.beginHunt(sp.id).id))throw Error('Second hunt failed');}""")
+            page.evaluate("""()=>{BondApp.switchTab('region');const P=BondProfile,s=P.snapshot();s.vitality.trainer=100;P.testing.replace(s);const {sp,p}=qaIsolated('emberfox');P.position(p);BondApp.switchTab('region');if(!BondApp.startRegionBattle(P.beginHunt(sp.id).id))throw Error('Second hunt failed');BondApp.getBattle().trainer(0).actionRemaining=999;}""")
             play_until_settled(page,40000)
             check('Forced low-health defeat returns to familiar camp without visiting town',page.evaluate('BondApp.getBattle().winner===1&&BondProfile.snapshot().map==="clearing-0"&&!BondProfile.snapshot().visited.includes("clearing-hub")&&BondAdventure.health(BondProfile.snapshot())===10000') and page.evaluate('BondProfile.snapshot().coins')==coins)
             check('Camp and mapped location remain visible after defeat',page.locator('[data-object="sanctuary:clearing-0"]').is_visible() and page.locator('#world-map-name').inner_text().lower()=='firstlight meadow')
@@ -183,6 +183,7 @@ with sync_playwright() as pw:
                 page.clock.run_for(50)
                 if page.evaluate('BondApp.getTab()==="battle"&&BondApp.isRunning()'):break
             check('A deliberate starting-map hunt still starts real combat',page.evaluate('BondApp.getTab()==="battle"&&BondApp.isRunning()&&BondApp.getEncounter().includes("stonehorn")'))
+            page.evaluate('BondApp.getBattle().trainer(0).actionRemaining=999')
             play_until_settled(page)
             check('Played Firstlight death returns immediately to the forest camp fully healed',page.evaluate('BondApp.getBattle().winner===1&&BondApp.getTab()==="region"&&BondProfile.snapshot().map==="clearing-0"&&BondAdventure.health(BondProfile.snapshot())===10000'))
             page.clock.run_for(300)

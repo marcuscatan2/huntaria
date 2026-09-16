@@ -59,7 +59,8 @@ from cooldown and action readiness, following the
 
 `progression.js` owns pure stat derivation; `rules.js` owns physical accuracy;
 `game.js` applies seeded rolls, damage and recovery. `journey.js` and `menu.js`
-present the same derived values. Actor levels and authored bases remain:
+present the same derived values. Trainers and version0 reserved monster fights
+retain the following formulas:
 
 ```text
 level HP factor = 1 + 0.04*(L-1)
@@ -72,6 +73,12 @@ skill strike = skill amount * category factor * encounter skillScale
 healing scale = (1 + 0.025*(L-1)) * (1 + 0.01*I) * tree healing factor
 ```
 
+New monster encounters use the exact intrinsic attributes and final HP/physical
+ATK/hard DEF in the supplied level CSV. Leadership adds only the difference in
+classic physical ATK and the effective/intrinsic VIT HP ratio. INT derives spell
+power separately. [The companion contract](features/growth/COMPANION_TREES.md)
+owns the source, equations and migration boundary.
+
 Magic power displays the average of its range. Each magic strike samples the
 integer MATK contribution with the encounter RNG. Each damaging skill declares
 its category; range, art and role do not select an attribute. STR therefore also
@@ -79,8 +86,7 @@ adds a small ranged bonus, while DEX adds a small melee bonus.
 
 The `campaign.js` trainingTuning table keeps early demonstrations and optional
 lessons viable for starter parties under these stat and targeting rules.
-Tree attack and eligible innates multiply strikes. The workbook update preserves
-these stat formulas and separates attack basis from melee/ranged delivery.
+Tree attack and eligible innates multiply strikes. Attack basis remains separate from melee/ranged delivery.
 Physical hits pass accuracy, then roll 5% base critical chance for 1.4x damage;
 explicit skills/talents may modify the chance. Magic and secondary procs do not
 crit. Leadership supplies no critical bonus.
@@ -136,31 +142,26 @@ trainer HP percentages. Playback speed does not change these rules.
   later visible progression patch. Legacy over-cap XP is preserved as deferred
   data rather than deleted or applied. No ultra-rare companion is required.
 
-Each companion owns its investment in an 18-node species template. Companion
-nodes have rank caps of 3/5/10; a parent rank ≥1 unlocks its child.
-One point buys one rank; reset is free.
-
-```text
-companion tree budget = 3 + floor((individual level−1) / 2)
-                      + min(8, floor(first fixed encounter wins / 2))
-```
-
-There are 40 possible points at the launch Lv60 cap with the maximum encounter
-bonus, versus 94 ranks to max the whole template. Unowned species show a read-only three-point template preview; no investment is
-saved without an individual. Healing branches become damage branches for kits without a healing
-mechanic; final affinities depend on role.
+Each owned companion has a 24-node species tree, in three branches of eight
+single-rank talents. One point buys one talent; reset is free. The budget is
+`min(15, 1 + floor(min(60, highest earned level)/5) + quest points)`.
+Tidecrown and the completed relic quest each supply one point to existing and
+future companions. At most one branch capstone may be learned. The innate is
+free. Prerequisites are authoritative in `companion-trees.js`; old generic ranks
+refund into this budget. See [companion trees](features/growth/COMPANION_TREES.md).
 
 Each class has 15 unique talents across three branches. Class points start at
 two at Lv20, then increase by one every three levels through Lv59, capped at 15.
 Opening/fork/advanced talents have two ranks; capstones have one. Branch gates
 are defined in `class-trees.js`. Old generic class ranks reset into the new
-level-based budget; valid new allocations and companion investments survive
+level-based budget; valid new allocations survive
 normalization. [The workbook contract](features/content/COMBAT_WORKBOOKS.md)
 defines class effects and migration.
 
 Loadout edits invalidate the local battle view but do not replace a reserved
 encounter: its original build/profile/seed/tick replays on resume. Pre-migration
-reservations retain their original class bonuses through settlement.
+reservations retain their original class bonuses, monster stats and generic
+mastery through settlement.
 
 ## Elements
 

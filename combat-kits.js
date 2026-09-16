@@ -6,6 +6,7 @@ const alive=u=>root.BondCombatEffects.alive(u);
 class Context{
  constructor(f,u,s){this.f=f;this.b=f.battle;this.u=u;this.s=s;const {A,M,H,P}=f.stats(u);Object.assign(this,{A,M,H,P});this.t=this.b.target(u);this.tr=f.trainer(u);this.all=f.core(u);this.low=f.lowest(u);this.other=f.others(u);this.primary=null;this.results=[];this.receivers=[];this.deployments=0;this.startHP=u.hp/u.maxHp;this.startShield=u.shield;this.resources={...u.kit};this.mods={};this.skillPower=1+(u.growth?.skillPower?.[s.id]||0);}
  r(k){return this.u.kit[k]||0;}
+ markHit(){this.statusLanded=this.f.direct(this.u,this.t,0,this.s.name,{statusOnly:true,primary:false,category:this.u.basicCategory}).hit;return this.statusLanded;}
  add(k,n,max=Infinity){return this.f.add(this.u,k,n,max);}
  take(k,max=Infinity){return this.f.take(this.u,k,max);}
  hp(u=this.u){return u?u.hp/u.maxHp:1;}
@@ -20,9 +21,10 @@ class Context{
  hit(amount,options={}){
   const target=options.target||this.t,primary=!this.primary&&!options.secondary;
   if(primary)this.primary={kind:'damage',amount,category:options.category||this.u.basicCategory,target};
-  if(primary)amount=root.BondCombatPassives.primary(this.f,this,'damage',amount);
+  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'damage',amount);amount=root.BondCompanionTalents?.change(this.f,'primary',amount,this,'damage')??amount;}
   const bonus=primary?(this.mods.bonus||0):0;
   const power=(amount+bonus)*(primary?(this.mods.damageMultiplier||1):1)*this.skillPower*(1+(this.u.growth?.attack||0));
+  if(primary)this.primary.offered=power;
   const result=this.f.direct(this.u,target,power,this.s.name,{active:true,primary,blockable:this.u.delivery==='ranged'&&!options.area&&!options.secondary,...options,hitBonus:(options.hitBonus||0)+(this.mods.hit||0)});
   this.results.push({...result,target,primary,category:options.category||this.u.basicCategory});if(primary)this.primary.result=result;
   return result;
@@ -30,17 +32,23 @@ class Context{
  splash(amount,radius=18,cap=2,category=this.u.basicCategory){for(const v of this.f.nearby(this.u,this.t,radius,cap+1,this.t).filter(v=>v!==this.t).slice(0,cap))this.hit(amount,{target:v,category,secondary:true,primary:false,area:true,ignoreRange:true});}
  heal(target,amount,options={}){
   const primary=!this.primary;if(primary)this.primary={kind:'heal',amount,target};
-  if(primary)amount=root.BondCombatPassives.primary(this.f,this,'heal',amount);
-  const before=target?target.hp/target.maxHp:1,actual=this.f.heal(this.u,target,this.skillPower*(amount+(primary?(this.mods.supportBonus||0):0))*(this.mods.healMultiplier||1),this.s.name,{primary:true,skill:this.s,...options});
-  this.receivers.push({kind:'heal',target,actual,primary,before});return actual;
+  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'heal',amount);amount=root.BondCompanionTalents?.change(this.f,'primary',amount,this,'heal')??amount;}
+  const before=target?target.hp/target.maxHp:1,receipt={},actual=this.f.heal(this.u,target,this.skillPower*(amount+(primary?(this.mods.supportBonus||0):0))*(this.mods.healMultiplier||1),this.s.name,{primary:true,skill:this.s,...options,receipt});
+  this.receivers.push({kind:'heal',target,actual,primary,before,offered:receipt.offered||0});return actual;
  }
  shield(target,amount,duration=3,options={}){
   const primary=!this.primary;if(primary)this.primary={kind:'shield',amount,target};
-  if(primary)amount=root.BondCombatPassives.primary(this.f,this,'shield',amount);
+  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'shield',amount);amount=root.BondCompanionTalents?.change(this.f,'primary',amount,this,'shield')??amount;}
   const actual=this.f.shield(this.u,target,this.skillPower*(amount+(primary?(this.mods.supportBonus||0):0))*(this.mods.shieldMultiplier||1),duration,this.s.name,{primary:true,skill:this.s,...options});
   this.receivers.push({kind:'shield',target,actual,primary});return actual;
  }
  selfward(amount,duration=3){return this.shield(this.u,amount,duration);}
+ sharedShield(targets,amount,duration=3,options={}){
+  const primary=!this.primary;if(primary)this.primary={kind:'shield',amount,target:targets[0]};
+  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'shield',amount);amount=root.BondCompanionTalents?.change(this.f,'primary',amount,this,'shield')??amount;}
+  const actual=this.f.sharedShield(this.u,targets,this.skillPower*(amount+(primary?(this.mods.supportBonus||0):0))*(this.mods.shieldMultiplier||1),duration,this.s.name,{primary:true,skill:this.s,...options});
+  targets.forEach((target,i)=>this.receivers.push({kind:'shield',target,actual:i===0?actual:0,primary:primary&&i===0}));return actual;
+ }
  teamheal(amount){for(const u of this.all)this.heal(u,amount);}
  teamward(amount,duration=3){for(const u of this.all)this.shield(u,amount,duration);}
  dot(key,amount,seconds,category=this.u.basicCategory){if(this.results[0]?.hit)this.f.dot(this.u,this.t,key,amount,seconds,category);}
@@ -207,18 +215,21 @@ const placements={
  'Floating Canopy':c=>['nightlight-cap',{assigned:c.low}], 'Unmask the Tricksters':c=>['trickster-spirit',{}],
  'False Smile':c=>['guardian-spirit',{assigned:c.tr}]
 };
-function fits(c){const fn=placements[c.s.name];if(!fn)return true;const [id,options]=fn(c);return !!root.BondCombatEntities.placement(c.f,c.u,root.BondCombatEntities.profiles[id],options);}
-function usable(f,u,skill){const d=definitions.get(skill.id||u.skills.find(id=>C.SKILLS[id]===skill));if(!d)return null;if(f.has(u,'Silence'))return false;const c=new Context(f,u,d);return (!d.gate||d.gate(c))&&fits(c)&&(!f.battle.overcharge||d.kind==='hit'||!/heal/i.test(d.proposal));}
+function fits(c){const override=root.BondCompanionTalents?.own(c.f,'fits',c.u,c);if(override!==undefined)return override;const fn=placements[c.s.name];if(!fn)return true;const [id,options]=fn(c);return !!root.BondCombatEntities.placement(c.f,c.u,root.BondCombatEntities.profiles[id],options);}
+function usable(f,u,skill){const d=definitions.get(skill.id||u.skills.find(id=>C.SKILLS[id]===skill));if(!d)return null;if(f.has(u,'Silence'))return false;const c=new Context(f,u,d);const support=root.BondCompanionTalents?.own(f,'support',u,d),gate=root.BondCompanionTalents?.own(f,'gate',u,c);return (gate??(support?c.all.length>0:!d.gate||d.gate(c)))&&fits(c)&&(!f.battle.overcharge||d.kind==='hit'||!/heal/i.test(d.proposal)||root.BondCompanionTalents?.own(f,'overchargeAllowed',u,d)===true);}
 function cast(f,u,skill){
  const d=definitions.get(skill.id);if(!d)return null;const c=new Context(f,u,d);
- if(f.has(u,'Silence')||d.gate&&!d.gate(c)||!fits(c)||d.kind==='hit'&&!f.battle.inRange(u,c.t,skill))return false;
- c.mods=root.BondCombatPassives?.beforeCast(f,c)||{};root.BondClassTalents?.beforeCast(f,c);
- u.casts++;f.battle.emit('cast',u,d.kind==='hit'?c.t:u,d.name,0,{skillName:d.name,skillKind:skill.kind,skillId:d.id});
+ const support=root.BondCompanionTalents?.own(f,'support',u,d),gate=root.BondCompanionTalents?.own(f,'gate',u,c);
+ const offensive=support===undefined?d.kind==='hit':!support;
+ if(f.has(u,'Silence')||!(gate??(support?c.all.length>0:!d.gate||d.gate(c)))||!fits(c)||offensive&&!f.battle.inRange(u,c.t,skill))return false;
+ if(support!==undefined)c.s={...d,kind:offensive?'hit':'utility'};
+ c.mods=root.BondCombatPassives?.beforeCast(f,c)||{};root.BondClassTalents?.beforeCast(f,c);root.BondCompanionTalents?.each(f,'beforeCast',c);
+ u.casts++;f.battle.emit('cast',u,offensive?c.t:u,d.name,0,{skillName:d.name,skillKind:offensive?'hit':skill.kind,skillId:d.id});
  // Set execution cooldown first; any explicit refund applies to this real timer.
  const index=u.skills.indexOf(d.id);if(index>=0)u.cds[index]=d.cd*(1-Math.min(.5,(u.growth?.cooldown||0)+(u.growth?.skillCooldown?.[d.id]||0)));
- f.begin();d.act(c);f.finish();
- if(c.primary?.kind==='deployment'&&!c.deployments&&!c.receivers.length){if(index>=0)u.cds[index]=0;u.casts--;return false;}
- if(!f.battle.ended){root.BondCombatPassives?.afterCast(f,c);root.BondClassTalents?.afterCast(f,c);}
+ f.begin();f.currentCompanionCast=c;if(!root.BondCompanionTalents?.own(f,'cast',u,c))d.act(c);f.currentCompanionCast=null;f.finish();
+ if(c.primary?.kind==='deployment'&&!c.logicalDeployment&&!c.deployments&&!c.receivers.length){if(index>=0)u.cds[index]=0;u.casts--;return false;}
+ if(!f.battle.ended){root.BondCombatPassives?.afterCast(f,c);root.BondClassTalents?.afterCast(f,c);root.BondCompanionTalents?.each(f,'afterCast',c);}
  return true;
 }
 // Missing definitions fail boot; spreadsheet prose is never used as a fallback implementation.

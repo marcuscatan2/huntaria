@@ -11,27 +11,28 @@ then `python scripts/creature_reference.py --check`; it rejects drift.
 
 ## Reading the table
 
-HP/ATK are **level-1 prototype species bases**, before Leadership, trees, innates, elements
-or enemy overrides. ATK is the basic attack's base amount, not DPS or skill damage.
+HP/ATK are **legacy normalization constants**, used to express encounter overrides
+and replay old fights. Current intrinsic HP, physical ATK, attributes and physical
+DEF come from the exact level CSV rows; INT derives spell power separately.
+See [Companion level stats and trees](features/growth/COMPANION_TREES.md).
 Speed = 100 / interval; Ready = seconds per base action. Move is arena units/s
 (move multiplier x8); Reach is basic-attack range in arena units. World walking
 is 210 units/s, not this Move column. Property means the Sheet-listed element.
 Design role and attack basis are Sheet-owned. Prototype mechanic profile describes
 the older simulation archetype still used by current skills; it is not allowed to
 overwrite the design role.
-All species have zero base armor. Physical hits have 5% base critical chance
+Physical hits have 5% base critical chance
 and deal 1.4x damage after accuracy; Leadership contributes none. Innate reductions,
 VIT defense and tree armor are separate. Physical dodge uses level and AGI/DEX.
-No independent species STR/DEX/etc. distribution or randomized IVs is invented.
+Intrinsic species attributes are supplied by the level CSV; there are no randomized IVs.
 
 See [Companion stats.md](<Companion stats.md>) for exact level, attributes,
 cooldown, damage, healing, armor, elemental and rounding formulas. Wild encounters
-use a solo introductory Brimble (Lv2: HP430/ATK32 bases, skill scale0.65, no innate);
-other individual wild encounters use full species bases and innate, then their
-Sheet source level. Firstlight alone keeps the explicit Lv2/3/5 starter override.
-Pack variants remain weaker. Saved encounters retain their reserved source level.
-Boss previews use HP3400/ATK44 before level scaling, not the companion bases here,
-and give no rewards. These are prototype balancing numbers, not approved final tuning.
+use their authored source level and party-size modifiers. Firstlight keeps its
+Lv2/3/5 starter levels and the introductory Brimble modifier in adventure-rules.js.
+Pack and boss overrides live in campaign.js. Saved encounters retain their
+reserved source level and rules. Reward-free boss previews do not award loot.
+Ashen retains level80+ wildlife as an above-cap challenge by owner decision.
 
 Each summon creates an individual with its own XP/skills/tree. Species bases are
 shared definitions, not shared progress. Same-species individuals may fill both

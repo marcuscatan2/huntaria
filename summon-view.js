@@ -24,13 +24,13 @@ function draw(b,ctx,project,width,height,time,positions,reduced){
  for(const z of b.effects.zones||[]){if(z.until<=b.time||z.owner.hp<=0)continue;const p=project(z.position),owner=positions.get(z.owner.id),foot=p.y+(owner?owner.foot-project(z.owner.position).y:34*scale);ctx.save();ring(ctx,p.x,foot,z.radius*width/100,z.radius/46*height*.42,'#edb96e',.55);ctx.strokeStyle='#edb96e';ctx.globalAlpha=.55;for(const a of [-1,1]){ctx.beginPath();ctx.moveTo(p.x-9*scale,foot-a*5*scale);ctx.lineTo(p.x+9*scale,foot+a*5*scale);ctx.stroke();}ctx.restore();}
  const units=b.effects.entities.filter(e=>e.hp>0&&!e.removed).sort((a,b)=>a.position.y-b.position.y||a.id.localeCompare(b.id));
  for(const e of units){
-  const p=project(e.position),master=positions.get(e.master.id),offset=master?master.foot-project(e.master.position).y:34*scale,foot=p.y+offset,size=(e.untargetable?74:e.profile==='resin-screen'?84:52)*scale;
+  const p=project(e.position),master=positions.get(e.master.id),offset=master?master.foot-project(e.master.position).y:34*scale,foot=p.y+offset,size=(e.untargetable?74:e.profile==='resin-screen'?84:52)*scale*(e.visualScale||1);
   positions.set(e.id,{x:p.x,y:foot-size*.5,foot,centerY:p.y});
-  const profile=BondCombatEntities.profiles[e.profile],color=palettes[e.profile]||'#dacba1';ctx.save();
+  const profile=e.spec||BondCombatEntities.profiles[e.profile],color=palettes[e.profile]||'#dacba1';ctx.save();
   if(profile.radius)ring(ctx,p.x,foot,profile.radius*width/100,profile.radius/46*height*.42,color,.38);
   if(e.guards){const t=positions.get(e.guards);if(t){ctx.strokeStyle='#eedc9a';ctx.globalAlpha=.45;ctx.setLineDash([3,5]);ctx.beginPath();ctx.moveTo(p.x,foot);ctx.lineTo(t.x,t.foot);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;}}
   if(e.linked){const t=positions.get(e.linked);if(t){ctx.strokeStyle=e.profile==='stitched-effigy'?'#f197a0':'#b7b7ee';ctx.globalAlpha=.5;ctx.beginPath();ctx.moveTo(p.x,foot-size*.5);ctx.quadraticCurveTo((p.x+t.x)/2,Math.min(foot,t.foot)-40*scale,t.x,t.y);ctx.stroke();ctx.globalAlpha=1;}}
-  const state=ensure(e.profile),appear=Math.max(0,Math.min(1,(b.time-e.born+.05)/.22)),bob=reduced?0:/spirit|beacon|lens/.test(e.profile)?Math.sin(time*3+e.slot)*2*scale:e.moving?Math.sin(time*13+e.slot)*1.5*scale:0;
+  const state=ensure(e.art||e.profile),appear=Math.max(0,Math.min(1,(b.time-e.born+.05)/.22)),bob=reduced?0:/spirit|beacon|lens/.test(e.profile)?Math.sin(time*3+e.slot)*2*scale:e.moving?Math.sin(time*13+e.slot)*1.5*scale:0;
   ctx.translate(p.x,foot+bob);ctx.globalAlpha=appear;ctx.scale(e.side?-1:1,1);
   if(state.ready)ctx.drawImage(state.canvas,-size/2,-size,size,size);
   else{ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(0,-size*.25,size*.22,size*.18,0,0,Math.PI*2);ctx.fill();}

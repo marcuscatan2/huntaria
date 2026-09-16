@@ -2,7 +2,7 @@
 (function(root){
 'use strict';
 // A partial client must never normalize or overwrite an otherwise valid save.
-for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','BondAtlas','BondWorld','BondEchoes','BondPopulation','BondAdventure','BondGrowth','BondCampaign','BondOpening','BondFormation','BondHaven','BondGame','BondTraining','BondCombatCatalog','BondCombatEffects','BondCombatEntities','BondCombatPassives','BondCombatKits','BondClassTrees','BondClassTalents']){
+for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','BondAtlas','BondWorld','BondEchoes','BondPopulation','BondAdventure','BondGrowth','BondCampaign','BondOpening','BondFormation','BondHaven','BondGame','BondTraining','BondCombatCatalog','BondCombatEffects','BondCombatEntities','BondCombatPassives','BondCombatKits','BondClassTrees','BondClassTalents','BondMonsterProgression','BondCompanionTrees','BondCompanionTalents']){
  if(!root[dependency])throw Error('Required game module unavailable: '+dependency);
 }
 const C=BondContent,R=BondProgress,A=BondAtlas,W=BondWorld,E=BondEchoes,Q=BondPopulation,clone=x=>JSON.parse(JSON.stringify(x));
@@ -43,6 +43,7 @@ function normalize(raw){
   s.companions.push({id:m.id,type:m.type,ordinal:ordinals[m.type],xp:R.clampPlayerXP(engineXP),treeLevel:Number.isInteger(m.treeLevel)?Math.max(R.level(engineXP),Math.min(60,integer(m.treeLevel))):undefined,deferredXP:Math.max(integer(m.deferredXP,R.ENGINE_MAX_XP),excess),sourceLevel:Number.isInteger(m.sourceLevel)?Math.max(1,Math.min(R.ENGINE_LEVEL_CAP,m.sourceLevel)):undefined,skills,growth:m.growth||{},pact:{map:A.get(pact?.map)?pact.map:'clearing-0',trainerClass:BondContent.TRAINERS.includes(pact?.trainerClass)?pact.trainerClass:'druid'}});
  }
  summarize(s);
+ s.journey=root.BondCampaign?.clean(raw.journey)||{};
  const currentProgression=raw.progression?.version>=2;
  const oldApprentice=s.character&&!s.character.legacy?Math.min(5,R.level(s.apprenticeXP)):1;
  const oldShown=Math.max(oldApprentice,...s.companions.map(m=>R.level(m.xp)));
@@ -90,10 +91,9 @@ function normalize(raw){
   s.migration=isV7?(typeof raw.migration==='string'?raw.migration:null):'Your existing companions are now individuals with separate levels, skills and trees. Older profile/build saves are untouched. '+refunded+' invalid/excess tree ranks refunded.';
   if(capNotice&&!s.migration)s.migration=capNotice;else if(capNotice&&!s.migration.includes('Launch cap applied'))s.migration+=' '+capNotice;
  }else s.migration='Your earlier companions, items, coins and builds were retained. The original save is untouched. A new world awaits; '+refunded+' out-of-budget tree ranks were removed from this migrated copy.';
- s.journey=root.BondCampaign?.clean(raw.journey)||{};
  s.encounterReceipts=Object.fromEntries(Object.entries(raw.encounterReceipts||{}).filter(([id,v])=>id.length<220&&v&&Number.isInteger(v.coins)&&v.coins>=0));
  const saved=raw.encounterSave;
- if(saved&&saved.encounter&&A.get(saved.encounter.map)&&typeof saved.id==='string'&&saved.id.length<220&&(!saved.build||BondGame.validBuild(saved.build))&&Number.isInteger(saved.tick)&&saved.tick>=0&&saved.tick<=1500){s.encounterSave=clone(saved);s.encounterSave.options||={};s.encounterSave.options.classTrees??=0;s.encounterSave.options.profile||={};if(!Number.isSafeInteger(s.encounterSave.options.profile.trainerXP))s.encounterSave.options.profile.trainerXP=s.trainerXP;}
+ if(saved&&saved.encounter&&A.get(saved.encounter.map)&&typeof saved.id==='string'&&saved.id.length<220&&(!saved.build||BondGame.validBuild(saved.build))&&Number.isInteger(saved.tick)&&saved.tick>=0&&saved.tick<=1500){s.encounterSave=clone(saved);s.encounterSave.options||={};s.encounterSave.options.classTrees??=0;s.encounterSave.options.monsterRules??=0;s.encounterSave.options.profile||={};if(!Number.isSafeInteger(s.encounterSave.options.profile.trainerXP))s.encounterSave.options.profile.trainerXP=s.trainerXP;}
  for(const m of A.maps)for(const h of m.habitats){
   const selected=new Set(Q.selected(h,s.spawns,s.encounterSave?.encounter?.enemies));
   for(const id of Q.keys(h))if(s.spawns[id])s.spawns[id].activeSlot=selected.has(id);
@@ -170,7 +170,7 @@ function reserveBattle(b,id,options){
  if(BondCampaign.requirement(e,state,b.build[0]))return false;
  if(state.encounterSave?.id===id){b._attemptId=state.encounterSave.attempt;return true;}
  const profile=clone(options.profile);delete profile.encounterSave;delete profile.encounterReceipts;delete profile.claims;delete profile.spawns;
- const saved={id,attempt:'attempt:'+(state.sequence+1),encounter:e,build:clone(b.build),options:{...clone(options),profile,classTrees:b.classTrees},tick:0,supply:null,joins:[],anchor:clone(options.worldAnchor||{map:state.map,position:state.position,actors:[]})};
+ const saved={id,attempt:'attempt:'+(state.sequence+1),encounter:e,build:clone(b.build),options:{...clone(options),profile,classTrees:b.classTrees,monsterRules:b.monsterRules},tick:0,supply:null,joins:[],anchor:clone(options.worldAnchor||{map:state.map,position:state.position,actors:[]})};
  const ok=commit(s=>{if(s.encounterSave)return false;s.sequence++;s.encounterSave=saved;return true;},{critical:true});
  if(ok)b._attemptId=saved.attempt;return ok;
 }

@@ -29,15 +29,14 @@ in `combat-kits.js`; no runtime code interprets prose.
 | Temporary allies | Entities are separate from encounter actors. They cannot earn XP, drop loot, occupy party slots, count as a victory objective or survive their owner. Ordinary support excludes them; explicit repairs can reach them. |
 
 New companions and fresh enemies use their first three signatures. Existing
-individuals retain valid selected legacy skills and all XP, formation and mastery
-ranks. The five legacy skills remain available per species. Brimble's existing
+individuals retain valid selected legacy skills, XP and formation. The newer
+[companion CSV revision](../growth/COMPANION_TREES.md) replaces their level stats
+and generic mastery with 24-node species trees. The five legacy skills remain available per species. Brimble's existing
 wild encounter override preserves introductory fight pacing with its new kit.
-Authored Tidecrown and
+Authored Tidecrown, Amber guardian and
 Amber Challenger 2 tuning in `campaign.js` preserves the tested starter route
-with the new kits; this does not alter their shared species bases or rewards. Skill-specific
-companion mastery nodes follow the current skill catalog and preserve their
-corresponding legacy-skill bonus; generic mastery keeps
-its existing bonuses. Ordinary gameplay UI shows concise tooltips; complete
+with the new kits; this does not alter their shared species bases or rewards. Old reserved fights retain generic mastery through replay; new encounters
+use the authored species talent hooks. Ordinary gameplay UI shows concise tooltips; complete
 source prose remains in the catalog for review.
 
 `combat-effects.js` owns effect lifetimes, shields, control, healing and delayed
@@ -55,8 +54,7 @@ two points at Lv20, then adds one every three levels through Lv59, capped at 15.
 Class Skill Tree supports spending points and a free reset.
 
 Profile normalization clears the old class-node IDs and makes the new budget
-available; valid new talent ranks survive reload. Companion mastery retains its
-existing ranks and budget. Saved encounters pin `options.classTrees`: absent in
+available; valid new talent ranks survive reload. Companion migration follows the newer CSV contract. Saved encounters pin `options.classTrees`: absent in
 old reservations means legacy version 0, while new reservations use version 1.
 Only those old battles retain their frozen generic class bonuses through replay
 and settlement. New battles use the current allocation.
@@ -73,11 +71,11 @@ Trainer menus use [illustrated prerequisite diagrams](../growth/TALENT_TREE.md)
 with a painted sanctuary and 60 class-specific node illustrations. Selection
 opens details; spending remains a separate profile action.
 
-20 individual generated images cover all 17 monster entities and the class
-Lens, Heartwood and Barkling. [The asset manifest](../../assets/summons/manifest.json)
+23 individual generated images cover monster entities, the class
+Lens, Heartwood and Barkling, and the Anthill, Seed Bomb and Ironwood variants. [The asset manifest](../../assets/summons/manifest.json)
 records built-in imagegen prompts, reference hashes and final source hashes.
 Images are keyed and decoded on demand into a bounded 160×160 canvas cache
-(all 20: 2,048,000 decoded bytes). `summon-view.js` draws lifetime/HP bars,
+(all 23: 2,355,200 decoded bytes). `summon-view.js` draws lifetime/HP bars,
 protection links, area radii, delayed HP and Echochime's remembered action.
 The existing combat VFX supplies hit, heal, ward and spell effects.
 Generated sources are production inputs; galleries and validation captures stay

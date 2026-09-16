@@ -5,7 +5,7 @@
     "assets/monsters/46.png",
     "assets/monsters/90.png"
   ],
-  "background": "magenta chroma key removed by summon-view.js; source images copied without pixel edits",
+  "background": "Original chroma-key sprites use summon-view.js; asset-specific RGBA backgrounds retain their generated alpha.",
   "assets": [
     {
       "id": "soldier-ant",
@@ -286,6 +286,63 @@
         "Create ONE original game-ready fantasy RPG summon sprite, named Barkling (do not write the name). One tiny druid guardian made of birch bark with stout root legs, shield-shaped forearms, two bright green eyes and a curled sprout crown. Compact pale bark silhouette distinct from dark oak sapling. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
         "Edit this one game sprite for Barkling. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
       ]
+    },
+    {
+      "id": "anthill",
+      "name": "Living Anthill",
+      "src": "assets/summons/anthill.png",
+      "references": [
+        "assets/summons/soldier-ant.png"
+      ],
+      "prompts": [
+        "Use case: stylized-concept. Asset type: one small fantasy RPG summon sprite, Living Anthill. Create a single squat volcanic anthill that belongs to the ember-ant colony in the reference. Reference image is STYLE AND MATERIAL reference only; do not include or copy the ant. A rounded low mound built from dark charcoal volcanic chitin plates and baked earth, a clearly readable dark arched entrance facing slightly right, a few glowing amber cracks and small amber crystal ridges near its crown. Rich painted fantasy rendering with fine dark outlines and a bold compact silhouette readable at 52 pixels. Three-quarter front perspective near character eye height, slightly visible top; not overhead. One centered complete mound with generous 15 percent empty margin on all sides. Square canvas. Perfectly uniform solid pure magenta #FF00FF background including every empty gap, matching the game's chroma-key renderer. No floor tile, landscape, cast shadow on background, ants, people, lettering, labels, border, checkerboard, or detached particles. Contain the warm glow within the object silhouette."
+      ],
+      "sha256": "86271ee77ae93c5a8ca1f3a3e73e7ab3a76a695a2267d24278f0f2a11df501e1",
+      "size": [
+        1254,
+        1254
+      ],
+      "scope": "monster-csv-progression-v1-2026-09-16",
+      "mode": "built-in imagegen",
+      "background": "Original generated RGBA alpha preserved; copied without pixel edits"
+    },
+    {
+      "id": "seed-bomb",
+      "name": "Seed Bomb",
+      "src": "assets/summons/seed-bomb.png",
+      "references": [
+        "assets/summons/seedjaw.png"
+      ],
+      "prompts": [
+        "Use case: stylized-concept. Asset type: one small fantasy RPG summon sprite, Seed Bomb. Reference image supplies the painted material style and Emberorchid plant identity only; create a new low round closed seed pod rather than copying its open-mouth turret. A single compact crimson seed pod with glowing amber seams, cradled in three dark green thorn-edged leaves and short curling roots. A tiny bright amber sprout at the top reads as a burning organic fuse. No face, eyes or mouth. Rich painted fantasy rendering, fine dark contours, a bold compact silhouette that reads at 52 pixels. Three-quarter front perspective near character eye height, slightly visible top, facing slightly right; not overhead. Centered complete subject with 15 percent empty margin on every side, square canvas. Genuinely transparent RGBA background, no black rectangle, no checkerboard, no scenery or floor tile, no background shadow, no text, labels, border or detached particles. Contain the warm glow within the pod silhouette."
+      ],
+      "sha256": "9e8bc0f2a1d7ad44b38893bbb90323d24966a8828258a98a5972d18fc24c47a4",
+      "size": [
+        1254,
+        1254
+      ],
+      "scope": "monster-csv-progression-v1-2026-09-16",
+      "mode": "built-in imagegen",
+      "background": "Original generated RGBA alpha preserved; copied without pixel edits"
+    },
+    {
+      "id": "ironwood-warden",
+      "name": "Ironwood Warden",
+      "src": "assets/summons/ironwood-warden.png",
+      "sha256": "dae70a0bed15e5da97916d549af9c7de88ecdc720c3b8f518772da4950c42f22",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create one game summon sprite for Huntaria: Ironwood Warden, the powerful combined form of two Sapling Wardens. Match the provided painted fantasy creature's rich hand-painted colors, firm silhouette and three-quarter front-facing perspective. Make this clearly a different form: a stout ancient ironwood treant with a broad fused trunk, heavy dark bark plated forearms, a hollow amber heartlight, four root feet and a small crown of deep green leaves. Calm determined green eyes; friendly collectible fantasy style. Full body, centered, facing slightly right, square composition, generous clear margins, crisp enough to read at 70 pixels. Transparent background with real alpha. No words, no frame, no ground, no scenery, no magenta. This is one solid melee attacker, not a guardian pair; no weapons or shields."
+      ],
+      "references": [
+        "assets/summons/sapling-warden.png"
+      ],
+      "scope": "monster-csv-progression-v1-2026-09-16",
+      "mode": "built-in imagegen",
+      "background": "Original generated RGBA alpha preserved; copied without pixel edits"
     }
   ],
   "referenceHashes": {

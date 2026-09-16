@@ -7,7 +7,8 @@
 branch changes and purchases through `BondProfile.learn` / `respec`.
 `class-trees.js` and `growth.js` remain authoritative for ranks, prerequisites
 and the [workbook talent budget](../content/COMBAT_WORKBOOKS.md).
-Companion mastery stays in the Inner Sea and retains its existing rules.
+Companion trees stay in the Inner Sea and share the diagram renderer; their
+[24-node layout and CSV rules](COMPANION_TREES.md) are specified separately.
 
 `assets/talents/sanctuary.png` is an original painted sanctuary background.
 The Mage, Druid, Knight (`swordsman`) and Hunter each have a 5-column, 3-row

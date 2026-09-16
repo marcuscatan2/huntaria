@@ -35,10 +35,10 @@ with sync_playwright() as pw:
         page.evaluate("""()=>{const b=BondApp.getBattle();for(let i=0;i<120&&!b.ended;i++)b.step();BondApp.renderBattle();
           const u=b.units[1];for(const e of b.effects.entities)b.effects.despawn(e,'preview');
           let i=0;for(const profile of Object.keys(BondCombatEntities.profiles)){const x=18+(i%5)*15,y=34+Math.floor(i/5)*10;u.position={x,y};BondCombatEntities.spawn(b.effects,u,profile,{assigned:b.trainer(0),anchor:b.units.find(e=>e.side===1)});i++;}CombatView.draw(performance.now());}""")
-        ids=page.evaluate('Object.keys(BondCombatEntities.profiles)')
+        ids=page.evaluate("[...Object.keys(BondCombatEntities.profiles),'ironwood-warden']")
         page.evaluate('ids=>Promise.all(ids.map(id=>BondSummonView.ensure(id).promise))',ids)
-        check('All twenty summon sprites decode',page.evaluate('BondSummonView.cacheInfo().failed.length===0&&BondSummonView.cacheInfo().decoded===20'))
-        check('Decoded summon cache stays below 2 MiB',page.evaluate('BondSummonView.cacheInfo().bytes<=2097152'))
+        check('All 23 summon sprites decode',page.evaluate('BondSummonView.cacheInfo().failed.length===0&&BondSummonView.cacheInfo().decoded===23'))
+        check('Decoded summon cache stays within 23 small frames',page.evaluate('BondSummonView.cacheInfo().bytes<=23*160*160*4'))
         alpha=page.evaluate("""()=>Object.keys(BondCombatEntities.profiles).map(id=>{const c=BondSummonView.ensure(id).canvas,d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let empty=0;for(let i=3;i<d.length;i+=4)if(d[i]===0)empty++;return {id,clear:empty/(c.width*c.height)};})""")
         check('Every summon has a clear cutout background',all(x['clear']>.2 for x in alpha))
         for width in [1440,390,320]:
@@ -47,9 +47,9 @@ with sync_playwright() as pw:
             check('Combat fits width '+str(width),page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'))
             page.locator('#arena').screenshot(path=str(ARTIFACTS/f'workbook-combat-{width}-{args.browser}.png'))
         page.evaluate("BondApp.getBattle().run();BondApp.renderBattle();BondApp.finish();BondApp.switchTab('loadout')")
-        migration=page.evaluate("""()=>{const P=BondProfile,s=P.snapshot();s.trainerXP=BondProgress.threshold(59);s.coins=321;s.growth=Object.fromEntries(BondContent.CLASSES.map(t=>[t,{bond:3,might:2}]));s.companions[0].growth={bond:1,might:1};const before=JSON.stringify(s.companions);
+        migration=page.evaluate("""()=>{const P=BondProfile,s=P.snapshot();s.trainerXP=BondProgress.threshold(59);s.coins=321;s.growth=Object.fromEntries(BondContent.CLASSES.map(t=>[t,{bond:3,might:2}]));s.companions[0].growth={bond:1,might:1};const before=JSON.stringify(s.companions.map(m=>({...m,growth:{}})));
           P.testing.replace(s);const clean=P.snapshot();return {reset:BondContent.CLASSES.every(t=>Object.keys(clean.growth[t]).length===0&&BondGrowth.budget(clean,t)===15),companions:JSON.stringify(clean.companions)===before,coins:clean.coins===321,xp:clean.trainerXP===s.trainerXP,formation:JSON.stringify(clean.formation)===JSON.stringify(s.formation)};}""")
-        check('Old class ranks reset into the new budget while companions, XP, coins and formation survive',all(migration.values()))
+        check('Old generic nodes refund while companion identity, XP, coins and formation survive',all(migration.values()))
         for cls in ['mage','druid','swordsman','hunter']:
             preview=page.evaluate("""type=>{const P=BondProfile,nodes=BondClassTrees.nodes(type),first=nodes[0],fork=nodes[1],advanced=nodes[3],cap=nodes[4],s=P.snapshot();s.progression.specialization=type;P.testing.replace(s);
               const blocked=!P.learn(type,advanced.id),opening=P.learn(type,first.id)&&P.learn(type,first.id),learnedFork=P.learn(type,fork.id);BondTree.select(type);

@@ -19,7 +19,7 @@ function readiness(s){return !health(s)?'Your trainer has fallen. Enter a city, 
 // blocking trainer-only encounters or increasing wild-party scaling.
 function deploy(s,team){return team.map((u,slot)=>slot===0||!u||health(s,u.instanceId)>0?u:null);}
 function level(m,type,n,regionLevel){if(m.id==='clearing-0')return {emberfox:2,bloomslime:3,stonehorn:5}[type];const source=C.UNITS[type]?.sourceWildLevel;if(Number.isInteger(source))return Math.min(100,source);const base=m.regionIndex===0?4:regionLevel;return Math.min(100,base+m.index*4+n*2);}
-function wild(type){const u=C.UNITS[type];return type==='emberfox'?{hp:430,power:50,skillScale:.65,passive:null}:{hp:u.hp,power:u.power,skillScale:1,passive:u.passive};}
+function wild(type){const u=C.UNITS[type];return type==='emberfox'?{hp:900,power:130,skillScale:.65,passive:null}:{hp:u.hp,power:u.power,skillScale:1,passive:u.passive};}
 // One wild creature must withstand a trainer party without invalidating the
 // trainer-only opening. Durability carries most of the modifier so danger rises
 // without turning every hit into an abrupt trainer deletion.

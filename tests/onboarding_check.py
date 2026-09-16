@@ -125,11 +125,11 @@ with sync_playwright() as pw:
         page.locator('#world-minimap canvas').click(position={'x':point['x']/160*mini['width'],'y':point['y']/120*mini['height']});page.clock.run_for(4000)
         check('Numbered minimap exit stays locked until the Forest Mage trial',page.evaluate('BondProfile.snapshot().map==="clearing-0"&&!BondAtlas.unlocked(BondProfile.snapshot(),"clearing-hub")') and 'LOCKED' in page.locator('.gate-badge').first.inner_text())
         page.locator('#region-map').screenshot(path=str(ARTIFACTS/f'onboarding-gate-{args.browser}.png'))
-        recovery_companion=page.evaluate('BondProfile.companions()[0].id');page.evaluate('BondApp.changeUnit(0,1,null)')
-        page.evaluate("""()=>{const P=BondProfile;P.travel('clearing-0',BondOpening.start.position);const sp=P.population().find(p=>p.type==='emberfox'&&p.present),s=P.snapshot();
+        recovery_companion=page.evaluate('BondProfile.companions()[0].id');page.evaluate("BondApp.changeUnit(0,1,null);BondApp.changeSkills(0,0,['trailcut','trailguard','trailbreath'])")
+        page.evaluate("""()=>{const P=BondProfile;P.travel('clearing-0',BondOpening.start.position);const sp=P.population().find(p=>p.type==='stonehorn'&&p.present),s=P.snapshot();
           s.vitality.trainer=1;s.spawns[sp.id].seed=11;P.testing.replace(s);BondApp.switchTab('region');
-          BondApp.startRegionBattle(P.beginHunt(sp.id).id);const b=BondApp.getBattle();b.run();
-          if(b.winner!==1||b.units.some(u=>u.side===1&&u.hp<=0))throw Error('Recovery fixture must finish in defeat with no enemy kills');
+          BondApp.startRegionBattle(P.beginHunt(sp.id).id);const b=BondApp.getBattle(),start=b.units.map(u=>({id:u.id,hp:u.hp,type:u.type,skills:u.skills}));b.run();
+          if(b.winner!==1||b.units.some(u=>u.side===1&&u.hp<=0))throw Error('Recovery fixture must finish in defeat with no enemy kills: '+JSON.stringify({start,winner:b.winner,reason:b.reason,time:b.time,units:b.units.map(u=>({id:u.id,hp:u.hp}))}));
           P.checkpoint(b);
         }""")
         before=page.evaluate('BondProfile.snapshot().trainerXP')

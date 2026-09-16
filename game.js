@@ -41,6 +41,7 @@
   class Battle {
     constructor(build, options = {}) {
       this.classTrees=options.classTrees===0?0:root.BondClassTrees.active?1:0;
+      this.monsterRules=options.monsterRules===0?0:1;
       if (!validBuild(build)) throw new Error('Invalid team or skill selection');
       this.build = JSON.parse(JSON.stringify(build)); this.time = 0; this.tick = 0; this.events = []; this.ended = false; this.winner = null; this.reason = ''; this.overcharge = false;
       this.adventure=options.adventure===true;
@@ -65,7 +66,7 @@
         options.groupParties.forEach((party,i)=>{
           if(!validTeam(party.team))throw Error('Invalid allied party');
           if(!owned(party.team,party.profile))throw Error('Unowned allied companion instance');
-          const proxy=new Battle([party.team,defaultBuild()[1]],{formation:party.formation,seed:this.seed});
+          const proxy=new Battle([party.team,defaultBuild()[1]],{formation:party.formation,seed:this.seed,monsterRules:0,classTrees:0});
           this.ownerProfiles.push(party.profile);
           for(const u of proxy.units.filter(u=>u.side===0)){u.id='0-p'+(i+1)+'-'+u.slot;u.owner='player-'+(i+1);u.ownerIndex=i+1;u.position.y=35+i*20+u.slot*5;u.previousPosition={...u.position};this.units.push(u);}
         });
@@ -100,10 +101,12 @@
         const companion=u.side===0&&u.instanceId?root.BondProgress?.instance(profile||{},u.instanceId):null;
         if(u.side===0&&!u.storyMaster&&u.slot===0&&profile?.character?.name)u.name=profile.character.name;
         if(companion)u.name=UNITS[u.type].name+' #'+companion.ordinal;
-        const bonus=u.side===0&&!u.storyMaster&&root.BondGrowth?root.BondGrowth.stats(u.type,companion?companion.growth:(profile?.growth||options.growth)?.[u.type],this.classTrees===0):{hp:0,attack:0,armor:0,move:0,cooldown:0};
+        const bonus=u.side===0&&!u.storyMaster&&root.BondGrowth?root.BondGrowth.stats(u.type,companion?companion.growth:(profile?.growth||options.growth)?.[u.type],this.classTrees===0,this.monsterRules===0):{hp:0,attack:0,armor:0,move:0,cooldown:0};
+        u.talents=this.monsterRules&&companion?root.BondCompanionTrees.clean(u.type,companion.growth,root.BondCompanionTrees.budget(profile,companion.id)):{};
         u.growth=bonus;u.basePower=u.power;
         const base={...UNITS[u.type],...u,hp:u.maxHp};
-        const derived=profile&&root.BondProgress?BondProgress.derived(u.type,profile,base,u.storyMaster?u.level:u.side===1?(u.level||options.enemyLevel||1):null):null;
+        const derived=(profile||this.monsterRules&&MONSTERS.includes(u.type))&&root.BondProgress?BondProgress.derived(u.type,profile||{},base,u.storyMaster?u.level:u.side===1?(u.level||options.enemyLevel||1):null,this.monsterRules===0):null;
+        u.hardDefense=derived?.hardDefense||0;
         u.level=derived?.level||1;u.element=root.BondProgress?.ELEMENT[u.type]||null;
         u.effective=derived?.effective||{str:0,agi:0,vit:0,int:0,dex:0};u.factors=derived?.factors||{melee:1,ranged:1,magic:1};
         const wildScale=this.adventure&&u.side===1&&this.encounter?.kind==='wild'&&root.BondAdventure?BondAdventure.wildScale(this.wildPartySize):null;
@@ -129,7 +132,7 @@
       if(this.training||this.ended||!entry?.spawnId||this.units.some(u=>u.spawnId===entry.spawnId&&u.life===entry.life))return false;
       // Reuse the same stat/passive initialization as an initial wild encounter.
       const proxy=new Battle(soloBuild(),{profile:this.spawnOptions.profile,seed:this.seed,
-        adventure:this.adventure,wildPartySize:this.wildPartySize,encounter:{kind:'wild',enemies:[entry]}});
+        adventure:this.adventure,wildPartySize:this.wildPartySize,classTrees:this.classTrees,monsterRules:this.monsterRules,encounter:{kind:'wild',enemies:[entry]}});
       const u=proxy.units.find(u=>u.side===1),slot=Math.max(0,...this.units.filter(u=>u.side===1).map(u=>u.slot))+1;
       u.id='1-'+slot;u.slot=slot;u.position={x:86,y:36+(slot%5)*8};u.previousPosition={...u.position};
       this.units.push(u);this.effects.init(u);this.effects.start(u);this.refreshTargets();
@@ -188,6 +191,7 @@
       if(disabled)return {index:-1,skill:null,target:this.target(actor)};
       const index = actor.skills.findIndex((s, i) => actor.cds[i] <= .001 && this.usable(actor, SKILLS[s]));
       const skill = index < 0 ? null : {...SKILLS[actor.skills[index]],id:actor.skills[index]};
+      if(skill){const support=root.BondCompanionTalents?.own(this.effects,'support',actor,skill);if(support!==undefined)skill.kind=support?'utility':'hit';}
       const target = skill?.kind === 'trainer' ? this.priorityTarget(actor) : this.target(actor);
       return {index, skill, target};
     }
@@ -263,35 +267,44 @@
     damage(actor, target, amount, label, intercept = true, details = {}) {
       if (!target || target.hp<=0 || target.eliminated || this.ended) return {damage:0,absorbed:0};
       const f=this.effects,d={direct:!details.dot&&!details.debt&&!details.transfer,...details},element=this.elements&&!d.elementApplied?BondProgress.multiplier(actor?.element,target.element):1;
+      if(this.monsterRules)f.begin();
       let raw=Math.max(0,Math.round(amount*element*(this.overcharge?2:1)));
       if(actor)raw=root.BondCombatEntities.interceptProjectile(f,actor,target,raw,d);
-      const exposure=f.value(target,d.category==='magic'?'magicExposure':'physicalExposure')+(d.penetration||0);
+      const exposure=f.value(target,d.category==='magic'?'magicExposure':'physicalExposure')+(d.penetration||0)+(d.category==='magic'?d.magicBypassPoints||0:0);
       if(target.growth?.armor||exposure)raw=Math.round(raw*(1-Math.max(0,(target.growth?.armor||0)-exposure)));
-      if(d.category&&target.statRules){const defense=d.category==='magic'?BondProgress.classic(target.effective,target.level).magicDefense:BondProgress.physicalDefense(target.effective.vit,this.random());raw=Math.max(1,raw-defense);}
+      if(d.category&&target.statRules&&!(d.ignorePhysicalDefense&&d.category!=='magic')){
+        let defense=d.category==='magic'?BondProgress.classic(target.effective,target.level).magicDefense:BondProgress.physicalDefense(target.effective.vit,this.random());
+        if(d.category!=='magic')raw*=1-Math.max(0,(target.hardDefense||0)-exposure);
+        else if(this.monsterRules){const bonusShare=Math.min(1,(d.penetratingMagicBonus||0)/Math.max(1,amount));defense=Math.max(0,defense*(1-(d.magicPenetration||0)-bonusShare*(d.magicBonusPenetration||0))-raw*exposure);}
+        raw=Math.max(1,raw-defense);
+      }
       if(target.temporary&&!target.structure)raw=Math.max(0,raw-.5*(d.category==='magic'?target.snapshot.mdef:target.snapshot.def));
       if(target.passive==='granite')raw=Math.round(raw*.9);
       raw=f.reduction(target,actor,raw,d);root.BondCombatPassives.emergency(f,actor,target,raw,d);
       d.shieldBefore=target.shield;
-      const {remaining,absorbed}=f.absorb(target,raw,actor,d);target.blocked+=absorbed;
-      d.intercept=intercept;let hpDamage=f.beforeHP(actor,target,remaining,d);
+      const bypass=Math.round(raw*Math.max(0,Math.min(1,d.shieldBypass||0)));let {remaining,absorbed}=f.absorb(target,raw-bypass,actor,d);target.blocked+=absorbed;
+      d.intercept=intercept;let hpDamage=f.beforeHP(actor,target,remaining+bypass,d);
+      if(d.extraAbsorbed){absorbed+=d.extraAbsorbed;target.blocked+=d.extraAbsorbed;}
       hpDamage=root.BondCombatPassives.finalHP(f,target,hpDamage,d);
       const before=target.hp,floor=this.training?1:this.rescue?BondRaidRules.floor(this,target):0,dealt=Math.min(Math.max(0,before-floor),Math.max(0,hpDamage));
-      target.hp-=dealt;if(actor)actor.damage=(actor.damage||0)+dealt;
+      target.hp-=dealt;d.hpAfter=target.hp;if(actor)actor.damage=(actor.damage||0)+dealt;
       this.emit('damage',actor,target,label,dealt,{...d,absorbed,temporary:!!target.temporary,creditActor:actor?.temporary?actor.master.id:actor?.id});
       if(target.hp<=0)f.defeated(actor,target,d);
       if(target.hp<=0&&target.slot===0&&this.group){for(const companion of this.units.filter(u=>u.side===target.side&&u.owner===target.owner&&u.slot>0)){companion.eliminated=true;companion.moving=false;this.emit('eliminate',target,companion,companion.name+' withdraws because their trainer fell.');}}
       this.checkEnd();
-      if(this.ended){f.clear();return {damage:dealt,absorbed,overkill:Math.max(0,hpDamage-before)};}
-      f.after(()=>{root.BondCombatPassives.afterDamage(f,actor,target,dealt,absorbed,d);root.BondClassTalents?.damaged(f,actor,target,dealt,absorbed,d);});
+      if(this.ended){f.clear();if(this.monsterRules)f.finish();return {damage:dealt,absorbed,overkill:Math.max(0,hpDamage-before)};}
+      f.after(()=>{root.BondCombatPassives.afterDamage(f,actor,target,dealt,absorbed,d);root.BondClassTalents?.damaged(f,actor,target,dealt,absorbed,d);root.BondCompanionTalents?.each(f,'damaged',actor,target,dealt,absorbed,d);});
       if(!this.ended&&target.hp>0&&target.hp<target.maxHp*.4&&target.passive==='lastgrove'&&!target.passiveUsed){target.passiveUsed=true;this.shield(target,target,140,6,'Last Grove');}
-      if(target.hp<=0){f.after(()=>root.BondCombatPassives.death(f,actor,target,d));this.refreshTargets();}
+      if(target.hp<=0){f.after(()=>{root.BondCombatPassives.death(f,actor,target,d);root.BondCompanionTalents?.each(f,'death',actor,target,d);});this.refreshTargets();}
+      if(this.monsterRules)f.finish();
       return {damage:dealt,absorbed,overkill:Math.max(0,hpDamage-before)};
     }
     heal(actor, target, amount, label) {
       if (!target || target.hp <= 0 || target.eliminated || this.overcharge || this.ended) return;
       const cc=this.effects.currentCast,primary=cc?.u===actor&&!cc.primary;
       if(primary)cc.primary={kind:'heal',amount:amount*(actor.healScale||1),target};
-      const before=target.hp/target.maxHp,actual=this.effects.heal(actor,target,amount*(actor.passive==='tender'?1.15:1)*(actor.healScale||1),label,{primary:true,legacy:true});
+      let offered=amount*(actor.passive==='tender'?1.15:1)*(actor.healScale||1);if(primary)offered=root.BondCompanionTalents?.change(this.effects,'primary',offered,cc,'heal')??offered;
+      const before=target.hp/target.maxHp,actual=this.effects.heal(actor,target,offered,label,{primary:true,legacy:true});
       if(cc?.u===actor)cc.receivers.push({kind:'heal',target,actual,primary,before});
       if (actual) {
         if(actor.passive==='current' && target!==actor) delete target.status.slow;
@@ -300,6 +313,7 @@
     }
     shield(actor,target,amount,duration,label) {
       const cc=this.effects.currentCast,primary=cc?.u===actor&&!cc.primary;if(primary)cc.primary={kind:'shield',amount,target};
+      if(primary)amount=root.BondCompanionTalents?.change(this.effects,'primary',amount,cc,'shield')??amount;
       const actual=this.effects.shield(actor,target,amount,duration,label);if(cc?.u===actor)cc.receivers.push({kind:'shield',target,actual,primary});return actual;
     }
     effect(actor, target, effect, duration) {
@@ -328,7 +342,7 @@
       if(category==='magic'&&actor.magicRange){const [min,max]=actor.magicRange,mean=(min+max)/2;if(max>min)amount*=(min+Math.floor(this.random()*(Math.floor(max-min)+1)))/(skill?mean:Math.round(mean));}
       amount*=(1+(actor.growth?.attack||0))*(1+this.effects.value(actor,category==='magic'?'magicPower':'physicalPower'));
       const cc=this.effects.currentCast,primary=!skill||!cc?.primary;
-      if(skill&&cc?.u===actor&&primary){cc.primary={kind:'damage',amount,category,target};amount+=(cc.mods.bonus||0);}
+      if(skill&&cc?.u===actor&&primary){cc.primary={kind:'damage',amount,category,target};amount=root.BondCompanionTalents?.change(this.effects,'primary',amount,cc,'damage')??amount;amount+=(cc.mods.bonus||0);}
       const result=this.effects.direct(actor,target,amount,label,{category,active:!!skill,basic:!skill,primary,secondary:!primary,area:['aoe','frontaoe'].includes(skill?.kind),reach:this.reach(actor,skill),blockable:actor.delivery==='ranged'&&!['aoe','frontaoe'].includes(skill?.kind)});
       if(skill&&cc?.u===actor){cc.results.push({...result,target,primary,category});if(primary)cc.primary.result=result;}
       this.lastStrikeHit=result.hit;
@@ -340,7 +354,7 @@
       const target = this.target(actor);
       const castTarget = skill.kind === 'trainer' ? this.priorityTarget(actor) : skill.kind === 'hit' ? target : actor;
       if (this.offensive(skill) && !this.inRange(actor, skill.kind === 'trainer' ? castTarget : target, skill)) return false;
-      const c=new root.BondCombatKits.Context(this.effects,actor,{...skill,id:this.skillId(actor,skill),kind:this.offensive(skill)?'hit':skill.kind});c.mods=root.BondCombatPassives.beforeCast(this.effects,c);root.BondClassTalents.beforeCast(this.effects,c);this.effects.currentCast=c;this.effects.begin();
+      const c=new root.BondCombatKits.Context(this.effects,actor,{...skill,id:this.skillId(actor,skill),kind:this.offensive(skill)?'hit':skill.kind});c.mods=root.BondCombatPassives.beforeCast(this.effects,c);root.BondClassTalents.beforeCast(this.effects,c);root.BondCompanionTalents?.each(this.effects,'beforeCast',c);this.effects.currentCast=c;this.effects.begin();
       const bypass=skill.kind==='trainer'&&!!this.trainer(1-actor.side);
       actor.casts++; this.emit('cast', actor, castTarget, `${actor.name} uses ${skill.name}${bypass ? ' — targets the trainer directly' : ''}.`, 0, {skillName: skill.name, skillKind: skill.kind, bypass});
       const supportAmount=skill.amount*(1+(actor.growth?.skillPower?.[this.skillId(actor,skill)]||0));
@@ -365,7 +379,7 @@
       else if (skill.kind === 'cleanse') this.effects.core(actor).forEach(u => { delete u.status.slow; delete u.status.burn; this.effects.cleanse(actor,u,null,true);this.heal(actor, u, supportAmount, skill.name); this.emit('status', actor, u, `${u.name} is cleansed of slow and burn.`); });
       if(actor.passive==='cinder' && this.offensive(skill)) this.heal(actor,actor,18,'Cinder Heart');
       this.effects.currentCast=null;this.effects.finish();
-      if(!this.ended){root.BondCombatPassives.afterCast(this.effects,c);root.BondClassTalents.afterCast(this.effects,c);}
+      if(!this.ended){root.BondCombatPassives.afterCast(this.effects,c);root.BondClassTalents.afterCast(this.effects,c);root.BondCompanionTalents?.each(this.effects,'afterCast',c);}
       return true;
     }
     bossStep() {
@@ -451,6 +465,7 @@
       for (const u of order) {
         if (u.hp <= 0 || u.eliminated || this.ended || this.fleeing(u) || (u.boss && (this.bossCharge||this.time<u.recoveryUntil)) || this.channeling(u) || this.effects.has(u,'Interrupt')) continue;
         const {index, skill, target} = this.intent(u);
+        if(!skill&&this.effects.value(u,'nextBasicDelay')>0){u.actionRemaining+=u.interval*this.effects.value(u,'nextBasicDelay');for(const [key,e] of Object.entries(u.effects))if(e.kind==='nextBasicDelay')delete u.effects[key];continue;}
         const acted = skill ? this.cast(u, skill) : this.strike(u, target, u.power, 'Basic attack');
         if (!acted) { u.actionRemaining = 0; continue; }
         if (index >= 0&&!skill.workbook) u.cds[index] = skill.cd*(1-Math.min(.5,(u.growth?.cooldown||0)+(u.growth?.skillCooldown?.[skill.id]||0)));

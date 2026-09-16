@@ -9,7 +9,7 @@ Status: **local-prototype**. Defines species and skills; supplies combat, progre
 
 `BondContent; BondRoster.manifest / validate`
 
-Runtime content is assembled at boot. Stable species/skill IDs survive display renames. The owner-maintained Bond & Bolt Google Sheet is the source of truth for creature identity, design role, combat identity, element, region, wild/source level, encounter source, rarity and attack basis; a reviewed revision/fingerprint is imported locally and never fetched during play. The two reviewed docs/ combat workbooks supply 304 signatures, 11 shared moves and 100 innates through combat-catalog.js and explicit combat-kits.js rules. Legacy selected skills remain valid; species base stats and acquisition rules stay unchanged. The starter map is an explicit level/population override. 100 entries do not mean 100 approved animation packages; generated JSON/tables must agree with the reviewed runtime snapshot. BondContent.CLASSES lists Druid, Mage, Hunter and Swordsman; TRAINERS also includes Apprentice.
+Runtime content is assembled at boot. Stable species/skill IDs survive display renames. The owner-maintained Bond & Bolt Google Sheet is the source of truth for creature identity, design role, combat identity, element, region, wild/source level, encounter source, rarity and attack basis; a reviewed revision/fingerprint is imported locally and never fetched during play. The two reviewed docs/ combat workbooks supply 304 signatures, 11 shared moves and 100 innates through combat-catalog.js and explicit combat-kits.js rules. The two supplied CSVs own exact monster level rows and 24-node species trees through monster-progression-data.js. scripts/monster_progression.py validates all 10,000 rows, identities, prerequisite references, exclusions and budgets; cells are inert data. Legacy selected skills and acquisition rules remain valid. The starter map is an explicit level/population override. 100 entries do not mean 100 approved animation packages; generated JSON/tables must agree with the reviewed runtime snapshot. BondContent.CLASSES lists Druid, Mage, Hunter and Swordsman; TRAINERS also includes Apprentice.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -30,6 +30,10 @@ The links below point to the actual source; root browser paths remain in use.
 | [scripts/combat_workbooks.py](<../../scripts/combat_workbooks.py>) | Owned source/configuration; inspect before editing. |
 | [docs/Huntaria_Combat_Design_v2.xlsx](<../../docs/Huntaria_Combat_Design_v2.xlsx>) | Owned source/configuration; inspect before editing. |
 | [docs/Huntaria_Trainer_Passive_Trees.xlsx](<../../docs/Huntaria_Trainer_Passive_Trees.xlsx>) | Owned source/configuration; inspect before editing. |
+| [monster-progression-data.js](<../../monster-progression-data.js>) | `BondMonsterProgression` |
+| [scripts/monster_progression.py](<../../scripts/monster_progression.py>) | Owned source/configuration; inspect before editing. |
+| [docs/Huntaria - Mons-by-level.csv](<../../docs/Huntaria - Mons-by-level.csv>) | Owned source/configuration; inspect before editing. |
+| [docs/Huntaria - mon-skills.csv](<../../docs/Huntaria - mon-skills.csv>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -51,7 +55,8 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python scripts/creature_reference.py --check` — Reviewed 100-species snapshot and four generated outputs agree with Chrome export.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/monster_sprites_check.py --browser chrome` — 100 supplied sprites, workbook identity, unchanged mechanics, shared rendering, poses, facing and save preservation.
-- `python tests/combat_workbooks_check.py` — Imported workbook integrity, shield/guardian/debt/critical/entity contracts, all proposed loadouts and responsive summon presentation.
+- `python tests/combat_workbooks_check.py --browser chrome` — Imported workbook integrity, shield/guardian/debt/critical/entity contracts, all proposed loadouts and responsive summon presentation.
+- `python tests/monster_progression_check.py --browser chrome` — Exact 10,000-row CSV stats, 100 talent kits, quest budgets, shared shields, effect regressions, legacy/current encounter replay and responsive individual trees.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -63,5 +68,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [CREATURE_DESIGN.md](<../../CREATURE_DESIGN.md>)
 - [features/animation/SUPPLIED_SPRITES.md](<../../features/animation/SUPPLIED_SPRITES.md>)
 - [features/content/COMBAT_WORKBOOKS.md](<../../features/content/COMBAT_WORKBOOKS.md>)
+- [features/growth/COMPANION_TREES.md](<../../features/growth/COMPANION_TREES.md>)
 - Commercial cards: [F-006](<../../FEATURE_BACKLOG.md>), [F-064](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-01](<../../OWNER_REVIEWS.md#or-01>), [OR-05](<../../OWNER_REVIEWS.md#or-05>), [OR-07](<../../OWNER_REVIEWS.md#or-07>) Use the live board/preflight for status, not an approval copied here.

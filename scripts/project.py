@@ -407,7 +407,8 @@ def main():
             m = manifest()
             run(["scripts/world_assets.py", "--check"])
             run(["scripts/audio_assets.py", "--check"])
-            for suite in ("boundaries", "combat-workbooks", "mechanics", "ui", "city-world", "field-encounters", "relic-quest", "campaign", "opening", "onboarding", "sprites", "trainer-animation", "field-polish", "landscapes", "experience", "farm-classes", "game-frame", "player-experience", "runtime", "client-build"):
+            run(["scripts/monster_progression.py", "--check"])
+            for suite in ("boundaries", "combat-workbooks", "monster-progression", "talent-tree", "mechanics", "ui", "city-world", "field-encounters", "relic-quest", "campaign", "opening", "onboarding", "sprites", "trainer-animation", "field-polish", "landscapes", "experience", "farm-classes", "game-frame", "player-experience", "runtime", "client-build"):
                 run([*m["suites"][suite]["command"], "--browser", args.browser])
             # Reference validation specifically reads the Chrome runtime export.
             if args.browser == "edge":

@@ -102,7 +102,7 @@ const tidecrown=C.MONSTERS.find(t=>C.UNITS[t].source==='boss'&&C.UNITS[t].region
 const ambercolossus=C.MONSTERS.find(t=>C.UNITS[t].source==='boss'&&C.UNITS[t].region===2);
 addEarly({id:'early:boss:tidecrown',name:C.UNITS[tidecrown].name,appearance:tidecrown,title:'Willowbrook guardian · Lv 15',kind:'boss',level:15,seed:1515,earlyKey:'tidecrown',trainerXP:3900,coins:80,
  greeting:'The water gathers around one powerful creature.',advice:'Tidal Return marks the rear. Guard, ward or change formation before it lands.',requiresDemonstrations:4,
- enemies:[{type:tidecrown,skills:[...C.UNITS[tidecrown].default],hp:1500,power:32,skillScale:.85,boss:true,passive:C.UNITS[tidecrown].passive}],...placed('brook-boss',{x:A.get('brook-boss').hero.x,y:A.get('brook-boss').hero.y+240})});
+ enemies:[{type:tidecrown,skills:[...C.UNITS[tidecrown].default],hp:1200,power:32,skillScale:.85,boss:true,passive:C.UNITS[tidecrown].passive}],...placed('brook-boss',{x:A.get('brook-boss').hero.x,y:A.get('brook-boss').hero.y+240})});
 for(const [i,type] of C.CLASSES.entries()){
  const name=C.UNITS[type].name;
  addEarly({id:'early:master:'+type,name:name+' Master',appearance:type,title:name+' acceptance battle',level:15,seed:201+i,trialClass:type,masterClass:type,protectedEncounter:true,autoReturn:true,trainerXP:8500,coins:100,
@@ -123,7 +123,7 @@ for(const [n,map,xp,level] of [[1,'hollow-0',3000,26],[2,'hollow-1',2500,27],[3,
  greeting:['You have come far. Let us see what you have learned.','Ready for another challenge?','Show me what your party can do.'][n-1],advice:'Inspect the team, adjust one priority or formation rank, then retry.',team:trainerTeam(n===2?'mage':'druid',n===1?'ironback':'cindrake',n===3?'lumimoth':'thornstag'),...placed(map)});
 addEarly({id:'early:boss:amber',name:C.UNITS[ambercolossus].name,appearance:ambercolossus,title:'Amber guardian · Lv 30',kind:'boss',level:30,seed:3030,earlyKey:'amberBoss',trainerXP:5000,coins:120,
  greeting:'The colossus seals the last lesson of Amber Hollow.',advice:'Glassfall marks the frontline. Brace it, then use the recovery window.',requiresEarly:'amber3',
- enemies:[{type:ambercolossus,skills:[...C.UNITS[ambercolossus].default],hp:3400,power:42,boss:true,passive:C.UNITS[ambercolossus].passive}],...placed('hollow-boss',{x:A.get('hollow-boss').hero.x,y:A.get('hollow-boss').hero.y+240})});
+ enemies:[{type:ambercolossus,skills:[...C.UNITS[ambercolossus].default],hp:2200,power:30,skillScale:.8,boss:true,passive:C.UNITS[ambercolossus].passive}],...placed('hollow-boss',{x:A.get('hollow-boss').hero.x,y:A.get('hollow-boss').hero.y+240})});
 addEarly({id:'early:tree-proof',name:'Amber Naturalist',appearance:'druid',title:'Skill-tree proof',level:30,seed:3060,earlyKey:'treeProof',trainerXP:0,coins:20,requiresTreeInvestment:true,
  greeting:'Let your companion show what changed.',advice:'Spend one point in an owned companion tree, then return.',team:trainerTeam('druid','stonehorn','bloomslime'),...placed('hollow-hub',{x:900,y:1120})});
 

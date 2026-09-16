@@ -40,7 +40,10 @@ with sync_playwright() as pw:
                 }
               }
               throw Error('No isolated single-hunt approach');}""")
-            page.clock.run_for(200);page.locator('[data-object="'+spawn['id']+'"]').click();page.clock.run_for(4000)
+            page.clock.run_for(200);page.locator('[data-object="'+spawn['id']+'"]').click()
+            for _ in range(40):
+                page.clock.run_for(100)
+                if page.evaluate('BondApp.isRunning()'): break
             check('Wild contact starts immediately without a confirmation dialog '+str(attempt),not page.locator('#npc-dialog').is_visible() and page.evaluate('BondApp.isRunning()&&BondApp.getTab()==="battle"') and '15%' not in page.locator('#battle-description').inner_text())
             for _ in range(160):
                 page.clock.run_for(250)
@@ -95,7 +98,7 @@ with sync_playwright() as pw:
         check('Clicking road sign shows useful resident information without map prose or loot debug text',page.locator('#exploration-dialog').is_visible() and 'LOCAL INFORMATION' in page.locator('#exploration-dialog').inner_text() and 'Local residents' in page.locator('#exploration-dialog').inner_text() and page.evaluate("!document.querySelector('#exploration-dialog').innerText.includes(BondAtlas.get('clearing-1').info)") and '15%' not in page.locator('#exploration-dialog').inner_text() and 'immediate replacement' not in page.locator('#exploration-dialog').inner_text())
         page.keyboard.press('Escape')
         # A deliberately low-HP fixture verifies the played defeat/recovery handoff.
-        page.evaluate("""()=>{BondApp.changeUnit(0,0,'mage');const P=BondProfile,s=P.snapshot();s.vitality.trainer=50;P.testing.replace(s);P.travel('clearing-0');const sp=P.population().find(x=>x.type==='stonehorn'&&x.present);P.position(BondAtlas.safePoint('clearing-0',{x:sp.x-170,y:sp.y}));BondApp.switchTab('region');if(!BondApp.startRegionBattle(P.beginHunt(sp.id).id))throw Error('QA defeat encounter did not start');}""")
+        page.evaluate("""()=>{BondApp.changeUnit(0,0,'mage');const P=BondProfile,s=P.snapshot();s.vitality.trainer=50;P.testing.replace(s);P.travel('clearing-0');const sp=P.population().find(x=>x.type==='stonehorn'&&x.present);P.position(BondAtlas.safePoint('clearing-0',{x:sp.x-170,y:sp.y}));BondApp.switchTab('region');if(!BondApp.startRegionBattle(P.beginHunt(sp.id).id))throw Error('QA defeat encounter did not start');const b=BondApp.getBattle();b.trainer(0).actionRemaining=999;}""")
         for _ in range(320):
             page.clock.run_for(250)
             if page.evaluate('BondApp.getBattle().ended&&!BondProfile.snapshot().encounterSave'):break

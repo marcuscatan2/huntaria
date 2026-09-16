@@ -35,3 +35,8 @@ It never writes the workbook or updates the game/Google Sheet by itself.
 `capture_character_reference.py` uses the shared browser renderer to capture a
 transparent Apprentice identity reference for controlled art generation. It does
 not change a profile or transform shipped art.
+
+`monster_progression.py --write` validates the supplied monster level/talent CSVs
+and regenerates `monster-progression-data.js`; `--check` verifies the checked-in
+output. It reads JSON cells as inert data and checks stable identities, attack
+bases, all levels, prerequisite references, exclusions and point budgets.

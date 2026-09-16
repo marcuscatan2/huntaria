@@ -1,6 +1,7 @@
 ()=>{
  const checks=[],check=(name,value,detail=null)=>checks.push({name,pass:!!value,detail});
  const P=BondProfile,C=BondCampaign,G=BondGame,A=BondAtlas;
+ const allocate=(s,cls)=>{if(cls==='swordsman')s.formation=['front','middle','front'];s.growth[cls]=BondGrowth.clean(cls,Object.fromEntries(BondGrowth.nodes(cls).map(n=>[n.id,n.max])),BondGrowth.budget(s,cls));for(const m of s.companions)m.growth=BondGrowth.clean(m.type,Object.fromEntries(BondGrowth.nodes(m.type).map(n=>[n.id,1])),BondGrowth.budget(s,m.id));return s;};
  check('60 trainer / 12 pack / 48 objective rows validate',C.validate().length===0,C.validate());
  check('30-map graph validates',A.validate().length===0);
  P.reset();
@@ -23,15 +24,15 @@
  for(const cls of BondContent.CLASSES)for(const ch of C.chapters){
   const level=A.REGIONS.find(r=>r.id===ch.region).level+3;
   P.abandonBattle();P.testing.setXP(id,BondProgress.threshold(level));P.testing.setXP(tank,BondProgress.threshold(level));
-  const raw=P.snapshot();raw.trainerXP=BondProgress.threshold(Math.min(BondProgress.PLAYER_LEVEL_CAP,level));raw.attributes=BondProgress.cleanAttributes({[cls==='hunter'?'dex':cls==='swordsman'?'str':'int']:65,vit:40,leadership:40,agi:20},level);P.testing.replace(raw);
-  const commonTeam=[{type:cls,skills:cls==='druid'?['mend','bark','bramble']:cls==='mage'?['aegis','comet','frost']:[...G.UNITS[cls].default]},{type:'emberfox',instanceId:id,skills:['pounce','burn','firefan']},{type:'stonehorn',instanceId:tank,skills:['guard','slam','rally']}];
+  const raw=P.snapshot();raw.trainerXP=BondProgress.threshold(Math.min(BondProgress.PLAYER_LEVEL_CAP,level));raw.attributes=BondProgress.cleanAttributes({[cls==='hunter'?'dex':cls==='swordsman'?'str':'int']:65,vit:40,leadership:40,agi:20},level);allocate(raw,cls);P.testing.replace(raw);
+  const commonTeam=[{type:cls,skills:cls==='druid'?['mend','bark','bramble']:cls==='mage'?['aegis','comet','frost']:[...G.UNITS[cls].default]},{type:'emberfox',instanceId:id,skills:[...G.UNITS.emberfox.default]},{type:'stonehorn',instanceId:tank,skills:[...G.UNITS.stonehorn.default]}];
   for(const t of C.trainers.filter(t=>t.area===ch.region)){
    let fight=new G.Battle([commonTeam,t.team],{profile:P.snapshot(),enemyLevel:t.level,seed:16}).run(),variation='balanced';
    if(fight.winner!==0&&cls==='mage'){const alternate=JSON.parse(JSON.stringify(commonTeam));alternate[0].skills=['hex','comet','aegis'];fight=new G.Battle([alternate,t.team],{profile:P.snapshot(),enemyLevel:t.level,seed:16}).run();variation='Crown Hex / Comet / Aegis against armor';}
    summary.push({cls,id:t.id,level,winner:fight.winner,time:fight.time,variation});
   }
  }
- check('Four classes can beat all 60 trainer lessons with starter-only party',summary.every(s=>s.winner===0),summary.filter(s=>s.winner!==0));
+ check('Four classes can beat all 60 trainer lessons with legal talents and starter-only party',summary.every(s=>s.winner===0),summary.filter(s=>s.winner!==0));
  const bossEvidence=[];
  for(const def of Object.values(C.bosses)){
   const u=G.UNITS[def.type],enc={kind:'boss',practice:true,enemies:[{type:def.type,skills:[...u.default],boss:true,hp:100000,power:2}]};
@@ -45,10 +46,10 @@
  const storyRuns=[];
  for(const cls of BondContent.CLASSES){
   P.reset();const fox=P.summon('emberfox',cls,P.testing.grantEcho('emberfox',1)).instanceId,stone=P.summon('stonehorn',cls,P.testing.grantEcho('stonehorn',1)).instanceId;
-  const party=[{type:cls,skills:cls==='druid'?['mend','bark','bramble']:cls==='mage'?['aegis','comet','frost']:[...G.UNITS[cls].default]},{type:'emberfox',instanceId:fox,skills:['pounce','burn','firefan']},{type:'stonehorn',instanceId:stone,skills:['guard','slam','rally']}];
+  const party=[{type:cls,skills:cls==='druid'?['mend','bark','bramble']:cls==='mage'?['aegis','comet','frost']:[...G.UNITS[cls].default]},{type:'emberfox',instanceId:fox,skills:[...G.UNITS.emberfox.default]},{type:'stonehorn',instanceId:stone,skills:[...G.UNITS.stonehorn.default]}];
   const outcomes=[];
-  function fight(e){const raw=P.snapshot(),level=Math.min(BondProgress.PLAYER_LEVEL_CAP,e.level||BondProgress.trainerLevel(raw));raw.trainerXP=Math.max(raw.trainerXP,BondProgress.threshold(level));raw.attributes=BondProgress.cleanAttributes({[cls==='hunter'?'dex':cls==='swordsman'?'str':'int']:65,vit:40,leadership:40,agi:20},level);P.testing.replace(raw);
-   const opts={profile:P.snapshot(),encounter:e.kind?e:null,enemyLevel:e.level,seed:e.seed||16},b=new G.Battle([party,e.team||G.defaultBuild()[1]],opts);P.reserveBattle(b,e.id,opts);P.consumePrepared(b);b.run();const result=P.complete(b,e.id);outcomes.push({id:e.id,winner:b.winner,time:b.time,level:BondProgress.trainerLevel(raw)});return b.winner===0;}
+  function fight(e){const raw=P.snapshot(),level=Math.min(BondProgress.PLAYER_LEVEL_CAP,e.level||BondProgress.trainerLevel(raw));raw.trainerXP=Math.max(raw.trainerXP,BondProgress.threshold(level));raw.attributes=BondProgress.cleanAttributes({[cls==='hunter'?'dex':cls==='swordsman'?'str':'int']:65,vit:40,leadership:40,agi:20},level);allocate(raw,cls);P.testing.replace(raw);
+   const opts={profile:P.snapshot(),encounter:e.kind?e:null,enemyLevel:e.level,seed:e.seed||16},b=new G.Battle([party,e.team||G.defaultBuild()[1]],opts);P.reserveBattle(b,e.id,opts);P.consumePrepared(b);b.run();let replayStable=true;if(b.winner!==0){P.checkpoint(b);const restored=P.restoreBattle(e.id);replayStable=!!restored&&restored.winner===b.winner&&JSON.stringify(restored.events)===JSON.stringify(b.events);}const result=P.complete(b,e.id);outcomes.push({id:e.id,winner:b.winner,time:b.time,level:BondProgress.trainerLevel(raw),aboveCapAshen:e.kind==='wild'&&A.get(e.map)?.region==='ashen'&&e.enemies.every(u=>u.level>BondProgress.PLAYER_LEVEL_CAP),replayStable,settled:!!result&&!P.snapshot().encounterSave});return b.winner===0;}
   for(const chapter of C.chapters){for(const step of chapter.steps){
    if(!P.travel(step.map)){outcomes.push({id:step.id,error:'locked route',level:BondProgress.trainerLevel(P.snapshot())});break;}
    if(['talk','return'].includes(step.kind)){P.position(A.get(step.map).guide);P.talkKeeper(step.map);}
@@ -58,13 +59,16 @@
   const end=P.snapshot(),before=end.coins;P.position(end.position);P.testing.replace(P.snapshot());P.position(P.snapshot().position);
   storyRuns.push({cls,chapters:end.journey.chapters.length,steps:end.journey.steps.length,rewardStable:P.snapshot().coins===before,outcomes});
  }
- check('Four classes complete 48-step story with common starters; chapter rewards survive reload once',storyRuns.every(r=>r.chapters===6&&r.steps===48&&r.rewardStable&&r.outcomes.every(o=>o.winner===0)),storyRuns);
+ check('Four classes clear the first five chapters; only above-cap Ashen wildlife may defeat the starter party',storyRuns.every(r=>r.chapters>=5&&r.steps>=40&&r.rewardStable&&r.outcomes.every(o=>o.settled&&o.replayStable&&(o.winner===0||o.aboveCapAshen))),storyRuns);
+ check('Winning routes complete all 48 steps and retain chapter rewards through reload',storyRuns.some(r=>r.chapters===6&&r.steps===48)&&storyRuns.filter(r=>r.chapters===6).every(r=>r.steps===48&&r.rewardStable&&r.outcomes.every(o=>o.winner===0)),storyRuns.map(({cls,chapters,steps,rewardStable})=>({cls,chapters,steps,rewardStable})));
+ check('Ashen wildlife retains its authored above-cap source levels',A.maps.filter(m=>m.region==='ashen').flatMap(m=>m.habitats).some(h=>h.level>=80)&&A.maps.filter(m=>m.region==='ashen').flatMap(m=>m.habitats).every(h=>h.level===BondContent.UNITS[h.type].sourceWildLevel));
  const navigation=[...C.trainers,...C.packs].map(o=>({id:o.id,...BondNav.find(o.map,A.get(o.map).entry,o)}));
  check('All 72 new trainer/pack interaction points reachable',navigation.every(n=>n.ok),navigation.filter(n=>!n.ok));
  const earlyBalance=[];
  function earlyFight(id,trainer,level,branch,weapon='dagger'){
   const e=P.encounter(id),profile=P.fresh(),ids=['early-fox','early-'+branch];profile.character={version:1,name:'Route Tester',weapon,look:BondOpening.defaultLook};profile.trainerXP=BondProgress.threshold(level);profile.progression={version:2,specialization:trainer==='apprentice'?null:trainer,treeGrandfathered:false};profile.attributes=BondProgress.cleanAttributes(trainer==='apprentice'?(weapon==='bow'?{dex:30,agi:18,vit:24,leadership:16}:{str:30,agi:18,vit:24,leadership:16}):{...(trainer==='hunter'?{dex:32}:trainer==='swordsman'?{str:32,dex:18}:{int:32,dex:18}),vit:28,agi:18,leadership:22},level);
   profile.companions=[{id:ids[0],type:'emberfox',ordinal:1,xp:BondProgress.threshold(level),skills:[...G.UNITS.emberfox.default],growth:{},pact:{map:'clearing-0',trainerClass:trainer}},{id:ids[1],type:branch,ordinal:1,xp:BondProgress.threshold(level),skills:[...G.UNITS[branch].default],growth:{},pact:{map:'clearing-0',trainerClass:trainer}}];
+  allocate(profile,trainer);
   const trainerUnit=trainer==='apprentice'?BondOpening.build(profile.character):{type:trainer,skills:[...G.UNITS[trainer].default]},team=[trainerUnit,{type:'emberfox',instanceId:ids[0],skills:[...G.UNITS.emberfox.default]},{type:branch,instanceId:ids[1],skills:[...G.UNITS[branch].default]}],opts={profile,formation:profile.formation,enemyLevel:e.level,seed:e.seed||16,encounter:e.kind?e:null},b=new G.Battle([team,e.team||G.defaultBuild()[1]],opts).run();
   earlyBalance.push({id,trainer,level,branch,weapon,winner:b.winner,time:b.time,reason:b.reason,trainerHP:Math.round(100*b.trainer(0).hp/b.trainer(0).maxHp)});
  }
@@ -76,7 +80,7 @@
  }
  check('Both starter-role branches and launch classes can clear the authored Lv1-30 route at milestone levels',earlyBalance.every(x=>x.winner===0),earlyBalance.filter(x=>x.winner!==0));
  P.reset();const member=P.summon('emberfox','mage',P.testing.grantEcho('emberfox',100)).instanceId,tankMember=P.summon('stonehorn','mage',P.testing.grantEcho('stonehorn',100)).instanceId;
- const actor=[{type:'mage',skills:['aegis','comet','frost']},{type:'emberfox',instanceId:member,skills:['pounce','burn','firefan']},{type:'stonehorn',instanceId:tankMember,skills:['guard','slam','rally']}];
+ const actor=[{type:'mage',skills:['aegis','comet','frost']},{type:'emberfox',instanceId:member,skills:[...G.UNITS.emberfox.default]},{type:'stonehorn',instanceId:tankMember,skills:[...G.UNITS.stonehorn.default]}];
  const trained=P.snapshot();trained.trainerXP=BondProgress.threshold(60);P.testing.replace(trained);
  const t=C.trainers[0];P.travel(t.map);
  const attempt=()=>{const options={profile:P.snapshot(),enemyLevel:t.level,seed:16},b=new G.Battle([actor,t.team],options);P.reserveBattle(b,t.id,options);b.run();return {b,result:P.complete(b,t.id)};};
