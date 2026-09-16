@@ -1,7 +1,7 @@
 /* Class-specific prerequisites and point accounting, separate from companion mastery. */
 (function(root){
 'use strict';
-const active=false; // Awaiting the owner's class-tree migration/budget decision.
+const active=true;
 const catalog=root.BondCombatCatalog.talents,all=Object.values(catalog);
 function nodes(type){return all.filter(n=>n.type===type).map(n=>({...n,parent:n.id.endsWith('1')?null:n.id.slice(0,-1)+(n.id.endsWith('5')?'4':'1'),icon:{mage:'✧',druid:'✿',swordsman:'⬡',hunter:'➶'}[type],requirement:n.id.endsWith('5')?'7 branch points and Advanced rank 2':n.id.endsWith('4')?'4 branch points and a completed fork':'Opening rank 2',label:n.ranks[0],stat:null,value:0,effect:'talent'}));}
 const used=r=>Object.values(r||{}).reduce((n,v)=>n+(Number.isInteger(v)&&v>0?v:0),0);

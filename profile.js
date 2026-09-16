@@ -93,7 +93,7 @@ function normalize(raw){
  s.journey=root.BondCampaign?.clean(raw.journey)||{};
  s.encounterReceipts=Object.fromEntries(Object.entries(raw.encounterReceipts||{}).filter(([id,v])=>id.length<220&&v&&Number.isInteger(v.coins)&&v.coins>=0));
  const saved=raw.encounterSave;
- if(saved&&saved.encounter&&A.get(saved.encounter.map)&&typeof saved.id==='string'&&saved.id.length<220&&(!saved.build||BondGame.validBuild(saved.build))&&Number.isInteger(saved.tick)&&saved.tick>=0&&saved.tick<=1500){s.encounterSave=clone(saved);s.encounterSave.options||={};s.encounterSave.options.profile||={};if(!Number.isSafeInteger(s.encounterSave.options.profile.trainerXP))s.encounterSave.options.profile.trainerXP=s.trainerXP;}
+ if(saved&&saved.encounter&&A.get(saved.encounter.map)&&typeof saved.id==='string'&&saved.id.length<220&&(!saved.build||BondGame.validBuild(saved.build))&&Number.isInteger(saved.tick)&&saved.tick>=0&&saved.tick<=1500){s.encounterSave=clone(saved);s.encounterSave.options||={};s.encounterSave.options.classTrees??=0;s.encounterSave.options.profile||={};if(!Number.isSafeInteger(s.encounterSave.options.profile.trainerXP))s.encounterSave.options.profile.trainerXP=s.trainerXP;}
  for(const m of A.maps)for(const h of m.habitats){
   const selected=new Set(Q.selected(h,s.spawns,s.encounterSave?.encounter?.enemies));
   for(const id of Q.keys(h))if(s.spawns[id])s.spawns[id].activeSlot=selected.has(id);
@@ -170,7 +170,7 @@ function reserveBattle(b,id,options){
  if(BondCampaign.requirement(e,state,b.build[0]))return false;
  if(state.encounterSave?.id===id){b._attemptId=state.encounterSave.attempt;return true;}
  const profile=clone(options.profile);delete profile.encounterSave;delete profile.encounterReceipts;delete profile.claims;delete profile.spawns;
- const saved={id,attempt:'attempt:'+(state.sequence+1),encounter:e,build:clone(b.build),options:{...clone(options),profile},tick:0,supply:null,joins:[],anchor:clone(options.worldAnchor||{map:state.map,position:state.position,actors:[]})};
+ const saved={id,attempt:'attempt:'+(state.sequence+1),encounter:e,build:clone(b.build),options:{...clone(options),profile,classTrees:b.classTrees},tick:0,supply:null,joins:[],anchor:clone(options.worldAnchor||{map:state.map,position:state.position,actors:[]})};
  const ok=commit(s=>{if(s.encounterSave)return false;s.sequence++;s.encounterSave=saved;return true;},{critical:true});
  if(ok)b._attemptId=saved.attempt;return ok;
 }

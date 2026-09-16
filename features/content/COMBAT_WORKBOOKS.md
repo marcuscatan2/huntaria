@@ -46,20 +46,26 @@ finite summons and constructs. Damage debt bypasses later shields and defenses;
 trainer defeat ends the battle before pending recovery can save it. These modules
 use seeded simulation time only, and ship in both browser and Node module lists.
 
-## Class decision still pending
+## Class talents and migration
 
-`class-trees.js` prepares 15 class-specific talents per class, branch prerequisites,
-and a 15-point budget: two points at Lv20, then one every three levels through
-Lv59. `combat-talents.js` implements their combat hooks. `BondClassTrees.active`
-is false; the existing class menu, point budget and invested ranks stay active.
-The owner's explicit approval of this replacement and refund is required before
-enabling migration. Growth, profile and menu routing are prepared behind that
-switch; the browser suite enables it only in a disposable context to exercise
-refunds, purchasing prerequisites and the fifteen-node phone menu. Companion mastery does not use the new class budget.
+`class-trees.js` supplies 15 talents for each of the four classes, grouped into
+three branches with ranked prerequisites. The approved class budget starts at
+two points at Lv20, then adds one every three levels through Lv59, capped at 15.
+`combat-talents.js` applies learned talents from the trainer owner's profile.
+Class Skill Tree supports spending points and a free reset.
 
-Four class traits are independent of that point-budget choice: Mage primes a
-magic rider after casting, Druid leaves a short heal-over-time, Knight remembers
-a brief defense, and Hunter gains accuracy. They apply in combat now.
+Profile normalization clears the old class-node IDs and makes the new budget
+available; valid new talent ranks survive reload. Companion mastery retains its
+existing ranks and budget. Saved encounters pin `options.classTrees`: absent in
+old reservations means legacy version 0, while new reservations use version 1.
+Only those old battles retain their frozen generic class bonuses through replay
+and settlement. New battles use the current allocation.
+
+Mage's Astral Lens and Druid's Heartwood appear at battle start and can redeploy
+on a personal active after their deployment cooldown; they cannot respawn from
+idle time alone. Hunter Focus grows against its living Quarry, and Hunting
+Signal marks one enemy per hunter. Four free class traits remain: Mage's magic
+rider, Druid's short healing effect, Knight's brief defense and Hunter's accuracy.
 
 ## Visuals
 
@@ -87,5 +93,5 @@ under ignored `tests/artifacts/`.
   `python scripts/creature_reference.py --write` and `--check`.
 
 Local simulations do not certify final balance or physical-device performance.
-The scoped implementation request and two combat approvals are recorded in
+The scoped implementation request and combat/class approvals are recorded in
 `docs/review-gates.json`; broad art, core-loop and device approvals remain open.

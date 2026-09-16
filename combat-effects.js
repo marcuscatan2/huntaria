@@ -139,7 +139,7 @@ class Effects{
   if(target.slot===0&&this.battle.group)for(const companion of this.battle.units.filter(v=>v.owner===target.owner&&v.side===target.side&&v.slot>0))companion.eliminated=true;
   for(const e of this.entities)if(e.master===target)this.despawn(e,'owner-death');
  }
- despawn(e,reason){if(e.removed)return;e.hp=0;e.removed=true;e.removedAt=this.battle.time;e.reason=reason;this.battle.emit('despawn',e.master,e,reason,0,{entity:e.id,temporary:true,reason});if(reason==='destroyed')this.after(()=>root.BondCombatEntities?.destroyed(this,e));}
+ despawn(e,reason){if(e.removed)return;e.hp=0;e.removed=true;e.removedAt=this.battle.time;e.reason=reason;this.battle.emit('despawn',e.master,e,reason,0,{entity:e.id,temporary:true,reason});for(const child of this.entities.filter(v=>v.parent===e))this.despawn(child,'parent-death');if(reason==='destroyed')this.after(()=>root.BondCombatEntities?.destroyed(this,e));}
  heal(source,target,amount,label,options={}){
   if(!alive(target)||this.battle.ended||this.battle.overcharge)return 0;
   const before=target.hp,base=Math.max(0,amount),factor=(1+this.value(source,'healOutput'))*(1+this.value(target,'healReceived'))*(options.legacy||options.alreadyScaled?1:1+(source.growth?.healing||0));

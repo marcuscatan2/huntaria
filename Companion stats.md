@@ -136,24 +136,31 @@ trainer HP percentages. Playback speed does not change these rules.
   later visible progression patch. Legacy over-cap XP is preserved as deferred
   data rather than deleted or applied. No ultra-rare companion is required.
 
-Each of 104 character types defines an 18-node template; each individual owns its
-own investment in its species template. Each class has its own investment. Nodes are ranked; caps 3/5/10.
-A parent rank ≥1 unlocks its child. One point buys one rank; reset is free.
+Each companion owns its investment in an 18-node species template. Companion
+nodes have rank caps of 3/5/10; a parent rank ≥1 unlocks its child.
+One point buys one rank; reset is free.
 
 ```text
-tree point budget = 3 + floor((relevant level−1) / 2)
+companion tree budget = 3 + floor((individual level−1) / 2)
                       + min(8, floor(first fixed encounter wins / 2))
 ```
 
-Relevant level is trainer level for class trees and individual level otherwise.
 There are 40 possible points at the launch Lv60 cap with the maximum encounter
 bonus, versus 94 ranks to max the whole template. Unowned species show a read-only three-point template preview; no investment is
 saved without an individual. Healing branches become damage branches for kits without a healing
-mechanic; final affinities depend on role. Trees are tailored shared templates,
-not 104 wholly different ability systems. Preview paths and per-species coverage
-are recorded in tests/artifacts/pass13-engine-*.json; viability still needs playtests.
+mechanic; final affinities depend on role.
+
+Each class has 15 unique talents across three branches. Class points start at
+two at Lv20, then increase by one every three levels through Lv59, capped at 15.
+Opening/fork/advanced talents have two ranks; capstones have one. Branch gates
+are defined in `class-trees.js`. Old generic class ranks reset into the new
+level-based budget; valid new allocations and companion investments survive
+normalization. [The workbook contract](features/content/COMBAT_WORKBOOKS.md)
+defines class effects and migration.
+
 Loadout edits invalidate the local battle view but do not replace a reserved
-encounter: its original build/profile/seed/tick replays on resume.
+encounter: its original build/profile/seed/tick replays on resume. Pre-migration
+reservations retain their original class bonuses through settlement.
 
 ## Elements
 

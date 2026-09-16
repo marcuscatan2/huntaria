@@ -43,6 +43,25 @@ function run(){
   if(!accepted)throw Error('No valid fixture casts '+d.id);executions.push(d.id);
  }
  check('Every one of the 315 moves executes under a legal condition',executions.length===315);
+ check('Trainer talents are active with the approved level budget',BondClassTrees.active&&[19,20,22,23,56,59,60].map(BondClassTrees.budget).join()==='0,2,2,3,14,15,15');
+ {const b=blank(),f=b.effects,u=b.trainer(0),t=b.units[1],enemy=b.trainer(1),tree=BondCombatEntities.spawn(f,u,'heartwood',{assigned:t}),child=BondCombatEntities.spawn(f,u,'barkling',{assigned:t,parent:tree});
+  check('A Barkling is alive while its Heartwood stands',alive(child));f.despawn(tree,'destroyed');b.damage(enemy,t,100,'next hit',true,{category:'magic'});
+  check('Destroying Heartwood immediately removes its Barkling before another hit',child.removed&&t.hp===900&&!b.events.some(e=>e.kind==='guard'));
+ }
+ for(const [type,id,profile,cooldown] of [['mage','MA1','astral-lens',8],['druid','DG1','heartwood',10]]){
+  const b=blank(),f=b.effects,u=b.trainer(0);u.type=type;u.talents={[id]:2,...(type==='mage'?{MA4:2}:{})};
+  const cast=()=>{const c=new BondCombatKits.Context(f,u,{id:'support',kind:'shield'});c.primary={kind:'shield',target:u};BondClassTalents.afterCast(f,c);};
+  cast();const first=f.entities.find(e=>e.profile===profile);check(type+' deploys its talent entity on a personal active',!!first);
+  f.despawn(first,'destroyed');b.time=cooldown;BondClassTalents.tick(f,u);check(type+' cannot redeploy while idle',!f.entities.some(e=>alive(e)&&e.profile===profile));
+  cast();const second=f.entities.find(e=>alive(e)&&e.profile===profile);check(type+' redeploys when the next personal active resolves',!!second&&second!==first);
+  if(type==='mage')check('A Lens deployment cast starts Stored Equation counting',second.personalCasts===1);
+ }
+ {const b=blank(),f=b.effects,u=b.trainer(0),a=b.trainer(1),other=b.units.find(v=>v.side===1&&v!==a);u.type='hunter';u.talents={HD1:2,HP1:2};u.kit.quarryOrigin=a.id;u.kit.Focus=1;
+  BondClassTalents.landed(f,u,other,{critical:false},{basic:true,primary:true});check('Temporary target diversion does not build Focus',u.kit.Focus===1);
+  BondClassTalents.landed(f,u,a,{critical:false},{basic:true,primary:true});check('A landed Quarry basic builds Focus',u.kit.Focus===2);
+  for(const t of [a,other]){const c=new BondCombatKits.Context(f,u,{id:'shot',kind:'hit'});c.primary={kind:'damage',target:t};c.results=[{primary:true,hit:true,target:t}];BondClassTalents.afterCast(f,c);}
+  check('Hunting Signal moves to exactly one primary enemy',!f.has(a,'Hunting Signal')&&f.has(other,'Hunting Signal'));
+ }
  const metrics=[];
  for(const build of BondCombatCatalog.builds){
   const type=build.owner,skills=build.skills.map(name=>[...BondCombatKits.definitions.values()].find(s=>s.name===name&&(s.owner===type||s.owner===null)).id),team=[{type:'swordsman',skills:[...BondContent.UNITS.swordsman.default]},{type,skills},{type:'glowcap',skills:[...BondContent.UNITS.glowcap.default]}];
@@ -54,7 +73,13 @@ function run(){
  check('All 200 proposed monster loadouts simulate with finite state',metrics.length===200);
  for(const build of BondCombatCatalog.allocations){
   const nodes=BondClassTrees.nodes(build.type),ranks=Object.fromEntries(nodes.map((n,i)=>[n.id,build.ranks[i]])),team=[{type:build.type,skills:[...BondContent.UNITS[build.type].default]},{type:'glowcap',skills:[...BondContent.UNITS.glowcap.default]},{type:'elderroot',skills:[...BondContent.UNITS.elderroot.default]}];
-  const b=new BondGame.Battle([team,BondGame.defaultBuild()[1]],{seed:91});b.trainer(0).talents=BondClassTrees.clean(build.type,ranks);for(let i=0;i<400&&!b.ended;i++)b.step();
+  const profile={trainerXP:BondProgress.threshold(59),attributes:{str:30,agi:20,vit:25,int:30,dex:25,leadership:5},growth:{[build.type]:ranks}};
+  const b=new BondGame.Battle([team,BondGame.defaultBuild()[1]],{seed:91,profile,enemyLevel:59});
+  check(build.type+' loads its complete saved allocation: '+build.name,JSON.stringify(b.trainer(0).talents)===JSON.stringify(BondClassTrees.clean(build.type,ranks))&&Object.values(b.trainer(0).talents).reduce((a,n)=>a+n,0)===15);
+  check('Enemy trainers never copy player talents: '+build.name,Object.keys(b.trainer(1).talents).length===0);
+  if(ranks.MA1)check('Learned Astral Lens starts in battle',b.effects.entities.some(e=>e.profile==='astral-lens'));
+  if(ranks.DG1)check('Learned Heartwood starts in battle',b.effects.entities.some(e=>e.profile==='heartwood'));
+  for(let i=0;i<400&&!b.ended;i++)b.step();
   check(build.type+' talent build: '+build.name,b.units.every(u=>Number.isFinite(u.hp)&&u.hp>=0)&&b.effects.entities.every(e=>Number.isFinite(e.hp)));
  }
  return {checks,metrics};

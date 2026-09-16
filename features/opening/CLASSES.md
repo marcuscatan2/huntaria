@@ -35,7 +35,8 @@ the chosen class. Normal menus do not switch a created character's class.
 `BondContent.CLASSES` owns the four specialization IDs; `TRAINERS` also includes
 Apprentice. Build validation, summoning provenance, saved growth, class pickers
 and specialization normalize against these lists. Every class has its own
-18-node trainer tree. Hunter and the knight-styled Swordsman use painted
+[15-talent tree](../content/COMBAT_WORKBOOKS.md#class-talents-and-migration)
+with a separate class point budget. Hunter and the knight-styled Swordsman use painted
 16-pose sheets matching the Druid/Mage reference style. Regular NPCs use civilian
 art; only class masters among NPCs wear the class appearances. See the
 [trainer sprite contract](../animation/TRAINER_SPRITES.md). Final visual acceptance

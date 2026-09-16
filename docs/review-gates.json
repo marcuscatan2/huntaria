@@ -1046,6 +1046,24 @@
           "sha256": "0e25d10e7626ce30e5e63513c0db728c14de3e6f905213aaad155b81c1044d21"
         }
       ]
+    },
+    {
+      "id": "trainer-talents-v1-2026-09-16",
+      "source": "Current owner conversation, 2026-09-16, reply to the named class-tree replacement decision",
+      "scope": [
+        "Activate 15 class-specific talents for Mage, Druid, Knight and Hunter; reset old class investments into two points at Lv20 plus one every three levels through Lv59, capped at 15",
+        "Preserve companion mastery and saved encounter inputs; verify talent effects and class menus"
+      ],
+      "quotes": [
+        "Go on and implement the trainer changes now if you haven't"
+      ],
+      "boundary": "Explicit approval of the trainer-tree replacement, class-rank reset and point schedule presented with commit 40754fc. No remaining workbook implementation decision. Broader art, balance, device and release gates remain open.",
+      "evidence": [
+        {
+          "path": "docs/Huntaria_Trainer_Passive_Trees.xlsx",
+          "sha256": "0e25d10e7626ce30e5e63513c0db728c14de3e6f905213aaad155b81c1044d21"
+        }
+      ]
     }
   ]
 }

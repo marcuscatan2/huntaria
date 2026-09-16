@@ -27,7 +27,7 @@ Only boot prerequisites require earlier providers. Later CSS overrides earlier C
 | 18 | [formation.js](<../../formation.js>) | [party](<../../features/party/README.md>) | BondFormation | — | — | — |
 | 19 | [raid-rules.js](<../../raid-rules.js>) | [combat](<../../features/combat/README.md>) | BondRaidRules | content.js | BondContent | — |
 | 20 | [training.js](<../../training.js>) | [combat](<../../features/combat/README.md>) | BondTraining | — | — | — |
-| 21 | [game.js](<../../game.js>) | [combat](<../../features/combat/README.md>) | BondGame | adventure-rules.js, campaign.js, combat-effects.js, combat-entities.js, combat-kits.js, combat-passives.js, combat-talents.js, content.js, formation.js, growth.js, inner-sea-farm.js, opening-rules.js, progression.js, raid-rules.js, rules.js, training.js | BondContent, BondRaidRules, BondTraining | — |
+| 21 | [game.js](<../../game.js>) | [combat](<../../features/combat/README.md>) | BondGame | adventure-rules.js, campaign.js, class-trees.js, combat-effects.js, combat-entities.js, combat-kits.js, combat-passives.js, combat-talents.js, content.js, formation.js, growth.js, inner-sea-farm.js, opening-rules.js, progression.js, raid-rules.js, rules.js, training.js | BondContent, BondRaidRules, BondTraining | — |
 | 22 | [creature-art.js](<../../creature-art.js>) | [animation](<../../features/animation/README.md>) | BondCreatureArt | content.js | BondContent | — |
 | 23 | [apprentice-preview.js](<../../apprentice-preview.js>) | [opening](<../../features/opening/README.md>) | BondApprenticePreview | opening-rules.js, profile.js | BondOpening | bond-creation-art-ready, bond-profile |
 | 24 | [city-data.js](<../../city-data.js>) | [world](<../../features/world/README.md>) | BondCities | atlas-data.js | — | — |

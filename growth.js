@@ -1,4 +1,4 @@
-/* Eighteen ranked passive nodes, independent per class and species. */
+/* Class talents and eighteen-node companion mastery use separate budgets. */
 (function(root){
 'use strict';
 const TYPES=Object.keys(BondContent.UNITS);
@@ -19,8 +19,8 @@ const data=[
 const NODES=data.map(([id,parent,name,stat,value,max,icon])=>({id,parent,name,stat,value,max,icon,label:'+'+(value*100).toFixed(1).replace('.0','')+'% '+({hp:'maximum HP',attack:'strike damage',armor:'damage reduction',move:'movement',cooldown:'cooldown reduction',speed:'Speed',healing:'healing'}[stat])+' / rank'}));
 const used=r=>Array.isArray(r)?new Set(r.filter(k=>NODES.some(n=>n.id===k))).size:Object.values(r||{}).reduce((n,v)=>n+(Number.isInteger(v)&&v>0?v:0),0);
 const budget=(s,type='druid')=>classTree(type)?BondClassTrees.budget(BondProgress.trainerLevel(s)):3+Math.floor((root.BondProgress?(!BondContent.TRAINERS.includes(type)?Math.max(BondProgress.monLevel(s,type),BondProgress.instance(s,type)?.treeLevel||1):BondProgress.trainerLevel(s))-1:0)/2)+Math.min(8,Math.floor((s.defeated?.length||0)/2));
-function clean(type,raw,points=999){
- if(classTree(type))return BondClassTrees.clean(type,raw,Math.min(15,points));
+function clean(type,raw,points=999,legacyClass=false){
+ if(classTree(type)&&!legacyClass)return BondClassTrees.clean(type,raw,Math.min(15,points));
  const out={};if(!TYPES.includes(type))return out;
  if(Array.isArray(raw))raw=Object.fromEntries(raw.map(k=>[k,1]));
  if(!raw||typeof raw!=='object')return out;
@@ -28,8 +28,8 @@ function clean(type,raw,points=999){
  return out;
 }
 const labels={hp:'maximum HP',attack:'strike damage',armor:'damage reduction',move:'movement',cooldown:'cooldown reduction',speed:'Speed',healing:'healing'};
-function nodes(type){
- if(classTree(type))return BondClassTrees.nodes(type);
+function nodes(type,legacyClass=false){
+ if(classTree(type)&&!legacyClass)return BondClassTrees.nodes(type);
  const u=BondContent.UNITS[type],healer=u&&u.skills.some(k=>['heal','teamheal','selfheal','cleanse'].includes(BondContent.SKILLS[k].kind))||u?.passive==='cinder';
  const species=u&&u.role!=='Trainer',identity=species?{
   might:{name:BondContent.SKILLS[u.skills[0]].name+' practice',skill:u.skills[0],effect:'skillPower',value:.02},
@@ -49,10 +49,10 @@ function nodes(type){
   return {...n,stat,name,label:'+'+(n.value*100).toFixed(1).replace('.0','')+'% '+labels[stat]+' / rank'};
  });
 }
-function typedStats(type,ranks){
- const out={hp:0,attack:0,armor:0,move:0,cooldown:0,speed:0,healing:0,skillPower:{},skillCooldown:{}},byId=Object.fromEntries(nodes(type).map(n=>[n.id,n]));
- if(classTree(type))return out;
- for(const [id,rank] of Object.entries(clean(type,ranks))){const n=byId[id];if(n.effect==='skillPower')out.skillPower[n.skill]=(out.skillPower[n.skill]||0)+n.value*rank;else if(n.effect==='skillCooldown')out.skillCooldown[n.skill]=(out.skillCooldown[n.skill]||0)+n.value*rank;else out[n.stat]+=n.value*rank;const legacy=BondContent.UNITS[type]?.legacySkills?.[BondContent.UNITS[type].skills.indexOf(n.skill)];if(legacy&&legacy!==n.skill&&['skillPower','skillCooldown'].includes(n.effect))out[n.effect][legacy]=(out[n.effect][legacy]||0)+n.value*rank;}
+function typedStats(type,ranks,legacyClass=false){
+ const out={hp:0,attack:0,armor:0,move:0,cooldown:0,speed:0,healing:0,skillPower:{},skillCooldown:{}},byId=Object.fromEntries(nodes(type,legacyClass).map(n=>[n.id,n]));
+ if(classTree(type)&&!legacyClass)return out;
+ for(const [id,rank] of Object.entries(clean(type,ranks,999,legacyClass))){const n=byId[id];if(n.effect==='skillPower')out.skillPower[n.skill]=(out.skillPower[n.skill]||0)+n.value*rank;else if(n.effect==='skillCooldown')out.skillCooldown[n.skill]=(out.skillCooldown[n.skill]||0)+n.value*rank;else out[n.stat]+=n.value*rank;const legacy=BondContent.UNITS[type]?.legacySkills?.[BondContent.UNITS[type].skills.indexOf(n.skill)];if(legacy&&legacy!==n.skill&&['skillPower','skillCooldown'].includes(n.effect))out[n.effect][legacy]=(out[n.effect][legacy]||0)+n.value*rank;}
  out.armor=Math.min(.5,out.armor);out.cooldown=Math.min(.4,out.cooldown);return out;
 }
 function unlocked(s,ref){

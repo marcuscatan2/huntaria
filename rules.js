@@ -35,5 +35,5 @@ function validate(content=C){
 }
 // Classic physical hit chance: 80 + HIT - FLEE, bounded to 5–95 percent.
 const dodgeChance=(defender,attacker,category,defenderLevel=1,attackerLevel=1)=>category==='magic'?0:1-Math.max(.05,Math.min(.95,(80+attackerLevel+Math.floor(attacker?.dex||0)-defenderLevel-Math.floor(defender?.agi||0))/100));
-root.BondRules={VERSION:14,categories,categoryLabel,damaging,rng,validate,dodgeChance};
+root.BondRules={VERSION:15,categories,categoryLabel,damaging,rng,validate,dodgeChance};
 })(globalThis);

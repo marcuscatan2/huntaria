@@ -6,7 +6,7 @@ function trainer(f,u){return u.slot===0&&!u.temporary?u:f.trainer(u);}
 function put(f,u,t,key,kind,amount,seconds,extra={}){return f.put(u,t,key,kind,amount,seconds,extra);}
 function start(f,u){
  if(u.slot!==0||u.storyMaster)return;
- const profile=f.battle.ownerProfiles[u.ownerIndex];u.talents=root.BondClassTrees.active?root.BondClassTrees.clean(u.type,profile?.growth?.[u.type],root.BondClassTrees.budget(u.level)):{};
+ const profile=u.side===0?f.battle.ownerProfiles[u.ownerIndex]:null;u.talents=f.battle.classTrees===1?root.BondClassTrees.clean(u.type,profile?.growth?.[u.type],root.BondClassTrees.budget(u.level)):{};
  if(rank(u,'KR1'))u.kit.Resolve=1;
  if(rank(u,'KB2'))put(f,u,u,'Measured Blow','nextDirectDR',value(u,'KB2',.12,.2),3,{once:true});
  deploy(f,u);quarry(f,u,true);
@@ -16,15 +16,16 @@ function deploy(f,u){
  if(rank(u,'MA1')&&!entities.some(e=>e.profile==='astral-lens')&&E.placement(f,u,E.profiles['astral-lens'])&&f.ready(u,'lensDeploy',8)){
   const e=E.spawn(f,u,'astral-lens',{attack:value(u,'MA1',.18,.3),hpMultiplier:1+value(u,'MA3',.25,.5)});if(e&&rank(u,'MA3'))f.shield(u,u,value(u,'MA3',.02,.04)*u.maxHp,2,'Prismatic Housing');
  }
- if(rank(u,'DG1')&&!entities.some(e=>e.profile==='heartwood')&&f.ready(u,'treeDeploy',10)){
+ if(rank(u,'DG1')&&!entities.some(e=>e.profile==='heartwood')){
   const front=[...f.core(u)].sort((a,b)=>u.side?a.position.x-b.position.x:b.position.x-a.position.x||a.id.localeCompare(b.id))[0];
+  if(!E.placement(f,u,E.profiles.heartwood,{assigned:front})||!f.ready(u,'treeDeploy',10))return;
   const e=E.spawn(f,u,'heartwood',{assigned:front,heal:value(u,'DG1',.15,.25)});if(e){
    if(rank(u,'DG3'))for(const t of [u,f.lowest(u,f.others(u))].filter(alive))f.shield(u,t,value(u,'DG3',.2,.35)*f.stats(u).M+.01*u.maxHp,3,'Sheltering Bough');
    if(rank(u,'DG5'))E.spawn(f,u,'barkling',{assigned:front,parent:e});
   }
  }
 }
-function tick(f,u){if(u.slot===0&&!u.storyMaster){deploy(f,u);quarry(f,u);}}
+function tick(f,u){if(u.slot===0&&!u.storyMaster)quarry(f,u);}
 function focus(f,u){f.put(u,u,'Patient Aim','crit',(u.kit.Focus||0)*value(u,'HD1',.03,.05),75,{replace:true});}
 function quarry(f,u,initial=false){
  if(u.type!=='hunter')return;const t=f.battle.target(u),old=f.battle.units.find(t=>t.id===u.kit.quarryOrigin);
@@ -122,7 +123,7 @@ function landed(f,u,t,result,d){
    if(rank(u,'KR4'))put(f,u,u,'Red Ledger','charge',value(u,'KR4',.25,.45)*A,4);
    if(rank(u,'KR5')){f.shield(u,u,.04*u.maxHp,2,"King's Answer");for(const e of f.nearby(u,t,18,3,t).filter(e=>e!==t))f.proc(u,e,.35*d.reprisal,'melee',"King's Answer",{area:true,secondary:true});}
   }
-  if(u.type==='hunter'){quarry(f,u);if(rank(u,'HD1')){f.add(u,'Focus',1,3);focus(f,u);}
+  if(u.type==='hunter'){quarry(f,u);if(rank(u,'HD1')&&t.id===u.kit.quarryOrigin){f.add(u,'Focus',1,3);focus(f,u);}
    if(result.critical&&rank(u,'HD2')&&f.ready(u,'needleCD',.75))f.proc(u,t,value(u,'HD2',.08,.14)*A,'melee','Needlepoint');
    if(result.critical&&rank(u,'HD5')){f.add(u,'criticalBasics',1,3);if(u.kit.criticalBasics>=3){u.kit.criticalBasics=0;put(f,u,u,'Perfect Arrow','charge',1,75);}}
   }
@@ -162,6 +163,7 @@ function afterCast(f,c){
   const lens=f.entities.find(e=>alive(e)&&e.master===owner&&e.profile==='astral-lens');if(lens&&rank(owner,'MA5')&&!lens.contributors[u.id]){lens.contributors[u.id]=true;const t=f.battle.target(owner);if(alive(t)&&f.battle.distance(lens,t)<=lens.entityReach)f.proc(lens,t,lens.attack*lens.snapshot.M+.25*M,'magic','Grand Orrery',{reach:lens.entityReach,ignoreRange:false});}
   return;
  }
+ deploy(f,u);
  const {A,M,H}=f.stats(u),primary=c.primary,damage=primary?.kind==='damage',defensive=primary?.kind==='shield'||primary?.kind==='heal'&&primary.target===u||['guard','selfshield','selfheal'].includes(c.s.kind);
  if(u.type==='mage')put(f,u,u,'Arcane Conduit','charge',.15*M,3);
  if(u.type==='druid'){
@@ -193,12 +195,12 @@ function afterCast(f,c){
  if(rank(u,'KN3')&&defensive)for(const ally of f.others(u).filter(v=>v.slot>0))f.shield(u,ally,value(u,'KN3',.015,.025)*H,2,'Shielded March');
  if(damage&&c.results.some(r=>r.primary&&r.hit)){
   const t=primary.target,marked=f.get(t,'Hunting Signal');
-  if(rank(u,'HP1'))put(f,u,t,'Hunting Signal','mark',1,3,{harmful:true});
+  if(rank(u,'HP1')){for(const enemy of f.enemies(u))if(enemy!==t&&f.get(enemy,'Hunting Signal')?.source===u.id)f.remove(enemy,'Hunting Signal');put(f,u,t,'Hunting Signal','mark',1,3,{harmful:true});}
   if(marked?.source===u.id&&rank(u,'HP5')&&f.ready(u,'alphaCD',4))for(const ally of f.others(u).filter(v=>v.slot>0))if(f.battle.inRange(ally,t))f.proc(ally,t,.4*f.stats(ally).P,ally.basicCategory,"Alpha's Command",{ignoreRange:false});
   if(rank(u,'HT1')&&f.ready(u,'snareCD',3)){attachSnare(f,u,t);for(const enemy of f.nearby(u,t,18,1+value(u,'HT3',1,2),t).filter(v=>v!==t)){const chance=BondRules.dodgeChance(enemy.effective,u.effective,u.basicCategory,enemy.level,u.level);if(f.battle.random()>=chance)attachSnare(f,u,enemy,true);}}
  }
  if(c.mods.perfectArrow&&damage&&alive(primary.target))f.proc(u,primary.target,.9*A,'melee','One Perfect Arrow',{guaranteed:true,ignoreRange:false});
- deploy(f,u);quarry(f,u);
+ quarry(f,u);
 }
 function treePulse(f,e){const u=e.master;if(!rank(u,'DG2'))return;const t=f.entities.filter(t=>alive(t)&&t.side===u.side&&t.owner===u.owner&&t.profile!=='heartwood'&&t.hp<t.maxHp&&f.battle.distance(e,t)<=36).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp||a.id.localeCompare(b.id))[0];if(t){const amount=Math.min(t.maxHp-t.hp,value(u,'DG2',.005,.01)*u.maxHp);t.hp+=amount;f.battle.emit('repair',u,t,'Nurse Roots',amount,{temporary:true});}}
 root.BondClassTalents={start,tick,beforeCast,outgoing,hitBonus,incoming,barrier,beforeHP,stagger,damaged,broken,healed,landed,launch,afterCast,treePulse};
