@@ -945,6 +945,25 @@
           "sha256": "e35fa4ebaa682867f7fdcb3c7c873193613ba9687d78ece6daf7a0b1f2ca2ea1"
         }
       ]
+    },
+    {
+      "id": "field-interactions-v1-2026-09-16",
+      "source": "Current owner conversation, 2026-09-16",
+      "scope": [
+        "Remove defeated NPC challenge prompts, silence city arrival healing notices and improve collectible cache icons"
+      ],
+      "quotes": [
+        "Remove the option to challenge NPCs once they were defeated.",
+        "Remove the message that stays in the bottom as 'Welcome to Amber Crossing. Your party is fully healed'",
+        "improve the icon of caches that you can collect on the floor"
+      ],
+      "boundary": "Implementation authority for existing local exploration interactions. Final art/device acceptance and wider world production remain under the existing gates.",
+      "evidence": [
+        {
+          "path": "features/world/CITIES.md",
+          "sha256": "2b4c757533b53c80be7efa5a6769bcef1da53f38fa35ce126d9bdea816cf23f3"
+        }
+      ]
     }
   ]
 }

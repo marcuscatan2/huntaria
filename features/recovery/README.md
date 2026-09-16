@@ -47,7 +47,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/pass18_ui.py --browser chrome` — Played hunt, loot, recovery, atlas and viewport flows.
 - `python scripts/creature_reference.py --check` — Reviewed 100-species snapshot and four generated outputs agree with Chrome export.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
-- `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, arrival healing, physical teleport authority and save failures.
+- `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, silent arrival healing, physical teleport authority, defeated-NPC prompts, touch cache collection and save failures.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

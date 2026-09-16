@@ -63,7 +63,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/experience_check.py --browser chrome` — Preferences/audio lifecycle, owned scene drafting/persistence, PNG export and responsive input.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
-- `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, arrival healing, physical teleport authority and save failures.
+- `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, silent arrival healing, physical teleport authority, defeated-NPC prompts, touch cache collection and save failures.
 - `python tests/field_encounters_check.py --browser chrome` — All-map tripled populations, pack preview/cancel/challenge/reload/escape and the current-trainer aggression boundary.
 - `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
 - `python tests/landscapes_check.py --browser chrome` — Forty map profiles, seamless ground patches, reachable services, destination-specific passage taps/walking, lock/save retry, stairs, asset recovery, phone touch and bounded landscape caches.

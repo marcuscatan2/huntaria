@@ -65,7 +65,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/monster_sprites_check.py --browser chrome` — 100 supplied sprites, workbook identity, unchanged mechanics, shared rendering, poses, facing and save preservation.
 - `python tests/trainer_animation_check.py --browser chrome` — All five trainer classes and both Apprentice weapons: pose frames, painted creator, transparency, real Hunter/Swordsman world/combat visibility, keyboard motion, clipped fallbacks, provenance and coverage.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
-- `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, arrival healing, physical teleport authority and save failures.
+- `python tests/city_world_check.py --browser chrome` — Cartesian borders, themed city rooms, silent arrival healing, physical teleport authority, defeated-NPC prompts, touch cache collection and save failures.
 - `python tests/field_encounters_check.py --browser chrome` — All-map tripled populations, pack preview/cancel/challenge/reload/escape and the current-trainer aggression boundary.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).

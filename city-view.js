@@ -22,7 +22,7 @@ function teleport(){
 dialog.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
  if(b.hasAttribute('data-city-leave')){dialog.close();return;}
- if(b.dataset.cityTeleport){if(P.teleport(b.dataset.cityTeleport)){dialog.close();BondApp.switchTab('region');BondRegion.notice('Welcome to '+A.get(P.snapshot().map).name+'. Your party is fully recovered.');}else dialog.querySelector('.city-room-message').textContent=P.error()||'Walk up to the waystone to travel.';return;}
+ if(b.dataset.cityTeleport){if(P.teleport(b.dataset.cityTeleport)){dialog.close();BondApp.switchTab('region');}else dialog.querySelector('.city-room-message').textContent=P.error()||'Walk up to the waystone to travel.';return;}
  if(!room||!BondCities.building(P.snapshot(),room.id)){dialog.close();return;}
  if(b.hasAttribute('data-city-supplies')){BondRecovery.open('shop');return;}
  const m=A.get(room.map),t=BondCities.theme(m);

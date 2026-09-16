@@ -15,7 +15,7 @@ const spriteNames=['herbalist','gardener','bard','librarian','astronomer','alche
 function theme(map){return themes[map.regionIndex<4?map.regionIndex:map.regionIndex===4?2:3];}
 function layout(m,road){
  const t=theme(m),column=themes.indexOf(t);m.cityTheme=t.id;m.width=m.height=2400;
- m.entry={x:1200,y:1600};m.guide={x:1040,y:1390};m.cache={x:1610,y:1660};m.shelter={x:1200,y:1510};
+ m.entry={x:1200,y:1600};m.guide={x:1040,y:1390};m.cache={x:1260,y:1920};m.shelter={x:1200,y:1510};
  m.buildings=[
   {id:m.id+':hall',name:t.hall,x:730,y:780,size:580,art:column,room:'hall'},
   {id:m.id+':shop',name:t.shop,x:1680,y:1010,size:460,art:column+4,room:'shop'},
@@ -31,7 +31,7 @@ function layout(m,road){
   road(m,'door:'+b.id,[{x:1200,y:b.door.y},b.door],210,'paving');
   m.scenery.push({key:b.id,x:b.x,y:b.y,size:b.size,art:12,cityArt:b.art,solid:95});
  }
- road(m,'square',[m.guide,{x:1200,y:1510},m.cache,{x:1730,y:1810}],220,'paving');
+ road(m,'square',[m.guide,{x:1200,y:1510},{x:1610,y:1660},{x:1730,y:1810}],220,'paving');
  if(m.teleport)m.scenery.push({key:m.id+':teleport',...m.teleport,art:10,size:255,solid:0});
  m.residents=t.people.map((person,i)=>({id:m.id+':resident:'+i,name:t.names[i],appearance:'npc-'+person,pet:t.pets[i],text:t.lore[i],x:[930,1470,720][i],y:[1040,1440,1930][i]}));
  m.landmarks=[{...m.hero,kind:'hero'}];

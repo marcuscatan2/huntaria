@@ -19,6 +19,36 @@ const canvas=$('#world-ground'),ctx=canvas.getContext('2d'),layer=$('#world-acto
 const atlas=document.createElement('dialog');atlas.id='atlas-dialog';atlas.setAttribute('aria-label','World Atlas');atlas.innerHTML='<div class="atlas-titlebar"><h2 tabindex="-1">The Six Reaches</h2><button class="button secondary" id="close-atlas">Close map ×</button></div><p>Six reaches, thirty-six places to discover. Follow the roads, prepare in town, and choose your next hunt.</p><div id="atlas-regions"></div>';document.body.append(atlas);
 function stop(save=true){keys.clear();dest=null;pending=null;route=[];followTarget=null;last=0;if(dirty){if(save)P.position(pos);dirty=false;}}
 function message(t){$('#region-message').textContent=t;$('#world-status').textContent=t;}
+function canChallengeNpc(id,s=P.snapshot()){
+ const e=W.NPCS[id];return !!e&&!e.storyOnly&&(e.practice||!s.defeated.includes(id))&&!(e.openingGate&&s.journey.early.mageGate)&&!(e.masterClass&&s.journey.early.trials[e.masterClass]);
+}
+function cacheArt(){return `<svg class="world-chest" viewBox="0 0 120 100" aria-hidden="true" focusable="false">
+ <defs>
+  <linearGradient id="cache-lid" x2=".3" y2="1"><stop stop-color="#d8ae70"/><stop offset=".5" stop-color="#af7844"/><stop offset="1" stop-color="#855333"/></linearGradient>
+  <linearGradient id="cache-front" x2="0" y2="1"><stop stop-color="#a16b3f"/><stop offset="1" stop-color="#543a2a"/></linearGradient>
+  <linearGradient id="cache-brass" x2=".7" y2="1"><stop stop-color="#ffdfa0"/><stop offset=".45" stop-color="#c79b53"/><stop offset="1" stop-color="#8b6336"/></linearGradient>
+  <radialGradient id="cache-shadow"><stop stop-color="#172820" stop-opacity=".65"/><stop offset="1" stop-color="#172820" stop-opacity="0"/></radialGradient>
+ </defs>
+ <ellipse cx="61" cy="83" rx="57" ry="16" fill="url(#cache-shadow)"/>
+ <g stroke="#3c3027" stroke-width="2" stroke-linejoin="round">
+  <path d="M15 46 80 60 105 43V70L80 88 15 74Z" fill="url(#cache-front)"/>
+  <path d="M80 60 105 43V70L80 88Z" fill="#62472f"/>
+  <path d="M16 58 79 72M16 66 79 80M82 71 103 57M82 80 103 66" stroke="#372b22" stroke-width="1.3"/>
+  <path d="m34 63 11 2m16 5 10 2M34 72l17 4" stroke="#d29d60" stroke-opacity=".4" stroke-width="1"/>
+  <path d="M12 37 40 18 108 32 80 53Z" fill="url(#cache-lid)"/>
+  <path d="M12 37 80 53V63L12 48Z" fill="#96643c"/>
+  <path d="m80 53 28-21v11L80 63Z" fill="#6a4a30"/>
+  <path d="m21 31 66 15M31 25l67 15M36 34l15 3m10 2 12 3" fill="none" stroke="#6e4b2e" stroke-width="1.2"/>
+  <path d="M22 39 50 20 58 22 30 41v10l-8-2Zm42 10 29-20 8 1-29 21v10l-8-2Z" fill="url(#cache-brass)" stroke-width="1.2"/>
+  <path d="m22 51 8 2v22l-8-2Zm42 9 8 2v22l-8-2Z" fill="url(#cache-brass)" stroke-width="1.2"/>
+  <path d="M14 38 80 54l26-20M16 49l63 14" fill="none" stroke="#ebc18a" stroke-width="1.3"/>
+  <path d="m42 51 16 4v16l-16-4Z" fill="url(#cache-brass)" stroke-width="1.5"/>
+  <path d="M49 58a2.4 2.4 0 1 0 2 4l1 4-5-1 1-4a2.4 2.4 0 0 1 1-3Z" fill="#342c25" stroke="none"/>
+  <path d="m89 57 9-6v7l-9 6Z" fill="#302c25" stroke="#c19b60" stroke-width="1.5"/>
+ </g>
+ <g fill="#fbe0a0"><circle cx="26" cy="44" r="1.2"/><circle cx="26" cy="69" r="1.2"/><circle cx="68" cy="54" r="1.2"/><circle cx="68" cy="78" r="1.2"/></g>
+ <path d="m105 16 2 5 5 2-5 2-2 5-2-5-5-2 5-2Z" fill="#fff0c1" opacity=".9"/>
+</svg>`;}
 function sidebar(){
  const s=P.snapshot(),r=A.REGIONS[m.regionIndex];
  encounterNotice.hidden=!s.encounterSave;echoNotice.hidden=!!s.tutorial.summons||!Object.keys(s.inventory).some(k=>k.startsWith('echo:')&&s.inventory[k]>0);
@@ -51,7 +81,7 @@ function buildObjects(){
   objects.push({id:'opening-sign:bloom',kind:'openingSign',...bloom,label:'Bloomgrove',openingText:'Bloomslime restores allies but needs protection. Continue east to find it.'},
    {id:'opening-sign:stone',kind:'openingSign',...stone,label:'Deepwood',openingText:'Stonehorn is a slow frontline protector. Continue east to find it; Bloomslime lives to the west.'});
  }
- for(const e of [...BondCampaign.trainers,...BondCampaign.earlyEncounters.filter(e=>!e.kind),BondRelicQuest.tully].filter(e=>e.map===m.id&&BondCampaign.visible(e,state)&&!(quiet()&&m.id==='clearing-0')))objects.push({id:e.id,kind:'npc',x:e.x,y:e.y,masterClass:e.masterClass,applicationClass:e.applicationClass,label:e.name+' · '+(e.masterClass?'CLASS MASTER':e.storyOnly?'SPIRIT':e.main?'STORY':e.lesson||'CHALLENGE')});
+ for(const e of [...BondCampaign.trainers,...BondCampaign.earlyEncounters.filter(e=>!e.kind),BondRelicQuest.tully].filter(e=>e.map===m.id&&BondCampaign.visible(e,state)&&!(quiet()&&m.id==='clearing-0')))objects.push({id:e.id,kind:'npc',x:e.x,y:e.y,masterClass:e.masterClass,applicationClass:e.applicationClass,label:e.name+(e.masterClass?' · CLASS MASTER':e.storyOnly?' · SPIRIT':'')});
  for(const p of BondCampaign.packs.filter(p=>p.map===m.id&&!(quiet()&&m.id==='clearing-0')))objects.push({...p,kind:'pack',label:p.name});
  if(m.kind==='hub'){
   for(const b of m.buildings)objects.push({id:b.id,kind:'building',...b.door,sceneryService:true,sceneryKey:b.id,label:b.name});
@@ -77,7 +107,7 @@ function buildObjects(){
   if(o.sceneryService)visual='';else if(o.kind==='guide')visual='<div class="world-art">'+CharacterRig.art('npc-keeper')+'</div>';else if(o.kind==='wild'||o.kind==='npc')visual='<div class="world-art">'+CharacterRig.art(o.type||CharacterRig.npcAppearance(W.NPCS[o.id],o.id))+'</div>';
   else if(o.kind==='resident')visual='<div class="world-art">'+CharacterRig.art(o.appearance)+'</div><div class="city-pet" aria-hidden="true">'+CharacterRig.art(o.pet)+'</div>';
   else if(o.kind==='pack')visual='<div class="world-art">'+CharacterRig.art(m.habitats[0]?.type||'emberfox')+'</div>';
-  else if(o.kind==='cache')visual='<span class="world-chest" aria-hidden="true"><i></i></span>';
+  else if(o.kind==='cache')visual=cacheArt();
   else if(o.kind==='openingSign')visual='<span class="opening-sign-art" aria-hidden="true"><i></i><b></b></span>';
   else if(o.kind==='gate')visual=(o.gateKind==='stairs'?'<span class="tower-stair-hitbox" aria-hidden="true"></span>':'<span class="world-exit-hitbox" aria-hidden="true"></span>')+'<span class="gate-badge" aria-hidden="true">'+(o.gateKind==='stairs'?(o.direction==='up'?'↑ UPSTAIRS':'↓ DOWNSTAIRS'):(m.neighbors.findIndex(g=>g.id===o.id)+1)+' · '+(o.locked?'LOCKED':o.passage.title.toUpperCase()))+'</span>';
   if(o.kind==='wild'||o.kind==='npc')visual=visual.replace(' src="',' data-world-src="');
@@ -94,6 +124,7 @@ function buildObjects(){
 function updateQuestMarkers(state=P.snapshot(),current=BondCampaign.next(state)){
  for(const o of objects.filter(o=>o.kind==='npc'||o.kind==='guide')){
   const type=BondCampaign.questMarker(o,state,current),el=o.el;o.questMarker=type;if(!el)continue;
+  if(o.kind==='npc')el.querySelector('.world-label small').textContent=canChallengeNpc(o.id,state)?'TALK / CHALLENGE':'TALK';
   let marker=el.querySelector('.quest-marker');
   if(type&&!marker){marker=document.createElement('span');marker.className='quest-marker';marker.setAttribute('aria-hidden','true');el.prepend(marker);}
   if(marker){if(type){marker.textContent=type==='delivery'?'?':'!';marker.dataset.questMarker=type;}else marker.remove();}
@@ -241,7 +272,11 @@ exportButton.onclick=()=>{stop();const url=URL.createObjectURL(new Blob([P.expor
 const dirs={w:[0,-1],arrowup:[0,-1],s:[0,1],arrowdown:[0,1],a:[-1,0],arrowleft:[-1,0],d:[1,0],arrowright:[1,0]};
 document.addEventListener('keydown',e=>{if(!active||P.snapshot().encounterSave||document.hidden||document.querySelector('dialog[open]')||e.ctrlKey||e.metaKey||e.altKey||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;const k=e.key.toLowerCase();if(dirs[k]){e.preventDefault();keys.add(k);dest=null;pending=null;route=[];travelPlan=[];}else if(k==='escape'){stop();travelPlan=[];}else if(k==='e'){e.preventDefault();interact(nearest());}});
 document.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
-document.addEventListener('bond-profile',()=>{if(active)sidebar();});
+document.addEventListener('bond-profile',()=>{
+ if(active)sidebar();
+ if(W.NPCS[dialogId]&&!canChallengeNpc(dialogId)){$('#npc-fight').hidden=true;$('#npc-fight').disabled=true;}
+ const shortcut=$('#explore-challenge');if(shortcut&&!canChallengeNpc(shortcut.dataset.npc))shortcut.remove();
+});
 function motionStep(p,dx,dy){
  const q=A.clamp(m.id,{x:p.x+dx,y:p.y+dy});if(!A.collision(m.id,q))return q;
  const x={x:q.x,y:p.y},y={x:p.x,y:q.y};if(!A.collision(m.id,x)&&Math.abs(dx)>.01)return x;if(!A.collision(m.id,y)&&Math.abs(dy)>.01)return y;
@@ -293,7 +328,7 @@ function exploreInfo(o){
  if(isSight)P.discover(o.sightId);if(o.kind==='guide')P.talkKeeper(m.id);
  const residents=m.habitats.map(h=>C.UNITS[h.type].name+' · Lv '+h.level+' · '+h.count+' residents').join('<br>');
  const detail=o.openingText?'<p>'+o.openingText+'</p>':isSight?'<p>This discovery is saved in your field journal.</p>':'';
- info.innerHTML='<p class="eyebrow">'+(o.openingText?'TRAIL SIGN':o.roadSign?'TRAIL SIGN · LOCAL INFORMATION':isSight?'FIELD JOURNAL':'KEEPER OF '+A.REGIONS[m.regionIndex].name.toUpperCase())+'</p><h2 id="exploration-title">'+o.label+'</h2>'+detail+(!o.openingText&&residents?'<h3>Local residents</h3><p>'+residents+'</p>':'')+'<div class="npc-actions"><button id="explore-close" class="button primary">Continue exploring</button>'+(!isSight&&!o.openingText&&npc?'<button id="explore-challenge" class="button secondary">Challenge '+npc[1].name+'</button>':'')+'</div>';
+ info.innerHTML='<p class="eyebrow">'+(o.openingText?'TRAIL SIGN':o.roadSign?'TRAIL SIGN · LOCAL INFORMATION':isSight?'FIELD JOURNAL':'KEEPER OF '+A.REGIONS[m.regionIndex].name.toUpperCase())+'</p><h2 id="exploration-title">'+o.label+'</h2>'+detail+(!o.openingText&&residents?'<h3>Local residents</h3><p>'+residents+'</p>':'')+'<div class="npc-actions"><button id="explore-close" class="button primary">Continue exploring</button>'+(!isSight&&!o.openingText&&npc&&canChallengeNpc(npc[0])?'<button id="explore-challenge" data-npc="'+npc[0]+'" class="button secondary">Challenge '+npc[1].name+'</button>':'')+'</div>';
  info.querySelector('#explore-close').onclick=()=>info.close();
  if(npc&&info.querySelector('#explore-challenge'))info.querySelector('#explore-challenge').onclick=()=>{info.close();talk(npc[0]);};
  info.showModal();sidebar();

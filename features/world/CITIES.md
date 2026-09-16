@@ -61,6 +61,9 @@ duplicate audit are recorded in `assets/cities/prompts.json`.
 
 ## Recovery, travel and saves
 
+Walking or using a waystone into a city heals the party silently; arrival adds no
+persistent welcome/healing message to the exploration HUD.
+
 `BondProfile.transition` validates proximity, unlock and active-encounter state
 inside the same critical save transaction as arrival. Entering any city restores
 the trainer and every owned companion, including fallen and unequipped copies.
@@ -77,6 +80,19 @@ and grants no loot, XP or spawn refresh. Save failure retains the origin and
 possessions. Atlas selection and remote city-service calls grant no teleport.
 
 ## Validation and owner review
+
+`field-interactions-v1` removes defeated NPC challenges from dialogue buttons,
+field action labels and Keeper shortcuts. Existing open panels update when the
+profile records victory; the NPC remains available for conversation and quests.
+The profile still rejects rematches independently of presentation.
+
+Wayfarer caches use the shaded three-quarter chest drawn by `region.js`, with
+wood panels, brass bands, a keyhole and ground shadow. `city.css` supplies its
+desktop/phone tap bounds and nearby highlight. The static SVG stays readable in
+reduced motion and requires no additional texture. Collection remains a single
+profile-owned reward; collected caches disappear and stay gone after reload.
+City caches stand on the existing city paving, clear of waystone art and its
+tap bounds. Moving the cache does not change roads, collisions or collection IDs.
 
 Run `python tests/city_world_check.py --browser chrome` for grid/portal geometry,
 door paths, played building entry, shopping, themed room objects, arrival healing,
