@@ -79,12 +79,19 @@ adds a small ranged bonus, while DEX adds a small melee bonus.
 
 The `campaign.js` trainingTuning table keeps early demonstrations and optional
 lessons viable for starter parties under these stat and targeting rules.
-Tree attack and eligible innates multiply strikes. Hit order is category/skill
-scaling, offensive bonuses, element and Overcharge, round, Guard split, tree
-armor, soft DEF/MDEF, Granite, shields, remaining HP. Positive direct damage
-has a minimum of one after soft defense. Guard applies element and Overcharge
-once; its redirected damage is already adjusted. A stronger existing shield
-cannot be replaced or prolonged by a weaker one. Shields do not scale with INT.
+Tree attack and eligible innates multiply strikes. The workbook update preserves
+these stat formulas and separates attack basis from melee/ranged delivery.
+Physical hits pass accuracy, then roll 5% base critical chance for 1.4x damage;
+explicit skills/talents may modify the chance. Magic and secondary procs do not
+crit. Leadership supplies no critical bonus.
+
+Damage resolves offensive scaling, element/Overcharge, tree armor and soft
+defense, direct reductions, personal shields, shared barriers, then one guardian
+(up to 35% of remaining HP damage), followed by any delayed HP loss. Transfers
+and debt bypass a second defense/shield pass. Separate personal shield pools
+coexist up to 25% of recipient maximum HP and absorb by earliest expiry. A
+same-source refresh keeps its stronger remaining amount. New shields use their
+written ATK/MATK/HP formula. See [the workbook contract](features/content/COMBAT_WORKBOOKS.md).
 
 Attack intervals use the stat delay multiplier and tree Speed, with a 0.2-second
 minimum. Slow (0.6) and Haste (1.3) affect readiness and movement. Skill cooldowns

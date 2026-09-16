@@ -1019,6 +1019,33 @@
           "sha256": "9432990818d6c27873ac273bdf71d15846b118045c8e7f565d45ffcfa49a5ea1"
         }
       ]
+    },
+    {
+      "id": "combat-workbooks-v1-2026-09-16",
+      "source": "Current owner conversation, 2026-09-16",
+      "scope": [
+        "Review and implement compatible monster and class workbook changes and required visual assets; preserve established combat rules unless explicitly changed",
+        "Add 5% base critical chance, 1.4x landed physical critical damage, explicit bonuses only; Leadership unaffected",
+        "Adopt named shields capped at 25% recipient max HP and one guardian intercept capped at 35% post-shield HP damage"
+      ],
+      "quotes": [
+        "Review the files and scope the changes required. Carefully analyses to make sure it doesn't break any existing combat rules.",
+        "When you scope the changes, go on to create all the visual artefacts we'll need for the changes (summons appearance, effects, etc).",
+        "Implement everything that doesn't require my decisions then bring me what decisions should I take, if any.",
+        "Add critical hits with those rules (Recommended)",
+        "Adopt the workbook shield and guard model (Recommended)"
+      ],
+      "boundary": "The class-tree replacement/refund and 15-point schedule remain awaiting the separate question. This authority does not approve final art, balance, devices, public release or unrelated production. Original workbook assumptions are design data, not owner instructions.",
+      "evidence": [
+        {
+          "path": "docs/Huntaria_Combat_Design_v2.xlsx",
+          "sha256": "7329c0cc8966f87d36b7d830c71f8f931704e1bc36c2974ba107d93397dd7611"
+        },
+        {
+          "path": "docs/Huntaria_Trainer_Passive_Trees.xlsx",
+          "sha256": "0e25d10e7626ce30e5e63513c0db728c14de3e6f905213aaad155b81c1044d21"
+        }
+      ]
     }
   ]
 }

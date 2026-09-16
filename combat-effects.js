@@ -1,0 +1,204 @@
+/* Deterministic effect ledger. Core actors, temporary entities and proc packets stay distinct. */
+(function(root){
+'use strict';
+const alive=u=>!!u&&u.hp>0&&!u.eliminated;
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+class Effects{
+ constructor(battle){this.battle=battle;this.queue=[];this.sequence=0;this.entities=[];this.barriers=[];this.zones=[];this.post=[];this.depth=0;}
+ begin(){this.depth++;}
+ after(fn){if(this.depth)this.post.push(fn);else if(!this.battle.ended)fn();}
+ finish(){this.depth=Math.max(0,this.depth-1);if(this.depth)return;while(this.post.length&&!this.battle.ended){const fn=this.post.shift();fn();}if(this.battle.ended)this.post=[];}
+ init(u){u.effects={};u.pools=[];u.kit={};u.debt=[];u.critChance=.05;u.encounterActor=!u.temporary;}
+ core(u){return this.battle.team(u.side).filter(v=>v.owner===u.owner&&!v.storyMaster);}
+ trainer(u){return this.core(u).find(v=>v.slot===0);}
+ others(u){return this.core(u).filter(v=>v!==u);}
+ lowest(u,list=this.core(u)){return [...list].filter(alive).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp||(a.slot===0?-1:b.slot===0?1:0)||a.id.localeCompare(b.id))[0];}
+ threatened(u){return alive(u)&&this.battle.units.some(v=>alive(v)&&v.side!==u.side&&this.battle.target(v)?.id===u.id);}
+ enemies(u){return [...this.battle.team(1-u.side),...this.entities.filter(v=>alive(v)&&!v.untargetable&&v.side!==u.side)];}
+ nearby(u,point,radius,cap=3,primary=null){return this.enemies(u).filter(v=>this.battle.distance(point,v)<=radius+.001).sort((a,b)=>(a===primary?-1:b===primary?1:0)||this.battle.distance(point,a)-this.battle.distance(point,b)||a.id.localeCompare(b.id)).slice(0,cap);}
+ stats(u){
+  if(u.snapshot)return u.snapshot;
+  const base=root.BondContent.UNITS[u.type],basis=(u.attackBase||base?.attackBase||'STR').toUpperCase(),category=basis.startsWith('INT')?'magic':basis.startsWith('DEX')?'ranged':'melee';
+  const innate=u.basePower||base?.power||u.power,scale=u.skillScale??1;
+  const A=innate*(u.factors?.[category==='magic'?'melee':category]||1)*scale*(1+this.value(u,'physicalPower'));
+  const M=innate*(u.factors?.magic||1)*scale*(1+this.value(u,'magicPower'));
+  return {A,M,H:u.maxHp,P:category==='magic'?M:A,category,hit:Math.floor(u.effective?.dex||0)+u.level+this.value(u,'hit'),def:root.BondProgress?.physicalDefense(u.effective?.vit||0,0)||0,mdef:root.BondProgress?.classic(u.effective||{},u.level).magicDefense||0};
+ }
+ has(u,key){return !!u?.effects?.[key]&&u.effects[key].until>this.battle.time;}
+ get(u,key){return this.has(u,key)?u.effects[key]:null;}
+ value(u,kind){let positive=0,negative=0;for(const e of Object.values(u?.effects||{}))if(e.until>this.battle.time&&e.kind===kind){positive=Math.max(positive,e.value||0);negative=Math.min(negative,e.value||0);}return positive+negative;}
+ put(source,target,key,kind,value,duration,extra={}){
+  if(!alive(target)||this.battle.ended)return null;
+  const old=this.get(target,key),amount=old&&old.kind===kind&&!extra.replace?(value>=0?Math.max(old.value,value):Math.min(old.value,value)):value;
+  const e={key,kind,value:amount,source:source.id,until:this.battle.time+duration,...extra};target.effects[key]=e;
+  this.battle.emit('status',source,target,key,0,{effect:key,duration});return e;
+ }
+ remove(u,key){const e=this.get(u,key);if(e)delete u.effects[key];return e;}
+ ready(u,key,seconds){const now=this.battle.time;if((u.kit[key]??-Infinity)>now+1e-8)return false;u.kit[key]=now+seconds;return true;}
+ add(u,key,n,max=Infinity){return u.kit[key]=clamp((u.kit[key]||0)+n,0,max);}
+ take(u,key,max=Infinity){const n=Math.min(u.kit[key]||0,max);u.kit[key]=(u.kit[key]||0)-n;return n;}
+ later(source,target,delay,fn,{ownerRequired=false,label='Delayed effect'}={}){this.queue.push({id:++this.sequence,at:this.battle.time+delay,source,target,fn,ownerRequired,label});}
+ start(u){root.BondCombatPassives?.start(this,u);root.BondClassTalents?.start(this,u);}
+ tick(){
+  const b=this.battle;
+  this.zones=this.zones.filter(z=>alive(z.owner)&&z.until>b.time);
+  for(const u of b.units){
+   this.syncShield(u);
+   if(!alive(u))continue;
+   for(const [key,e] of Object.entries(u.effects))if(e.until<b.time-1e-8||e.until<=b.time+1e-8&&e.kind!=='dot'){delete u.effects[key];if(e.expire)e.expire();}
+   root.BondCombatPassives?.tick(this,u);
+   root.BondClassTalents?.tick(this,u);
+  }
+  const due=this.queue.filter(e=>e.at<=b.time+1e-8).sort((a,b)=>a.at-b.at||a.id-b.id);
+  this.queue=this.queue.filter(e=>e.at>b.time+1e-8);
+  for(const e of due){if(b.ended)break;if(!e.ownerRequired||alive(e.source))e.fn();}
+  if(!b.ended)root.BondCombatEntities?.step(this);
+  if(b.ended)this.clear();
+ }
+ clear(){this.queue=[];this.post=[];this.zones=[];for(const e of this.entities)if(alive(e))this.despawn(e,'battle-end');this.barriers=[];}
+ syncShield(u){
+  if(!u.pools)return;
+  // Import a legacy initial shield only once; ordinary subsequent grants use this ledger.
+  u.pools=u.pools.filter(p=>p.until>this.battle.time+1e-8&&p.amount>0);
+  u.shield=u.pools.reduce((n,p)=>n+p.amount,0);u.shieldUntil=Math.max(0,...u.pools.map(p=>p.until));
+ }
+ shield(source,target,amount,duration,label,options={}){
+  if(!alive(target)||this.battle.ended)return 0;
+  this.syncShield(target);
+  const key=options.key||source.id+':'+label,old=target.pools.find(p=>p.key===key),before=old?.amount||0;
+  let desired=Math.max(0,Math.round(amount*(1+this.value(source,'shieldOutput'))*(1+this.value(target,'shieldReceived'))));
+  const brittle=this.remove(target,'Brittle');if(brittle)desired=Math.round(desired*.75);
+  desired=options.accumulate?before+desired:Math.max(before,desired);
+  desired=Math.min(desired,options.cap??Infinity,Math.max(0,Math.floor(target.maxHp*.25)-(target.shield-before)));
+  const granted=Math.max(0,desired-before);
+  if(desired<=0)return 0;
+  const pool={key,label,source:source.id,amount:desired,until:this.battle.time+duration};
+  if(old)Object.assign(old,pool);else target.pools.push(pool);
+  this.syncShield(target);this.battle.emit('shield',source,target,label,desired,{granted,pool:key});
+  return granted;
+ }
+ absorb(target,raw,actor,details){
+  this.syncShield(target);let remaining=raw,absorbed=0;
+  for(const p of [...target.pools].sort((a,b)=>a.until-b.until||a.key.localeCompare(b.key))){
+   if(remaining<=0)break;
+   const bonus=Math.max(0,details.shieldBonus||0),normal=Math.min(remaining,p.amount),used=Math.min(p.amount,Math.round(normal*(1+bonus)));
+   p.amount-=used;remaining-=normal;absorbed+=used;
+   if(p.amount<=0&&actor&&actor.side!==target.side)this.after(()=>{root.BondCombatPassives?.broken(this,actor,target,p,details);root.BondClassTalents?.broken(this,actor,target,p,details);});
+  }
+  this.syncShield(target);return {remaining:Math.max(0,Math.round(remaining)),absorbed};
+ }
+ reduction(target,actor,raw,details){
+  const direct=details.direct!==false&&!details.dot&&!details.transfer&&!details.debt;
+  if(details.transfer||details.debt)return raw;
+  const original=raw;let multiplier=1;
+  for(const e of Object.values(target.effects||{})){
+   if(e.until<=this.battle.time)continue;
+   const applies=e.kind==='dr'&&direct||e.kind==='physicalDR'&&direct&&details.category!=='magic'||e.kind==='magicDR'&&direct&&details.category==='magic'||e.kind==='basicDR'&&details.basic||e.kind==='nextDirectDR'&&direct||e.kind==='nextActiveDR'&&details.active||e.kind==='dotDR'&&details.dot||e.kind==='nextDotDR'&&details.dot||e.kind==='critDR'&&details.critical;
+   if(applies){multiplier*=1-e.value;if(e.once)delete target.effects[e.key];}
+  }
+  raw*=Math.max(.4,multiplier);
+  raw=root.BondCombatPassives?.incoming(this,actor,target,raw,details)??raw;
+  raw=root.BondClassTalents?.incoming(this,actor,target,raw,details)??raw;
+  return Math.max(0,Math.round(Math.max(original*.4,raw)));
+ }
+ beforeHP(actor,target,raw,details){
+  if(details.transfer||details.debt)return raw;
+  raw=root.BondClassTalents?.barrier(this,actor,target,raw,details)??raw;
+  raw=root.BondCombatPassives?.beforeHP(this,actor,target,raw,details)??raw;
+  raw=root.BondClassTalents?.beforeHP(this,actor,target,raw,details)??raw;
+  const direct=details.direct!==false&&!details.dot;
+  if(direct&&raw>0&&details.intercept!==false){
+   const candidates=[];
+   for(const u of this.core(target)){
+    if(u===target)continue;
+    const old=this.battle.has(u,'guard')&&(target.slot===0||this.battle.defense)?.35:0;
+    const guard=this.get(u,'Intercept'),passive=root.BondCombatPassives?.guard(this,u,target)||0;
+    if((guard?.target===target.id||guard?.target==='trainer'&&target.slot===0)&&u.hp/u.maxHp>(guard.minHP||0))candidates.push({u,rate:guard.value});
+    if(old||passive)candidates.push({u,rate:Math.max(old,passive)});
+   }
+   if(!details.area&&!details.arenaWide)for(const e of this.entities)if(alive(e)&&e.guards===target.id&&e.side===target.side&&alive(e.master))candidates.push({u:e,rate:e.intercept});
+   candidates.sort((a,b)=>b.rate-a.rate||b.u.hp/b.u.maxHp-a.u.hp/a.u.maxHp||a.u.id.localeCompare(b.u.id));
+   if(candidates.length){const {u,rate}=candidates[0],amount=Math.min(u.hp,Math.round(raw*Math.min(.35,rate)));raw-=amount;this.loss(actor,u,amount,'Intercept',{transfer:true,direct:false});this.battle.emit('guard',u,target,'Intercept',amount);}
+  }
+  raw=root.BondClassTalents?.stagger(this,actor,target,raw,details)??raw;
+  return Math.max(0,Math.round(raw));
+ }
+ loss(actor,target,amount,label,details={}){
+  // Debt and intercepted HP loss never run defenses, resource hooks or recursion.
+  if(!alive(target)||this.battle.ended)return 0;
+  const b=this.battle,floor=b.training?1:b.rescue?root.BondRaidRules.floor(b,target):0,dealt=Math.min(Math.max(0,target.hp-floor),Math.max(0,Math.round(amount)));
+  target.hp-=dealt;if(actor)actor.damage=(actor.damage||0)+dealt;
+  b.emit('damage',actor,target,label,dealt,{...details,temporary:!!target.temporary});
+  if(target.hp<=0)this.defeated(actor,target,details);
+  b.checkEnd();if(b.ended)this.clear();return dealt;
+ }
+ defeated(actor,target,details={}){
+  if(target.temporary){this.despawn(target,details.transfer?'intercept':'destroyed');return;}
+  target.hp=0;target.shield=0;target.pools=[];target.status={};
+  this.battle.emit('defeat',actor,target,target.name+' fell.');
+  if(target.slot===0&&this.battle.group)for(const companion of this.battle.units.filter(v=>v.owner===target.owner&&v.side===target.side&&v.slot>0))companion.eliminated=true;
+  for(const e of this.entities)if(e.master===target)this.despawn(e,'owner-death');
+ }
+ despawn(e,reason){if(e.removed)return;e.hp=0;e.removed=true;e.removedAt=this.battle.time;e.reason=reason;this.battle.emit('despawn',e.master,e,reason,0,{entity:e.id,temporary:true,reason});if(reason==='destroyed')this.after(()=>root.BondCombatEntities?.destroyed(this,e));}
+ heal(source,target,amount,label,options={}){
+  if(!alive(target)||this.battle.ended||this.battle.overcharge)return 0;
+  const before=target.hp,base=Math.max(0,amount),factor=(1+this.value(source,'healOutput'))*(1+this.value(target,'healReceived'))*(options.legacy||options.alreadyScaled?1:1+(source.growth?.healing||0));
+  const tuned=root.BondCombatPassives?.healAmount(this,source,target,base*factor,options)??base*factor;
+  const offered=Math.max(0,Math.round(tuned)),effective=Math.min(offered,target.maxHp-before);target.hp+=effective;source.healing=(source.healing||0)+effective;
+  if(effective)this.battle.emit('heal',source,target,label,effective,{primary:!!options.primary,proc:!options.primary});
+  root.BondClassTalents?.healed(this,source,target,effective,{...options,offered,before});
+  root.BondCombatPassives?.healed(this,source,target,effective,{...options,offered,before});
+  return effective;
+ }
+ direct(source,target,amount,label,options={}){
+  if(!alive(source)||!alive(target)||this.battle.ended)return {hit:false,damage:0};
+  const category=options.category||source.basicCategory;
+  if(!options.ignoreRange&&!this.battle.inRange(source,target,{reach:options.reach||this.battle.reach(source)}))return {hit:false,damage:0};
+  if(!options.proc&&options.primary!==false)root.BondClassTalents?.launch(this,source,target,options);
+  if(this.battle.ended)return {hit:false,damage:0};
+  const bonus=!options.proc?root.BondCombatPassives.hitBonus(this,source,target,options)+(root.BondClassTalents?.hitBonus(this,source,target,options)||0):0;
+  const shroud=options.basic&&category!=='magic'&&this.remove(target,'Shroud');
+  const hit=!shroud&&(category==='magic'||target.temporary&&target.structure||options.guaranteed||this.battle.random()>=1-clamp((80+source.level+Math.floor(source.effective?.dex||0)+this.value(source,'hit')+(options.hitBonus||0)+bonus-target.level-Math.floor(target.effective?.agi||0)-this.value(target,'flee'))/100,.05,.95));
+  if(!hit){this.battle.emit('dodge',source,target,'Miss',0,{category});root.BondCombatPassives.missed(this,source,target,options);return {hit:false,damage:0};}
+  const forced=options.basic&&!options.proc&&this.remove(source,'Cast-Off Ring');
+  const critical=!options.proc&&category!=='magic'&&(!!forced||options.critical===true||this.battle.random()<clamp(source.critChance+this.value(source,'crit')+(options.critBonus||0),0,1));
+  const details={direct:true,primary:options.primary!==false&&!options.proc,active:!!options.active,basic:!!options.basic,proc:!!options.proc,area:!!options.area,secondary:!!options.secondary,shieldBonus:options.shieldBonus||0,distance:this.battle.distance(source,target),reach:options.reach||this.battle.reach(source),...options,category,critical};
+  if(!options.proc){amount=root.BondCombatPassives.outgoing(this,source,target,amount,details);amount=root.BondClassTalents?.outgoing(this,source,target,amount,details)??amount;}
+  let power=amount*(critical?1.4:1)*(1+this.value(source,'damage'));
+  if(details.basic)power*=1+this.value(source,'basicDamage');
+  if(details.active){power*=1+this.value(source,'activeDamage');const next=this.remove(source,'Drowsy')||this.remove(source,'Weakened active');if(next){power*=1-next.value;if(next.key==='Drowsy')this.after(()=>root.BondCombatPassives?.dreamSipper(this,next));}}
+  if(details.basic){const next=this.remove(source,'Weakened basic');if(next)power*=1-next.value;}
+  if(details.active&&category==='magic'){const next=this.remove(source,'Hinge Hex');if(next)power*=1-next.value;}
+  if(details.primary&&!details.proc){const wire=this.remove(source,'Tension Wire'),sap=this.remove(source,'Sour Sap strike');if(wire)power*=1-wire.value;if(sap)power*=1-sap.value;}
+  const result=this.battle.damage(source,target,power,label,true,details)||{damage:0,absorbed:0};
+  if(!details.proc&&details.primary)this.after(()=>root.BondCombatPassives.landed(this,source,target,{hit:true,critical,...result},details));
+  return {hit:true,critical,...result};
+ }
+ proc(source,target,amount,category,label,options={}){return this.direct(source,target,amount,label,{category,proc:true,ignoreRange:true,...options});}
+ dot(source,target,key,total,duration,category){
+  const existing=this.get(target,key),interval=1,e=this.put(source,target,key,'dot',total/duration,duration,{category,next:existing?.next||this.battle.time+interval});if(!e)return;
+  if(existing)return;
+  // Tick at the written endpoint before expiry; the queue owns the tick, not the status cleaner.
+  const pulseAt=()=>{const current=target.effects?.[key];if(!current||!alive(target)||current.until<this.battle.time-1e-8)return;current.next+=interval;this.battle.damage(source,target,current.value,key,false,{category,dot:true,direct:false,proc:true});if(current.next<=current.until+1e-8)this.later(source,target,interval,pulseAt,{label:key});};
+  this.later(source,target,Math.max(.05,e.next-this.battle.time),pulseAt,{label:key});
+ }
+ cleanse(source,target,category=null,all=false){
+  if(!alive(target))return 0;
+  const priority=e=>e.kind==='control'?0:e.kind==='healReceived'?1:e.kind==='dot'?2:3;
+  const items=Object.values(target.effects||{}).filter(e=>e.until>this.battle.time&&e.harmful!==false&&(e.harmful===true||e.value<0||['dot','control','basicPenalty','incomingMark'].includes(e.kind))&&(!category||category==='dot'&&e.kind==='dot'||category==='heal'&&e.kind==='healReceived'||category==='blind'&&e.kind==='hit'||category==='tempo'&&e.kind==='basicPenalty')).sort((a,b)=>priority(a)-priority(b)||a.key.localeCompare(b.key));
+  let n=0;for(const e of items.slice(0,all?items.length:1)){delete target.effects[e.key];n++;}
+  if(!category||category==='dot'){if(this.battle.has(target,'burn')&&(all||!n)){delete target.status.burn;n++;}}
+  if(!category&&this.battle.has(target,'slow')&&(all||!n)){delete target.status.slow;n++;}
+  if(n){this.battle.emit('status',source,target,'Cleansed',n);root.BondCombatPassives?.cleansed(this,source,target,n);}
+  return n;
+ }
+ control(source,target,key,seconds){
+  if(!alive(target)||target.boss&&target.controlImmune?.includes(key)||this.get(target,'Immunity:'+key))return false;
+  this.put(source,target,key,'control',1,seconds,{harmful:true});this.put(source,target,'Immunity:'+key,'immunity',1,seconds+2,{harmful:false});return true;
+ }
+ taunt(source,target,seconds){if(!alive(target)||target.boss&&target.controlImmune?.includes('taunt')||!this.battle.inRange(target,source))return false;return this.put(source,target,'Taunt','taunt',1,seconds,{target:source.id,harmful:true});}
+ target(actor){const t=this.get(actor,'Taunt'),u=t&&this.battle.units.find(u=>u.id===t.target);return alive(u)&&this.battle.inRange(actor,u)?u:null;}
+ basicInterval(u){const pack=Object.values(u.effects||{}).filter(e=>e.kind==='contributor'&&e.until>this.battle.time).reduce((n,e)=>n+e.value,0);return clamp(1-Math.max(pack,this.value(u,'basicTempo')),.7,1)*Math.max(1,1+this.value(u,'basicPenalty'))*(u.kit.number===69?1.15:1);}
+}
+root.BondCombatEffects={Effects,alive,clamp};
+})(globalThis);

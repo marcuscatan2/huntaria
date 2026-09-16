@@ -102,7 +102,7 @@ const tidecrown=C.MONSTERS.find(t=>C.UNITS[t].source==='boss'&&C.UNITS[t].region
 const ambercolossus=C.MONSTERS.find(t=>C.UNITS[t].source==='boss'&&C.UNITS[t].region===2);
 addEarly({id:'early:boss:tidecrown',name:C.UNITS[tidecrown].name,appearance:tidecrown,title:'Willowbrook guardian · Lv 15',kind:'boss',level:15,seed:1515,earlyKey:'tidecrown',trainerXP:3900,coins:80,
  greeting:'The water gathers around one powerful creature.',advice:'Tidal Return marks the rear. Guard, ward or change formation before it lands.',requiresDemonstrations:4,
- enemies:[{type:tidecrown,skills:[...C.UNITS[tidecrown].default],hp:2500,power:36,boss:true,passive:C.UNITS[tidecrown].passive}],...placed('brook-boss',{x:A.get('brook-boss').hero.x,y:A.get('brook-boss').hero.y+240})});
+ enemies:[{type:tidecrown,skills:[...C.UNITS[tidecrown].default],hp:1500,power:32,skillScale:.85,boss:true,passive:C.UNITS[tidecrown].passive}],...placed('brook-boss',{x:A.get('brook-boss').hero.x,y:A.get('brook-boss').hero.y+240})});
 for(const [i,type] of C.CLASSES.entries()){
  const name=C.UNITS[type].name;
  addEarly({id:'early:master:'+type,name:name+' Master',appearance:type,title:name+' acceptance battle',level:15,seed:201+i,trialClass:type,masterClass:type,protectedEncounter:true,autoReturn:true,trainerXP:8500,coins:100,
@@ -131,6 +131,7 @@ addEarly({id:'early:tree-proof',name:'Amber Naturalist',appearance:'druid',title
 const trainingTuning={
  'story:clearing:1':[.85,.7],'story:clearing:3':[.85,.7],'story:brook:6':[.85,.7],'story:hollow:3':[.85,.7],
  'story:brook:3':[.6,.75],'story:brook:4':[.6,.75],
+ 'early:amber:2':[.8,.75],
  'early:counter':[.75,.65],'early:ability':[.75,.65],'early:resolution':[.75,.65]
 };
 for(const [id,[power,health]] of Object.entries(trainingTuning))W.NPCS[id].team=W.NPCS[id].team.map(u=>({...u,power:Math.round(C.UNITS[u.type].power*power),skillScale:power,healthScale:health}));

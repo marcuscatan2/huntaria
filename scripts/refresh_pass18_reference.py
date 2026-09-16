@@ -3,6 +3,7 @@
 The Google Sheet snapshot owns creature identity/design fields. Existing runtime
 stats and kits remain local until their Sheet tabs contain reviewed data.
 """
+import argparse
 import copy
 import hashlib
 import json
@@ -21,6 +22,34 @@ data = json.loads(target.read_text(encoding="utf-8"))
 lookup = {r["id"]: r for r in data["creatures"]}
 actual = {u["id"]: u for u in live["species"]}
 assert len(lookup) == 100 and set(lookup) == set(actual)
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--combat-workbooks', action='store_true', help='Publish the explicitly authorized workbook kits; preserve identity, bases and habitats')
+args = parser.parse_args()
+if args.combat_workbooks:
+    from combat_workbooks import catalog
+    reviewed, _ = catalog()
+    for sid, u in actual.items():
+        r = lookup[sid]
+        b = r['base']
+        source = reviewed['species'][sid]
+        assert (b['hp'], b['attack'], b['intervalSeconds'], b['moveMultiplier']) == (u['hp'], u['power'], u['interval'], u['moveSpeed']), sid
+        assert u['passive'] == source['passive']['id']
+        assert u['range'] == (1 if source['delivery'].startswith('Melee') else 4)
+        own = [s['id'] for s in reviewed['skills'].values() if s['owner'] == sid]
+        assert u['default'] == own[:3] and set(own).issubset(u['skills'])
+        assert set(s['id'] for s in r['skills']).issubset(u['skills']), 'Lost legacy skill: ' + sid
+        r['skills'] = [{'id': s['id'], 'name': s['name'], 'kind': s['kind'], 'category': s.get('category'), 'baseCooldownSeconds': s['cd']} for s in u['kit']]
+        r['defaultSkills'] = u['default']
+        r['passive'] = {'id': u['passive'], 'name': u['passiveInfo']['name'], 'description': u['trait']}
+        b.update(rangeTier=u['range'], reach={1: 12, 3: 27, 4: 34}[u['range']], critChance=.05)
+    data['combatSource'] = reviewed['source']
+    data['revision'] = 11
+    data['date'] = '2026-09-16'
+    data['sourceFiles'] = list(dict.fromkeys(data['sourceFiles'] + ['combat-catalog.js', 'combat-kits.js', 'combat-passives.js', 'combat-effects.js', 'combat-entities.js']))
+    target.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    print('Published authorized workbook kits; preserved species identity, base tuning, habitats, loot and legacy skill IDs.')
+    raise SystemExit(0)
 
 # Preserve the separately labelled future material proposal by destination region
 # when Sheet rows move. It is not a live loot source.

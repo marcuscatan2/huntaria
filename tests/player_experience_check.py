@@ -62,7 +62,7 @@ with sync_playwright() as pw:
         page.evaluate('BondApp.getBattle().run();BondApp.renderBattle();BondApp.finish()')
         check('Incoming damage can be disabled',page.evaluate('BondApp.getBattle().team(0).every(u=>u.hp===u.maxHp)&&BondTraining.report(BondApp.getBattle()).total.healing===0'))
         math=page.evaluate("""()=>{const b=new BondGame.Battle(BondApp.getBuild(),{training:true,profile:BondProfile.snapshot(),trainingPressure:false}),t=b.trainer(0);
-          b.events=[];t.shield=0;b.shield(t,t,100,5,'First');b.shield(t,t,140,5,'Refresh');b.time=2;
+          b.events=[];t.pools=[];t.shield=0;b.shield(t,t,100,5,'Ward');b.shield(t,t,140,5,'Ward');b.time=2;
           const r=BondTraining.report(b);return r.total.shield===140&&r.total.sps===70;}""")
         check('Shield rate counts added protection without double-counting refreshes',math)
         page.set_viewport_size({'width':1440,'height':1000});page.evaluate("BondApp.cancelRegionBattle();BondProfile.travel('clearing-hub');BondProfile.testing.heal();BondApp.startRegionBattle('story:clearing:0');BondApp.getBattle().run();BondApp.renderBattle();BondApp.finish()")

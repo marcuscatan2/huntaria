@@ -9,7 +9,7 @@ Status: **local**. Simulates targeting, damage and outcomes; sends events to ani
 
 `BondGame.Battle.step / emit / run; BondRules`
 
-Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective. The class rescue uses two raiders, a boss and a Lv100 master; old seven-enemy reservations remain accepted. raid-rules.js guarantees player-party defeat at 8 seconds and the master's victory by 14 seconds; saved tick replay uses the same deterministic choreography. Normal attacks choose the closest living enemy, including trainers; explicit skills can override this target. training.js configures a stationary neutral dummy and optional two-second party damage pulses. Training lasts 30 simulation seconds, prevents defeat, skips overtime and reports event-based DPS, effective healing and newly granted shield rates by party and individual.
+Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective. The class rescue uses two raiders, a boss and a Lv100 master; old seven-enemy reservations remain accepted. raid-rules.js guarantees player-party defeat at 8 seconds and the master's victory by 14 seconds; saved tick replay uses the same deterministic choreography. Normal attacks choose the closest living enemy, including trainers; explicit skills can override this target. training.js configures a stationary neutral dummy and optional two-second party damage pulses. Training lasts 30 simulation seconds, prevents defeat, skips overtime and reports event-based DPS, effective healing and newly granted shield rates by party and individual. combat-effects.js applies 5% physical crit at 1.4x after accuracy, named shields capped at 25% HP, one post-shield interceptor capped at 35%, and nonrecursive delayed loss. combat-entities.js keeps finite summons outside encounter/reward actors. combat-passives.js and combat-talents.js own event triggers; class-tree replacement remains inactive pending approval.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -26,6 +26,13 @@ The links below point to the actual source; root browser paths remain in use.
 | [tests/runtime_check.py](<../../tests/runtime_check.py>) | Owned source/configuration; inspect before editing. |
 | [raid-rules.js](<../../raid-rules.js>) | `BondRaidRules` |
 | [training.js](<../../training.js>) | `BondTraining` |
+| [combat-effects.js](<../../combat-effects.js>) | `BondCombatEffects` |
+| [combat-entities.js](<../../combat-entities.js>) | `BondCombatEntities` |
+| [combat-passives.js](<../../combat-passives.js>) | `BondCombatPassives` |
+| [combat-talents.js](<../../combat-talents.js>) | `BondClassTalents` |
+| [tests/combat_workbooks_cases.js](<../../tests/combat_workbooks_cases.js>) | Owned source/configuration; inspect before editing. |
+| [tests/combat_workbooks_check.cjs](<../../tests/combat_workbooks_check.cjs>) | Owned source/configuration; inspect before editing. |
+| [tests/combat_workbooks_check.py](<../../tests/combat_workbooks_check.py>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -62,6 +69,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
 - `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
 - `python tests/player_experience_check.py --browser chrome` — Concise player copy, Inner Sea/class-tree routing, dummy DPS/healing/shield rates, save isolation, responsive reports and one-time NPC victory return.
+- `python tests/combat_workbooks_check.py` — Imported workbook integrity, shield/guardian/debt/critical/entity contracts, all proposed loadouts and responsive summon presentation.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -71,5 +79,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [features/combat/RUNTIME.md](<../../features/combat/RUNTIME.md>)
 - [features/campaign/SACRED_TREASURES.md](<../../features/campaign/SACRED_TREASURES.md>)
 - [features/combat/TRAINING.md](<../../features/combat/TRAINING.md>)
+- [features/content/COMBAT_WORKBOOKS.md](<../../features/content/COMBAT_WORKBOOKS.md>)
 - Commercial cards: [F-001](<../../FEATURE_BACKLOG.md>), [F-002](<../../FEATURE_BACKLOG.md>), [F-004](<../../FEATURE_BACKLOG.md>), [F-007](<../../FEATURE_BACKLOG.md>), [F-036](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-04](<../../OWNER_REVIEWS.md#or-04>), [OR-08](<../../OWNER_REVIEWS.md#or-08>), [OR-09](<../../OWNER_REVIEWS.md#or-09>) Use the live board/preflight for status, not an approval copied here.

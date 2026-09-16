@@ -18,14 +18,15 @@ def table(headers,values):
     return '\n'.join(['| '+' | '.join(headers)+' |','| '+' | '.join(['---']*len(headers))+' |']+['| '+' | '.join(str(v).replace('|','/').replace('\n',' ') for v in row)+' |' for row in values])+'\n'
 assert len(rows)==100 and len({r['id'] for r in rows})==100
 assert sum(r['source']=='wild' for r in rows)==94
-assert all(len(r['skills'])==5 and len(set(r['defaultSkills']))==3 for r in rows)
+assert all(len(r['skills'])>=5 and len({x['id'] for x in r['skills']})==len(r['skills']) and len(set(r['defaultSkills']))==3 for r in rows)
 assert all(math.isfinite(v) for r in rows for v in r['base'].values())
 stats="""# Creature reference — all 100 species
 
-Generated from [data/creature-reference.json](data/creature-reference.json). Revision 9, 2026-09-15.
+Generated from [data/creature-reference.json](data/creature-reference.json). Revision 11, 2026-09-16.
 Creature identity, design role, element, region, source level, availability and
 attack basis come from the reviewed Bond & Bolt Google Sheet snapshot. Runtime
-stats and kits are captured from the prototype because `mon-skills` is still empty.
+species bases remain local. The two reviewed combat workbooks supply kits and
+innates; see [workbook contract](features/content/COMBAT_WORKBOOKS.md).
 Regenerate: `python scripts/creature_reference.py --write`.
 After runtime edits run the current browser suite, update reviewed JSON live fields,
 then `python scripts/creature_reference.py --check`; it rejects drift.
@@ -40,7 +41,8 @@ is 210 units/s, not this Move column. Property means the Sheet-listed element.
 Design role and attack basis are Sheet-owned. Prototype mechanic profile describes
 the older simulation archetype still used by current skills; it is not allowed to
 overwrite the design role.
-All species have zero base armor and no critical-hit system; innate reductions,
+All species have zero base armor. Physical hits have 5% base critical chance
+and deal 1.4x damage after accuracy; Leadership contributes none. Innate reductions,
 VIT defense and tree armor are separate. Physical dodge uses level and AGI/DEX.
 No independent species STR/DEX/etc. distribution or randomized IVs is invented.
 
@@ -60,14 +62,14 @@ slots; the same individual cannot fill both.
 **Loot/source table for every species:** [CREATURE_DROPS.md](CREATURE_DROPS.md).
 **Spreadsheet:** [CREATURE_REFERENCE.csv](CREATURE_REFERENCE.csv).
 **Art/animation briefs:** [CREATURE_DESIGN.md](CREATURE_DESIGN.md).
-Five-skill IDs/names, defaults, exact rates and briefs are also in JSON/CSV.
+Skill IDs/names, defaults, exact rates and briefs are also in JSON/CSV.
 Family allocations: [CREATURE_FAMILIES.md](CREATURE_FAMILIES.md). Ecology x/y anchors
 in JSON are not creature spawn points; each life has its own saved random position.
 
 """
 drops="""# Creature drops and habitats — all 100 species
 
-Generated from [data/creature-reference.json](data/creature-reference.json). Revision 9, 2026-09-15.
+Generated from [data/creature-reference.json](data/creature-reference.json). Revision 11, 2026-09-16.
 Every row below distinguishes **LIVE prototype loot** from **PLANNED, NOT LIVE**.
 Stats/kit definitions: [CREATURE_REFERENCE.md](CREATURE_REFERENCE.md).
 
@@ -132,7 +134,7 @@ for region in regions:
     drops+='## '+region+'\n\n'+table(['Species ID','Source / level','Map population / replacement delay','LIVE drops','LIVE XP / individual','PLANNED ONLY'],values)+'\n'
 drops+='## Proposed material uses\n\n'+table(['Region','Material ID / name','Proposed use'],[[g, next(r for r in rows if r['region']==g and r['habitat'])['proposedOrdinaryLoot'][0]['id']+' / '+next(r for r in rows if r['region']==g and r['habitat'])['proposedOrdinaryLoot'][0]['name'],next(r for r in rows if r['region']==g and r['habitat'])['proposedOrdinaryLoot'][0]['use']] for g in regions])
 stream=io.StringIO(newline='')
-columns=['id','name','family','region','design_role','combat_identity','prototype_mechanical_role','element','attack_base','basic_category','base_hp','base_attack','speed','ready_seconds','arena_move_per_second','basic_reach','passive_id','passive','passive_description','five_skills','default_three','habitat','source_level','sheet_source_level','encounter_source','map_species_count','availability_percent','recheck_seconds','echo_percent','live_loot_json','xp_per_participating_individual','future_boss_essence_json','proposed_not_live_loot_json','silhouette_brief','animation_brief','art_status','all_habitats_json']
+columns=['id','name','family','region','design_role','combat_identity','prototype_mechanical_role','element','attack_base','basic_category','base_hp','base_attack','speed','ready_seconds','arena_move_per_second','basic_reach','passive_id','passive','passive_description','skills','default_three','habitat','source_level','sheet_source_level','encounter_source','map_species_count','availability_percent','recheck_seconds','echo_percent','live_loot_json','xp_per_participating_individual','future_boss_essence_json','proposed_not_live_loot_json','silhouette_brief','animation_brief','art_status','all_habitats_json']
 writer=csv.writer(stream,lineterminator='\n');writer.writerow(columns)
 for r in rows:
     h=r['habitat'];b=r['base']

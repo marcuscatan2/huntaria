@@ -23,6 +23,7 @@ The links below point to the actual source; root browser paths remain in use.
 | [tree-menu.js](<../../tree-menu.js>) | `BondTree` |
 | [progression.css](<../../progression.css>) | Owned source/configuration; inspect before editing. |
 | [pass13.css](<../../pass13.css>) | Owned source/configuration; inspect before editing. |
+| [class-trees.js](<../../class-trees.js>) | `BondClassTrees` |
 
 ## Connections
 
@@ -49,6 +50,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/pass18_campaign.py --browser chrome` — Current campaign/replay assertions (reuses pass16_cases.js).
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
+- `python tests/combat_workbooks_check.py` — Imported workbook integrity, shield/guardian/debt/critical/entity contracts, all proposed loadouts and responsive summon presentation.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -56,5 +58,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 
 - [Companion stats.md](<../../Companion stats.md>)
 - [features/opening/VALIDATION.md](<../../features/opening/VALIDATION.md>)
+- [features/content/COMBAT_WORKBOOKS.md](<../../features/content/COMBAT_WORKBOOKS.md>)
 - Commercial cards: [F-003](<../../FEATURE_BACKLOG.md>), [F-009](<../../FEATURE_BACKLOG.md>), [F-010](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-07](<../../OWNER_REVIEWS.md#or-07>) Use the live board/preflight for status, not an approval copied here.

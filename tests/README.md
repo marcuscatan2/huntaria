@@ -12,6 +12,7 @@
 | Pack previews, cave escape, populations, aggression and moving-target clicks | `python tests/field_encounters_check.py --browser chrome` |
 | Master rescue, Echo hunt, ghost tower and class weapon | `python tests/relic_quest_check.py --browser chrome` |
 | Mechanics and runtime reference export | `python tests/pass18_check.py --browser chrome` |
+| Workbook skills, summons, shields, crits and talent hooks | `python tests/combat_workbooks_check.py --browser chrome` |
 | Square maps, cities and teleport/save safety | `python tests/city_world_check.py --browser chrome` |
 | Landscape assets, chunk seams, all-map paths and phone views | `python tests/landscapes_check.py --browser chrome` |
 | Played UI flows | `python tests/pass18_ui.py --browser chrome` |

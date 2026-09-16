@@ -23,7 +23,7 @@ function step(b){
 function report(b){
  const seconds=Math.max(0,b.time),rows=b.units.filter(u=>u.side===0).map(u=>({id:u.id,name:u.name,damage:0,healing:0,shield:0}));
  const byId=new Map(rows.map(u=>[u.id,u]));
- for(const e of b.events){const row=byId.get(e.actor);if(!row)continue;
+ for(const e of b.events){const row=byId.get(e.creditActor||e.actor)||byId.get(b.effects?.entities.find(u=>u.id===e.actor)?.master?.id);if(!row)continue;
   if(e.kind==='damage')row.damage+=e.amount||0;
   if(e.kind==='heal')row.healing+=e.amount||0;
   if(e.kind==='shield')row.shield+=e.granted??e.amount??0;

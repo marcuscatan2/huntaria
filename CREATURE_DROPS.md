@@ -1,6 +1,6 @@
 # Creature drops and habitats — all 100 species
 
-Generated from [data/creature-reference.json](data/creature-reference.json). Revision 9, 2026-09-15.
+Generated from [data/creature-reference.json](data/creature-reference.json). Revision 11, 2026-09-16.
 Every row below distinguishes **LIVE prototype loot** from **PLANNED, NOT LIVE**.
 Stats/kit definitions: [CREATURE_REFERENCE.md](CREATURE_REFERENCE.md).
 

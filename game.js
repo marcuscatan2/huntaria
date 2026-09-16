@@ -100,7 +100,7 @@
         if(u.side===0&&!u.storyMaster&&u.slot===0&&profile?.character?.name)u.name=profile.character.name;
         if(companion)u.name=UNITS[u.type].name+' #'+companion.ordinal;
         const bonus=u.side===0&&!u.storyMaster&&root.BondGrowth?root.BondGrowth.stats(u.type,companion?companion.growth:(profile?.growth||options.growth)?.[u.type]):{hp:0,attack:0,armor:0,move:0,cooldown:0};
-        u.growth=bonus;
+        u.growth=bonus;u.basePower=u.power;
         const base={...UNITS[u.type],...u,hp:u.maxHp};
         const derived=profile&&root.BondProgress?BondProgress.derived(u.type,profile,base,u.storyMaster?u.level:u.side===1?(u.level||options.enemyLevel||1):null):null;
         u.level=derived?.level||1;u.element=root.BondProgress?.ELEMENT[u.type]||null;
@@ -119,7 +119,10 @@
       if(this.adventure&&root.BondAdventure)for(const u of this.units.filter(u=>u.side===0&&u.ownerIndex===0)){const hp=BondAdventure.health(options.profile||{},u.slot===0?'trainer':u.instanceId);u.hp=hp===0?0:Math.max(1,Math.round(u.maxHp*hp/10000));}
       this.refreshTargets();
       if(this.training)root.BondTraining.attach(this);
+      this.effects=new root.BondCombatEffects.Effects(this);
+      for(const u of this.units)this.effects.init(u);
       for (const u of this.units) if (u.passive==='shell') this.shield(u,u,160,12,'Shell Reserve');
+      for(const u of this.units)this.effects.start(u);
     }
     addEnemy(entry) {
       if(this.training||this.ended||!entry?.spawnId||this.units.some(u=>u.spawnId===entry.spawnId&&u.life===entry.life))return false;
@@ -128,7 +131,7 @@
         adventure:this.adventure,wildPartySize:this.wildPartySize,encounter:{kind:'wild',enemies:[entry]}});
       const u=proxy.units.find(u=>u.side===1),slot=Math.max(0,...this.units.filter(u=>u.side===1).map(u=>u.slot))+1;
       u.id='1-'+slot;u.slot=slot;u.position={x:86,y:36+(slot%5)*8};u.previousPosition={...u.position};
-      u.shieldUntil+=this.time;this.units.push(u);this.refreshTargets();
+      this.units.push(u);this.effects.init(u);this.effects.start(u);this.refreshTargets();
       this.emit('join',u,null,u.name+' joins the battle.');
       return u;
     }
@@ -148,7 +151,7 @@
     ritualReady(){return false;}
     beginRitual(){return false;}
     ritualStep(){}
-    emit(kind, actor, target, text, amount = 0, details = {}) { this.events.push({time: this.time, kind, actor: actor?.id, target: target?.id, side: actor?.side, text, amount, ...details}); }
+    emit(kind, actor, target, text, amount = 0, details = {}) { this.events.push({time: this.time, kind, actor: actor?.id, target: target?.id, side: actor?.side, text, amount, ...(actor?.temporary?{creditActor:actor.master.id}:{}), ...details});if(kind==='end')this.effects?.clear(); }
     requestEscape() {
       if(this.rescue||this.defense||this.ended||this.escape||this.trainer(0)?.hp<=0)return false;
       this.escape={tick:this.tick,untilTick:this.tick+60};
@@ -158,7 +161,8 @@
     fleeing(u) {return !!this.escape&&u.side===0&&u.slot===0;}
     target(actor) {
       const distance = u => (u.position.x - actor.position.x) ** 2 + (u.position.y - actor.position.y) ** 2;
-      return this.team(1-actor.side).sort((a,b)=>distance(a)-distance(b)||a.slot-b.slot||a.id.localeCompare(b.id))[0];
+      const forced=this.effects?.target(actor);if(forced)return forced;
+      return (this.effects?this.effects.enemies(actor):this.team(1-actor.side)).sort((a,b)=>distance(a)-distance(b)||a.slot-b.slot||a.id.localeCompare(b.id))[0];
     }
     refreshTargets() {
       if (this.ended) return;
@@ -174,11 +178,13 @@
     rate(u) { return (this.has(u, 'slow') ? .6 : 1) * (this.has(u, 'haste') ? 1.3 : 1); }
     speed(u) { return u.moveSpeed * 8 * this.rate(u); }
     distance(a, b) { return Math.hypot(a.position.x - b.position.x, a.position.y - b.position.y); }
-    reach(actor, skill) { return skill?.reach || REACH[actor.range]; }
+    reach(actor, skill) { return skill?.reach || actor.entityReach || REACH[actor.range]; }
     inRange(actor, target, skill) { return !!target && target.hp > 0 && this.distance(actor, target) <= this.reach(actor, skill) + .001; }
     offensive(skill) { return !skill || ['hit', 'trainer', 'aoe', 'frontaoe'].includes(skill.kind); }
     skillId(actor,skill){return skill?.id||actor.skills.find(id=>SKILLS[id]===skill)||null;}
     intent(actor) {
+      const disabled=this.effects?.has(actor,'Interrupt');
+      if(disabled)return {index:-1,skill:null,target:this.target(actor)};
       const index = actor.skills.findIndex((s, i) => actor.cds[i] <= .001 && this.usable(actor, SKILLS[s]));
       const skill = index < 0 ? null : {...SKILLS[actor.skills[index]],id:actor.skills[index]};
       const target = skill?.kind === 'trainer' ? this.priorityTarget(actor) : this.target(actor);
@@ -254,51 +260,46 @@
       this.emit('end', null, null, this.winner === null ? 'Both bonds broke. A draw.' : this.encounter && this.winner===0 ? 'The encounter is cleared. Your bond held!' : `${this.winner === 0 ? 'Grove' : 'Dusk'} wins. The opposing trainer fell.`);
     }
     damage(actor, target, amount, label, intercept = true, details = {}) {
-      if (!target || target.hp <= 0 || target.eliminated || this.ended) return;
-      const element=this.elements&&!details.elementApplied?BondProgress.multiplier(actor?.element,target.element):1;
-      let raw = Math.round(amount * element * (this.overcharge ? 2 : 1));
-      if (intercept && (target.slot === 0||this.defense)) {
-        const guard = this.team(target.side).find(u => u!==target && u.slot > 0 && (!this.group||u.owner===target.owner) && this.has(u, 'guard'));
-        if (guard) {
-          const redirected = Math.round(raw * 0.6); raw -= redirected;
-          // Reverse the overtime multiplier because recursive damage applies it once.
-          this.damage(actor, guard, redirected / (this.overcharge ? 2 : 1), 'Guard intercept', false, {elementApplied:true,category:details.category});
-          this.emit('guard', guard, target, `${guard.name} intercepted ${redirected} damage for ${target.name}.`, redirected);
-        }
-      }
-      if(target.growth?.armor)raw=Math.round(raw*(1-target.growth.armor));
-      if(details.category&&target.statRules){const defense=details.category==='magic'?BondProgress.classic(target.effective,target.level).magicDefense:BondProgress.physicalDefense(target.effective.vit,this.random());raw=Math.max(1,raw-defense);}
-      if (target.passive==='granite') raw = Math.round(raw * .9);
-      // Expiry is checked at the hit too, so processing order cannot extend a shield.
-      if (target.shieldUntil <= this.time) target.shield = 0;
-      const absorbed = Math.min(target.shield, raw); target.shield -= absorbed; target.blocked += absorbed;
-      const floor=this.training?1:this.rescue?BondRaidRules.floor(this,target):0;
-      const dealt = Math.min(Math.max(0,target.hp-floor), raw - absorbed); target.hp -= dealt; if(actor)actor.damage += dealt;
-      this.emit('damage', actor, target, `${actor?.name||'Environment'} → ${target.name}: ${label} · ${dealt} damage${absorbed ? ` (${absorbed} shielded)` : ''}.`, dealt, details);
-      if (target.hp <= 0) { target.hp = 0; target.shield = 0; target.status = {}; this.emit('defeat', actor, target, `${target.name} fell.`); }
+      if (!target || target.hp<=0 || target.eliminated || this.ended) return {damage:0,absorbed:0};
+      const f=this.effects,d={direct:!details.dot&&!details.debt&&!details.transfer,...details},element=this.elements&&!d.elementApplied?BondProgress.multiplier(actor?.element,target.element):1;
+      let raw=Math.max(0,Math.round(amount*element*(this.overcharge?2:1)));
+      if(actor)raw=root.BondCombatEntities.interceptProjectile(f,actor,target,raw,d);
+      const exposure=f.value(target,d.category==='magic'?'magicExposure':'physicalExposure')+(d.penetration||0);
+      if(target.growth?.armor||exposure)raw=Math.round(raw*(1-Math.max(0,(target.growth?.armor||0)-exposure)));
+      if(d.category&&target.statRules){const defense=d.category==='magic'?BondProgress.classic(target.effective,target.level).magicDefense:BondProgress.physicalDefense(target.effective.vit,this.random());raw=Math.max(1,raw-defense);}
+      if(target.temporary&&!target.structure)raw=Math.max(0,raw-.5*(d.category==='magic'?target.snapshot.mdef:target.snapshot.def));
+      if(target.passive==='granite')raw=Math.round(raw*.9);
+      raw=f.reduction(target,actor,raw,d);root.BondCombatPassives.emergency(f,actor,target,raw,d);
+      d.shieldBefore=target.shield;
+      const {remaining,absorbed}=f.absorb(target,raw,actor,d);target.blocked+=absorbed;
+      d.intercept=intercept;let hpDamage=f.beforeHP(actor,target,remaining,d);
+      hpDamage=root.BondCombatPassives.finalHP(f,target,hpDamage,d);
+      const before=target.hp,floor=this.training?1:this.rescue?BondRaidRules.floor(this,target):0,dealt=Math.min(Math.max(0,before-floor),Math.max(0,hpDamage));
+      target.hp-=dealt;if(actor)actor.damage=(actor.damage||0)+dealt;
+      this.emit('damage',actor,target,label,dealt,{...d,absorbed,temporary:!!target.temporary,creditActor:actor?.temporary?actor.master.id:actor?.id});
+      if(target.hp<=0)f.defeated(actor,target,d);
       if(target.hp<=0&&target.slot===0&&this.group){for(const companion of this.units.filter(u=>u.side===target.side&&u.owner===target.owner&&u.slot>0)){companion.eliminated=true;companion.moving=false;this.emit('eliminate',target,companion,companion.name+' withdraws because their trainer fell.');}}
       this.checkEnd();
-      if (!this.ended && target.hp>0 && target.hp<target.maxHp*.4 && target.passive==='lastgrove' && !target.passiveUsed) {
-        target.passiveUsed=true; this.shield(target,target,140,6,'Last Grove');
-      }
-      if (target.hp <= 0 && !this.ended) this.refreshTargets();
+      if(this.ended){f.clear();return {damage:dealt,absorbed,overkill:Math.max(0,hpDamage-before)};}
+      f.after(()=>{root.BondCombatPassives.afterDamage(f,actor,target,dealt,absorbed,d);root.BondClassTalents?.damaged(f,actor,target,dealt,absorbed,d);});
+      if(!this.ended&&target.hp>0&&target.hp<target.maxHp*.4&&target.passive==='lastgrove'&&!target.passiveUsed){target.passiveUsed=true;this.shield(target,target,140,6,'Last Grove');}
+      if(target.hp<=0){f.after(()=>root.BondCombatPassives.death(f,actor,target,d));this.refreshTargets();}
+      return {damage:dealt,absorbed,overkill:Math.max(0,hpDamage-before)};
     }
     heal(actor, target, amount, label) {
       if (!target || target.hp <= 0 || target.eliminated || this.overcharge || this.ended) return;
-      const actual = Math.min(Math.round(amount*(actor.passive==='tender'?1.15:1)*(actor.healScale||1)), target.maxHp - target.hp); target.hp += actual; actor.healing += actual;
+      const cc=this.effects.currentCast,primary=cc?.u===actor&&!cc.primary;
+      if(primary)cc.primary={kind:'heal',amount:amount*(actor.healScale||1),target};
+      const before=target.hp/target.maxHp,actual=this.effects.heal(actor,target,amount*(actor.passive==='tender'?1.15:1)*(actor.healScale||1),label,{primary:true,legacy:true});
+      if(cc?.u===actor)cc.receivers.push({kind:'heal',target,actual,primary,before});
       if (actual) {
-        this.emit('heal', actor, target, `${actor.name} → ${target.name}: ${label} · +${actual} HP.`, actual);
         if(actor.passive==='current' && target!==actor) delete target.status.slow;
         if(actor.passive==='moonward') this.shield(actor,target,40,4,'Moon Ward');
       }
     }
     shield(actor,target,amount,duration,label) {
-      if (!target || target.hp<=0 || target.eliminated || this.ended) return;
-      if (target.shieldUntil<=this.time) target.shield=0;
-      if (target.shield>amount) return;
-      const granted=amount-target.shield;
-      target.shield=amount; target.shieldUntil=this.time+duration;
-      this.emit('shield',actor,target,`${target.name}: ${label} · ${amount} shield for ${duration}s.`,amount,this.training?{granted}:{});
+      const cc=this.effects.currentCast,primary=cc?.u===actor&&!cc.primary;if(primary)cc.primary={kind:'shield',amount,target};
+      const actual=this.effects.shield(actor,target,amount,duration,label);if(cc?.u===actor)cc.receivers.push({kind:'shield',target,actual,primary});return actual;
     }
     effect(actor, target, effect, duration) {
       if (!target || target.hp <= 0 || target.eliminated || this.ended) return;
@@ -306,33 +307,39 @@
       this.emit('status', actor, target, `${target.name} gains ${effect} for ${duration}s.`);
     }
     usable(actor, skill) {
-      if (['heal','teamheal'].includes(skill.kind)) return !this.overcharge && this.team(actor.side).some(u => u.maxHp - u.hp >= 25);
+      if(this.effects?.has(actor,'Silence'))return false;
+      if(skill.workbook)return root.BondCombatKits.usable(this.effects,actor,skill);
+      if (['heal','teamheal'].includes(skill.kind)) return !this.overcharge && this.effects.core(actor).some(u => u.maxHp - u.hp >= 25);
       if (skill.kind === 'selfheal') return !this.overcharge && actor.maxHp-actor.hp>=25;
       if (skill.kind === 'cleanse') return this.team(actor.side).some(u => this.has(u, 'slow') || this.has(u, 'burn') || (!this.overcharge && u.maxHp - u.hp >= 30));
       return true;
     }
     strike(actor, target, amount, label, skill) {
       this.lastStrikeHit=false;
-      if (!this.inRange(actor, target, skill)||actor.eliminated) return false;
+      if(!skill)target=root.BondCombatEntities.lure(this.effects,actor,target);
+      if(!this.inRange(actor,target,skill)||actor.eliminated)return false;
       const category=skill?.category||actor.basicCategory;
       if(!skill)actor.basics++;
-      const chance=root.BondRules?.dodgeChance(target.effective,actor.effective,category,target.level,actor.level)||0;
-      if(chance>0&&this.random()<chance){this.emit('dodge',actor,target,target.name+' dodges '+actor.name+' — '+label+'.',0,{category,chance});return true;}
-      this.lastStrikeHit=true;
-      if(actor.passive==='kindling' && this.has(target,'burn')) amount*=1.15;
-      if(actor.passive==='winter' && this.has(target,'slow')) amount*=1.2;
+      if(actor.passive==='kindling'&&this.has(target,'burn'))amount*=1.15;
+      if(actor.passive==='winter'&&this.has(target,'slow'))amount*=1.2;
       if(!skill&&actor.passive==='charged'&&actor.basics%3===0)amount+=35;
       if(skill)amount*=(actor.factors?.[category]||1)*(actor.skillScale??1)*(1+(actor.growth?.skillPower?.[this.skillId(actor,skill)]||0));
       if(category==='magic'&&actor.magicRange){const [min,max]=actor.magicRange,mean=(min+max)/2;if(max>min)amount*=(min+Math.floor(this.random()*(Math.floor(max-min)+1)))/(skill?mean:Math.round(mean));}
-      amount*=1+(actor.growth?.attack||0);
-      this.damage(actor, target, amount, label, true, {distance: this.distance(actor, target), reach: this.reach(actor, skill),category});
+      amount*=(1+(actor.growth?.attack||0))*(1+this.effects.value(actor,category==='magic'?'magicPower':'physicalPower'));
+      const cc=this.effects.currentCast,primary=!skill||!cc?.primary;
+      if(skill&&cc?.u===actor&&primary){cc.primary={kind:'damage',amount,category,target};amount+=(cc.mods.bonus||0);}
+      const result=this.effects.direct(actor,target,amount,label,{category,active:!!skill,basic:!skill,primary,secondary:!primary,area:['aoe','frontaoe'].includes(skill?.kind),reach:this.reach(actor,skill),blockable:actor.delivery==='ranged'&&!['aoe','frontaoe'].includes(skill?.kind)});
+      if(skill&&cc?.u===actor){cc.results.push({...result,target,primary,category});if(primary)cc.primary.result=result;}
+      this.lastStrikeHit=result.hit;
       return true;
     }
     cast(actor, skill) {
       if (actor.hp <= 0 || actor.eliminated || this.ended) return false;
+      if(skill.workbook)return root.BondCombatKits.cast(this.effects,actor,skill);
       const target = this.target(actor);
       const castTarget = skill.kind === 'trainer' ? this.priorityTarget(actor) : skill.kind === 'hit' ? target : actor;
       if (this.offensive(skill) && !this.inRange(actor, skill.kind === 'trainer' ? castTarget : target, skill)) return false;
+      const c=new root.BondCombatKits.Context(this.effects,actor,{...skill,id:this.skillId(actor,skill),kind:this.offensive(skill)?'hit':skill.kind});c.mods=root.BondCombatPassives.beforeCast(this.effects,c);root.BondClassTalents.beforeCast(this.effects,c);this.effects.currentCast=c;this.effects.begin();
       const bypass=skill.kind==='trainer'&&!!this.trainer(1-actor.side);
       actor.casts++; this.emit('cast', actor, castTarget, `${actor.name} uses ${skill.name}${bypass ? ' — targets the trainer directly' : ''}.`, 0, {skillName: skill.name, skillKind: skill.kind, bypass});
       const supportAmount=skill.amount*(1+(actor.growth?.skillPower?.[this.skillId(actor,skill)]||0));
@@ -341,21 +348,23 @@
         this.strike(actor, victim, skill.amount, skill.name, skill);
         if (this.lastStrikeHit&&skill.effect) this.effect(actor, victim, skill.effect, skill.duration);
       } else if (['aoe', 'frontaoe'].includes(skill.kind)) {
-        let victims = this.team(1 - actor.side);
+        let victims = this.effects.enemies(actor);
         if (skill.kind === 'frontaoe' && victims.some(u => u.slot > 0)) victims = victims.filter(u => u.slot > 0);
         for (const victim of victims) if(this.strike(actor, victim, skill.amount, skill.name, skill) && this.lastStrikeHit && skill.effect) this.effect(actor,victim,skill.effect,skill.duration);
-      } else if (skill.kind === 'heal') this.heal(actor, this.wounded(actor.side), supportAmount, skill.name);
-      else if (skill.kind === 'teamheal') this.team(actor.side).forEach(u=>this.heal(actor,u,supportAmount,skill.name));
+      } else if (skill.kind === 'heal') this.heal(actor, this.effects.lowest(actor), supportAmount, skill.name);
+      else if (skill.kind === 'teamheal') this.effects.core(actor).forEach(u=>this.heal(actor,u,supportAmount,skill.name));
       else if (skill.kind === 'selfheal') this.heal(actor,actor,supportAmount,skill.name);
-      else if (skill.kind === 'teamshield') this.team(actor.side).forEach(u=>this.shield(actor,u,supportAmount,skill.duration,skill.name));
+      else if (skill.kind === 'teamshield') this.effects.core(actor).forEach(u=>this.shield(actor,u,supportAmount,skill.duration,skill.name));
       else if (skill.kind === 'selfhaste') this.effect(actor,actor,'haste',skill.duration);
       else if (['shield', 'selfshield'].includes(skill.kind)) {
-        const victim = skill.kind === 'selfshield' ? actor : this.wounded(actor.side);
+        const victim = skill.kind === 'selfshield' ? actor : this.effects.lowest(actor);
         this.shield(actor,victim,supportAmount,skill.duration,skill.name);
       } else if (skill.kind === 'guard') this.effect(actor, actor, 'guard', skill.duration);
-      else if (skill.kind === 'haste') this.team(actor.side).forEach(u => this.effect(actor, u, 'haste', skill.duration));
-      else if (skill.kind === 'cleanse') this.team(actor.side).forEach(u => { delete u.status.slow; delete u.status.burn; this.heal(actor, u, supportAmount, skill.name); this.emit('status', actor, u, `${u.name} is cleansed of slow and burn.`); });
+      else if (skill.kind === 'haste') this.effects.core(actor).forEach(u => this.effect(actor, u, 'haste', skill.duration));
+      else if (skill.kind === 'cleanse') this.effects.core(actor).forEach(u => { delete u.status.slow; delete u.status.burn; this.effects.cleanse(actor,u,null,true);this.heal(actor, u, supportAmount, skill.name); this.emit('status', actor, u, `${u.name} is cleansed of slow and burn.`); });
       if(actor.passive==='cinder' && this.offensive(skill)) this.heal(actor,actor,18,'Cinder Heart');
+      this.effects.currentCast=null;this.effects.finish();
+      if(!this.ended){root.BondCombatPassives.afterCast(this.effects,c);root.BondClassTalents.afterCast(this.effects,c);}
       return true;
     }
     bossStep() {
@@ -368,7 +377,7 @@
           if(this.time+.001>=this.bossCharge.until){
             const charge=this.bossCharge;this.bossCharge=null;
             this.emit('quake',boss,boss,pattern.name+' lands. Recovery window: '+pattern.recovery.toFixed(1)+' seconds.',0,{pattern:pattern.target});
-            for(const id of charge.targets){const target=this.units.find(u=>u.id===id);if(!target||target.hp<=0||target.eliminated)continue;
+            for(const id of charge.targets){const target=this.units.find(u=>u.id===id)||this.effects.entities.find(u=>u.id===id);if(!target||target.hp<=0||target.eliminated)continue;
               this.damage(boss,target,pattern.damage*(this.bossPhase===2?pattern.phaseDamage:1)*(boss.offense||1),pattern.name,true,{arenaWide:true});
               if(!this.ended)this.effect(boss,target,pattern.effect,3);
             }
@@ -377,7 +386,7 @@
             this.emit('recovery',boss,boss,boss.name+' is recovering.',0,{until:boss.recoveryUntil});
           }
         }else if(this.time>=this.nextBossCharge){
-          const allies=this.team(0),xs=allies.map(u=>u.position.x),edge=pattern.target==='front'?Math.max(...xs):Math.min(...xs);
+          const allies=[...this.team(0),...this.effects.entities.filter(e=>e.side===0&&e.hp>0&&!e.untargetable)],xs=allies.map(u=>u.position.x),edge=pattern.target==='front'?Math.max(...xs):Math.min(...xs);
           const targets=pattern.target==='all'?allies:allies.filter(u=>Math.abs(u.position.x-edge)<16);
           const until=this.time+pattern.warning/this.rate(boss);
           this.bossCharge={until,started:this.time,name:pattern.name,hint:pattern.hint,pattern:pattern.target,targets:targets.map(u=>u.id)};
@@ -393,7 +402,7 @@
         if(this.time+0.001>=this.bossCharge.until) {
           this.bossCharge=null;
           this.emit('quake',boss,boss,'Bramblequake crashes across the arena. Shields and armor soften the blow.');
-          for(const target of this.team(0))this.damage(boss,target,(this.bossPhase===2?120:90)*(boss.offense||1),'Bramblequake',true,{arenaWide:true});
+          for(const target of [...this.team(0),...this.effects.entities.filter(e=>e.side===0&&e.hp>0&&!e.untargetable)])this.damage(boss,target,(this.bossPhase===2?120:90)*(boss.offense||1),'Bramblequake',true,{arenaWide:true});
           boss.actionRemaining=boss.interval;boss.recoveryUntil=this.time+.7;
           this.nextBossCharge=this.time+(this.bossPhase===2?7:10);
         }
@@ -407,8 +416,9 @@
       if (this.ended) return;
       this.tick++; this.time = Math.round(this.tick * DT * 100) / 100;
       for (const u of this.units) { u.previousPosition = {...u.position}; u.wasMoving=u.moving; u.moving = false; }
-      if(this.training){root.BondTraining.step(this);if(this.ended)return;}
+      if(this.training){root.BondTraining.step(this);if(this.ended){this.effects.clear();return;}}
       if(this.rescue){BondRaidRules.step(this);if(this.ended)return;}
+      this.effects.tick();if(this.ended)return;
       this.refreshTargets();
       if (!this.overcharge && this.time >= 55) { this.overcharge = true; this.emit('overcharge', null, null, 'OVERCHARGE · Healing stops. All damage doubles.'); }
       // Resolve timed effects for everyone before actions. Cooldowns use real battle
@@ -422,7 +432,7 @@
           if(u.regenBuffer>=6-1e-9){u.regenBuffer-=6;const gain=Math.min(u.maxHp-u.hp,BondProgress.hpRecovery(u.maxHp,u.effective.vit));u.hp+=gain;this.emit('regen',u,u,u.name+' regenerates '+gain+' HP.',gain);}
         }else u.regenBuffer=0;
         const burn = u.status.burn;
-        if (burn && burn.next <= this.time + 0.001 && burn.next <= burn.until + 0.001) { burn.next += 1; const source = this.units.find(v => v.id === burn.source); this.damage(source, u, 12, 'Burn'); }
+        if (burn && burn.next <= this.time + 0.001 && burn.next <= burn.until + 0.001) { burn.next += 1; const source = this.units.find(v => v.id === burn.source); this.damage(source, u, 12, 'Burn',false,{dot:true,direct:false,proc:true,category:'magic'}); }
         if (u.hp <= 0 || this.ended) continue;
         for (const effect of Object.keys(u.status)) if (u.status[effect].until <= this.time) delete u.status[effect];
         // Keep at most one ready action while walking; never bank a burst of hits.
@@ -438,14 +448,14 @@
       const order = this.units.filter(u => u.hp > 0 && !u.eliminated && u.actionRemaining <= 0.00001)
         .sort((a, b) => a.actionRemaining - b.actionRemaining || ((a.side + this.tick) % 2) - ((b.side + this.tick) % 2) || a.slot - b.slot);
       for (const u of order) {
-        if (u.hp <= 0 || u.eliminated || this.ended || this.fleeing(u) || (u.boss && (this.bossCharge||this.time<u.recoveryUntil)) || this.channeling(u)) continue;
+        if (u.hp <= 0 || u.eliminated || this.ended || this.fleeing(u) || (u.boss && (this.bossCharge||this.time<u.recoveryUntil)) || this.channeling(u) || this.effects.has(u,'Interrupt')) continue;
         const {index, skill, target} = this.intent(u);
         const acted = skill ? this.cast(u, skill) : this.strike(u, target, u.power, 'Basic attack');
         if (!acted) { u.actionRemaining = 0; continue; }
-        if (index >= 0) u.cds[index] = skill.cd*(1-Math.min(.5,(u.growth?.cooldown||0)+(u.growth?.skillCooldown?.[skill.id]||0)));
+        if (index >= 0&&!skill.workbook) u.cds[index] = skill.cd*(1-Math.min(.5,(u.growth?.cooldown||0)+(u.growth?.skillCooldown?.[skill.id]||0)));
         u.recoveryUntil = this.time + (u.type === 'stonehorn' ? .5 : u.range === 1 ? .3 : .2);
         u.moving = false;
-        u.actionRemaining += 100/u.speed;
+        u.actionRemaining += 100/u.speed*(skill?1:this.effects.basicInterval(u));
       }
       if(!this.ended&&this.escape&&this.trainer(0).hp<=0){this.ended=true;this.winner=1;this.reason='Trainer defeated';this.emit('end',null,null,'Your trainer fell before escaping.');}
       if(!this.ended&&this.escape&&this.tick>=this.escape.untilTick){

@@ -2,7 +2,7 @@
 (function(root){
 'use strict';
 // A partial client must never normalize or overwrite an otherwise valid save.
-for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','BondAtlas','BondWorld','BondEchoes','BondPopulation','BondAdventure','BondGrowth','BondCampaign','BondOpening','BondFormation','BondHaven','BondGame','BondTraining']){
+for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','BondAtlas','BondWorld','BondEchoes','BondPopulation','BondAdventure','BondGrowth','BondCampaign','BondOpening','BondFormation','BondHaven','BondGame','BondTraining','BondCombatCatalog','BondCombatEffects','BondCombatEntities','BondCombatPassives','BondCombatKits','BondClassTrees','BondClassTalents']){
  if(!root[dependency])throw Error('Required game module unavailable: '+dependency);
 }
 const C=BondContent,R=BondProgress,A=BondAtlas,W=BondWorld,E=BondEchoes,Q=BondPopulation,clone=x=>JSON.parse(JSON.stringify(x));
@@ -345,7 +345,7 @@ root.BondProfile={
   const mon=resolve(s,ref),type=mon?.type||ref;if(!mon&&!BondContent.TRAINERS.includes(type))return false;
   if(!BondGrowth.unlocked(s,ref))return false;
   const n=BondGrowth.nodes(type).find(n=>n.id===id),r=mon?mon.growth:s.growth[type]||{};
-  if(!n||(r[id]||0)>=n.max||BondGrowth.used(r)>=BondGrowth.budget(s,ref)||(n.parent&&!r[n.parent]))return false;
+  if(!n||(r[id]||0)>=n.max||BondGrowth.used(r)>=BondGrowth.budget(s,ref)||!BondGrowth.gate(type,id,r))return false;
   const next={...r,[id]:(r[id]||0)+1};if(mon)mon.growth=next;else s.growth[type]=next;
  },{critical:true,growth:true});},
  respec(ref){return commit(s=>{if(!BondGrowth.unlocked(s,ref))return false;const m=resolve(s,ref);if(m){if(!BondGrowth.used(m.growth))return false;m.growth={};}else{if(!BondContent.CLASSES.includes(ref)||!BondGrowth.used(s.growth[ref]))return false;s.growth[ref]={};}},{critical:true,growth:true});},

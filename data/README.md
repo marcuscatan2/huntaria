@@ -11,8 +11,9 @@ records the reviewed Sheet revision and snapshot fingerprint. See the
 browser never fetches a mutable spreadsheet during play: approved Sheet changes
 must be reviewed into local runtime JS/snapshots and tested. Stable IDs, not
 display names or row positions, join Sheet rows to saves. `mon-skills` was empty
-at reviewed revision 262, so existing implemented skills remain authoritative
-until that tab contains reviewed data.
+at reviewed revision 262. The owner subsequently supplied two combat workbooks;
+[their implementation contract](../features/content/COMBAT_WORKBOOKS.md) now owns
+the new skill kits and innates while preserving Sheet identity and base tuning.
 
 Publication: runtime source → current Chrome export → authorized snapshot
 update → generated creature tables. Follow

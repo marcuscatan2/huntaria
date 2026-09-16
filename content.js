@@ -1,5 +1,5 @@
-/* Hand-authored content. Every creature has five choices, three active slots,
-   and one passive. This file is also loaded by the standalone engine tests. */
+/* Legacy content and class active skills. combat-kits.js adds workbook options.
+   Three active slots and one innate per creature. Also loaded by engine tests. */
 (function (root) {
   'use strict';
   const skills = {};
@@ -12,14 +12,13 @@
       aoe:`Deal ${amount} damage to every enemy in range, including the trainer.`,
       heal:`Restore ${amount} HP to the ally with the lowest health percentage.`, teamheal:`Restore ${amount} HP to every living ally.`, selfheal:`Restore ${amount} HP to yourself.`,
       shield:`Give the most injured ally a ${amount} HP shield for ${extra.duration}s.`, selfshield:`Gain a ${amount} HP shield for ${extra.duration}s.`, teamshield:`Give each living ally a ${amount} HP shield for ${extra.duration}s.`,
-      guard:`Intercept 60% of damage to your trainer, anywhere in the arena, for ${extra.duration}s.`,
+      guard:`Take 35% of your trainer's damage after their defenses and shields for ${extra.duration}s.`,
       haste:`All allies move and act 30% faster for ${extra.duration}s. Cooldowns are unchanged.`,selfhaste:`Move and act 30% faster for ${extra.duration}s. Cooldowns are unchanged.`,
-      cleanse:`Remove Slow and Burn from all allies and heal each for ${amount} HP.`
+      cleanse:`Cleanse harmful effects from your party and heal each ally for ${amount} HP.`
     }[kind];
     if(extra.effect==='slow') description += ` Slow movement and actions by 40% for ${extra.duration}s.`;
     if(extra.effect==='burn') description += ` Burn for 12 damage per second for ${extra.duration}s.`;
     if(extra.reach) description += ` Reach: ${extra.reach} arena units.`;
-    if(kind.includes('shield')) description += ' Shields do not stack; a stronger existing shield is preserved.';
     skills[id] = {name,kind,amount,cd,tag,icon,description,...extra};
   }
   skill('mend','Mend','heal',110,7); skill('bark','Barkskin','shield',140,9,{duration:7}); skill('bramble','Bramble','hit',70,7,{effect:'slow',duration:4});
@@ -60,7 +59,7 @@
   skill('secondwind','Second wind','selfheal',95,14);
   const passives = {
     kindling:{name:'Kindling',description:'Strikes deal 15% more damage to burning enemies.'},
-    granite:{name:'Granite Hide',description:'Take 10% less incoming damage, including intercepted damage.'},
+    granite:{name:'Granite Hide',description:'Take 10% less incoming damage.'},
     charged:{name:'Charged Feathers',description:'Every third basic attack deals 35 extra damage.'},
     tender:{name:'Tender Care',description:'All your healing is 15% stronger. You are still a fragile support.'},
     winter:{name:'Winter Hunt',description:'Strikes deal 20% more damage to slowed enemies.'},
@@ -68,7 +67,7 @@
     shell:{name:'Shell Reserve',description:'Begin each battle with a 160 HP shield lasting 12 seconds.'},
     lastgrove:{name:'Last Grove',description:'Once per battle, survive a hit below 40% HP to gain a 140 HP shield for 6 seconds.'},
     current:{name:'Gentle Current',description:'When you restore HP to an ally other than yourself, remove their Slow.'},
-    moonward:{name:'Moon Ward',description:'Restoring HP to an ally gives them a 40 HP shield for 4 seconds. It never replaces or extends a stronger shield.'}
+    moonward:{name:'Moon Ward',description:'Restoring HP to an ally gives them a 40 HP shield for 4 seconds.'}
   };
   const units = {};
   function unit(id,name,subtitle,role,hp,power,interval,moveSpeed,range,color,pool,equipped,passive=null) {

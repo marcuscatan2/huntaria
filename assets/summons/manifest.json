@@ -1,0 +1,295 @@
+{
+  "scope": "combat-workbooks-v1",
+  "mode": "built-in imagegen",
+  "references": [
+    "assets/monsters/46.png",
+    "assets/monsters/90.png"
+  ],
+  "background": "magenta chroma key removed by summon-view.js; source images copied without pixel edits",
+  "assets": [
+    {
+      "id": "soldier-ant",
+      "name": "Soldier Ant",
+      "src": "assets/summons/soldier-ant.png",
+      "sha256": "241d71c4335a5aef285a1c20625639d4bd01e5ea98c2d2e1f2e2edae15ed7eb1",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Soldier Ant (do not write the name). One small fierce worker ant made of dark volcanic chitin with glowing orange cracks, six tiny articulated legs, compact mandibles, no wings, no crown. Match the small ants in reference one, not the queen. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Soldier Ant. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "shield-ant",
+      "name": "Shield Ant",
+      "src": "assets/summons/shield-ant.png",
+      "sha256": "3a86771a720c619ef2b20d57b6058a1092ff958ee052db95b63b11377a48a608",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Shield Ant (do not write the name). One squat armored ant with a massive broad amber-black carapace like a raised shield, six stubby legs and warm molten seams. Same colony as reference one, clearly wider and more defensive than a soldier. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Shield Ant. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "stitched-effigy",
+      "name": "Stitched Effigy",
+      "src": "assets/summons/stitched-effigy.png",
+      "sha256": "546a327f6b198481bfd55e11f0d2016b108c42f2dbe1f8028f8dcb8608196732",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Stitched Effigy (do not write the name). One eerie but charming little off-white cloth dummy on a tiny wooden stand, button eye, red pin, visible black stitched seam and hanging red thread. No monster or person beside it. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Stitched Effigy. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "stormcap",
+      "name": "Stormcap Totem",
+      "src": "assets/summons/stormcap.png",
+      "sha256": "fb1e42d9ee1ad2a9248131407d211ff407dd9e82be8ca4ed2a60d51d24fe7b95",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Stormcap Totem (do not write the name). One squat violet-blue storm mushroom rooted to a small stone foot, cap like a thundercloud, tiny suspended blue sparks and a clear bright electric core. No large background lightning. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Stormcap Totem. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "kilnling",
+      "name": "Kilnling",
+      "src": "assets/summons/kilnling.png",
+      "sha256": "ca9917067d80d18bd9dcdd289593020adbe22e1e81efb4763ad20f0fef93bda7",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Kilnling (do not write the name). One small broad ceramic guardian, orange terracotta furnace body, squat feet, thick protective arms, glowing cream kiln window in its belly, charcoal plates. Cute determined expression. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Kilnling. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "light-beacon",
+      "name": "Light Beacon",
+      "src": "assets/summons/light-beacon.png",
+      "sha256": "4f03859b9e7b9ffba1aee81ae28bc9fc0d258d5d69e0ffd75f458531c86a2de4",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Light Beacon (do not write the name). One floating golden lantern pod with folded pale moth-wing fins, warm luminous pearl inside, on a tiny curved ivory support foot. One compact beacon, elegant and soft. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Light Beacon. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "resin-screen",
+      "name": "Resin Screen",
+      "src": "assets/summons/resin-screen.png",
+      "sha256": "d9e561ba99eb63e383b8694784752237fc54fd4fc4a02cfad33a4665b0ceb554",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Resin Screen (do not write the name). One freestanding translucent golden amber barricade, broad curved rectangular plane, thick organic resin border, two root feet. Clear warm honey translucency, no landscape, no characters. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Resin Screen. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "assault-rune",
+      "name": "Assault Rune",
+      "src": "assets/summons/assault-rune.png",
+      "sha256": "859f9594f976addd11621b9a9cc4b8eef69dea3f9a7478bde6446ab79e9a672e",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Assault Rune (do not write the name). One saffron rune-flower standard: small terracotta foot, slender stem and four orange petals around a luminous angular red-gold magical glyph. Assertive pointed silhouette, no text. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Assault Rune. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "ward-rune",
+      "name": "Ward Rune",
+      "src": "assets/summons/ward-rune.png",
+      "sha256": "270062cd7f6ad7d20e3f1a26c48a72aaba6991787bd07536db25d6403b1f8b28",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Ward Rune (do not write the name). One protective cream-and-green rune flower standard: small stone foot, rounded overlapping leaf petals around a turquoise circular shield glyph. Distinct from an orange assault flower, no text. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Ward Rune. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "silk-anchor",
+      "name": "Silk Anchor",
+      "src": "assets/summons/silk-anchor.png",
+      "sha256": "5f5e0102db689d9379610554712d4280cd62f45d60b6a12ab85e20fa747b9af2",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Silk Anchor (do not write the name). One silver crescent-shaped weaving anchor on a violet stone foot, taut luminous pale blue silk threads stretched inside its crescent. Moon-themed spider loom, compact elegant shape. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Silk Anchor. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "imperial-hearth",
+      "name": "Imperial Hearth",
+      "src": "assets/summons/imperial-hearth.png",
+      "sha256": "0c8a1808efe4e6973db6d469aed6ca1bf312a33755b10dab5e15cf5f1b618d73",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Imperial Hearth (do not write the name). One low circular ember hearth sigil seen in shallow three-quarter view, glowing coals and small crown-shaped tongues of gold-orange flame around a dark red ring. Ground-effect sprite, no large tall fire, no scenery. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Imperial Hearth. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "sapling-warden",
+      "name": "Sapling Warden",
+      "src": "assets/summons/sapling-warden.png",
+      "sha256": "ea7785311d91f0e3a7ebcb54e9353bb267859cf3655ed254bc3c8b5d6bcac1c1",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Sapling Warden (do not write the name). One small stout living oak sapling guard with root feet, bark shield-like arms, moss eyebrows and a little crown of green leaves. Painted detail like wood in reference two, fewer details and no carnivorous plants. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Sapling Warden. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "seedjaw",
+      "name": "Seedjaw Turret",
+      "src": "assets/summons/seedjaw.png",
+      "sha256": "5f8d33634ad0234b6bbd94aa8ce6aea233231f5e33e599b562dd6a23698d47e5",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Seedjaw Turret (do not write the name). One rooted scarlet orchid bud shaped like a seed-spitting beak, three sturdy curled leaves forming its base and a glowing gold seed inside its open mouth. One compact stationary plant turret. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Seedjaw Turret. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "nightlight-cap",
+      "name": "Nightlight Cap",
+      "src": "assets/summons/nightlight-cap.png",
+      "sha256": "5426951dd7fcf981aefba97a959152a446f13bf93e11b449f4bd4b422fd662ff",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Nightlight Cap (do not write the name). One warm lavender mushroom on a little stem, floating pale gold cap spots, soft cream gills glowing like a nightlight, curled mint leaves at foot. Friendly healing totem, small and readable. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Nightlight Cap. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "ink-double",
+      "name": "Ink Double",
+      "src": "assets/summons/ink-double.png",
+      "sha256": "11262e178ec205602fc41f653628deee39080b15617e5784ecf3f806a343322e",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Ink Double (do not write the name). One small mischievous ink-formed decoy, glossy blue-black body, pale mask face, pointed ink ears, one dripping arm and a puddle-shaped foot. Clearly a magical ink duplicate, no pen or paper. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Ink Double. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "trickster-spirit",
+      "name": "Trickster Spirit",
+      "src": "assets/summons/trickster-spirit.png",
+      "sha256": "a98fbafc81a18863a5d34657f70edf7655aa74a1cb0f2832c8160888056fad4e",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Trickster Spirit (do not write the name). One detached mischievous violet ghost wisp with a tiny ivory comedy half-mask and two floating pointed hands, curling spectral tail, bright purple eyes. One ghost only, no full mask-bearing trio. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Trickster Spirit. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "guardian-spirit",
+      "name": "Guardian Spirit",
+      "src": "assets/summons/guardian-spirit.png",
+      "sha256": "be51861d3b18a9bd7e7710a94886b8b36fc67ae32522ac141f9a414d77e28a72",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Guardian Spirit (do not write the name). One detached gentle turquoise ghost wisp with a tiny ivory solemn half-mask, rounded hands cupping a warm pearl and curled spectral tail. One ghost only, protective and soft. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Guardian Spirit. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "astral-lens",
+      "name": "Astral Lens",
+      "src": "assets/summons/astral-lens.png",
+      "sha256": "38aa26d5b4612370fbb6b0562f8dff1f690c25280d434c2d9b0c56368783c8e6",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Astral Lens (do not write the name). One small brass astronomical construct, sapphire lens set inside two orbiting golden hoops above a dark blue tripod stone foot, tiny stars engraved, precise mage-made object. One compact coherent object. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Astral Lens. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "heartwood",
+      "name": "Heartwood",
+      "src": "assets/summons/heartwood.png",
+      "sha256": "4b3ab95e2844919c62b71668209d04587ceb7b8f413a9b9267d6b23711b5bc78",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Heartwood (do not write the name). One druid healing totem: short ancient hollow tree trunk with a luminous amber heart-shaped knot, broad sheltering green leaves and three thick roots. Distinct from a walking sapling; no face, stationary shrine. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Heartwood. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    },
+    {
+      "id": "barkling",
+      "name": "Barkling",
+      "src": "assets/summons/barkling.png",
+      "sha256": "00839ab9d7c68516427c2fb30a0e43d599c619a9b2b34c57d12cba68fada932c",
+      "size": [
+        1254,
+        1254
+      ],
+      "prompts": [
+        "Create ONE original game-ready fantasy RPG summon sprite, named Barkling (do not write the name). One tiny druid guardian made of birch bark with stout root legs, shield-shaped forearms, two bright green eyes and a curled sprout crown. Compact pale bark silhouette distinct from dark oak sapling. Use the two references ONLY for rich painted fantasy rendering, fine dark contours, detailed materials and expressive readable silhouettes; do not reproduce the reference compositions. Three-quarter front-facing perspective at character eye height with a slightly visible top, facing towards the right. Single centered full object, generous 12 percent empty margin, square canvas, suitable for display at 48–72 pixels tall. Authentic transparent RGBA background, no checkerboard, no scenery, no floor tile, no text, no border, no other creatures. Crisp outer silhouette, contained glow, no particles crossing the margin. Compact illustration, 512 by 512 if supported.",
+        "Edit this one game sprite for Barkling. Preserve the exact object, its pose, silhouette, painted materials, colors and expression. Replace ALL background, checkerboard, grey/white backdrop or black backdrop with perfectly uniform solid pure magenta #FF00FF, including every gap between legs, leaves, threads, rings and hands. No checkerboard anywhere. Do not tint opaque object surfaces magenta. Keep the single complete object centered with 12 percent magenta margin on all sides; shrink it slightly if needed to fit that margin. No extra objects, text or border. A flat magenta chroma-key background is mandatory; the game's renderer will remove it. Keep the square canvas."
+      ]
+    }
+  ],
+  "referenceHashes": {
+    "assets/monsters/46.png": "c605e7cf6fc7f184d10d74388d689c27bdfaf3742f3ba928e9079ceaf3b1da52",
+    "assets/monsters/90.png": "4b7bfa50131160991ddf4c94eedb3bdd048508db714e9fbda085d74555b20a4f"
+  }
+}

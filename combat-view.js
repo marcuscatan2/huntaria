@@ -51,7 +51,7 @@
     }
   }
   new ResizeObserver(resize).observe(stage);
-  function unit(id) { return model?.units.find(u => u.id === id); }
+  function unit(id) { return model?.units.find(u => u.id === id)||model?.effects?.entities.find(u=>u.id===id); }
   function bonded(u){return model?.ritual?.state==='complete'&&u.side===1;}
   function guild(u) { return model?.group?(u.side?'Enemy':u.owner):u.side?'Opponent':'Your party'; }
   function rate(u) { return (model.has(u, 'slow') ? .6 : 1) * (model.has(u, 'haste') ? 1.3 : 1); }
@@ -201,14 +201,14 @@
     if(event.kind==='dodge'&&target)spawn({type:'text',target:target.id,color:'#d4ebf9',text:'DODGE',life:.8});
     if (event.kind === 'damage' || event.kind === 'heal' || event.kind === 'regen') {
       if (!target) return;
-      const healing = event.kind === 'heal'||event.kind==='regen', periodic = event.kind==='regen'||/: Burn|Guard intercept/.test(event.text);
+      const healing = event.kind === 'heal'||event.kind==='regen', periodic = event.kind==='regen'||event.dot||event.debt||event.transfer;
       const melee = !healing && !periodic && !event.arenaWide && actor?.range === 1, heavy = actor?.role === 'Tank';
-      const travel = window.BondPresentation?BondPresentation.timing(event,reducedMotion.matches).delay:reducedMotion.matches?0:.26;
+      const travel = event.proc||event.dot||event.debt||event.transfer?0:window.BondPresentation?BondPresentation.timing(event,reducedMotion.matches).delay:reducedMotion.matches?0:.26;
       if(!healing&&!periodic&&!event.arenaWide&&actor)CharacterRig.trigger(rigs.get(actor.id),'attack',at,heavy?.72:.5);
       if(!healing&&event.amount>0)CharacterRig.trigger(rigs.get(target.id),'hit',at+travel,.22);
       if (actor && actor.id !== target.id && !periodic) {
         if (melee && !reducedMotion.matches) motions.set(actor.id, {target:target.id, born:at, life:heavy?.72:.5, heavy, contact:travel});
-        else if (!reducedMotion.matches&&!event.arenaWide) spawn({type:'projectile', source:actor.id, target:target.id, healing, life:travel-.04, delay:.04});
+        else if (!reducedMotion.matches&&!event.arenaWide&&travel>.04) spawn({type:'projectile', source:actor.id, target:target.id, healing, life:travel-.04, delay:.04});
       }
       if (!periodic) {
         spawn({type:healing?'heal':melee&&!heavy?'slash':'burst', target:target.id, life:healing?.7:.5, delay:travel, heavy, power:event.amount > 90 ? 1.2 : .7});
@@ -299,7 +299,7 @@
     const mobile=width<500, barWidth=mobile?49:70;
     for(const [id,p] of displayPositions){
       const actor=unit(id), hp=health.get(id)?.shown??actor.hp, isSelected=id===selected;
-      if(bonded(actor)||actor.eliminated||(hp<=0&&!isSelected))continue;
+      if(!actor||actor.temporary||bonded(actor)||actor.eliminated||(hp<=0&&!isSelected))continue;
       const x=p.labelX??p.x,y=p.foot+12;
       ctx.save();ctx.textAlign='center';ctx.font='700 '+(mobile?8:10)+'px "Segoe UI", sans-serif';
       ctx.lineWidth=3;ctx.strokeStyle='#253d32';ctx.fillStyle=isSelected?'#fff0b2':'#f4f2dd';
@@ -448,6 +448,8 @@
       node.style.setProperty('--vitals-x', plate ? (plate.x - plate.origin).toFixed(2) + 'px' : '0px');
       if (plate) displayPositions.get(id).labelX = plate.x;
     }
+    BondSummonView.draw(model,ctx,project,width,height,time,displayPositions,reducedMotion.matches);
+    for(const [id,p] of displayPositions)if(id.startsWith('entity-'))positions.set(id,p);
     effects = effects.filter(effect => time - effect.born < effect.life);
     // Ground magic is rendered before projectiles/impacts; names and health are
     // last, above every character and spell. No body can hide another unit's HP.

@@ -21,13 +21,21 @@
     "assets/audio/*.wav",
     "assets/characters/*.png",
     "assets/inner-sea/*.png",
-    "assets/cities/*.png"
+    "assets/cities/*.png",
+    "assets/summons/*.png"
   ],
   "rules": [
     "content.js",
     "rules.js",
     "roster.js",
     "monster-sprites.js",
+    "combat-catalog.js",
+    "combat-effects.js",
+    "combat-entities.js",
+    "combat-passives.js",
+    "combat-kits.js",
+    "class-trees.js",
+    "combat-talents.js",
     "opening-rules.js",
     "adventure-rules.js",
     "progression.js",

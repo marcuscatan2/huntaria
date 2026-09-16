@@ -26,7 +26,7 @@ function validate(content=C){
  }
  for(const [id,u] of Object.entries(content.UNITS)){
   if(!categories[u.basicCategory])errors.push(id+': missing basic category');
-  if(u.skills?.length!==5||new Set(u.skills).size!==5||u.skills.some(k=>!content.SKILLS[k]))errors.push(id+': invalid five-skill pool');
+  if((u.skills?.length||0)<5||new Set(u.skills).size!==u.skills.length||u.skills.some(k=>!content.SKILLS[k]))errors.push(id+': invalid skill pool');
   if(u.default?.length!==3||new Set(u.default).size!==3||u.default.some(k=>!u.skills.includes(k)))errors.push(id+': invalid priorities');
   for(const key of ['hp','power','interval','moveSpeed','range'])if(!Number.isFinite(u[key])||u[key]<=0)errors.push(id+': invalid '+key);
   if(u.role!=='Trainer'&&!content.PASSIVES[u.passive])errors.push(id+': missing innate');
@@ -35,5 +35,5 @@ function validate(content=C){
 }
 // Classic physical hit chance: 80 + HIT - FLEE, bounded to 5–95 percent.
 const dodgeChance=(defender,attacker,category,defenderLevel=1,attackerLevel=1)=>category==='magic'?0:1-Math.max(.05,Math.min(.95,(80+attackerLevel+Math.floor(attacker?.dex||0)-defenderLevel-Math.floor(defender?.agi||0))/100));
-root.BondRules={VERSION:13,categories,categoryLabel,damaging,rng,validate,dodgeChance};
+root.BondRules={VERSION:14,categories,categoryLabel,damaging,rng,validate,dodgeChance};
 })(globalThis);
