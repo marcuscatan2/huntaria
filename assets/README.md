@@ -13,6 +13,8 @@
   prompts, references and source hashes; [runtime contract](../features/content/COMBAT_WORKBOOKS.md).
 - [Exploration owner](../features/exploration/README.md): scenery and world props.
 - [Inner Sea homestead](inner-sea/README.md): painted farm background and exact generation provenance.
+- [Trainer talent artwork](talents/manifest.json): painted sanctuary and 60 skill
+  illustrations; [diagram contract](../features/growth/TALENT_TREE.md).
 - [Lossless scenery exports](world-runtime/README.md): pixel-identical runtime encoding; original images remain intact.
 - [Landscape props](landscapes/README.md): original trees, ridges and ruins; exact prompts and measured runtime frames.
 - [Original audio](audio/README.md): procedural scores and reproducible loop files.

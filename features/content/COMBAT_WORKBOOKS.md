@@ -69,6 +69,10 @@ rider, Druid's short healing effect, Knight's brief defense and Hunter's accurac
 
 ## Visuals
 
+Trainer menus use [illustrated prerequisite diagrams](../growth/TALENT_TREE.md)
+with a painted sanctuary and 60 class-specific node illustrations. Selection
+opens details; spending remains a separate profile action.
+
 20 individual generated images cover all 17 monster entities and the class
 Lens, Heartwood and Barkling. [The asset manifest](../../assets/summons/manifest.json)
 records built-in imagegen prompts, reference hashes and final source hashes.

@@ -6,7 +6,3 @@
 @media(max-width:600px){.initiative-label{display:none}}
 @media(prefers-reduced-motion:reduce){.tree-node.available:not(:disabled):hover{transform:none}}
 .level-cap-note{border-left:3px solid #b88a43;padding:8px 10px;background:#f7efdc;color:#5f654f;border-radius:0 7px 7px 0}
-
-.class-branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}.class-talent-branch{min-width:0}.class-talent-branch h4{margin:0 0 12px;font-size:17px;color:inherit}.class-talent-branch .ranked-tree{display:grid;grid-template-columns:1fr;gap:10px}.class-talent-branch .tree-node{padding:14px 12px;line-height:1.5;text-align:left;align-items:flex-start}.class-talent-branch small small{display:block;margin-top:6px}.class-talent-branch .tree-node strong{font-size:15px}.class-talent-branch .tree-node small{font-size:12px}
-@media(max-width:900px){.class-branches{grid-template-columns:1fr;gap:26px}.class-talent-branch .ranked-tree{grid-template-columns:repeat(2,minmax(0,1fr))}.class-talent-branch .tree-node:first-child,.class-talent-branch .tree-node:last-child{grid-column:1/-1}}
-@media(max-width:540px){.class-talent-branch .ranked-tree{grid-template-columns:1fr}}

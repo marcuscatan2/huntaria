@@ -9,7 +9,7 @@ Status: **local**. Derives levels, attributes and passive bonuses; connects indi
 
 `BondProgress.derived / trainerLevel; BondGrowth.nodes / stats; BondTree`
 
-Trainer and companion XP are independent values on the same cumulative curve, with a hard player launch cap60; no owned monster sets trainer level. The engine/wild curve remains valid through100. Lv61–100 Echoes summon as Lv60 individuals while preserving sourceLevel; migration initializes trainerXP at the previously displayed level and preserves older tree access. All four classes unlock 15 class-specific talents at transformation. The class budget starts with two points at Lv20 and adds one every three levels through Lv59, capped at15. Normalization resets old class ranks into this budget and preserves valid new allocations; companion mastery retains its own ranks and budget. Talent branches have ranked prerequisites, and reset is free. Individual monster trees unlock at player Lv30. Every species keeps18 ranked nodes; five nodes modify named skills and a sixth expresses its innate identity. Classic/pre-Renewal STR/DEX stat ATK, INT MATK ranges, HIT/FLEE, VIT HP/recovery/soft defense and AGI/DEX attack delay use progression.js. DEX cast-time scaling is separate from cooldowns; only explicit tree/skill effects reduce cooldowns, capped at50%. Leadership sharing remains custom. Intact farm power adds capped account HP once, never to enemies. XP losses preserve already-earned individual tree budgets via optional treeLevel.
+Trainer and companion XP are independent values on the same cumulative curve, with a hard player launch cap60; no owned monster sets trainer level. The engine/wild curve remains valid through100. Lv61–100 Echoes summon as Lv60 individuals while preserving sourceLevel; migration initializes trainerXP at the previously displayed level and preserves older tree access. All four classes unlock 15 class-specific talents at transformation. The class budget starts with two points at Lv20 and adds one every three levels through Lv59, capped at15. Normalization resets old class ranks into this budget and preserves valid new allocations; companion mastery retains its own ranks and budget. Talent branches have ranked prerequisites, and reset is free. Individual monster trees unlock at player Lv30. Every species keeps18 ranked nodes; five nodes modify named skills and a sixth expresses its innate identity. Classic/pre-Renewal STR/DEX stat ATK, INT MATK ranges, HIT/FLEE, VIT HP/recovery/soft defense and AGI/DEX attack delay use progression.js. DEX cast-time scaling is separate from cooldowns; only explicit tree/skill effects reduce cooldowns, capped at50%. Leadership sharing remains custom. Intact farm power adds capped account HP once, never to enemies. XP losses preserve already-earned individual tree budgets via optional treeLevel. Trainer diagrams show opening-to-fork, alternative fork-to-advanced and advanced-to-capstone connections; point and rank gates stay authoritative in class-trees.js. Selection never allocates a point. Desktop uses a side inspector; phone branches and modal details retain touch targets and keyboard focus.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -24,6 +24,9 @@ The links below point to the actual source; root browser paths remain in use.
 | [progression.css](<../../progression.css>) | Owned source/configuration; inspect before editing. |
 | [pass13.css](<../../pass13.css>) | Owned source/configuration; inspect before editing. |
 | [class-trees.js](<../../class-trees.js>) | `BondClassTrees` |
+| [talent-tree-view.js](<../../talent-tree-view.js>) | `BondTalentView` |
+| [talent-tree.css](<../../talent-tree.css>) | Owned source/configuration; inspect before editing. |
+| [assets/talents/manifest.json](<../../assets/talents/manifest.json>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -51,6 +54,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
 - `python tests/combat_workbooks_check.py` — Imported workbook integrity, shield/guardian/debt/critical/entity contracts, all proposed loadouts and responsive summon presentation.
+- `python tests/talent_tree_check.py` — All four illustrated talent graphs, authoritative unlock lines, inspect-versus-learn behavior, responsive geometry, mobile dialog focus and save isolation.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -59,5 +63,7 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [Companion stats.md](<../../Companion stats.md>)
 - [features/opening/VALIDATION.md](<../../features/opening/VALIDATION.md>)
 - [features/content/COMBAT_WORKBOOKS.md](<../../features/content/COMBAT_WORKBOOKS.md>)
+- [features/growth/TALENT_TREE.md](<../../features/growth/TALENT_TREE.md>)
+- Art and provenance: [assets/talents](<../../assets/talents>)
 - Commercial cards: [F-003](<../../FEATURE_BACKLOG.md>), [F-009](<../../FEATURE_BACKLOG.md>), [F-010](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-07](<../../OWNER_REVIEWS.md#or-07>) Use the live board/preflight for status, not an approval copied here.

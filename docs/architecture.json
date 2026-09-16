@@ -172,7 +172,10 @@
         "tree-menu.js",
         "progression.css",
         "pass13.css",
-        "class-trees.js"
+        "class-trees.js",
+        "talent-tree-view.js",
+        "talent-tree.css",
+        "assets/talents/manifest.json"
       ],
       "backlog": [
         "F-003",
@@ -180,19 +183,21 @@
         "F-010"
       ],
       "entry": "BondProgress.derived / trainerLevel; BondGrowth.nodes / stats; BondTree",
-      "contract": "Trainer and companion XP are independent values on the same cumulative curve, with a hard player launch cap60; no owned monster sets trainer level. The engine/wild curve remains valid through100. Lv61–100 Echoes summon as Lv60 individuals while preserving sourceLevel; migration initializes trainerXP at the previously displayed level and preserves older tree access. All four classes unlock 15 class-specific talents at transformation. The class budget starts with two points at Lv20 and adds one every three levels through Lv59, capped at15. Normalization resets old class ranks into this budget and preserves valid new allocations; companion mastery retains its own ranks and budget. Talent branches have ranked prerequisites, and reset is free. Individual monster trees unlock at player Lv30. Every species keeps18 ranked nodes; five nodes modify named skills and a sixth expresses its innate identity. Classic/pre-Renewal STR/DEX stat ATK, INT MATK ranges, HIT/FLEE, VIT HP/recovery/soft defense and AGI/DEX attack delay use progression.js. DEX cast-time scaling is separate from cooldowns; only explicit tree/skill effects reduce cooldowns, capped at50%. Leadership sharing remains custom. Intact farm power adds capped account HP once, never to enemies. XP losses preserve already-earned individual tree budgets via optional treeLevel.",
+      "contract": "Trainer and companion XP are independent values on the same cumulative curve, with a hard player launch cap60; no owned monster sets trainer level. The engine/wild curve remains valid through100. Lv61–100 Echoes summon as Lv60 individuals while preserving sourceLevel; migration initializes trainerXP at the previously displayed level and preserves older tree access. All four classes unlock 15 class-specific talents at transformation. The class budget starts with two points at Lv20 and adds one every three levels through Lv59, capped at15. Normalization resets old class ranks into this budget and preserves valid new allocations; companion mastery retains its own ranks and budget. Talent branches have ranked prerequisites, and reset is free. Individual monster trees unlock at player Lv30. Every species keeps18 ranked nodes; five nodes modify named skills and a sixth expresses its innate identity. Classic/pre-Renewal STR/DEX stat ATK, INT MATK ranges, HIT/FLEE, VIT HP/recovery/soft defense and AGI/DEX attack delay use progression.js. DEX cast-time scaling is separate from cooldowns; only explicit tree/skill effects reduce cooldowns, capped at50%. Leadership sharing remains custom. Intact farm power adds capped account HP once, never to enemies. XP losses preserve already-earned individual tree budgets via optional treeLevel. Trainer diagrams show opening-to-fork, alternative fork-to-advanced and advanced-to-capstone connections; point and rank gates stay authoritative in class-trees.js. Selection never allocates a point. Desktop uses a side inspector; phone branches and modal details retain touch targets and keyboard focus.",
       "tests": [
         "onboarding",
         "mechanics",
         "campaign",
         "boundaries",
         "farm-classes",
-        "combat-workbooks"
+        "combat-workbooks",
+        "talent-tree"
       ],
       "docs": [
         "Companion stats.md",
         "features/opening/VALIDATION.md",
-        "features/content/COMBAT_WORKBOOKS.md"
+        "features/content/COMBAT_WORKBOOKS.md",
+        "features/growth/TALENT_TREE.md"
       ],
       "summary": "Derives levels, attributes and passive bonuses; connects individual progress to combat and menus."
     },
@@ -851,7 +856,8 @@
     ],
     "tree-menu.js": [
       "BondProfile",
-      "BondGrowth"
+      "BondGrowth",
+      "BondTalentView"
     ],
     "inventory-menu.js": [
       "BondProfile",
@@ -1014,6 +1020,10 @@
     "training.js": [],
     "training-view.js": [
       "BondTraining"
+    ],
+    "talent-tree-view.js": [
+      "BondGrowth",
+      "BondClassTrees"
     ]
   },
   "unloaded": [
@@ -1066,6 +1076,9 @@
     ],
     "experience": [
       "assets/audio"
+    ],
+    "growth": [
+      "assets/talents"
     ]
   },
   "suites": {
@@ -1221,6 +1234,12 @@
         "tests/combat_workbooks_check.py"
       ],
       "purpose": "Imported workbook integrity, shield/guardian/debt/critical/entity contracts, all proposed loadouts and responsive summon presentation"
+    },
+    "talent-tree": {
+      "command": [
+        "tests/talent_tree_check.py"
+      ],
+      "purpose": "All four illustrated talent graphs, authoritative unlock lines, inspect-versus-learn behavior, responsive geometry, mobile dialog focus and save isolation"
     }
   },
   "connections": [

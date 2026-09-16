@@ -1064,6 +1064,38 @@
           "sha256": "0e25d10e7626ce30e5e63513c0db728c14de3e6f905213aaad155b81c1044d21"
         }
       ]
+    },
+    {
+      "id": "talent-tree-visual-v2-2026-09-16",
+      "source": "Current owner conversation, 2026-09-16, visual rejection of trainer tree in commit 1bc3e7a",
+      "scope": [
+        "Research RPG tree layouts, create original background and node art, and implement connected trainer skill trees on desktop and phone"
+      ],
+      "quotes": [
+        "These look bad. Make a pretty visual skill tree background, plus nodes distributed in a logical way, with nodes that are requirement for the next ones connected through a line.",
+        "Explore some skill trees to undestand how they generally look.",
+        "Create the visual assets you'll need.",
+        "Implement them"
+      ],
+      "boundary": "Replaces the rejected card presentation only. Approved trainer mechanics, point schedule and saved ranks remain in force. This authorizes the named visual revision; broader art, world, balance, device and release approvals remain open.",
+      "evidence": [
+        {
+          "path": "tree-menu.js",
+          "sha256": "a4cc9d1c032bd9cf12a200ffe33bdfb14f1e74051101438c1c06e193f2a43d96"
+        },
+        {
+          "path": "class-trees.js",
+          "sha256": "617b08730700fe24d0fe3f002c567e38237a106af5ac0672b192a68a43043732"
+        },
+        {
+          "path": "assets/talents/manifest.json",
+          "sha256": "eba440346b393fb408adef0920e9fe93124abb4e87e344ed2e0e13936e59137c"
+        },
+        {
+          "path": "features/growth/TALENT_TREE.md",
+          "sha256": "17624f8a9ba5e4e73be6eb212e6ff00f8415fc128d6242779abb8b492ab18387"
+        }
+      ]
     }
   ]
 }

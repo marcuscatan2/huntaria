@@ -21,12 +21,12 @@ real multiplayer and payments are not implemented.
 | Maps, passages, caches or scenery | [World](features/world/README.md) / [Exploration](features/exploration/README.md) | The 36-square grid and four tower interiors connect routes; [landscapes, passages and stonework](features/world/LANDSCAPES.md) define scenery; [class-shaped cities](features/world/CITIES.md) have distinct paving, civic squares, residents, rooms and waystones. |
 | Spawn density, wild levels, free healing | [Populations](features/population/README.md) / [Recovery](features/recovery/README.md) | Tripled roaming populations attack everywhere except Firstlight; saved lives connect to camp and village services. |
 | Monsters, skills, levels, builds | [Content](features/content/README.md) / [Growth](features/growth/README.md) / [Party](features/party/README.md) | The reviewed Sheet owns identity; [combat workbooks](features/content/COMBAT_WORKBOOKS.md) define the monster kits, summons and class talent trees. |
-| Menus, party, dummy test, items or summoning | [Collection](features/collection/README.md) / [Game frame](features/party/GAME_FRAME.md) | Inner Sea owns party management; Class Skill Tree is separate. [Dummy test](features/combat/TRAINING.md) measures party performance. |
+| Menus, party, dummy test, items or summoning | [Collection](features/collection/README.md) / [Game frame](features/party/GAME_FRAME.md) | Inner Sea owns party management; [Class Skill Tree](features/growth/TALENT_TREE.md) has illustrated prerequisite paths. [Dummy test](features/combat/TRAINING.md) measures party performance. |
 | Sound, Settings, reduced motion | [Preferences/audio](features/experience/README.md) | Device choices affect presentation, never combat rules. |
 | Inner Sea farming, defense or picture export | [Inner Sea](features/inner-sea/README.md) | A painted homestead inside the game frame connects habitats, training, defenses and care to saved progress. |
 | Other features or an unclear bug | [Feature index](FEATURE_MAP.md) | Symptoms route to the owner and its connecting boundary. |
 
-Feature guides link to root browser modules; do not create parallel copies.
+Feature guides link to runtime modules.
 Route lookup: `python scripts/project.py context combat`.
 Also accepts `game.js`, `BondGame`, `F-002` or `combat-feedback`.
 

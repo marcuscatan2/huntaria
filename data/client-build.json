@@ -22,7 +22,8 @@
     "assets/characters/*.png",
     "assets/inner-sea/*.png",
     "assets/cities/*.png",
-    "assets/summons/*.png"
+    "assets/summons/*.png",
+    "assets/talents/*.png"
   ],
   "rules": [
     "content.js",

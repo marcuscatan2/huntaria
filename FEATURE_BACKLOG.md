@@ -55,7 +55,7 @@ Accountability labels allocate future work; they do not spawn agents or authoriz
 | [F-007](#f-007) | P0 | M1 | Four elements, statuses, shields and guard |
 | [F-008](#f-008) | P0 | M1 | Battle controls, inspection and actionable results |
 | [F-009](#f-009) | P0 | M2 | Progression for early, middle and late world regions |
-| [F-010](#f-010) | P0 | M2 | Eighteen-node ranked mastery trees |
+| [F-010](#f-010) | P0 | M2 | Companion mastery and class talent trees |
 | [F-011](#f-011) | P0 | M2 | Earned economy, per-kill loot and empty-supply recovery |
 | [F-012](#f-012) | P0 | M1 | Inventory, consumables and item-use UX |
 | [F-013](#f-013) | P0 | M2 | 100-species collection and habitat discovery |
@@ -299,7 +299,7 @@ Required protocols: VP-02, VP-10. Evidence: pinned build/rules, fixtures/seeds, 
 
 <a id="f-010"></a>
 
-### F-010 — Eighteen-node ranked mastery trees
+### F-010 — Companion mastery and class talent trees
 
 Priority: P0 · Milestone: M2 · Status: Local implementation / commercial criteria incomplete.
 Baseline: 104 role-usable trees; path viability review pending
@@ -309,8 +309,8 @@ Accountability: Implementation agent; owner accepts
 
 Acceptance criteria:
 
-- [ ] F-010-AC1: Each of the four classes and at least100 monster species exposes eighteen ranked nodes with stable IDs, valid prerequisites and caps3/5/10. Monster trees unlock at player Lv30; each species has five named-skill nodes and an innate-identity node over shared validated effect primitives.
-- [ ] F-010-AC2: Each individual owns separate ranked investment in its species template; the committed Druid/Mage class tree unlocks with Lv20 transformation. No purchase exceeds budget/cap or bypasses progression/prerequisites. Free respec refunds exactly; migration preserves valid investments and grandfathers access where needed.
+- [ ] F-010-AC1: Each of the four classes exposes 15 workbook talents with stable IDs, rank-2 upgrades and rank-1 capstones across three connected branches. At least100 monster species retain eighteen ranked nodes with caps3/5/10. Monster trees unlock at player Lv30; each species has five named-skill nodes and an innate-identity node over shared validated effect primitives.
+- [ ] F-010-AC2: Each individual owns separate ranked investment in its species template. Class trees unlock with Lv20 transformation: two points at20, one every three levels through59, capped at15. No purchase exceeds budget/cap or bypasses prerequisites. Free respec refunds exactly; migration resets retired class ranks and preserves valid class and companion investments and grandfathered access.
 - [ ] F-010-AC3: Every offered branch has a usable effect for that character, including healing branches. Previewed rank changes agree with battle values and cap interactions.
 - [ ] F-010-AC4: At the locked progression budgets, at least two distinct development paths per class are viable and every species has one documented useful path. Unlimited respec remains free; the UI does not imply all nodes can be maxed.
 

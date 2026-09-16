@@ -31,7 +31,7 @@ with sync_playwright() as pw:
         page.evaluate("BondTree.select('copy:0')")
         check('Companion mastery stays in the Inner Sea',page.evaluate('BondMenu.current()==="collection"&&BondMenu.section()==="mastery"') and page.locator('.tree-pickers [data-class-tree]').count()==0)
         page.locator('[data-menu="trees"]').click()
-        check('Class Skill Tree contains classes only',page.locator('.game-menu-heading h2').inner_text()=='Class Skill Tree' and page.locator('#pick-tree-companion').count()==0 and 'Brimble #1' not in page.locator('.library-heading').inner_text())
+        check('Class Skill Tree contains classes only',page.locator('.game-menu-heading h2').inner_text()=='Class Skill Tree' and page.locator('#pick-tree-companion').count()==0 and page.locator('[data-talent-node]').count()==15 and 'Brimble #1' not in page.locator('.talent-toolbar').inner_text())
         banned=['launch cap','launch level','prototyp','changes affect','independent','per ready action','adventure health','choose the order','your opening moves','three skills. your priorities','enemies aim','formation sets']
         for route in ['trainer','formation','party','inventory','trees','collection']:
             page.evaluate('(route)=>BondMenu.open(route)',route)

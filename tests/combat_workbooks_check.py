@@ -55,7 +55,7 @@ with sync_playwright() as pw:
               const blocked=!P.learn(type,advanced.id),opening=P.learn(type,first.id)&&P.learn(type,first.id),learnedFork=P.learn(type,fork.id);BondTree.select(type);
               return {blocked,opening,learnedFork,capBlocked:!P.learn(type,cap.id)};}""",cls)
             check(cls+' enforces branch prerequisites',all(preview.values()))
-            check(cls+' shows fifteen talents in three branches',page.locator('[data-learn]').count()==15 and page.locator('.class-talent-branch').count()==3)
+            check(cls+' shows fifteen talents in three branches',page.locator('[data-talent-node]').count()==15 and page.locator('.class-talent-branch').count()==3)
             check(cls+' tree fits a phone',page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'))
             saved=page.evaluate('BondProfile.snapshot().growth');page.reload();page.wait_for_function('!!window.BondApp')
             check(cls+' allocation survives reload',page.evaluate('BondProfile.snapshot().growth')==saved)
@@ -63,7 +63,7 @@ with sync_playwright() as pw:
             page.screenshot(path=str(ARTIFACTS/f'trainer-talents-{cls}-{args.browser}.png'))
             check(cls+' free reset restores its points',page.evaluate('type=>BondProfile.respec(type)&&BondGrowth.used(BondProfile.snapshot().growth[type])===0',cls))
         page.set_viewport_size({'width':1440,'height':1000})
-        check('Desktop branches keep full-width readable talent cards',page.evaluate('()=>[...document.querySelectorAll(".class-talent-branch .tree-node")].every(n=>n.getBoundingClientRect().width>=250)'))
+        check('Desktop exposes fifteen touch-sized nodes and all prerequisite connections',page.evaluate('()=>document.querySelectorAll(".talent-edge").length===15&&[...document.querySelectorAll("[data-talent-node]")].every(n=>n.getBoundingClientRect().width>=44)'))
         frozen=page.evaluate("""()=>{const P=BondProfile,G=BondGame,s=P.snapshot();s.progression.specialization='mage';P.testing.replace(s);const sp=P.population().find(x=>x.present),e=P.beginHunt(sp.id),old=P.snapshot();old.growth.mage={bond:2,might:2};const build=G.soloBuild('mage'),options={profile:old,adventure:true,seed:e.seed,encounter:e,classTrees:0},b=new G.Battle(build,options);
           if(!P.reserveBattle(b,e.id,options))return false;for(let i=0;i<30;i++)b.step();P.checkpoint(b);const raw=P.snapshot();raw.growth.mage=old.growth.mage;delete raw.encounterSave.options.classTrees;P.testing.replace(raw);const restored=P.restoreBattle(e.id),same=JSON.stringify(b.events)===JSON.stringify(restored.events)&&b.trainer(0).maxHp===restored.trainer(0).maxHp;
           const reset=Object.keys(P.snapshot().growth.mage).length===0;P.abandonBattle();const current=new G.Battle(build,{profile:P.snapshot()});return same&&reset&&restored.classTrees===0&&current.classTrees===1&&b.trainer(0).maxHp>current.trainer(0).maxHp;}""")

@@ -1,0 +1,83 @@
+/* Illustrated trainer diagram; companion mastery keeps its own layout. */
+#teams[data-screen=trees]>.menu-content:has(>.talent-screen){padding:0;background:#10262b}
+.talent-screen{color:#e8e4cd;--talent-accent:#a8dac9;--talent-gold:#eac67b;background:#10262b;min-height:100%}
+.talent-screen[data-talent-class=mage]{--talent-accent:#c0b2ef}
+.talent-screen[data-talent-class=hunter]{--talent-accent:#d5c38f}
+.talent-screen[data-talent-class=swordsman]{--talent-accent:#a5cce3}
+.talent-toolbar{display:flex;gap:18px;align-items:center;padding:12px 20px;border-bottom:1px solid #88744b99;background:linear-gradient(100deg,#142f34,#243d3b);min-height:76px}
+.talent-class-name{margin-right:auto}.talent-class-name h3{margin:0;color:#f4dfab;font:27px var(--serif)}
+.talent-class-picker{display:flex;gap:4px;margin-top:6px}
+#teams .talent-class-picker .button{min-height:24px;padding:3px 7px;font-size:10px;border-radius:3px}
+.talent-toolbar #tree-points{margin:0;font-size:12px;white-space:nowrap;color:#d4ddce}.talent-toolbar #tree-points b{font:27px var(--serif);color:#f5d58f;margin-right:5px}.talent-toolbar #tree-points small{display:block;font-size:10px;color:#b3c6bc;margin-top:1px}
+#teams .talent-toolbar>[data-respec]{font-size:11px;min-height:38px;padding:8px 12px}
+.talent-layout{display:grid;grid-template-columns:minmax(0,1fr) 268px;min-height:555px}
+.talent-board{min-width:0;position:relative;background:linear-gradient(#09212842,#09212824 70%,#092128a8),url(assets/talents/sanctuary.png) center/cover}
+.talent-board::after{content:'';position:absolute;inset:8px;border:1px solid #b79b532e;pointer-events:none}
+.talent-screen .class-branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:0;padding:0 8px}
+.talent-screen .class-talent-branch{min-width:0;position:relative}
+.talent-screen .class-talent-branch+section{border-left:1px solid #c7b97425}
+.class-talent-branch>header{text-align:center;min-height:58px;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:12px 6px 0}
+.talent-screen .class-talent-branch h4{font:17px var(--serif);color:#eaddb7;margin:0;line-height:1.1;text-shadow:0 2px 4px #06171c}
+.class-talent-branch>header>span{font-size:10px;letter-spacing:1px;color:#b9c9c4}
+.talent-map{position:relative;height:508px;margin:0 4px}
+.talent-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.talent-edge{fill:none;stroke:#a09e80;stroke-opacity:.55;stroke-width:2;vector-effect:non-scaling-stroke}
+.talent-edge.ready{stroke:var(--talent-accent);stroke-opacity:.95;stroke-dasharray:4 4}
+.talent-edge.learned{stroke:#f3c971;stroke-opacity:1;stroke-width:3;filter:drop-shadow(0 0 4px #ebc16e)}
+.talent-node{position:absolute;left:var(--node-x);top:calc(var(--node-y) * var(--talent-scale,1));transform:translate(-50%,-50%);width:58px;height:58px;min-height:0;padding:3px;border:2px solid #667772;border-radius:50%;background:#132a30;box-shadow:0 3px 9px #000b,0 0 0 3px #071d27c9;cursor:pointer;color:#f2ead4;isolation:isolate}
+.talent-icon{display:block;width:100%;height:100%;border-radius:inherit;background-color:#142d34;background-image:var(--icon-atlas);background-size:500% 300%;background-position:var(--icon-x) var(--icon-y);background-repeat:no-repeat;pointer-events:none}
+.talent-node.locked .talent-icon{filter:saturate(.35) brightness(.7)}
+.talent-node.available{border-color:var(--talent-accent);box-shadow:0 0 0 3px #142b31,0 0 14px #b5e7dc38}
+.talent-node.learned{border-color:#e6bc68;box-shadow:0 0 0 3px #13262b,0 0 14px #e5ba6b50}
+.talent-node.capstone{width:70px;height:70px;border-radius:17px;outline:1px solid #bfa66b80;outline-offset:4px}
+.talent-node[aria-pressed=true]{outline:2px solid #fff0b2;outline-offset:5px;box-shadow:0 0 24px #f1d39870}
+.talent-node:hover .talent-icon{filter:brightness(1.15)}
+#teams .talent-node:focus-visible{outline:3px solid #fff0b2;outline-offset:6px}
+.talent-rank{position:absolute;z-index:2;bottom:-8px;left:50%;transform:translateX(-50%);border:1px solid #728578;background:#10262c;padding:2px 6px;border-radius:5px;font:700 10px var(--sans);white-space:nowrap;line-height:1.15}
+.talent-node.mastered .talent-rank{background:#4b4026;border-color:#e9bf6b;color:#ffe6a6}
+.talent-name{position:absolute;left:50%;top:calc(100% + 13px);transform:translateX(-50%);width:110px;max-width:45vw;pointer-events:none;font:600 11px/1.25 var(--sans);text-align:center;color:#e4e6d7;text-shadow:0 1px 3px #00161e,0 0 5px #00161e,0 0 8px #00161e}
+.talent-node.locked .talent-name{color:#bbcac9}
+.talent-node.capstone .talent-name{color:#ead49e;font-weight:700}
+.talent-lock{position:absolute;right:-2px;top:-2px;font-size:10px;color:#c3d1c9;text-shadow:0 1px #061b22}
+.talent-threshold{position:absolute;left:50%;transform:translateX(-50%);border:1px solid #bda36d42;background:#12272eea;color:#bfcdc7;padding:4px 6px;font:10px var(--sans);text-align:center;white-space:nowrap;pointer-events:none;border-radius:2px}
+.fork-threshold{top:calc(246px * var(--talent-scale,1))}.cap-threshold{top:calc(378px * var(--talent-scale,1))}
+.talent-legend{display:flex;justify-content:center;gap:18px;padding:12px 6px 14px;font-size:10px;color:#d6ddcc}
+.talent-legend>span{display:flex;align-items:center;gap:6px}.talent-legend i{width:9px;height:9px;display:block;border:1px solid #92a7a6;border-radius:50%;background:#1a353b}.talent-legend i.available{border-color:var(--talent-accent);background:#b1daca33}.talent-legend i.learned{border-color:#efd393;background:#bc944f}
+.talent-inspector{padding:24px 18px;min-width:0;border-left:1px solid #a38b5599;background:linear-gradient(145deg,#253b3b,#122b30 70%)}
+.talent-detail-heading{display:flex;gap:12px;align-items:center;padding-bottom:18px;border-bottom:1px solid #82917a3d}.talent-detail-heading>.talent-icon{width:66px;height:66px;border:1px solid #c1a66a;border-radius:12px;flex-shrink:0;box-shadow:0 3px 16px #0004}.talent-detail-heading>div{min-width:0}
+.talent-detail-heading p{margin:0 0 5px;font-size:10px;color:#b8c8ba}.talent-detail-heading h3{font:21px/1.12 var(--serif);margin:0 0 7px;color:#f4dfaa}.talent-detail-heading span{font-size:11px;color:#b4c6bc}
+.talent-rank-descriptions section{padding:16px 0;border-bottom:1px solid #82917a30}.talent-rank-descriptions h4,.talent-requirements h4{font:700 11px var(--sans);color:#e3cea0;margin:0 0 7px}.talent-rank-descriptions h4 span{color:#eac471}.talent-rank-descriptions p{font:12px/1.65 var(--sans);color:#d3ddcf;margin:0}.talent-rank-descriptions .invested{border-left:2px solid #d7b569;padding-left:10px}
+.talent-requirements{padding:16px 0 0}.talent-requirements ul{padding:0;margin:0;list-style:none}.talent-requirements li{display:flex;gap:7px;color:#b8c7c0;font-size:11px;line-height:1.55;margin:7px 0}.talent-requirements li>span{color:#bec8b3}.talent-requirements .met,.talent-requirements .met>span{color:#e5ce94}
+.talent-detail-action{padding-top:18px}.talent-detail-action .button{width:100%;font-size:12px;min-height:44px}.talent-screen button:disabled{opacity:.55}
+#teams .talent-detail-action .button.primary{background:linear-gradient(#d5b879,#a78950);color:#152d30;border-color:#f3d397;box-shadow:inset 0 0 0 2px #8a704849}
+.talent-branch-tabs{display:none}
+.talent-dialog{color:#e8e4cd;background:linear-gradient(145deg,#29403e,#122b30 70%);padding:24px 20px 20px}
+.talent-detail-close{position:absolute;top:7px;right:7px;width:44px;height:44px;color:#e9d59e;border:0;background:transparent;font:28px Georgia,serif;cursor:pointer}
+.talent-dialog .talent-detail-heading{padding-right:28px}
+.talent-dialog .talent-detail-action{position:sticky;bottom:-20px;margin:0 -20px -20px;padding:16px 20px 20px;background:#132d31}
+.talent-dialog .talent-detail-action .button{background:linear-gradient(#d5b879,#a78950);color:#152d30;border-color:#f3d397}
+@media(max-width:1000px){
+ .talent-layout{display:block;min-height:0}.talent-inspector{display:none}
+ .talent-screen .class-branches{display:block;padding:0 16px;max-width:470px;margin:auto}
+ .talent-screen .class-talent-branch{display:none}.talent-screen .class-talent-branch.current{display:block;border-left:0}
+ .talent-branch-tabs{display:flex;gap:0;background:#102a30d9;border-bottom:1px solid #a690554f}
+ .talent-branch-tabs button{flex:1;min-width:0;min-height:52px;padding:8px 5px;background:transparent;color:#c4d4cb;border:0;border-right:1px solid #a6905538;font:13px/1.2 var(--serif);cursor:pointer}
+ .talent-branch-tabs button[aria-pressed=true]{background:#c3ae6b22;color:#ffe0a6;box-shadow:inset 0 -2px #d0af66}
+ .talent-screen .class-talent-branch>header{display:none}
+ .talent-map{--talent-scale:.8;height:440px;margin-top:8px}.talent-lines{height:406.4px}
+ .talent-name{width:124px;font-size:12px}.talent-node{width:64px;height:64px}.talent-node.capstone{width:74px;height:74px}
+ .talent-toolbar{gap:10px;padding:12px}.talent-class-name h3{font-size:23px}
+ .talent-toolbar #tree-points{font-size:10px}.talent-toolbar #tree-points b{font-size:24px}
+ .talent-toolbar #tree-points small{font-size:9px}
+ .menu-mode .talent-dialog:modal{top:auto;bottom:max(12px,calc(100vh - var(--game-top) - var(--game-height) + 72px));transform:translateX(-50%);width:min(440px,calc(var(--game-width) - 24px));max-height:min(620px,calc(var(--game-height) - 155px));border:1px solid #d1b675;border-radius:14px 14px 6px 6px;box-shadow:0 -8px 50px #07191dc9}
+ .talent-dialog .talent-detail-heading h3{font-size:24px}.talent-dialog .talent-rank-descriptions p{font-size:13px}
+}
+@media(max-width:480px){
+ .talent-toolbar{flex-wrap:wrap;row-gap:8px}.talent-class-name{flex:1;min-width:105px}
+ .talent-class-picker{flex-wrap:wrap;max-width:175px}
+ #teams .talent-toolbar>[data-respec]{min-height:34px;padding:6px 8px;font-size:10px}
+ .talent-toolbar #tree-points{margin-left:auto}
+ .talent-screen .class-branches{padding:0 10px}.talent-name{width:108px;font-size:11px}
+ .talent-board{background-position:48% center}
+}
+@media(prefers-reduced-motion:reduce){.talent-node{transition:none}}

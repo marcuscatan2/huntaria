@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "generator": "Built-in image_gen",
+  "background": "sanctuary.png",
+  "atlas": {
+    "columns": 5,
+    "rows": 3,
+    "order": "Row-major: each branch contains Opening, Fork A, Fork B, Advanced, Capstone; branches follow combat-catalog.js order."
+  },
+  "assets": [
+    {
+      "id": "sanctuary",
+      "file": "sanctuary.png",
+      "prompt": "Use case: stylized-concept. Asset type: original painted background for a fantasy RPG skill tree, landscape 1536x1024. Create an exquisite atmospheric illustration of a forgotten sanctuary of knowledge: an ancient ivory-barked tree rising above a still jade pool, weathered stone arches and worn carved pillars framing the far left and right edges, a few hanging brass celestial instruments and old ribbons among the upper boughs. Quiet deep teal, midnight blue and moss shadows, restrained antique gold highlights, pale turquoise mist, tiny fireflies. Hand-painted storybook RPG art, rich brush textures, elegant and mysterious, no photorealism. Composition for an interactive diagram overlay: the central 75 percent remains spacious, dark and low contrast with hazy distant tree silhouette; the strongest beautiful detail lives along the bottom corners and outer edges. Upper middle has a soft atmospheric glow, never bright white. Full bleed landscape, seamless visual space with no panels. Absolutely no UI, no skill icons, no nodes, no connector lines, no lettering, no text, no logos, no watermark. This is the background artwork only; interactive nodes will be drawn in code.",
+      "sourceFile": "exec-223163df-b0af-4f3e-8c60-b9fe04e6e967.png",
+      "sha256": "addd411762221842c80200df880bd0e527a60174e47279d25fe66157ada8dba8"
+    },
+    {
+      "id": "mage",
+      "file": "mage.png",
+      "prompt": "Use case: stylized-concept. Asset type: a production fantasy RPG ability icon sprite atlas, 15 DIFFERENT hand-painted illustrations. Exact layout: FIVE equal-width columns by THREE equal-height rows, perfectly regular grid filling the full 1536x1024 image, no external margins and no gutters. Each cell is a standalone centered icon on the SAME solid very dark midnight teal #112a30 background. Every subject fits well inside the central 70 percent of its own cell with generous dark space around it, never crossing into adjacent cells. No drawn grid or borders. Painted storybook fantasy inventory art, crisp large readable silhouettes, exquisite restrained light and material detail, palette violet, icy turquoise, antique gold. Read left to right row by row, the 15 subjects are: 1: open spellbook with three luminous ribbons; 2: floating rune scroll; 3: quiet arcane hourglass; 4: exploding arcane rune; 5: three stars in grand conjunction; 6: faceted crystal shield; 7: prism reflecting a spell; 8: protective crystal dome; 9: broken crystal storing light; 10: radiant crystal sanctuary; 11: brass astral lens; 12: celestial targeting reticle; 13: armored crystal lens housing; 14: glowing equation orb; 15: grand golden orrery. Each of the fifteen cells must be occupied by exactly its assigned subject. No duplicates. No text, letters, words, numbers, UI, outlines around cells, logos, watermark, photorealism, or hands except the specified gauntlet. Match a premium illustrated RPG skill tree; these will display as small circular icons.",
+      "sourceFile": "exec-0b1aa774-690e-4f91-8bcd-0f8df67ad7a2.png",
+      "sha256": "4a6792ba8b136e1fc5284aa64099f49e9963964d84a234ce10614f2fbad42618"
+    },
+    {
+      "id": "druid",
+      "file": "druid.png",
+      "prompt": "Use case: stylized-concept. Asset type: a production fantasy RPG ability icon sprite atlas, 15 DIFFERENT hand-painted illustrations. Exact layout: FIVE equal-width columns by THREE equal-height rows, perfectly regular grid filling the full 1536x1024 image, no external margins and no gutters. Each cell is a standalone centered icon on the SAME solid very dark midnight teal #112a30 background. Every subject fits well inside the central 70 percent of its own cell with generous dark space around it, never crossing into adjacent cells. No drawn grid or borders. Painted storybook fantasy inventory art, crisp large readable silhouettes, exquisite restrained light and material detail, palette leaf green, ivory, jade and amber. Read left to right row by row, the 15 subjects are: 1: glowing healing seed; 2: overflowing flower chalice; 3: springwater in cupped leaves; 4: protective leafy canopy; 5: radiant perennial heart flower; 6: briar-wrapped gift bud; 7: barbed thorn spear; 8: woven thornsilk shield; 9: dark sap dripping from thorn; 10: crown of brambles; 11: living heartwood stump; 12: nurturing roots around seed; 13: sheltering bough; 14: grafted branch of wild flowers; 15: ancient forest guardian face. Each of the fifteen cells must be occupied by exactly its assigned subject. No duplicates. No text, letters, words, numbers, UI, outlines around cells, logos, watermark, photorealism, or hands except the specified gauntlet. Match a premium illustrated RPG skill tree; these will display as small circular icons.",
+      "sourceFile": "exec-2e0c3402-265b-4751-bad7-6ff8216bc2e4.png",
+      "sha256": "91749c72b59d62424664b14f379be4a7686f4dc3efba8b76b2f25a55b9624d16"
+    },
+    {
+      "id": "swordsman",
+      "file": "swordsman.png",
+      "prompt": "Use case: stylized-concept. Asset type: a production fantasy RPG ability icon sprite atlas, 15 DIFFERENT hand-painted illustrations. Exact layout: FIVE equal-width columns by THREE equal-height rows, perfectly regular grid filling the full 1536x1024 image, no external margins and no gutters. Each cell is a standalone centered icon on the SAME solid very dark midnight teal #112a30 background. Every subject fits well inside the central 70 percent of its own cell with generous dark space around it, never crossing into adjacent cells. No drawn grid or borders. Painted storybook fantasy inventory art, crisp large readable silhouettes, exquisite restrained light and material detail, palette steel blue, crimson cloth and antique gold. Read left to right row by row, the 15 subjects are: 1: layered knight shield; 2: warhammer with controlled impact; 3: three overlapping shields; 4: bent shield still intact; 5: glowing heart of stone citadel; 6: sword striking back; 7: iron gauntlet gripping sword; 8: duelist sword with heraldic seal; 9: crimson ledger and blade; 10: crowned sword in sunburst; 11: rallying blue banner; 12: two crossed vanguard spears; 13: shield with marching boots; 14: warhorn with echoing rings; 15: three proud battle standards. Each of the fifteen cells must be occupied by exactly its assigned subject. No duplicates. No text, letters, words, numbers, UI, outlines around cells, logos, watermark, photorealism, or hands except the specified gauntlet. Match a premium illustrated RPG skill tree; these will display as small circular icons.",
+      "sourceFile": "exec-e9b63d0c-612b-4cfb-a89f-71a2a1ee2a8c.png",
+      "sha256": "df8dbd0eabace16932b50073626269fcd0b179ba4faefb47d71bd937fcfdeacb"
+    },
+    {
+      "id": "hunter",
+      "file": "hunter.png",
+      "prompt": "Use case: stylized-concept. Asset type: a production fantasy RPG ability icon sprite atlas, 15 DIFFERENT hand-painted illustrations. Exact layout: FIVE equal-width columns by THREE equal-height rows, perfectly regular grid filling the full 1536x1024 image, no external margins and no gutters. Each cell is a standalone centered icon on the SAME solid very dark midnight teal #112a30 background. Every subject fits well inside the central 70 percent of its own cell with generous dark space around it, never crossing into adjacent cells. No drawn grid or borders. Painted storybook fantasy inventory art, crisp large readable silhouettes, exquisite restrained light and material detail, palette amber leather, moss green, ivory and copper. Read left to right row by row, the 15 subjects are: 1: drawn longbow aimed at distant star; 2: needle-tipped arrow; 3: watchful hawk eye; 4: arrow through target; 5: one radiant perfect arrow; 6: horn calling a wolf pack; 7: leaping wolf silhouette; 8: three animal eyes; 9: two crossing arrows; 10: alpha wolf head; 11: coiled rope with anchoring hook; 12: taut tension wire trap; 13: three scattering rope snares; 14: hunter boot beside hidden trap; 15: field of sharp stakes. Each of the fifteen cells must be occupied by exactly its assigned subject. No duplicates. No text, letters, words, numbers, UI, outlines around cells, logos, watermark, photorealism, or hands except the specified gauntlet. Match a premium illustrated RPG skill tree; these will display as small circular icons.",
+      "sourceFile": "exec-3a9c3b00-379c-4647-b73b-e2bade7fa6a1.png",
+      "sha256": "9be304191010f57969e789fe875c4cd7d8ae7e64ecf32beaa6291d884649d6a6"
+    }
+  ]
+}
