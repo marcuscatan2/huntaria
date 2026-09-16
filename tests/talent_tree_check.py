@@ -20,6 +20,36 @@ def check(name, value):
     print(('PASS ' if value else 'FAIL ') + name, flush=True)
 
 
+def held_pointer(page, node_id, label, touch=None):
+    node = page.locator('[data-talent-node="' + node_id + '"]')
+    node.scroll_into_view_if_needed()
+    before = node.bounding_box()
+    name = node.locator('.talent-name').inner_text()
+    x, y = before['x'] + before['width']/2, before['y'] + before['height']/2
+    saved = page.evaluate('JSON.stringify(BondProfile.snapshot())')
+    if touch:
+        touch.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': x, 'y': y}]})
+    else:
+        page.mouse.move(x, y)
+        page.mouse.down()
+    page.wait_for_timeout(220)
+    pressed = node.bounding_box()
+    hit = page.evaluate('p=>document.elementFromPoint(p.x,p.y)?.closest("[data-talent-node]")?.dataset.talentNode', {'x': x, 'y': y})
+    check(label + ' stays in place while pressed', all(abs(before[k]-pressed[k]) < .5 for k in ['x', 'y', 'width', 'height']) and hit == node_id)
+    if touch:
+        touch.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
+    else:
+        page.mouse.up()
+    page.wait_for_timeout(180)
+    mobile = page.viewport_size['width'] <= 1000
+    details = page.locator('.talent-dialog' if mobile else '.talent-inspector')
+    opened = not mobile or details.evaluate('(e)=>e.open')
+    check(label + ' opens the correct description on one release', opened and details.locator('h3').inner_text() == name and node.get_attribute('aria-pressed') == 'true')
+    check(label + ' inspection leaves points and progress unchanged', page.evaluate('JSON.stringify(BondProfile.snapshot())') == saved)
+    if mobile and opened:
+        page.keyboard.press('Escape')
+
+
 with sync_playwright() as pw:
     browser = pw.chromium.launch(executable_path=find_browser(args.browser), headless=True)
     page = browser.new_page(viewport={'width': 1440, 'height': 1000})
@@ -57,6 +87,9 @@ with sync_playwright() as pw:
                       siblings:buttons.every(e=>buttons.every(other=>e===other||!intersect(e.querySelector('.talent-name').getBoundingClientRect(),other.querySelector('.talent-name').getBoundingClientRect())))};
                 }""")
                 check(cls + ' readable graph and touch targets at ' + str(width), geometry['fit'] and geometry['targets'] and geometry['labels'] and geometry['siblings'] and geometry['count'] == (15 if width > 1000 else 5))
+                if width in (1440, 390):
+                    for index in [1, 4]:
+                        held_pointer(page, ids[index], f'{cls} node {index+1} mouse at {width}px')
                 if width in (1440, 320):
                     page.locator('#panel-loadout').screenshot(path=str(ARTIFACTS / f'talent-tree-{cls}-{width}.png'))
             before = page.evaluate('JSON.stringify(BondProfile.snapshot())')
@@ -114,7 +147,32 @@ with sync_playwright() as pw:
         page.locator('.talent-inspector [data-talent-learn]').focus()
         page.keyboard.press('Enter')
         check('Desktop keyboard purchase uses the same one-point rule', page.evaluate('BondProfile.snapshot().growth.mage.MG1===1'))
+        page.evaluate("""()=>{const s=BondProfile.snapshot();s.companions=[{id:'press-companion',type:'acornboar',xp:BondProgress.threshold(60),skills:BondContent.UNITS.acornboar.default,growth:{}}];BondProfile.testing.replace(s);BondTree.select('press-companion');}""")
+        companion_ids = page.locator('.class-talent-branch.current [data-talent-node]').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.talentNode)')
+        for width in [1440, 390]:
+            page.set_viewport_size({'width': width, 'height': 1000 if width > 1000 else 844})
+            for node_id in [companion_ids[1], companion_ids[-1]]:
+                held_pointer(page, node_id, f'Companion {node_id} mouse at {width}px')
+        # Use touch input, including its held :active state, in a separate phone context.
+        touch_context = browser.new_context(viewport={'width': 390, 'height': 844}, has_touch=True, is_mobile=True)
+        phone = touch_context.new_page()
+        legacy_adventure(phone)
+        phone.on('pageerror', lambda error: errors.append(str(error)))
+        phone.goto(f'http://127.0.0.1:{server.server_port}/?test=1')
+        phone.wait_for_function('!!window.BondApp')
+        phone.evaluate("""()=>{const s=BondProfile.snapshot();s.trainerXP=BondProgress.threshold(60);s.progression.specialization='mage';
+          s.journey.early.tidecrown=true;s.journey.relic.stage='complete';
+          s.companions=[{id:'touch-companion',type:'acornboar',xp:BondProgress.threshold(60),skills:BondContent.UNITS.acornboar.default,growth:{}}];
+          BondProfile.testing.replace(s);BondApp.switchTab('loadout');}""")
+        touch = touch_context.new_cdp_session(phone)
+        for ref in ['mage', 'touch-companion']:
+            phone.evaluate('ref=>BondTree.select(ref)', ref)
+            ids = phone.locator('.class-talent-branch.current [data-talent-node]').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.talentNode)')
+            for node_id in [ids[1], ids[-1]]:
+                held_pointer(phone, node_id, f'{ref} {node_id} touch', touch)
+        touch_context.close()
         # A failed cosmetic download must never block the tree or its controls.
+        page.set_viewport_size({'width': 1440, 'height': 1000})
         page.route('**/assets/talents/*.png', lambda route: route.abort())
         page.reload()
         page.wait_for_function('!!window.BondApp')

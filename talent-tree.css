@@ -32,6 +32,8 @@
 .talent-node.capstone{width:70px;height:70px;border-radius:17px;outline:1px solid #bfa66b80;outline-offset:4px}
 .talent-node[aria-pressed=true]{outline:2px solid #fff0b2;outline-offset:5px;box-shadow:0 0 24px #f1d39870}
 .talent-node:hover .talent-icon{filter:brightness(1.15)}
+/* Keep the positioned hit target fixed while the shared button press style is active. */
+.talent-node:not(:disabled):active{transform:translate(-50%,-50%);filter:brightness(.95)}
 #teams .talent-node:focus-visible{outline:3px solid #fff0b2;outline-offset:6px}
 .talent-rank{position:absolute;z-index:2;bottom:-8px;left:50%;transform:translateX(-50%);border:1px solid #728578;background:#10262c;padding:2px 6px;border-radius:5px;font:700 10px var(--sans);white-space:nowrap;line-height:1.15}
 .talent-node.mastered .talent-rank{background:#4b4026;border-color:#e9bf6b;color:#ffe6a6}

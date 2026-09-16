@@ -41,6 +41,8 @@ Each branch progresses from top to bottom:
 - Node names and rank badges remain visible. Locked nodes can be inspected.
   Selecting a node never spends a point; the inspector has a separate Learn or
   Improve button. Requirements show their current completion state.
+- Pressed nodes keep their position and hit area through pointer release. The
+  shared button animation must not replace the diagram's centering transform.
 - Desktop displays all branches and a side inspector. At widths up to 1000px,
   branch buttons show one complete path at a time and details use a modal sheet
   within the game frame. Closing it, including Escape, returns focus to the node.
@@ -62,7 +64,8 @@ No reference screenshots or other games' assets ship with Huntaria.
 ## Verification
 
 `python tests/talent_tree_check.py --browser chrome` checks all four graphs,
-real point spending and alternative prerequisites, keyboard/modal behavior,
+real point spending and alternative prerequisites, held mouse/touch input,
+keyboard/modal behavior,
 save preservation, asset failure and 320–1440px layouts. Captures and reports
 stay in ignored `tests/artifacts/`. `tests/combat_workbooks_check.py` retains
 combat behavior, migration and reserved-battle checks.
