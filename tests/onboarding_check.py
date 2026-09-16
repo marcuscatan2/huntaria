@@ -52,7 +52,11 @@ with sync_playwright() as pw:
         check('Running keeps injuries rather than healing',page.evaluate('!!BondApp.getBattle().escaped') and page.evaluate('BondAdventure.health(BondProfile.snapshot())')<=hp)
         # Completed loss through real frame scheduling, followed by real walking from camp.
         page.evaluate("const s=BondProfile.snapshot();s.vitality.trainer=1;BondProfile.testing.replace(s)")
-        fox=page.evaluate('qaApproach()');page.locator('[data-object="'+fox+'"]').click();page.clock.run_for(5000)
+        fox=page.evaluate('qaApproach()')
+        # This lifecycle fixture needs a repeatable first hit within five seconds.
+        # Random encounter seeds can legally miss and postpone the intended defeat.
+        page.evaluate("id=>{const s=BondProfile.snapshot();s.spawns[id].seed=11;BondProfile.testing.replace(s);}",fox)
+        page.locator('[data-object="'+fox+'"]').click();page.clock.run_for(5000)
         check('Frame-driven loss returns healed with no reserved encounter',page.evaluate('BondApp.getTab()==="region"&&!BondProfile.snapshot().encounterSave&&BondAdventure.health(BondProfile.snapshot())===10000'))
         page.locator('[data-object="'+fox+'"]').dispatch_event('click');page.clock.run_for(5000)
         check('Walking from camp to the fox after death really starts combat',page.evaluate('BondApp.isRunning()&&BondApp.getTab()==="battle"'))

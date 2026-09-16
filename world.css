@@ -23,3 +23,12 @@
 #world-actors .world-node:has(.tower-stair-hitbox) .gate-badge{top:auto;bottom:36%;left:50%;transform:translateX(-50%);background:#253b3ddb;color:#efdfba;border:1px solid #c4b28b99;border-radius:5px;padding:4px 8px;font:700 9px/1.3 system-ui;letter-spacing:.6px;white-space:nowrap;pointer-events:none}
 #world-actors .world-node:has(.tower-stair-hitbox):not(.nearby):not(:hover):not(:focus-visible) .gate-badge{opacity:.8}
 #world-actors .world-node:has(.tower-stair-hitbox) .world-label{white-space:normal;min-width:0;width:max-content;max-width:190px;top:68%}
+/* Passage labels sit inside the approach, clear of border HUD and the opening. */
+#world-actors .world-node.passage{filter:none}
+#world-actors .world-node.passage::before,#world-actors .world-node.passage::after{display:none}
+#world-actors .world-node.passage .world-exit-hitbox{width:100%;height:100%}
+#world-actors .world-node.passage .gate-badge{left:var(--passage-label-x);top:calc(var(--passage-label-y) - 24px);bottom:auto;transform:translateX(-50%);background:#263c35e8;color:#f1e8c9;border:1px solid #b8ac7c99;border-radius:5px;padding:4px 8px;font:700 9px/1.3 system-ui;white-space:nowrap;pointer-events:none}
+#world-actors .world-node.passage .world-label{left:var(--passage-label-x);top:var(--passage-label-y);min-width:0;width:max-content;max-width:180px;white-space:normal}
+#world-actors .world-node.passage .world-label small{white-space:normal;font-size:8px;margin-top:2px}
+#world-actors .world-node.passage .world-label,#world-actors .world-node.passage .gate-badge{z-index:1900;pointer-events:auto}
+#world-actors .world-node.passage:not(.nearby):not(:hover):not(:focus-visible) .world-label{opacity:1}

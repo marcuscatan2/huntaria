@@ -310,14 +310,15 @@
         "scripts/world_assets.py",
         "assets/world-runtime/manifest.json",
         "city-view.js",
-        "city.css"
+        "city.css",
+        "world-passages.js"
       ],
       "backlog": [
         "F-027",
         "F-035"
       ],
       "entry": "BondRegion.enter / leave / frame; WorldRenderer.mount / dispose / draw; BondWorldMap",
-      "contract": "Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; every roaming species is hostile outside Firstlight at every trainer level; the starting map remains passive. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Pack previews use a participating monster portrait and reserve lives only on Challenge; cancelling preserves walking and loot. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The Forest Mage onboarding trial and four class-master acceptance battles are protected from roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction. Ordinary NPCs and keepers use civilian art; class masters retain their class portrait through the shared CharacterRig appearance selector. City buildings use painted hit bounds and clear doorway proximity. Enterable overhead rooms retain source proportions on desktop and phones and contain resident conversations, prop interactions and profile-owned supply purchases; closing/reload returns outside. Cities replace generic markers with painted buildings, people, companions, waystones and chest objects. The Cartesian atlas draws equal squares and actual shared-border routes; waystone travel is a separate physical interaction. Landscape props use two general lossless atlases and a tower stonework atlas loaded on first visit, all with measured silhouette frames. Painted ascending/descending stairs retain physical gate positions and use their full painted tap bounds; four burial silhouettes remain visible in low effects. Ground-painted tower props provide a loading/error fallback; retry clears their cached chunks. Three shared sheets stay below 19 MiB decoded RGBA. Ground shading includes world-space patch halos across chunk boundaries. Painted stone exit posts replace floating gate thumbnails; scenery services retain their real hit bounds without generic icon markers.",
+      "contract": "Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; every roaming species is hostile outside Firstlight at every trainer level; the starting map remains passive. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Pack previews use a participating monster portrait and reserve lives only on Challenge; cancelling preserves walking and loot. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The Forest Mage onboarding trial and four class-master acceptance battles are protected from roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction. Ordinary NPCs and keepers use civilian art; class masters retain their class portrait through the shared CharacterRig appearance selector. City buildings use painted hit bounds and clear doorway proximity. Enterable overhead rooms retain source proportions on desktop and phones and contain resident conversations, prop interactions and profile-owned supply purchases; closing/reload returns outside. Cities replace generic markers with painted buildings, people, companions, waystones and chest objects. The Cartesian atlas draws equal squares and actual shared-border routes; waystone travel is a separate physical interaction. Landscape props use two general lossless atlases and a tower stonework atlas loaded on first visit, all with measured silhouette frames. Painted ascending/descending stairs retain physical gate positions and use their full painted tap bounds; four burial silhouettes remain visible in low effects. Ground-painted tower props provide a loading/error fallback; retry clears their cached chunks. Three shared sheets stay below 19 MiB decoded RGBA. Ground shading includes world-space patch halos across chunk boundaries. world-passages.js describes destination-specific cave, city, cemetery, forest, mountain, ruin, sanctuary and meadow approaches over existing roads. Shared atlas props frame open border gaps; passage tap areas and labels stay within the game frame. Walking toward a border gate crosses at contact through the profile transition; stationary arrivals never bounce back, and rejected walking attempts latch until backing away. Explicit taps can retry immediately. Existing locks, critical-save failures and safe arrivals are preserved. Scenery services retain their real hit bounds without generic icon markers.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -477,7 +478,7 @@
       ],
       "backlog": [],
       "entry": "BondProfile.commit (private); normalize / reserveBattle / checkpoint / restoreBattle / settleKills / complete / summon",
-      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions. Normalized journey.relic stages and critical nearby relicAction transactions own Echo delivery and the one-time class weapon. Rescue settlement restores vitality and advances the story atomically; no raid Echo or repeat loot is issued.",
+      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions. Normalized journey.relic stages and critical nearby relicAction transactions own Echo delivery and the one-time class weapon. Rescue settlement restores vitality and advances the story atomically; no raid Echo or repeat loot is issued. Border transitions optionally accept the current walked position, validate finite coordinates/collision/proximity and commit arrival atomically; exploration does not issue a separate position write before this critical save.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -490,7 +491,8 @@
         "farm-classes",
         "city-world",
         "field-encounters",
-        "relic-quest"
+        "relic-quest",
+        "landscapes"
       ],
       "docs": [
         "features/persistence/SAVES.md",
@@ -758,7 +760,8 @@
       "BondAtlas",
       "BondWorldLayout",
       "BondCityArt",
-      "BondScenery"
+      "BondScenery",
+      "BondPassages"
     ],
     "echoes.js": [
       "BondContent"
@@ -842,7 +845,8 @@
       "BondWildBehavior",
       "BondSettings",
       "BondCityView",
-      "BondRelicView"
+      "BondRelicView",
+      "BondPassages"
     ],
     "campaign-menu.js": [
       "BondCampaign",
@@ -967,6 +971,10 @@
     ],
     "world-scenery.js": [
       "BondAtlas"
+    ],
+    "world-passages.js": [
+      "BondAtlas",
+      "BondScenery"
     ]
   },
   "unloaded": [
@@ -988,7 +996,8 @@
     "city-data.js",
     "raid-rules.js",
     "relic-quest.js",
-    "world-scenery.js"
+    "world-scenery.js",
+    "world-passages.js"
   ],
   "storage_writers": {
     "profile.js": "Profile document and receipts",
@@ -1158,7 +1167,7 @@
         "tests/landscapes_check.py"
       ],
       "browser": true,
-      "purpose": "Forty map profiles, seamless ground patches, reachable scenery/gates/services, real atlas crops, all stair tap transitions, burial readability, asset failure/retry, phone views and bounded landscape caches"
+      "purpose": "Forty map profiles, seamless ground patches, reachable services, destination-specific passage taps/walking, lock/save retry, stairs, asset recovery, phone touch and bounded landscape caches"
     }
   },
   "connections": [

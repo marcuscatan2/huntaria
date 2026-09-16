@@ -4,7 +4,7 @@
 const $=s=>document.querySelector(s),P=BondProfile,A=BondAtlas,C=BondContent,W=BondWorld,E=BondEchoes,host=$('#region-map');
 const reduced={get matches(){return BondSettings.reduced();}};
 let active=false,m=A.get(P.snapshot().map),pos={...P.snapshot().position},camera={x:0,y:0},scale=.78,last=0,lastSave=0,lastPopulation=0,dirty=false,dest=null,pending=null,keys=new Set(),objects=[],followers=[],rigs=[],party=[],dialogId=null,route=[],travelPlan=[],lastHud=0,graphics='standard',followTarget=null,prefetchedGate=null;
-const VERTICAL=.78,TEST_MOVE_MULTIPLIER=P.TEST?3:1;let playerLeft=false,aggroGrace=3;
+const VERTICAL=.78,TEST_MOVE_MULTIPLIER=P.TEST?3:1;let playerLeft=false,aggroGrace=3,walkedGate=null;
 const quiet=()=>{const s=P.snapshot();return !!s.character&&!s.character.legacy&&!s.journey?.early?.introFightWon;};
 try{graphics=JSON.parse(localStorage.getItem('bond-bolt-world-settings'+(P.TEST?'-test':'')))?.graphics||'standard';}catch(_){}
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
@@ -17,7 +17,7 @@ host.innerHTML='<canvas id="world-ground" aria-hidden="true"></canvas><div id="w
 host.append(encounterNotice,echoNotice);
 const canvas=$('#world-ground'),ctx=canvas.getContext('2d'),layer=$('#world-actors'),mini=$('#world-minimap canvas'),mc=mini.getContext('2d');
 const atlas=document.createElement('dialog');atlas.id='atlas-dialog';atlas.setAttribute('aria-label','World Atlas');atlas.innerHTML='<div class="atlas-titlebar"><h2 tabindex="-1">The Six Reaches</h2><button class="button secondary" id="close-atlas">Close map ×</button></div><p>Six reaches, thirty-six places to discover. Follow the roads, prepare in town, and choose your next hunt.</p><div id="atlas-regions"></div>';document.body.append(atlas);
-function stop(){keys.clear();dest=null;pending=null;route=[];followTarget=null;last=0;if(dirty){P.position(pos);dirty=false;}}
+function stop(save=true){keys.clear();dest=null;pending=null;route=[];followTarget=null;last=0;if(dirty){if(save)P.position(pos);dirty=false;}}
 function message(t){$('#region-message').textContent=t;$('#world-status').textContent=t;}
 function sidebar(){
  const s=P.snapshot(),r=A.REGIONS[m.regionIndex];
@@ -41,7 +41,7 @@ function sidebar(){
 }
 function buildObjects(){
  const state=P.snapshot(),currentQuest=BondCampaign.next(state),oldFocus=document.activeElement?.dataset?.object,previousActors=new Map(objects.filter(o=>o.kind==='wild').map(o=>[o.id+':'+o.life,o]));
- objects=m.neighbors.map(g=>({...g,kind:'gate',gateKind:g.kind,label:g.label,locked:!A.unlocked(state,g.to)}));
+ objects=m.neighbors.map(g=>({...g,kind:'gate',gateKind:g.kind,passage:BondPassages.forMap(m).find(p=>p.gate.id===g.id),label:g.label,locked:!A.unlocked(state,g.to)}));
  for(const s of P.population(m.id))if(s.present){const old=previousActors.get(s.id+':'+s.life),introHostile=s.id==='clearing-0:emberfox:0'&&!state.journey.early.introFightWon;objects.push({...s,...(old?{x:old.x,y:old.y,mode:old.mode,warning:old.warning,facingLeft:old.facingLeft}:{}),introHostile,kind:'wild',label:C.UNITS[s.type].name,homeX:s.x,homeY:s.y});}
  if(m.kind!=='boss'&&!P.snapshot().collected.includes(m.id))objects.push({id:'cache:'+m.id,kind:'cache',...m.cache,label:'Wayfarer cache'});
  if(m.kind!=='boss'&&!(quiet()&&m.id==='clearing-0'))objects.push({id:'guide:'+m.id,kind:'guide',questKeeperMap:m.id,...m.guide,label:m.kind==='hub'?'Town Keeper':'Trail Keeper'});
@@ -79,11 +79,11 @@ function buildObjects(){
   else if(o.kind==='pack')visual='<div class="world-art">'+CharacterRig.art(m.habitats[0]?.type||'emberfox')+'</div>';
   else if(o.kind==='cache')visual='<span class="world-chest" aria-hidden="true"><i></i></span>';
   else if(o.kind==='openingSign')visual='<span class="opening-sign-art" aria-hidden="true"><i></i><b></b></span>';
-  else if(o.kind==='gate')visual=(o.gateKind==='stairs'?'<span class="tower-stair-hitbox" aria-hidden="true"></span>':'<span class="world-exit-hitbox" aria-hidden="true"></span>')+'<span class="gate-badge" aria-hidden="true">'+(o.gateKind==='stairs'?(o.direction==='up'?'↑ UPSTAIRS':'↓ DOWNSTAIRS'):(m.neighbors.findIndex(g=>g.id===o.id)+1)+' · '+(o.locked?'LOCKED':'EXIT'))+'</span>';
+  else if(o.kind==='gate')visual=(o.gateKind==='stairs'?'<span class="tower-stair-hitbox" aria-hidden="true"></span>':'<span class="world-exit-hitbox" aria-hidden="true"></span>')+'<span class="gate-badge" aria-hidden="true">'+(o.gateKind==='stairs'?(o.direction==='up'?'↑ UPSTAIRS':'↓ DOWNSTAIRS'):(m.neighbors.findIndex(g=>g.id===o.id)+1)+' · '+(o.locked?'LOCKED':o.passage.title.toUpperCase()))+'</span>';
   if(o.kind==='wild'||o.kind==='npc')visual=visual.replace(' src="',' data-world-src="');
-  const label=o.kind==='wild'?'':'<span class="world-label">'+o.label+'<small>'+(o.kind==='building'?'ENTER':o.kind==='waystone'?'TRAVEL TO A CITY':o.kind==='resident'?'TALK':o.kind==='gate'?(o.gateKind==='stairs'?'GO '+o.direction.toUpperCase():o.direction.toUpperCase()+' PORTAL'):o.kind==='habitat'?'FIXED SPAWNS':o.kind==='pack'?'CHALLENGE PACK':o.kind==='npc'?'TALK / CHALLENGE':o.kind==='cache'?'OPEN':o.kind==='shop'?'BUY SUPPLIES':o.kind==='sanctuary'?'REST':o.roadSign||o.kind==='openingSign'?'READ THE SIGN':'INTERACT')+'</small></span>';
+  const label=o.kind==='wild'?'':'<span class="world-label">'+o.label+'<small>'+(o.kind==='building'?'ENTER':o.kind==='waystone'?'TRAVEL TO A CITY':o.kind==='resident'?'TALK':o.kind==='gate'?(o.gateKind==='stairs'?'GO '+o.direction.toUpperCase():o.locked?'COMPLETE THE FOREST MAGE TRIAL':'FOLLOW THE PASSAGE'):o.kind==='habitat'?'FIXED SPAWNS':o.kind==='pack'?'CHALLENGE PACK':o.kind==='npc'?'TALK / CHALLENGE':o.kind==='cache'?'OPEN':o.kind==='shop'?'BUY SUPPLIES':o.kind==='sanctuary'?'REST':o.roadSign||o.kind==='openingSign'?'READ THE SIGN':'INTERACT')+'</small></span>';
   const aria=o.kind==='wild'?'Wild creature, level '+(o.habitat?.level||''):o.label;o.baseAria=aria;
-  return '<button class="world-node map-object '+o.kind+(o.kind==='wild'&&BondWildBehavior.policy(m.id,o.type,o,BondProgress.trainerLevel(state))?' hostile':'')+(o.sceneryService?' scenery-service':'')+(o.roadSign?' road-sign':'')+'" data-object="'+o.id+'" aria-label="'+aria+'">'+visual+label+'</button>';
+  return '<button class="world-node map-object '+o.kind+(o.kind==='wild'&&BondWildBehavior.policy(m.id,o.type,o,BondProgress.trainerLevel(state))?' hostile':'')+(o.sceneryService?' scenery-service':'')+(o.roadSign?' road-sign':'')+(o.passage?' passage':'')+'" '+(o.passage?'data-passage="'+o.passage.type+'" ':'')+'data-object="'+o.id+'" aria-label="'+aria+'">'+visual+label+'</button>';
  }).join('');
  objects.forEach(o=>o.el=layer.querySelector('[data-object="'+o.id+'"]'));
  updateQuestMarkers(state,currentQuest);
@@ -102,6 +102,7 @@ function updateQuestMarkers(state=P.snapshot(),current=BondCampaign.next(state))
  }
 }
 function loadMap(){
+ walkedGate=null;
  const s=P.snapshot();document.body.classList.toggle('quiet-opening',quiet());aggroGrace=s.encounterSave?0:3;m=A.get(s.map);pos=A.safePoint(m.id,s.encounterSave?.anchor?.position||s.position);const opponent=s.encounterSave?.anchor?.actors?.[0];if(opponent)playerLeft=opponent.x<pos.x;stop();lastPopulation=0;lastHud=0;prefetchedGate=null;WorldRenderer.prefetch(m.id);
  followers=party.slice(1).filter(Boolean).map((u,i)=>({type:u.type,instanceId:u.instanceId,...A.clamp(m.id,{x:pos.x-48*(i+1),y:pos.y+28})}));
  buildObjects();sidebar();paint(performance.now());message(s.migration||(quiet()&&!s.tutorial.kills&&m.id==='clearing-0'?BondOpening.text:''));$('#world-weather').textContent=(m.kind==='cave'?'UNDERGROUND · ':m.kind==='hub'?'CITY · ':m.kind==='boss'?'BOSS DOMAIN · ':'ON THE TRAIL · ')+A.REGIONS[m.regionIndex].name;
@@ -139,6 +140,14 @@ function paint(now){
   place(o.el,o);const q=project(o),visible=q.x>-240&&q.x<width+140&&q.y>-90&&q.y<height+260;o.el.hidden=!visible;o.el.tabIndex=visible?0:-1;if(visible)for(const img of o.el.querySelectorAll('img[data-world-src]')){img.src=img.dataset.worldSrc;delete img.dataset.worldSrc;}o.el.classList.toggle('nearby',distance(pos,o)<=150);
   if(o.sceneryService&&visible){const key=o.sceneryKey||(o.roadSign?o.sightId:o.kind==='shop'?m.id+':shop':m.hero.id),p=WorldRenderer.bounds(key);if(p){o.el.style.left=p.x+'px';o.el.style.top=p.y+'px';o.el.style.width=p.width+'px';o.el.style.height=p.height+'px';o.el.style.marginTop='0';o.el.style.transform='translate(-50%,-94%)';}}
   if(o.kind==='gate'&&o.gateKind==='stairs'&&visible){const p=WorldRenderer.bounds(o.id+':stairs');if(p?.width>0&&p.height>0){o.el.style.left=p.x+'px';o.el.style.top=p.y+'px';o.el.style.width=p.width+'px';o.el.style.height=p.height+'px';o.el.style.transform='translate(-50%,-94%)';}}
+  if(o.passage){
+   const points=[[-150,0],[150,0],[-150,640],[150,640]].map(([side,depth])=>project(BondPassages.point(o.passage,side,depth))),xs=points.map(p=>p.x),ys=points.map(p=>p.y),label=project(o.passage.label);
+   label.x=Math.max(100,Math.min(width-100,label.x));label.y=Math.max(width<600?185:115,Math.min(height-125,label.y));
+   const left=Math.min(...xs,label.x-100),top=Math.min(...ys,label.y-24),right=Math.max(...xs,label.x+100),bottom=Math.max(...ys,label.y+52);
+   const shown=Math.max(...xs)>0&&Math.min(...xs)<width&&Math.max(...ys)>0&&Math.min(...ys)<height;o.el.hidden=!shown;o.el.tabIndex=shown?0:-1;
+   Object.assign(o.el.style,{left:left+'px',top:top+'px',width:(right-left)+'px',height:(bottom-top)+'px',transform:'none',zIndex:'auto'});
+   o.el.style.setProperty('--passage-label-x',(label.x-left)+'px');o.el.style.setProperty('--passage-label-y',(label.y-top)+'px');
+  }
   if(o.kind==='discovery')o.el.classList.toggle('recorded',discovered.has(o.sightId));
  }
  if(now-lastHud>150){
@@ -190,9 +199,10 @@ function beginHunt(id){
  return P.beginHunt(id);
 }
 function interact(o){
- if(!o||!active||distance(pos,o)>135)return;stop();P.position(pos);
- if(o.kind==='gate'){if(P.transition(o.id)){loadMap();continueTravel();}else message(P.snapshot().encounterSave?'Finish the battle or use Run before leaving this map.':'That road is unavailable.');}
- else if(o.kind==='cache'){if(P.collect(m.id)){buildObjects();sidebar();message('Cache collected: 12 coins, a Bond Biscuit and a regional keepsake.');}}
+ if(!o||!active||distance(pos,o)>135)return;
+ if(o.kind==='gate'){stop(false);if(P.transition(o.id,pos)){loadMap();continueTravel();}else message(P.snapshot().encounterSave?'Finish the battle or use Run before leaving this map.':!A.unlocked(P.snapshot(),o.to)?'Complete the Forest Mage trial to open this road.':P.error()||'Could not travel. Try the passage again.');return;}
+ stop();P.position(pos);
+ if(o.kind==='cache'){if(P.collect(m.id)){buildObjects();sidebar();message('Cache collected: 12 coins, a Bond Biscuit and a regional keepsake.');}}
  else if(o.kind==='wild'){const e=beginHunt(o.id);if(e){if(!BondApp.startRegionBattle(e.id))message(BondAdventure.readiness(P.snapshot(),party)||P.error()||'Could not start this hunt. Retry saving the previous encounter.');}else{buildObjects();message(P.error()||(P.snapshot().encounterSave?'You are already in battle.':'That creature is no longer here. Wait for a new spawn.'));}}
  else if(o.kind==='pack'){const e=P.beginPack(o.id);if(e)talk(e.id);else message(P.snapshot().encounterSave?'Finish the battle or use Run first.':'Not enough creatures nearby for this encounter.');}
  else if(o.kind==='npc')talk(o.id);
@@ -252,6 +262,11 @@ function frame(now){
   if(dest&&!keys.size){dx=dest.x-pos.x;dy=dest.y-pos.y;}
   const length=Math.hypot(dx,dy);if(length>.1){const step=Math.min(A.BASE_SPEED*TEST_MOVE_MULTIPLIER*dt,dest&&!keys.size?length:Infinity),next=motionStep(pos,dx/length*step,dy/length*step);if(distance(pos,next)>.001){if(Math.abs(next.x-pos.x)>.01)playerLeft=next.x<pos.x;pos=next;dirty=true;}
    if(pending&&distance(pos,pending)<=115){const o=pending;interact(o);}else if(dest&&distance(pos,dest)<3){dest=route.shift()||null;if(!dest){if(pending&&distance(pos,pending)<=135)interact(pending);else if(pending?.kind!=='wild')pending=null;}}
+  }
+  if(walkedGate&&distance(pos,walkedGate)>180)walkedGate=null;
+  if(!fighting&&!pending&&length>.1){
+   const gate=objects.find(o=>o.passage&&o.id!==walkedGate?.id&&distance(pos,o)<95&&dx*o.passage.inward.x+dy*o.passage.inward.y<0);
+   if(gate){walkedGate=gate;interact(gate);return;}
   }
   aggroGrace=Math.max(0,aggroGrace-dt);
  const pursuitProfile=P.snapshot(),trainerLevel=BondProgress.trainerLevel(pursuitProfile),protectedFight=fighting&&pursuitProfile.encounterSave?.encounter?.protectedEncounter===true,

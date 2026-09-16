@@ -10,7 +10,7 @@ Adventure tuning: [current playtest walkthrough](<features/opening/VALIDATION.md
 | --- | --- | --- |
 | 24 large maps / six towns / six boss domains | Stable IDs, 24 authored route specifications, six compact boss arenas, Cartesian grid and reciprocal border portals | 36-place atlas count/connectivity; reciprocal gates; route fixtures |
 | Readable varied scenery | Forty landscape profiles, six regional atlases, two shared tree/ridge/ruin atlases, a tower stair/grave atlas, nine ground materials and themed city buildings | All-map landscape/navigation suite; desktop/phone screenshots; owner art review pending |
-| Continuous exploration | Follow camera, 0.78 oblique Y projection, click routing, keyboard movement, physical multi-gate itineraries | Real movement-loop crossings and gate journey; no atlas teleport |
+| Continuous exploration | Follow camera, 0.78 oblique Y projection, click routing, keyboard movement, destination-specific passages and physical multi-gate itineraries | Real passage taps and keyboard crossings, safe return and failed-save retry; no atlas teleport |
 | Cave and water navigation | Walkable cave rooms/corridors, visible rock rims, water masks and explicit bridge polygons | Collision and A* reachability to gates, residents, landmarks, rest/cache/guide |
 | Map-wide wildlife populations | 94 wild species retain source maps; Common8/Uncommon5/Rare1 per species, persisted random reachable positions; ordinary0s/rare60s replacement | Pass17 quotas, reachability, death/respawn, reload, reserved legacy-slot and write-failure checks |
 | Environmental motion | Leaf/mote drift, tree sway, pool ripples, bounded idle wander | Reduced-motion/low-effects controls; frame sample; final motion review pending |
@@ -46,6 +46,8 @@ These are original generated game assets, not extracted Ragnarok or Sword x Staf
   Four maps of neighbor-edge tests are cached; art/camera never change movement speed.
 - world-renderer.js paints ground chunks, clips atlas objects at runtime and mounts
   only visible scenery. It cannot grant items or write profile progress.
+- world-passages.js describes destination-specific border approaches using the
+  final existing road segment and shared scenery atlases; collision stays unchanged.
 - region.js owns world controls, camera, interaction dialogs and combat entry.
   Authored `map.info` prose stays available to world-building tools but is not
   emitted on map entry or repeated in player-facing signs and Keeper panels.

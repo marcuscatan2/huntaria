@@ -130,6 +130,7 @@
       "before": "Before producing the remaining full-detail maps, quest routes or region-wide art placement.",
       "why": "Map scale and visual language constrain camera, gates, collision, pathfinding, prop sizes, spawn density, recovery trips and quest travel.",
       "packet": [
+        "Review map-passages-v1 in features/world/LANDSCAPES.md and the local game: destination-specific approaches, open border thresholds, phone labels/taps and keyboard crossings. This scoped owner request authorizes implementation; final art and physical-device approval remain open.",
         "Review ghost-tower-stonework-v1 in features/world/LANDSCAPES.md and the local game: ascending/descending stairs, painted tap bounds, four weathered burial silhouettes, rooftop wall clearance and phone labels. The owner requested this scoped revision; final visual acceptance and physical-device budgets remain open.",
         "Review landscape-identity-v1 in features/world/LANDSCAPES.md and the local game: forty distinct map profiles, original tree/ridge/ruin art, guarded roadside placement, continuous ground shading and cemetery planting. Compare the birch meadow, willow mill, copperleaf kiln, library, mountain watch, basalt cave and rooftop on desktop and phone. The owner explicitly requested this revision; final visual acceptance remains pending.",
         "AI prepares one coherent village → field → forest/cave slice with roads, bridge, service, landmark, varied enemies and a return route.",
@@ -889,6 +890,28 @@
         {
           "path": "assets/landscapes/ghost-tower-atlas.png",
           "sha256": "165f287aa3c899b859bdfa25e77f8cc0da523bd7804258e7c4c0045847a4b854"
+        }
+      ]
+    },
+    {
+      "id": "map-passages-v1-2026-09-15",
+      "source": "Current owner conversation, 2026-09-15",
+      "scope": [
+        "Make map transitions physical passages that reflect their destination",
+        "Align scenery and tap areas with existing gate roads; permit walking through border entrances using existing profile authority"
+      ],
+      "quotes": [
+        "Make the transition between maps feel like actual 'passagens'/ entrances to whatever it is that the map you're looking it actually is"
+      ],
+      "boundary": "Explicit authority for this named local passage revision. Final art, physical-device budgets and external release gates remain open. Existing topology, collisions and normal saves are preserved.",
+      "evidence": [
+        {
+          "path": "features/world/LANDSCAPES.md",
+          "sha256": "5d32632c0fab742f6998c3a5027e8c71a7af48ff6bb9f811c688e88da95328ac"
+        },
+        {
+          "path": "world-passages.js",
+          "sha256": "0ebd8498d834a7ecbed3a9dda79262f0fda9deb86d6f6170965802442513c793"
         }
       ]
     }

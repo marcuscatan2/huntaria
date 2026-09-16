@@ -15,6 +15,7 @@
   "ghost-tower.js",
   "world-scenery.js",
   "world-layout.js",
+  "world-passages.js",
   "world-nav.js",
   "growth.js",
   "campaign.js",

@@ -51,6 +51,9 @@ def main():
             }"""))
             check('Scenery never leaks cropped legacy rock fragments or floating gate icons', page.evaluate("""()=>BondAtlas.maps.every(m=>m.scenery.filter(p=>/:prop\\d|:edge\\d|:wall:\\d/.test(p.key)&&!p.towerWall).every(p=>p.art!==5||p.sceneryAtlas))"""))
             check('All landscape frames remain within their original source sheet', page.evaluate("""()=>Object.values(BondScenery.FRAMES).every(frames=>frames.length===12&&frames.every(([x,y,r,b])=>x>=0&&y>=0&&r<=1448&&b<=1086&&r>x&&b>y))"""))
+            check('Every border passage follows a nonzero, walkable road into its destination', page.evaluate("""()=>BondAtlas.maps.every(m=>{
+              const ps=BondPassages.forMap(m);return ps.length===m.neighbors.filter(g=>g.kind!=='stairs').length&&ps.every(p=>Math.abs(Math.hypot(p.inward.x,p.inward.y)-1)<.0001&&p.type===BondPassages.kind(BondAtlas.get(p.gate.to))&&[0,80,160,320,560,640].every(d=>!BondAtlas.collision(m.id,BondPassages.point(p,0,d))));
+            })"""))
             maps = page.evaluate('BondAtlas.maps.map(m=>m.id)')
             captures = {'clearing-0','clearing-1','brook-0','hollow-1','hollow-2','ruins-1','ruins-2','rise-2','ashen-1','ashen-3','brook-hub','ghost-tower-2','ghost-tower-4'}
             for map_id in maps:
@@ -86,6 +89,45 @@ def main():
                 gate.click(position={'x':box['width']*.25,'y':box['height']*.55})
                 page.clock.run_for(100)
                 check(origin+' -> '+destination+': tapping the side of the steps changes floors', page.evaluate('BondProfile.snapshot().map')==destination)
+            passage_pairs=[('clearing-0','clearing-3'),('clearing-0','clearing-1'),('clearing-0','clearing-hub'),('clearing-3','clearing-0'),('hollow-1','hollow-2'),('rise-1','rise-2'),('ruins-3','ruins-boss'),('ruins-3','ruins-2')]
+            for origin,destination in passage_pairs:
+                page.evaluate("""([id,to])=>{const p=BondPassages.forMap(BondAtlas.get(id)).find(p=>p.to.id===to);BondProfile.travel(id,BondPassages.point(p,0,560));BondApp.switchTab('region');}""",[origin,destination])
+                page.clock.run_for(100)
+                page.wait_for_function('!WorldRenderer.inspect().loading&&WorldRenderer.inspect().landscapeReady')
+                page.clock.run_for(80)
+                page.locator('#region-map').screenshot(path=str(ARTIFACTS/f'passage-{origin}-{destination}-{args.browser}.png'))
+                gate=page.locator('[data-object="'+origin+'>'+destination+'"]')
+                label=gate.locator('.world-label').bounding_box()
+                if origin=='clearing-0' and destination=='clearing-3':
+                    check('A creature under the destination label cannot steal its travel tap',gate.evaluate("""e=>{
+                      const wild=document.querySelector('.world-node.wild'),saved=wild.getAttribute('style'),r=e.querySelector('.world-label').getBoundingClientRect(),host=document.querySelector('#world-actors').getBoundingClientRect();
+                      Object.assign(wild.style,{left:(r.left-host.left)+'px',top:(r.top-host.top)+'px',width:r.width+'px',height:r.height+'px',transform:'none',zIndex:'1200'});
+                      const hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.closest('[data-object]')===e;
+                      wild.setAttribute('style',saved);return hit;
+                    }"""))
+                page.mouse.click(label['x']+label['width']/2,label['y']+label['height']/2)
+                page.clock.run_for(1500)
+                check(origin+' -> '+destination+': painted passage tap walks through the gate',page.evaluate('BondProfile.snapshot().map')==destination)
+            for origin,destination,key in [('clearing-0','clearing-3','w'),('clearing-0','clearing-1','d'),('clearing-0','clearing-hub','a'),('clearing-3','clearing-0','s')]:
+                page.evaluate("""([id,to])=>{const p=BondPassages.forMap(BondAtlas.get(id)).find(p=>p.to.id===to);BondProfile.travel(id,BondPassages.point(p,0,180));BondApp.switchTab('region');}""",[origin,destination])
+                page.clock.run_for(100)
+                page.locator('#region-map').focus()
+                page.keyboard.down(key);page.clock.run_for(350);page.keyboard.up(key)
+                check('Walking '+key+' into '+destination+' crosses the physical opening',page.evaluate('BondProfile.snapshot().map')==destination)
+                page.clock.run_for(300)
+                check('Arrival from '+origin+' does not bounce back or block the player',page.evaluate("()=>!BondAtlas.collision(BondProfile.snapshot().map,BondRegion.inspect().position)") and page.evaluate('BondProfile.snapshot().map')==destination)
+            page.evaluate("""()=>{const s=BondProfile.snapshot();s.journey.early.mageGate=false;BondProfile.testing.replace(s);const p=BondPassages.forMap(BondAtlas.get('clearing-0')).find(p=>p.to.id==='clearing-3');BondProfile.travel('clearing-0',BondPassages.point(p,0,180));BondApp.switchTab('region');}""")
+            page.clock.run_for(100);page.locator('#region-map').focus()
+            page.keyboard.down('w');page.clock.run_for(350);page.keyboard.up('w')
+            check('Walking through a locked opening retains the Forest Mage requirement',page.evaluate("BondProfile.snapshot().map==='clearing-0'") and 'LOCKED' in page.locator('[data-object="clearing-0>clearing-3"] .gate-badge').inner_text())
+            page.evaluate("""()=>{const s=BondProfile.snapshot();s.journey.early.mageGate=true;BondProfile.testing.replace(s);const p=BondPassages.forMap(BondAtlas.get('clearing-0')).find(p=>p.to.id==='clearing-3');BondProfile.travel('clearing-0',BondPassages.point(p,0,90));BondApp.switchTab('region');window.passageSave=Storage.prototype.setItem;Storage.prototype.setItem=()=>{throw Error('quota');};}""")
+            page.clock.run_for(100)
+            page.locator('[data-object="clearing-0>clearing-3"]').click()
+            page.clock.run_for(100)
+            check('A failed passage save retains the origin and reports the failure',page.evaluate("BondProfile.snapshot().map==='clearing-0'&&!!BondProfile.error()"))
+            page.evaluate('Storage.prototype.setItem=window.passageSave;delete window.passageSave')
+            page.locator('[data-object="clearing-0>clearing-3"]').click();page.clock.run_for(100)
+            check('The same passage can be retried after storage recovers',page.evaluate("BondProfile.snapshot().map==='clearing-3'"))
             page.evaluate("()=>{BondProfile.travel('ghost-tower-4',{x:2100,y:1150});BondApp.switchTab('region');document.querySelector('#world-quality').click();}")
             page.clock.run_for(100)
             check('Low effects keeps all four grave silhouettes visible', page.evaluate("""()=>{const graves=[...document.querySelectorAll('[data-tower-art="burial"]')];return BondRegion.inspect().graphics==='low'&&new Set(graves.map(e=>e.dataset.towerFrame)).size===4&&graves.every(e=>e.style.backgroundImage.includes('ghost-tower-atlas.webp'));}"""))
@@ -94,7 +136,7 @@ def main():
             check('QA validation used only disposable sandbox storage', page.evaluate("!Object.keys(localStorage).includes('bond-bolt-profile-v7')"))
             # Ordinary mobile play has no developer panels above its game frame.
             snapshot = page.evaluate('BondProfile.export()')
-            phone = browser.new_page(viewport={'width':390,'height':844})
+            phone = browser.new_page(viewport={'width':390,'height':844},has_touch=True,is_mobile=True)
             phone.on('pageerror', lambda e: errors.append(str(e)))
             phone.add_init_script('localStorage.setItem("bond-bolt-profile-v7",' + json.dumps(snapshot) + ')')
             phone.clock.install(time=now)
@@ -110,6 +152,17 @@ def main():
                 page.clock.run_for(80)
                 check(map_id + ': phone scene and controls fit, with motion disabled', page.evaluate("""()=>{const r=document.querySelector('#region-map').getBoundingClientRect();return document.documentElement.scrollWidth<=innerWidth+2&&r.left>=0&&r.right<=innerWidth&&r.bottom<=innerHeight&&[...document.querySelectorAll('.world-prop')].every(e=>!e.style.transform.includes('rotate(')||e.style.transform.includes('rotate(0deg)'));}"""))
                 page.screenshot(path=str(ARTIFACTS/f'landscape-{map_id}-phone-{args.browser}.png'))
+            for origin,destination in passage_pairs[:4]:
+                page.evaluate("""([id,to])=>{const p=BondPassages.forMap(BondAtlas.get(id)).find(p=>p.to.id===to);BondProfile.travel(id,BondPassages.point(p,0,260));BondApp.switchTab('region');}""",[origin,destination])
+                page.clock.run_for(100)
+                page.wait_for_function('!WorldRenderer.inspect().loading&&WorldRenderer.inspect().landscapeReady')
+                page.clock.run_for(80)
+                gate=page.locator('[data-object="'+origin+'>'+destination+'"]')
+                check(destination+': phone passage destination stays inside the frame',gate.evaluate("""e=>{const r=e.querySelector('.world-label').getBoundingClientRect(),h=document.querySelector('#region-map').getBoundingClientRect();return r.left>=h.left&&r.right<=h.right&&r.top>=h.top+145&&r.bottom<h.bottom-75;}"""))
+                page.screenshot(path=str(ARTIFACTS/f'passage-{origin}-{destination}-phone-{args.browser}.png'))
+                label=gate.locator('.world-label').bounding_box()
+                page.touchscreen.tap(label['x']+label['width']/2,label['y']+label['height']/2);page.clock.run_for(1500)
+                check(destination+': phone touch enters the labeled map',page.evaluate('BondProfile.snapshot().map')==destination)
             failure = browser.new_page()
             legacy_adventure(failure)
             failure.clock.install(time=now)

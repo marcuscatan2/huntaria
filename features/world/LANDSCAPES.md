@@ -33,8 +33,8 @@ remain with OR-03 and OR-06. Use the World Atlas to plan a walk to each place.
   Patches crossing a chunk boundary are painted on both sides. Atlas rectangles
   isolate real silhouettes rather than assuming equal source cells.
 - Tall props fade when they cover the player or focused target. Reduced motion
-  stops their sway; low detail omits small props. Physical stone posts mark exits;
-  nearby destination labels, exit badges and keyboard focus remain available.
+  stops their sway; low detail omits small props. Destination-specific passages
+  frame exits; destination labels, numbered badges and keyboard focus remain available.
   Obsolete floating gate thumbnails and generic scenery glyphs are removed.
 
 ## Assets and budgets
@@ -51,6 +51,38 @@ tower sheet adds 6 MiB); the regression bound is 19 MiB. Ground chunks retain
 the existing 28-canvas bound (28 MiB), with one prefetch per visual interval.
 These are backing-store estimates, not total browser/GPU memory measurements.
 Physical-device budget acceptance remains open; do not infer it from desktop tests.
+
+## Map passages
+
+`map-passages-v1` frames each cardinal border route according to its destination:
+cave rock walls, city watchtowers and paving, cemetery cypresses and memorials,
+woodland canopies, mountain rock cuts, ruined gateways, sanctuary approaches, or
+open meadow trails. Trees and rock formations use the destination's landscape
+profile. Cave approaches darken toward the threshold; return trails show the
+outdoor terrain. These compositions reuse the existing landscape atlases.
+
+[world-passages.js](../../world-passages.js), owned by exploration, supplies
+deterministic presentation descriptors over the existing gate road. A coincident
+road endpoint falls back to the nearest distinct main-road point, keeping both
+cardinal and diagonal approaches aligned with traversable ground. It does not
+add obstacles, change topology or migrate saves. The renderer paints the approach
+and leaves a gap in the map border; upright props frame the open center and remain
+visible in low effects.
+
+The corridor and its destination label accept clicks and phone taps through the
+existing proximity-bound transition. Labels stay inside the game frame, clear of
+the top and bottom controls. Keyboard walking toward an open border gate crosses
+at contact; arriving or standing still never crosses back automatically. A rejected
+walking attempt is latched until the player backs away, while explicit interaction
+can retry immediately. The Forest Mage lock, active-fight lock, safe arrivals and
+critical-save failure behavior remain owned by the profile. Tower stairs keep
+their explicit interaction and separate stonework.
+
+`BondProfile.transition(id, position)` validates the supplied current position
+and commits the destination in one critical transaction. Exploration stops its
+route without issuing a separate position save first; a failed write in persistent
+play keeps the origin and permits retry. Omitting the position retains the saved
+position behavior used by existing callers.
 
 ## Ghost tower stonework
 
@@ -79,6 +111,9 @@ reciprocal gate reachability, services, wildlife quotas/positions, world-space
 shading continuity, atlas loading, bounded caches and ordinary phone viewports.
 Tower checks exercise all eight stair transitions by tapping the side of the
 painting, low-effects grave visibility, and failed stonework download/retry.
+Passage checks cover every border's walkable approach, eight destination styles,
+all four walking directions, safe arrivals, locks, save-failure retry, and phone
+labels/touch travel. Cross-feature changes also require the full project gate.
 The suite uses disposable browser contexts. Screenshots and reports are generated
 under ignored `tests/artifacts/`; they do not belong in Git.
 

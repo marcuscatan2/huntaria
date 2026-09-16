@@ -81,6 +81,40 @@ function floor(ctx,m){
  ctx.fillStyle=m.kind==='cave'?'#101d29cc':t.ground+'60';ctx.fillRect(0,0,m.width,m.height);
  if(m.kind==='cave'){const p=caveFloor(m);ctx.save();ctx.shadowBlur=24;ctx.shadowColor='#102131';ctx.fillStyle=material(ctx,8,t.stone);ctx.fill(p);ctx.restore();ctx.fillStyle=t.stone+'24';ctx.fill(p);}
 }
+function passageGround(ctx,m,cx,cy){
+ for(const p of BondPassages.forMap(m)){
+  if(p.gate.x+950<cx*CHUNK||p.gate.x-950>(cx+1)*CHUNK||p.gate.y+950<cy*CHUNK||p.gate.y-950>(cy+1)*CHUNK)continue;
+  const t=p.to.theme,r=rand(A.hash(p.gate.id)),cave=p.type==='cave';
+  ctx.save();if(m.kind==='cave')ctx.clip(caveFloor(m));ctx.transform(p.side.x,p.side.y,p.inward.x,p.inward.y,p.gate.x,p.gate.y);
+  const outline=()=>{ctx.beginPath();ctx.moveTo(-205,-180);ctx.lineTo(205,-180);ctx.lineTo(225,180);ctx.quadraticCurveTo(200,410,120,740);ctx.lineTo(-120,740);ctx.quadraticCurveTo(-200,410,-225,180);ctx.closePath();};
+  // A worn approach extends along the actual final road segment into the next biome.
+  outline();ctx.fillStyle=t.soil+'4d';ctx.shadowColor=t.soil+'70';ctx.shadowBlur=30;ctx.fill();ctx.shadowBlur=0;
+  ctx.save();outline();ctx.clip();ctx.fillStyle=material(ctx,p.stone?7:cave?8:6,t.soil);ctx.fillRect(-240,-180,480,640);
+  for(let y=460;y<740;y+=10){ctx.globalAlpha=(740-y)/280;ctx.fillRect(-240,y,480,10);}ctx.globalAlpha=1;
+  const blend=ctx.createLinearGradient(0,-80,0,740);blend.addColorStop(0,(cave?'#111d27':t.ground)+'ed');blend.addColorStop(.38,(cave?'#273540':t.soil)+'80');blend.addColorStop(1,m.theme.soil+'00');ctx.fillStyle=blend;ctx.fillRect(-240,-180,480,940);
+  for(let n=0;n<70;n++){const x=(r()-.5)*440,y=r()*840-100;ctx.fillStyle=(n%3?t.stone:t.light)+'66';ctx.beginPath();ctx.ellipse(x,y,2+r()*6,1+r()*3,r()*3,0,Math.PI*2);ctx.fill();}
+  if(p.stone){
+   for(let row=0;row<11;row++)for(let col=-2;col<3;col++){
+    if(r()<.12)continue;const x=col*70+(row%2)*34,y=row*61-80;
+    ctx.fillStyle=row%3?t.stone+'a0':t.light+'80';ctx.fillRect(x-31,y,63,50);ctx.strokeStyle=m.theme.shade+'55';ctx.lineWidth=2;ctx.strokeRect(x-31,y,63,50);
+   }
+  }
+  if(cave){const shade=ctx.createLinearGradient(0,-30,0,230);shade.addColorStop(0,'#0c1626e8');shade.addColorStop(1,'#14223200');ctx.fillStyle=shade;ctx.fillRect(-210,-160,420,410);}
+  ctx.restore();
+  // Small edging stones lead the eye through an open center; never a closed border.
+  for(const sign of [-1,1])for(let n=0;n<8;n++){const y=n*76-30,x=sign*(210-Math.max(0,y-180)*.16);ctx.fillStyle=t.stone+'bc';ctx.beginPath();ctx.ellipse(x,y,10+r()*7,8+r()*5,.1,0,Math.PI*2);ctx.fill();}
+  ctx.restore();
+ }
+}
+function border(ctx,m){
+ ctx.strokeStyle='#243f4380';ctx.lineWidth=40;
+ for(const direction of ['north','east','south','west']){
+  const horizontal=direction==='north'||direction==='south',size=horizontal?m.width:m.height;
+  const gaps=m.neighbors.filter(g=>g.direction===direction&&g.kind!=='stairs').map(g=>[(horizontal?g.x:g.y)-300,(horizontal?g.x:g.y)+300]).sort((a,b)=>a[0]-b[0]);
+  const draw=(a,b)=>{if(b<=a)return;ctx.beginPath();if(horizontal){const y=direction==='north'?0:m.height;ctx.moveTo(a,y);ctx.lineTo(b,y);}else{const x=direction==='west'?0:m.width;ctx.moveTo(x,a);ctx.lineTo(x,b);}ctx.stroke();};
+  let start=0;for(const [a,b]of gaps){draw(start,a);start=b;}draw(start,size);
+ }
+}
 function makeChunk(m,cx,cy){
  const canvas=document.createElement('canvas');canvas.width=canvas.height=RES;const ctx=canvas.getContext('2d',{alpha:false}),t=m.theme;
  ctx.scale(RES/CHUNK,RES/CHUNK);ctx.translate(-cx*CHUNK,-cy*CHUNK);floor(ctx,m);
@@ -136,16 +170,7 @@ function makeChunk(m,cx,cy){
   if(w.points){path(ctx,w.points);ctx.lineWidth=w.width+24;ctx.stroke();ctx.strokeStyle=t.water;ctx.lineWidth=w.width;ctx.stroke();ctx.strokeStyle=t.deep+'70';ctx.lineWidth=w.width*.48;ctx.stroke();}
   else{ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx+16,w.ry+16,0,0,Math.PI*2);ctx.fillStyle=t.soil;ctx.fill();ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx,w.ry,0,0,Math.PI*2);ctx.fillStyle=t.water;ctx.fill();ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx*.78,w.ry*.70,0,0,Math.PI*2);ctx.fillStyle=t.deep+'65';ctx.fill();}
  }
- // Border routes are physical stone posts. Destination badges remain nearby.
- for(const g of m.neighbors.filter(g=>g.kind!=='stairs')){
-  const vertical=g.direction==='north'||g.direction==='south';
-  for(const sign of [-1,1]){
-   const x=g.x+(vertical?150*sign:0),y=g.y+(vertical?0:150*sign);
-   ctx.fillStyle='#25393050';ctx.beginPath();ctx.ellipse(x+9,y+12,32,19,0,0,Math.PI*2);ctx.fill();
-   ctx.fillStyle=t.shade;ctx.fillRect(x-21,y-39,42,47);ctx.fillStyle=t.stone;ctx.fillRect(x-24,y-50,48,19);
-   ctx.fillStyle=t.light+'99';ctx.fillRect(x-24,y-50,48,5);
-  }
- }
+ passageGround(ctx,m,cx,cy);
  if((m.cemetery||m.towerFloor===4)&&!sheet('ghost-tower').ready){
   const cx=m.interior?m.width/2:m.hero.x,cy=m.interior?1050:m.hero.y;
   for(const side of [-1,1])for(let row=0;row<4;row++)for(let col=0;col<3;col++){
@@ -205,7 +230,7 @@ function makeChunk(m,cx,cy){
   const dx=b.b.x-b.a.x,dy=b.b.y-b.a.y,n=Math.hypot(dx,dy)||1;
   for(const sign of [-1,1]){ctx.lineWidth=7;ctx.strokeStyle='#e3d8b7';path(ctx,[{x:b.a.x-dy/n*b.width*.48*sign,y:b.a.y+dx/n*b.width*.48*sign},{x:b.b.x-dy/n*b.width*.48*sign,y:b.b.y+dx/n*b.width*.48*sign}]);ctx.stroke();}
  }
- ctx.strokeStyle='#243f4380';ctx.lineWidth=40;ctx.strokeRect(0,0,m.width,m.height);
+ border(ctx,m);
  stats.chunksBuilt++;return canvas;
 }
 function cached(m,x,y){const k=m.id+':'+x+':'+y;if(chunks.has(k)){const v=chunks.get(k);chunks.delete(k);chunks.set(k,v);return v;}const v=makeChunk(m,x,y);chunks.set(k,v);while(chunks.size>MAX_CHUNKS){const k=chunks.keys().next().value;const old=chunks.get(k);old.width=old.height=1;chunks.delete(k);}stats.peakChunks=Math.max(stats.peakChunks,chunks.size);return v;}
@@ -232,13 +257,13 @@ function draw(ctx,m,camera,scale,width,height,now,player,options={}){
  ctx.restore();
  if(parent){
   const visible=new Set(),margin=650;
-  for(const p of [...m.scenery,...towerScenery(m)]){
+  for(const p of [...m.scenery,...towerScenery(m),...BondPassages.forMap(m).flatMap(p=>p.props)]){
    if(p.towerWall)continue;
    const x=(p.x-camera.x)*scale,y=(p.y-camera.y)*scale*vertical;
    if(x<-margin||y<-80||x>width+margin||y>height+margin)continue;
-   if(mode==='low'&&p.size<180&&!p.towerKind&&![13,14,15].includes(p.art))continue;
+   if(mode==='low'&&p.size<180&&!p.towerKind&&!p.passage&&![13,14,15].includes(p.art))continue;
    visible.add(p.key);let el=nodes.get(p.key);
-   if(!el){el=document.createElement('div');el.className='world-prop';el.setAttribute('aria-hidden','true');if(p.towerKind){el.dataset.towerArt=p.towerKind;el.dataset.towerFrame=p.sceneryFrame;}parent.append(el);nodes.set(p.key,el);}
+   if(!el){el=document.createElement('div');el.className='world-prop';el.setAttribute('aria-hidden','true');if(p.passage)el.dataset.passageArt='true';if(p.towerKind){el.dataset.towerArt=p.towerKind;el.dataset.towerFrame=p.sceneryFrame;}parent.append(el);nodes.set(p.key,el);}
    if(Number.isInteger(p.cityArt))BondCityArt.building(el,p.cityArt,p.size*scale);else spriteStyle(el,p.sceneryAtlas||t.id,p.sceneryFrame??p.art,p.size*scale);
    el.style.left=x+'px';el.style.top=y+'px';el.style.zIndex=p.grounded?'1':String(Math.round(y+300));
    const depth=parseFloat(el.style.height)/scale/vertical*.94;
