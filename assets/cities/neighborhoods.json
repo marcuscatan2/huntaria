@@ -1,0 +1,140 @@
+{
+  "scope": "city-neighborhoods-v1",
+  "tool": "built-in imagegen",
+  "source": "neighborhoods.png",
+  "prompts": [
+    "Use case: stylized-concept. Asset type: original Huntaria fantasy RPG city neighborhood sprite atlas. Reference image is the project's existing city building sheet, style and camera reference only; create NEW smaller neighborhood buildings and street furniture, do not alter reference. Make a single transparent-background atlas of EXACTLY 12 isolated sprites in a strict equal 4-column by 3-row grid. Each sprite fits entirely within its cell with 10% clear padding, NO overlap, NO labels, NO text, NO ground rectangle. Original painted 2D fantasy game art, crisp warm outlines and hand-painted materials, high overhead camera (roofs dominate, small south-facing facades, no horizon), matching the reference. All sprites share camera and sunlight upper left. COLUMN THEMES left to right: leafy druid village (living wood, moss green), river mage town (blue slate, cream stone, brass), woodland hunter town (amber timber, worn shingles), knight city (pale stone, red slate, blue cloth). ROW 1: four modest family houses, each distinctly shaped, roof, chimney, small south door, flower pots. ROW 2: four work buildings: druid open plant nursery with seedling beds; mage bookbinder workshop with book crates and little blue canopy; hunter carpenter workshop with sawhorses and stacked timber; knight open blacksmith forge with anvil and orange embers. ROW 3: four market stalls: druid green awning over fruit and herbs; mage blue awning over glass potions and scrolls; hunter ochre awning over bread and travel bags; knight burgundy awning over grain sacks and vegetables. Rows 1 and 2 are buildings, row 3 are smaller open market stalls, each fills its own cell for runtime sizing. TRUE transparent alpha background. No people, creatures, UI, symbols floating in air, signatures, copies of other games, isometric diamond tiles, front-view elevations or photoreal 3D. The image is a game sprite sheet, not a scene.",
+    "Edit target: the most recently generated 4 by 3 Huntaria neighborhood sprite sheet. Remove the gray and white checkerboard completely and deliver the same 12 sprites on a genuinely TRANSPARENT ALPHA background, not a drawing of a checkerboard. Preserve all 12 sprites, their colors, overhead camera, scale, details and equal 4-column 3-row cell positions. Do not add, delete or redraw the buildings and stalls. No grid, no labels, no white background. The empty margins between and around sprites must have alpha zero. Also remove the tiny stray brown speck at upper left outside the first sprite. Preserve original sprite colors and fine foliage edges.",
+    "Background extraction edit only. The input is our project's twelve building and market stall sprite sheet. Keep all 12 sprites exactly as pictured in the equal 4-column, 3-row grid. Replace the entire gray-white checkerboard surrounding and between the objects, including every gap between leaves and objects, with a SINGLE SOLID PURE MAGENTA #ff00ff background. No checkerboard anywhere. Preserve original sprite colors, outlines, layout and camera, do not crop or rearrange. If genuine alpha transparency is available deliver that instead, but do not draw a checkerboard to represent transparency. The bottom row is market stalls, middle workshops, top houses. Clean cutout edges, no labels, no new art."
+  ],
+  "reference": "assets/cities/buildings.png",
+  "note": "Original generated source, copied byte for byte. The selected revision uses the explicitly requested magenta backdrop. city-art.js keys that color during atlas decoding. Earlier opaque checkerboard variants are not runtime assets.",
+  "sha256": "1b50fffdeaecd31c23066360e2dc96b1fe3f759de5089c9b8b766c4d66641dac",
+  "reference_sha256": "e824e8da46b7e44bfa1fbdd6f1420ea4adb787cc9264e941f81424925031128e",
+  "size": [
+    1448,
+    1086
+  ],
+  "frames": [
+    {
+      "index": 0,
+      "crop_px": [
+        0,
+        0,
+        362,
+        378
+      ],
+      "rgba_sha256": "8dc3a204a163b8997da92284d0fbb9c574440146a1c4dbf9e0d9c03d8c4a9d93"
+    },
+    {
+      "index": 1,
+      "crop_px": [
+        362,
+        0,
+        724,
+        378
+      ],
+      "rgba_sha256": "bc1eaa50b43b3cb2f583d4eda5796886d4fb7dc99a3053f14b9f7d8a7f00f4a0"
+    },
+    {
+      "index": 2,
+      "crop_px": [
+        724,
+        0,
+        1086,
+        378
+      ],
+      "rgba_sha256": "9deb9178f0b6616c53bed029a96263827630b18edc3f1788e191acc4c45bde35"
+    },
+    {
+      "index": 3,
+      "crop_px": [
+        1086,
+        0,
+        1448,
+        378
+      ],
+      "rgba_sha256": "f065083735bb8e708ab12a62d382e9c30413677c7740303f676b6081bd1d1574"
+    },
+    {
+      "index": 4,
+      "crop_px": [
+        0,
+        378,
+        362,
+        731
+      ],
+      "rgba_sha256": "2a7052fa52ae2ae4464f189a00381684a9fc8b4a4672a5c3d1342c2caab0cfca"
+    },
+    {
+      "index": 5,
+      "crop_px": [
+        362,
+        378,
+        724,
+        731
+      ],
+      "rgba_sha256": "39f727e03525e3859ff7d41d94cf95465a27758af5b1361d94b778a5ca86bd5b"
+    },
+    {
+      "index": 6,
+      "crop_px": [
+        724,
+        378,
+        1086,
+        731
+      ],
+      "rgba_sha256": "687123c12c107af68297744838c885f4b11af33e7db68bd59d7dc58fc502b515"
+    },
+    {
+      "index": 7,
+      "crop_px": [
+        1086,
+        378,
+        1448,
+        731
+      ],
+      "rgba_sha256": "ccacf0c5060e66b54bb8241f86aa3845fe06c0aed5554f360f4bc28ee96c8572"
+    },
+    {
+      "index": 8,
+      "crop_px": [
+        0,
+        731,
+        362,
+        1086
+      ],
+      "rgba_sha256": "aab4cb6b372087477afc26112bae7788cabd7c39ed1bcf02ef9486b49eb0ab46"
+    },
+    {
+      "index": 9,
+      "crop_px": [
+        362,
+        731,
+        724,
+        1086
+      ],
+      "rgba_sha256": "49d74b27a415f231e708bee10f83751171827348f54153f116004e3d03fb6f8a"
+    },
+    {
+      "index": 10,
+      "crop_px": [
+        724,
+        731,
+        1086,
+        1086
+      ],
+      "rgba_sha256": "8a1bf479e45e379bdf1de45caab24a4c193f26c485b051eb4f795e904423d731"
+    },
+    {
+      "index": 11,
+      "crop_px": [
+        1086,
+        731,
+        1448,
+        1086
+      ],
+      "rgba_sha256": "b82e2a5af2bc212da82d5c1e79390ca4ef3636c47fcbfd8fd4d31c6f58364aea"
+    }
+  ]
+}

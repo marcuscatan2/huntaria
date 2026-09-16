@@ -38,7 +38,12 @@ def main():
             page.wait_for_function('!!window.BondApp')
             page.evaluate("""()=>{const s=BondProfile.snapshot();s.journey.early.mageGate=true;s.journey.early.introFightWon=true;BondProfile.testing.replace(s);}""")
             check('Every existing map has an individual landscape identity', page.evaluate("""()=>{
-              const maps=BondAtlas.maps;return maps.length===40&&new Set(maps.map(m=>m.landscape.identity)).size===40&&maps.every(m=>m.scenery.some(s=>s.sceneryAtlas)&&m.scenery.some(s=>s.key.includes(':landscape:')));
+              const maps=BondAtlas.maps,cities=maps.filter(m=>m.kind==='hub');
+              return maps.length===40&&new Set(maps.map(m=>m.landscape.identity)).size===40
+                &&cities.length===6&&new Set(cities.map(m=>m.cityQuarter)).size===6
+                &&maps.every(m=>m.scenery.some(s=>s.sceneryAtlas)&&(m.kind==='hub'
+                  ? m.cityQuarter&&m.cityBuildings.length===10&&m.cityBuildings.every(b=>m.scenery.some(s=>s.key===b.id&&s.citySheet==='neighborhoods'))
+                  : m.scenery.some(s=>s.key.includes(':landscape:'))));
             }"""))
             check('Every crossing ground patch is present on both sides of a texture seam', page.evaluate("""()=>{
               const sample=BondScenery.groundPatches;

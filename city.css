@@ -22,6 +22,18 @@
 #atlas-dialog .atlas-land.threat-danger .atlas-region-info{border-color:#ff8b7c}
 #atlas-dialog .atlas-land:hover .atlas-region-info,#atlas-dialog .atlas-land:focus .atlas-region-info{opacity:1}
 #world-actors .resident .world-art{width:95px;height:108px}
+#world-actors .resident{width:88px;height:108px}
+.citizen-tool{position:absolute;width:42px;height:42px;left:47px;top:49px;transform-origin:12px 25px;scale:var(--sprite-facing,1) 1;pointer-events:none}
+.resident.facing-left .citizen-tool{left:auto;right:47px}
+.resident.citizen-walking .world-art{animation:citizen-stride .65s ease-in-out infinite}
+.resident.citizen-working[data-activity="gardening"] .citizen-tool{animation:citizen-water 3s ease-in-out infinite}
+.resident.citizen-working[data-activity="working"] .citizen-tool{animation:citizen-hammer 1.4s ease-in-out infinite}
+.resident.citizen-working[data-activity="playing"] .world-art{animation:citizen-song 2s ease-in-out infinite}
+@keyframes citizen-stride{25%{translate:0 -2px;rotate:1deg}75%{translate:0 -2px;rotate:-1deg}}
+@keyframes citizen-water{40%,65%{rotate:24deg;translate:3px 0}}
+@keyframes citizen-hammer{20%{rotate:-38deg;translate:0 -5px}42%{rotate:20deg}55%{rotate:0deg}}
+@keyframes citizen-song{50%{rotate:2deg;translate:0 -1px}}
+@media(prefers-reduced-motion:reduce){.resident .world-art,.resident .citizen-tool{animation:none!important}}
 #world-actors .resident .city-pet{position:absolute;left:67px;bottom:0;width:72px;height:80px;pointer-events:none}
 .city-pet .character-sprite{width:100%;height:100%;object-fit:contain;transform:none}
 #world-actors .building.scenery-service,#world-actors .waystone.scenery-service{background:none;border:0;border-radius:8px}

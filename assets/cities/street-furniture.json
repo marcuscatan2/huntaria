@@ -1,0 +1,98 @@
+{
+  "scope": "city-neighborhoods-v1",
+  "tool": "built-in imagegen",
+  "source": "street-furniture.png",
+  "prompts": [
+    "Use case: stylized-concept. Asset type: Huntaria original fantasy RPG street furniture sprite atlas. Match the painted, detailed storybook sprite style and HIGH OVERHEAD camera of the attached project city building reference (reference only, do not alter it). Single sheet EXACTLY 4 equal columns by 2 equal rows with EIGHT separated complete sprites. Row 1 left to right: 1 round mossy pale-stone fountain, clear blue water, modest central spout, visible bowl viewed from above; 2 raised oval flower bed edged with old stone blocks, dense leaves and tiny cream/pink flowers; 3 timber street bench with wrought iron feet, seat and back visible from above; 4 antique street lantern on wooden post, warm glass. Row 2 left to right: 5 merchant's wooden handcart with sacks, barrels and folded canvas; 6 small roofed stone well with bucket and rope; 7 knight's wooden practice dummy with straw stuffing beside a low equipment rack; 8 gardener's rectangular timber seedling bed with rich soil, lush little green plants in rows. Warm outlines, textured wood and stone, small natural shadows. All objects face toward bottom of image and share same sun upper left. Each fits within its own cell with 12% margins; no clipping or overlap, no text, no labels, no people, no UI, no ground tile. Transparent background requested; if transparency unavailable use a single completely flat pure magenta #ff00ff backdrop with no texture or checker pattern. Everything original, not copied from any other game. Readable at small mobile game scale. Sprite atlas, not a landscape or mockup."
+  ],
+  "reference": "assets/cities/buildings.png",
+  "note": "Original generated source, copied byte for byte; native alpha is preserved.",
+  "sha256": "fd823dbdb64d72c371bda8f8f37b2ca6e12035eafdfe00225afde47737d661bb",
+  "reference_sha256": "e824e8da46b7e44bfa1fbdd6f1420ea4adb787cc9264e941f81424925031128e",
+  "size": [
+    1774,
+    887
+  ],
+  "frames": [
+    {
+      "index": 0,
+      "crop_px": [
+        0,
+        0,
+        444,
+        420
+      ],
+      "rgba_sha256": "bb07456751c5e9a51d7610c7f46e29b9af3e1ccaee3327f5b704e5e4def0c838"
+    },
+    {
+      "index": 1,
+      "crop_px": [
+        444,
+        0,
+        887,
+        420
+      ],
+      "rgba_sha256": "87b68dcef9f5a118776d9ab70fc620f279dc66abc01e47b006a7e3f01321c8f1"
+    },
+    {
+      "index": 2,
+      "crop_px": [
+        887,
+        0,
+        1331,
+        420
+      ],
+      "rgba_sha256": "f9e5883fa952c4f2fa54e1a769b46904da30dac2283ff9f64cd5ea3e3000e17d"
+    },
+    {
+      "index": 3,
+      "crop_px": [
+        1331,
+        0,
+        1774,
+        420
+      ],
+      "rgba_sha256": "600920bc0a73b2f1b0d2fa99cec95629e54d3dd09b7467e26c75d02be69d2121"
+    },
+    {
+      "index": 4,
+      "crop_px": [
+        0,
+        420,
+        444,
+        887
+      ],
+      "rgba_sha256": "ac4e777111deccb561e4903eae5674d4246633df3314d1c0dd8272e0fc2e4afd"
+    },
+    {
+      "index": 5,
+      "crop_px": [
+        444,
+        420,
+        887,
+        887
+      ],
+      "rgba_sha256": "59787b8f4b406c05d5f957054fb91a136840abd8fdb46164977a0dc0c0c0b6e7"
+    },
+    {
+      "index": 6,
+      "crop_px": [
+        887,
+        420,
+        1331,
+        887
+      ],
+      "rgba_sha256": "46c8b7318910c211fd37bf24d77b085725bcc5ee0c40701885605494144197cb"
+    },
+    {
+      "index": 7,
+      "crop_px": [
+        1331,
+        420,
+        1774,
+        887
+      ],
+      "rgba_sha256": "03694b2dc95b05b45248b0a85c42e1386afc3abac2d13d9c1433adee6b2b9c7f"
+    }
+  ]
+}

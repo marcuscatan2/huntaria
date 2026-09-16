@@ -115,6 +115,14 @@ function border(ctx,m){
   let start=0;for(const [a,b]of gaps){draw(start,a);start=b;}draw(start,size);
  }
 }
+function cityGround(ctx,m){
+ const g=m.cityGround;if(!g)return;
+ const {x,y}=g.center,formal=['square','forge'].includes(g.style);
+ ctx.save();
+ ctx.strokeStyle=formal?'#c7c7ac':'#d0bc89';ctx.lineWidth=9;ctx.beginPath();ctx.ellipse(x,y,180,138,0,0,Math.PI*2);ctx.stroke();
+ ctx.strokeStyle='#47595180';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y,192,149,0,0,Math.PI*2);ctx.stroke();
+ ctx.restore();
+}
 function makeChunk(m,cx,cy){
  const canvas=document.createElement('canvas');canvas.width=canvas.height=RES;const ctx=canvas.getContext('2d',{alpha:false}),t=m.theme;
  ctx.scale(RES/CHUNK,RES/CHUNK);ctx.translate(-cx*CHUNK,-cy*CHUNK);floor(ctx,m);
@@ -170,6 +178,7 @@ function makeChunk(m,cx,cy){
   if(w.points){path(ctx,w.points);ctx.lineWidth=w.width+24;ctx.stroke();ctx.strokeStyle=t.water;ctx.lineWidth=w.width;ctx.stroke();ctx.strokeStyle=t.deep+'70';ctx.lineWidth=w.width*.48;ctx.stroke();}
   else{ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx+16,w.ry+16,0,0,Math.PI*2);ctx.fillStyle=t.soil;ctx.fill();ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx,w.ry,0,0,Math.PI*2);ctx.fillStyle=t.water;ctx.fill();ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx*.78,w.ry*.70,0,0,Math.PI*2);ctx.fillStyle=t.deep+'65';ctx.fill();}
  }
+ cityGround(ctx,m);
  passageGround(ctx,m,cx,cy);
  if((m.cemetery||m.towerFloor===4)&&!sheet('ghost-tower').ready){
   const cx=m.interior?m.width/2:m.hero.x,cy=m.interior?1050:m.hero.y;
@@ -261,10 +270,10 @@ function draw(ctx,m,camera,scale,width,height,now,player,options={}){
    if(p.towerWall)continue;
    const x=(p.x-camera.x)*scale,y=(p.y-camera.y)*scale*vertical;
    if(x<-margin||y<-80||x>width+margin||y>height+margin)continue;
-   if(mode==='low'&&p.size<180&&!p.towerKind&&!p.passage&&![13,14,15].includes(p.art))continue;
+   if(mode==='low'&&p.size<180&&!p.cityFurniture&&!p.towerKind&&!p.passage&&![13,14,15].includes(p.art))continue;
    visible.add(p.key);let el=nodes.get(p.key);
    if(!el){el=document.createElement('div');el.className='world-prop';el.setAttribute('aria-hidden','true');if(p.passage)el.dataset.passageArt='true';if(p.towerKind){el.dataset.towerArt=p.towerKind;el.dataset.towerFrame=p.sceneryFrame;}parent.append(el);nodes.set(p.key,el);}
-   if(Number.isInteger(p.cityArt))BondCityArt.building(el,p.cityArt,p.size*scale);else spriteStyle(el,p.sceneryAtlas||t.id,p.sceneryFrame??p.art,p.size*scale);
+   if(Number.isInteger(p.cityArt))BondCityArt.building(el,p.cityArt,p.size*scale,p.citySheet);else spriteStyle(el,p.sceneryAtlas||t.id,p.sceneryFrame??p.art,p.size*scale);
    el.style.left=x+'px';el.style.top=y+'px';el.style.zIndex=p.grounded?'1':String(Math.round(y+300));
    const depth=parseFloat(el.style.height)/scale/vertical*.94;
    const overlap=[player,options.focus].filter(Boolean).some(subject=>subject.y<p.y&&p.y-subject.y<depth&&Math.abs(subject.x-p.x)<p.size*.42);

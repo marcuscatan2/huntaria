@@ -43,7 +43,7 @@ const length=points=>points.slice(1).reduce((n,p,i)=>n+distance(p,points[i]),0);
 const point=(m,x,y)=>({x:x*m.width,y:y*m.height});
 function closest(p,points){return points.reduce((a,b)=>distance(p,a)<distance(p,b)?a:b);}
 function road(m,id,points,width=190,style='trail'){const out={id,points,width,style};m.roads.push(out);return out;}
-const specs={};let revision=22;
+const specs={};let revision=23;
 for(const m of A.maps){
  m.theme=THEMES[m.regionIndex];m.roads=[];m.water=[];m.rooms=[];m.scenery=[];m.obstacles=[];m.landmarks=[];m.bridges=[];m.neighbors=[];m.layoutRevision=revision;
  if(m.interior){BondGhostTower.layout(m,road);continue;}
@@ -117,7 +117,7 @@ for(const m of A.maps){
 const ports={west:m=>({x:80,y:m.height/2}),east:m=>({x:m.width-80,y:m.height/2}),north:m=>({x:m.width/2,y:80}),south:m=>({x:m.width/2,y:m.height-80})};
 function addGate(m,to,p,arrival,direction){
  m.neighbors.push({id:m.id+'>'+to.id,to:to.id,...p,arrival,direction,label:to.name,kind:to.kind==='hub'?'town':to.kind==='boss'?'boss':to.kind==='cave'?'cave':to.kind==='forest'?'forest':'gate'});
- road(m,'gate:'+to.id,[closest(p,m.roads[0].points),p],200);
+ road(m,'gate:'+to.id,[closest(p,m.kind==='hub'?m.roads.find(r=>r.id==='outer-lane').points:m.roads[0].points),p],200);
 }
 for(const [aId,bId] of A.GRID_EDGES){
  const a=A.get(aId),b=A.get(bId),dx=b.grid.x-a.grid.x,dy=b.grid.y-a.grid.y;

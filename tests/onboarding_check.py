@@ -126,15 +126,18 @@ with sync_playwright() as pw:
         check('Numbered minimap exit stays locked until the Forest Mage trial',page.evaluate('BondProfile.snapshot().map==="clearing-0"&&!BondAtlas.unlocked(BondProfile.snapshot(),"clearing-hub")') and 'LOCKED' in page.locator('.gate-badge').first.inner_text())
         page.locator('#region-map').screenshot(path=str(ARTIFACTS/f'onboarding-gate-{args.browser}.png'))
         recovery_companion=page.evaluate('BondProfile.companions()[0].id');page.evaluate('BondApp.changeUnit(0,1,null)')
-        page.evaluate("""()=>{const P=BondProfile;P.travel('clearing-0',BondOpening.start.position);const s=P.snapshot();s.vitality.trainer=1;P.testing.replace(s);BondApp.switchTab('region');
-          const sp=P.population().find(p=>p.type==='emberfox'&&p.present);BondApp.startRegionBattle(P.beginHunt(sp.id).id);const b=BondApp.getBattle();b.run();P.checkpoint(b);
+        page.evaluate("""()=>{const P=BondProfile;P.travel('clearing-0',BondOpening.start.position);const sp=P.population().find(p=>p.type==='emberfox'&&p.present),s=P.snapshot();
+          s.vitality.trainer=1;s.spawns[sp.id].seed=11;P.testing.replace(s);BondApp.switchTab('region');
+          BondApp.startRegionBattle(P.beginHunt(sp.id).id);const b=BondApp.getBattle();b.run();
+          if(b.winner!==1||b.units.some(u=>u.side===1&&u.hp<=0))throw Error('Recovery fixture must finish in defeat with no enemy kills');
+          P.checkpoint(b);
         }""")
         before=page.evaluate('BondProfile.snapshot().trainerXP')
         page.reload();page.wait_for_function('!!window.BondApp')
         check('Interrupted terminal fight exposes recovery controls after reload',page.locator('#encounter-notice').is_visible())
         page.locator('#field-withdraw').click()
         check('Withdrawing from a saved completed defeat settles camp rescue',page.evaluate('!BondProfile.snapshot().encounterSave&&BondAdventure.health(BondProfile.snapshot())===10000&&BondProfile.snapshot().map==="clearing-0"'))
-        check('Defeat does not grant trainer XP',page.evaluate('BondProfile.snapshot().trainerXP')==before)
+        check('Defeat without kills does not grant trainer XP',page.evaluate('BondProfile.snapshot().trainerXP')==before)
         check('Recovered companion can return to the party after reload',page.evaluate('(id)=>BondApp.autoAssign(id)',recovery_companion))
         page.evaluate(setup)
         fox=page.evaluate('qaApproach()');page.locator('[data-object="'+fox+'"]').click()

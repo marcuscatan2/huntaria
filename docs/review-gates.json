@@ -130,6 +130,7 @@
       "before": "Before producing the remaining full-detail maps, quest routes or region-wide art placement.",
       "why": "Map scale and visual language constrain camera, gates, collision, pathfinding, prop sizes, spawn density, recovery trips and quest travel.",
       "packet": [
+        "Review city-neighborhoods-v1 in features/world/CITIES.md and the local game: six larger city layouts, markets/homes/workshops, canal bridges, nineteen residents with daily routines, and phone conversations. The owner explicitly requested this revision; final visual/pacing acceptance and physical-device budgets remain open.",
         "Review map-passages-v1 in features/world/LANDSCAPES.md and the local game: destination-specific approaches, open border thresholds, phone labels/taps and keyboard crossings. This scoped owner request authorizes implementation; final art and physical-device approval remain open.",
         "Review ghost-tower-stonework-v1 in features/world/LANDSCAPES.md and the local game: ascending/descending stairs, painted tap bounds, four weathered burial silhouettes, rooftop wall clearance and phone labels. The owner requested this scoped revision; final visual acceptance and physical-device budgets remain open.",
         "Review landscape-identity-v1 in features/world/LANDSCAPES.md and the local game: forty distinct map profiles, original tree/ridge/ruin art, guarded roadside placement, continuous ground shading and cemetery planting. Compare the birch meadow, willow mill, copperleaf kiln, library, mountain watch, basalt cave and rooftop on desktop and phone. The owner explicitly requested this revision; final visual acceptance remains pending.",
@@ -962,6 +963,32 @@
         {
           "path": "features/world/CITIES.md",
           "sha256": "2b4c757533b53c80be7efa5a6769bcef1da53f38fa35ce126d9bdea816cf23f3"
+        }
+      ]
+    },
+    {
+      "id": "city-neighborhoods-v1-2026-09-16",
+      "source": "Current owner conversation, 2026-09-16",
+      "scope": [
+        "Expand the six existing cities with distinct streets, additional buildings, residents and ambient activities"
+      ],
+      "quotes": [
+        "4 - Improve the cities map, it's usually a simple map with little more than 2 streets crossing each other.",
+        "Make it bigger, put more buildings, more people, people doing stuff, make it feel more like a game city."
+      ],
+      "boundary": "Explicit implementation authority for this city revision, including new city scenery and local ambient routines. Broad world-production, final art/pacing acceptance, physical-device budgets and external release gates remain open. Normal saves and stable IDs are preserved.",
+      "evidence": [
+        {
+          "path": "features/world/CITIES.md",
+          "sha256": "35f22ee8281c1f1541121f99a871388844b5c9821cc1620f98b2aa492ec9ddfb"
+        },
+        {
+          "path": "assets/cities/neighborhoods.json",
+          "sha256": "8d8907029a28487ed89d76820ba902a8c7ea6593313daea39bb433277e28914b"
+        },
+        {
+          "path": "assets/cities/street-furniture.json",
+          "sha256": "419d0ddffa26f69812f3d0c4cdec97dd09d37dc87f09aa48172336029ed3dc2c"
         }
       ]
     }

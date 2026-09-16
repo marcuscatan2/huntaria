@@ -14,7 +14,7 @@ reciprocal portals from each pair's shared border: west/east and north/south.
 At most one portal occupies each edge. There are no diagonal or distant links.
 An unconnected neighboring cell has no portal across its border.
 
-Every city occupies one full cell and a 2,400×2,400 world-unit map. Fields keep
+Every city occupies one full cell and a 3,600×3,600 world-unit map. Fields keep
 their existing dimensions, terrain, habitats and species IDs. Town access is
 through authored border portals; nearby fields have no generic return-to-town
 shortcut. Boss domains connect to their cave. Firstlight's Forest Mage gate
@@ -41,6 +41,47 @@ courtyards; campaign directions follow the master whose trial was won. Their
 combat kits, rewards, trial IDs and specialization requirements are preserved.
 Nine new human sprites supplement the four
 existing civilians. [Asset sources and exact prompts](../../assets/cities/README.md).
+
+## City neighborhoods
+
+Scope **city-neighborhoods-v1** expands all six existing hubs from 2,400 to 3,600
+units per side (2.25× the area), with layout revision 23. Each has the three
+existing enterable public buildings, six homes, a workshop, three market stalls
+and nineteen residents, in addition to its Keeper and campaign NPCs. Homes,
+workshops and stalls dress the outdoor streets; the original hall, shop and
+annex retain their room and supply interactions and stable IDs.
+
+| City | New quarter | Layout and landmarks |
+| --- | --- | --- |
+| Mosslight | Orchard Green | Bent garden lanes, nursery, planted square and leafy homes |
+| Willowbrook | Lantern Quay | Canal, bridges, blue-roofed homes and bookbinders |
+| Amber Crossing | Caravan Market | Broad market circuit, timber yard and copperleaf trees |
+| Moonwell | Banner Square | Formal streets, fountain, armorers and practice yard |
+| Windstep | Highwind Terrace | Angled terrace roads, pine trees and lodge houses |
+| Ashenwatch | Ember Ward | Forge courtyards, replanted yards and stone houses |
+
+`city-data.js` owns the neighborhood streets, outdoor buildings, furniture,
+residents and deterministic `stepResident` routine. The exploration view routes
+couriers and patrols through `BondNav` before advancing them, preserving their
+positions across local actor rebuilds. Selecting a moving resident holds them
+still while the player approaches. `city-view.js` validates conversation against
+the resident's current visible position. Dialogues, hidden pages and inactive
+exploration pause routines. Work/walk embellishments honor reduced motion.
+These ambient routines never award items, change quests or write saves.
+
+Hall/shop, master, Keeper, waystone and cache positions remain intact. The annex
+and its nearby resident move south to clear the wider city's west approach;
+their stable IDs and room roles remain unchanged. New door thresholds sit beyond
+their building's collision footprint. Border approaches join an outer lane;
+the six-cell adjacency is unchanged.
+Canal collision and visible bridges use the same world geometry. Saved city
+positions use the existing safe-point normalization if new scenery overlaps them.
+
+Twenty new painted atlas frames provide homes, workshops, stalls, fountains,
+benches, lamps, carts, wells, practice equipment and seedling beds. Furniture
+remains visible in low effects. Each atlas decodes lazily and is cached once;
+only visible scenery has DOM nodes. Sources, measured crops and prompts are in
+`assets/cities/neighborhoods.json` and `assets/cities/street-furniture.json`.
 
 Buildings use their painted bounds as click targets and clear door points for
 navigation/proximity. Entering opens an overhead interactive room: speak to
@@ -91,14 +132,21 @@ wood panels, brass bands, a keyhole and ground shadow. `city.css` supplies its
 desktop/phone tap bounds and nearby highlight. The static SVG stays readable in
 reduced motion and requires no additional texture. Collection remains a single
 profile-owned reward; collected caches disappear and stay gone after reload.
-City caches stand on the existing city paving, clear of waystone art and its
-tap bounds. Moving the cache does not change roads, collisions or collection IDs.
+City caches stand on the city paving, clear of waystone art and its tap bounds.
+Collection IDs and the cache positions established by field-interactions-v1
+are preserved by the neighborhood expansion.
 
 Run `python tests/city_world_check.py --browser chrome` for grid/portal geometry,
 door paths, played building entry, shopping, themed room objects, arrival healing,
 teleport/reload/rejection/save-failure cases and desktop/mobile captures. Run
 `python scripts/project.py verify --browser chrome` for affected shared systems.
 Screenshots/reports are reproducible under `tests/artifacts/city-*`.
+
+The same suite checks all six neighborhoods, citizen movement/collision,
+selected-resident phone conversations, reduced motion, source/crop hashes and
+bounded decoded atlases. Neighborhood captures are
+`tests/artifacts/city-<region>-neighborhood-chrome.png` and
+`tests/artifacts/city-neighborhood-phone-chrome.png`.
 
 For owner review: walk from Firstlight into Mosslight, enter its hall/shop, use
 the waystone to visit the library, lodge and knight training hall, then compare

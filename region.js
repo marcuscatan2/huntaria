@@ -4,7 +4,7 @@
 const $=s=>document.querySelector(s),P=BondProfile,A=BondAtlas,C=BondContent,W=BondWorld,E=BondEchoes,host=$('#region-map');
 const reduced={get matches(){return BondSettings.reduced();}};
 let active=false,m=A.get(P.snapshot().map),pos={...P.snapshot().position},camera={x:0,y:0},scale=.78,last=0,lastSave=0,lastPopulation=0,dirty=false,dest=null,pending=null,keys=new Set(),objects=[],followers=[],rigs=[],party=[],dialogId=null,route=[],travelPlan=[],lastHud=0,graphics='standard',followTarget=null,prefetchedGate=null;
-const VERTICAL=.78,TEST_MOVE_MULTIPLIER=P.TEST?3:1;let playerLeft=false,aggroGrace=3,walkedGate=null;
+const VERTICAL=.78,TEST_MOVE_MULTIPLIER=P.TEST?3:1,citizenRoutes=new Map();let playerLeft=false,aggroGrace=3,walkedGate=null;
 const quiet=()=>{const s=P.snapshot();return !!s.character&&!s.character.legacy&&!s.journey?.early?.introFightWon;};
 try{graphics=JSON.parse(localStorage.getItem('bond-bolt-world-settings'+(P.TEST?'-test':'')))?.graphics||'standard';}catch(_){}
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
@@ -69,8 +69,13 @@ function sidebar(){
  $('#region-save-status').textContent=P.error()||(P.persistent()?'Saved on this browser.':'Session only. Export before closing.');
  if(atlas.open)BondWorldMap.render($('#atlas-regions'));
 }
+function residentRoute(r){
+ if(!r.route)return undefined;if(citizenRoutes.has(r.id))return citizenRoutes.get(r.id);
+ const points=[r.route[0]];for(let i=1;i<=r.route.length;i++){const end=r.route[i%r.route.length],path=BondNav.find(m.id,points.at(-1),end);if(!path.ok)return undefined;points.push(...path.path);}
+ points.pop();citizenRoutes.set(r.id,points);return points;
+}
 function buildObjects(){
- const state=P.snapshot(),currentQuest=BondCampaign.next(state),oldFocus=document.activeElement?.dataset?.object,previousActors=new Map(objects.filter(o=>o.kind==='wild').map(o=>[o.id+':'+o.life,o]));
+ const state=P.snapshot(),currentQuest=BondCampaign.next(state),oldFocus=document.activeElement?.dataset?.object,previousActors=new Map(objects.filter(o=>o.kind==='wild').map(o=>[o.id+':'+o.life,o])),previousResidents=new Map(objects.filter(o=>o.kind==='resident').map(o=>[o.id,o]));
  objects=m.neighbors.map(g=>({...g,kind:'gate',gateKind:g.kind,passage:BondPassages.forMap(m).find(p=>p.gate.id===g.id),label:g.label,locked:!A.unlocked(state,g.to)}));
  for(const s of P.population(m.id))if(s.present){const old=previousActors.get(s.id+':'+s.life),introHostile=s.id==='clearing-0:emberfox:0'&&!state.journey.early.introFightWon;objects.push({...s,...(old?{x:old.x,y:old.y,mode:old.mode,warning:old.warning,facingLeft:old.facingLeft}:{}),introHostile,kind:'wild',label:C.UNITS[s.type].name,homeX:s.x,homeY:s.y});}
  if(m.kind!=='boss'&&!P.snapshot().collected.includes(m.id))objects.push({id:'cache:'+m.id,kind:'cache',...m.cache,label:'Wayfarer cache'});
@@ -85,7 +90,7 @@ function buildObjects(){
  for(const p of BondCampaign.packs.filter(p=>p.map===m.id&&!(quiet()&&m.id==='clearing-0')))objects.push({...p,kind:'pack',label:p.name});
  if(m.kind==='hub'){
   for(const b of m.buildings)objects.push({id:b.id,kind:'building',...b.door,sceneryService:true,sceneryKey:b.id,label:b.name});
-  for(const r of m.residents)objects.push({...r,kind:'resident',label:r.name});
+  for(const r of m.residents){const old=previousResidents.get(r.id);objects.push({...r,route:residentRoute(r),...(old?{x:old.x,y:old.y,routeIndex:old.routeIndex,wait:old.wait,facingLeft:old.facingLeft}:{}),kind:'resident',label:r.name});}
   if(m.teleport)objects.push({id:m.id+':waystone',kind:'waystone',...m.teleport,sceneryService:true,sceneryKey:m.id+':teleport',label:'City waystone'});
   const keeper=Object.keys(W.NPCS).find(id=>W.NPCS[id].area===m.region&&!W.NPCS[id].kind);
   if(keeper)objects.push({id:keeper,kind:'npc',x:520,y:820,label:W.NPCS[keeper].name});
@@ -105,7 +110,7 @@ function buildObjects(){
  objects.map(o=>{
   let visual='';
   if(o.sceneryService)visual='';else if(o.kind==='guide')visual='<div class="world-art">'+CharacterRig.art('npc-keeper')+'</div>';else if(o.kind==='wild'||o.kind==='npc')visual='<div class="world-art">'+CharacterRig.art(o.type||CharacterRig.npcAppearance(W.NPCS[o.id],o.id))+'</div>';
-  else if(o.kind==='resident')visual='<div class="world-art">'+CharacterRig.art(o.appearance)+'</div><div class="city-pet" aria-hidden="true">'+CharacterRig.art(o.pet)+'</div>';
+  else if(o.kind==='resident')visual='<div class="world-art">'+CharacterRig.art(o.appearance)+residentTool(o.activity)+'</div>'+(o.pet?'<div class="city-pet" aria-hidden="true">'+CharacterRig.art(o.pet)+'</div>':'');
   else if(o.kind==='pack')visual='<div class="world-art">'+CharacterRig.art(m.habitats[0]?.type||'emberfox')+'</div>';
   else if(o.kind==='cache')visual=cacheArt();
   else if(o.kind==='openingSign')visual='<span class="opening-sign-art" aria-hidden="true"><i></i><b></b></span>';
@@ -115,7 +120,7 @@ function buildObjects(){
   const aria=o.kind==='wild'?'Wild creature, level '+(o.habitat?.level||''):o.label;o.baseAria=aria;
   return '<button class="world-node map-object '+o.kind+(o.kind==='wild'&&BondWildBehavior.policy(m.id,o.type,o,BondProgress.trainerLevel(state))?' hostile':'')+(o.sceneryService?' scenery-service':'')+(o.roadSign?' road-sign':'')+(o.passage?' passage':'')+'" '+(o.passage?'data-passage="'+o.passage.type+'" ':'')+'data-object="'+o.id+'" aria-label="'+aria+'">'+visual+label+'</button>';
  }).join('');
- objects.forEach(o=>o.el=layer.querySelector('[data-object="'+o.id+'"]'));
+ objects.forEach(o=>{o.el=layer.querySelector('[data-object="'+o.id+'"]');if(o.kind==='resident')o.el.dataset.activity=o.activity||'idle';});
  updateQuestMarkers(state,currentQuest);
  rigs=[CharacterRig.mount($('#region-player .world-art'),party[0]?.type||'druid'),...followers.map((u,i)=>CharacterRig.mount($('#follower-'+i+' .world-art'),u.type,{lazy:true}))];
  WorldRenderer.mount(layer,m);
@@ -139,6 +144,10 @@ function loadMap(){
  buildObjects();sidebar();paint(performance.now());message((quiet()&&!s.tutorial.kills&&m.id==='clearing-0'?BondOpening.text:''));$('#world-weather').textContent=(m.kind==='cave'?'UNDERGROUND · ':m.kind==='hub'?'CITY · ':m.kind==='boss'?'BOSS DOMAIN · ':'ON THE TRAIL · ')+A.REGIONS[m.regionIndex].name;
 }
 function project(p){return {x:(p.x-camera.x)*scale,y:(p.y-camera.y)*scale*VERTICAL};}
+function residentTool(activity){
+ const shapes={carrying:'<path d="M8 15 26 11 36 17 18 22Z" fill="#c99b62"/><path d="M8 15 18 22 36 17v17l-18 6-10-8Z" fill="#986a43"/><path d="m14 20 0 15m10-14v16m-13-9 24-6" fill="none" stroke="#e0b677"/>',reading:'<path d="M7 19q9-5 17 0 8-5 16 0v18q-9-5-16 0-8-5-17 0Z" fill="#f0e2b7" stroke="#685343"/><path d="M24 19v18m-13-14 9 0m-9 4h9m8-4h8m-8 4h8" stroke="#9c8f6a"/>',gardening:'<path d="M12 23h18v14H12Z" fill="#8caa9a" stroke="#4d7066"/><path d="m30 26 10-9m-25 6v-6h12v6" fill="none" stroke="#779587" stroke-width="4"/><path d="m39 22 3 7m-7-5 2 9" stroke="#b5e4df" stroke-width="2"/>',working:'<path d="m20 36 6-25" stroke="#987044" stroke-width="5"/><path d="m17 10 18 5-2 7-18-5Z" fill="#a8afb0" stroke="#505862"/>'};
+ return shapes[activity]?'<svg class="citizen-tool" viewBox="0 0 48 48" aria-hidden="true">'+shapes[activity]+'</svg>':'';
+}
 function place(el,p){const q=project(p);el.style.left=q.x+'px';el.style.top=q.y+'px';el.style.zIndex=Math.round(q.y+300);}
 function paint(now){
  const width=host.clientWidth,height=host.clientHeight;if(!width||!height)return;
@@ -156,8 +165,9 @@ function paint(now){
  followers.forEach((u,i)=>{const live=engaged&&fight?._attemptId===saved.attempt?fight.units.find(v=>v.side===0&&v.instanceId===u.instanceId):null,value=Math.max(0,Math.min(100,live?100*live.hp/live.maxHp:BondAdventure.health(P.snapshot(),u.instanceId)/100)),bar=$('#follower-'+i+' .world-companion-hp');if(!bar)return;bar.dataset.tone=value<35?'red':value<=50?'yellow':'green';bar.setAttribute('aria-valuenow',Math.round(value*10)/10);bar.firstElementChild.style.width=value+'%';});
  $('#region-player').classList.toggle('world-battling',engaged);
  markBattle($('#region-player'),engaged);
- const discovered=new Set(P.snapshot().sights),trainerLevel=BondProgress.trainerLevel(P.snapshot());
+ const discovered=new Set(P.snapshot().sights),trainerLevel=BondProgress.trainerLevel(P.snapshot()),cityPaused=!!document.querySelector('dialog[open]');
  for(const o of objects){
+  if(o.kind==='resident'){o.el.classList.toggle('facing-left',!!o.facingLeft);o.el.classList.toggle('citizen-walking',!!o.walking&&!cityPaused&&!reduced.matches);o.el.classList.toggle('citizen-working',!o.walking&&pending?.id!==o.id&&!cityPaused&&!reduced.matches);}
   const pinned=anchor?.actors?.find(p=>p.id===o.id);o.engaged=engaged&&!!pinned;
   o.el.classList.toggle('world-battling',o.engaged);
   markBattle(o.el,o.engaged);
@@ -287,6 +297,7 @@ function motionStep(p,dx,dy){
 function frame(now){
  const fighting=!!P.snapshot().encounterSave;if(!active&&!fighting)return;const dt=last?Math.min(.05,(now-last)/1000):0;last=now;
  if((fighting||!document.querySelector('dialog[open]'))&&!document.hidden){
+  if(active&&!fighting)for(const o of objects)if(o.kind==='resident')BondCities.stepResident(o,dt,pending?.id===o.id||document.activeElement===o.el);
   if(fighting){keys.clear();dest=null;pending=null;route=[];travelPlan=[];const anchor=P.snapshot().encounterSave.anchor;if(anchor?.map===m.id)pos={...anchor.position};}
   if(pending){
    if(distance(pos,pending)<=115){interact(pending);return;}
@@ -359,5 +370,7 @@ new ResizeObserver(()=>{if(active)paint(performance.now());}).observe(host);
 window.BondRegion={anchor(encounter){const actors=(encounter?.enemies||[]).map(e=>objects.find(o=>o.id===e.spawnId)).filter(Boolean);const npc=objects.find(o=>o.id===encounter?.id);if(npc)actors.push(npc);return {map:m.id,position:{...pos},actors:actors.map(o=>({id:o.id,x:o.x,y:o.y}))};},enter(build){party=(P.snapshot().encounterSave?.build||build)[0];active=true;loadMap();},leave(){stop();active=false;},frame,notice:message,
  inspect:()=>({map:m.id,position:{...pos},camera:{...camera},destination:dest?{...dest}:null,route:route.map(p=>({...p})),travelPlan:[...travelPlan],graphics,renderer:WorldRenderer.inspect(),visible:objects.filter(o=>!o.el.hidden).map(o=>o.id),followers:followers.map(u=>({...u})),questMarkers:objects.filter(o=>o.questMarker).map(o=>({id:o.id,type:o.questMarker,symbol:o.questMarker==='delivery'?'?':'!',x:o.x,y:o.y})),speed:A.BASE_SPEED*TEST_MOVE_MULTIPLIER,actors:objects.filter(o=>o.kind==='wild').map(o=>({id:o.id,life:o.life,type:o.type,x:o.x,y:o.y,homeX:o.homeX,homeY:o.homeY,mode:o.mode||'idle',level:o.habitat.level,hostile:!!BondWildBehavior.policy(m.id,o.type,o,BondProgress.trainerLevel(P.snapshot()))}))}),
  escapeGrace(){aggroGrace=6;for(const o of objects.filter(o=>o.kind==='wild')){o.mode='idle';o.warning=0;}},
+ residentPosition(id){const r=objects.find(o=>o.kind==='resident'&&o.id===id);return r?{x:r.x,y:r.y}:null;},
+ citizens:()=>objects.filter(o=>o.kind==='resident').map(o=>({id:o.id,x:o.x,y:o.y,walking:!!o.walking,activity:o.activity||'idle'})),
  moveTo:walkTo,travelTo,approachId:id=>approach(objects.find(o=>o.id===id))};
 })();
