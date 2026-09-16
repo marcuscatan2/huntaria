@@ -130,6 +130,7 @@
       "before": "Before producing the remaining full-detail maps, quest routes or region-wide art placement.",
       "why": "Map scale and visual language constrain camera, gates, collision, pathfinding, prop sizes, spawn density, recovery trips and quest travel.",
       "packet": [
+        "Review ghost-tower-stonework-v1 in features/world/LANDSCAPES.md and the local game: ascending/descending stairs, painted tap bounds, four weathered burial silhouettes, rooftop wall clearance and phone labels. The owner requested this scoped revision; final visual acceptance and physical-device budgets remain open.",
         "Review landscape-identity-v1 in features/world/LANDSCAPES.md and the local game: forty distinct map profiles, original tree/ridge/ruin art, guarded roadside placement, continuous ground shading and cemetery planting. Compare the birch meadow, willow mill, copperleaf kiln, library, mountain watch, basalt cave and rooftop on desktop and phone. The owner explicitly requested this revision; final visual acceptance remains pending.",
         "AI prepares one coherent village → field → forest/cave slice with roads, bridge, service, landmark, varied enemies and a return route.",
         "Show a walk-through and minimap/atlas; measure actual representative crossings and recovery travel, preserving the existing ≥30-second large-map requirement.",
@@ -862,6 +863,32 @@
         {
           "path": "assets/landscapes/ruins-atlas.png",
           "sha256": "203a8c7bb158f51fefa1b6bcee036235de54f97be7cef98601fc4170ebd0eaf0"
+        }
+      ]
+    },
+    {
+      "id": "ghost-tower-stonework-v1-2026-09-15",
+      "source": "Current owner conversation, 2026-09-15",
+      "scope": [
+        "Improve ghost-tower stairs and burial stones at the entrance and rooftop cemetery",
+        "Fit stair tap bounds and labels to the painting while preserving physical gates, navigation and saves"
+      ],
+      "quotes": [
+        "Improve the ghost tower stairs and burial stones"
+      ],
+      "boundary": "Explicit implementation authority for this named stonework revision. Broad world-production gates remain open; the request does not approve final art, physical-device budgets or release.",
+      "evidence": [
+        {
+          "path": "features/world/LANDSCAPES.md",
+          "sha256": "a185189ed8579ec695de9f3595e901a38f7f11bd6fd69e1f68ab06ab23dc6d25"
+        },
+        {
+          "path": "assets/landscapes/ghost-tower-prompts.json",
+          "sha256": "e6a70714673e6d9db9d7c46b7dbab497df54c133583f6d2e80c74804db93d011"
+        },
+        {
+          "path": "assets/landscapes/ghost-tower-atlas.png",
+          "sha256": "165f287aa3c899b859bdfa25e77f8cc0da523bd7804258e7c4c0045847a4b854"
         }
       ]
     }

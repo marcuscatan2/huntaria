@@ -66,6 +66,14 @@
       "runtime_bytes": 1844768
     },
     {
+      "source": "assets/landscapes/ghost-tower-atlas.png",
+      "source_sha256": "165f287aa3c899b859bdfa25e77f8cc0da523bd7804258e7c4c0045847a4b854",
+      "runtime": "assets/world-runtime/ghost-tower-atlas.webp",
+      "sha256": "d8361dfa76ed3caf548603427c40fc9dee052c6115ebb50152e0d03485e95d7d",
+      "source_bytes": 2358558,
+      "runtime_bytes": 1589400
+    },
+    {
       "source": "assets/landscapes/nature-atlas.png",
       "source_sha256": "6ab0c96e7fe73bb7e9ee212da76927de13edb24ca7160fffcf87ffcb37d632b5",
       "runtime": "assets/world-runtime/nature-atlas.webp",

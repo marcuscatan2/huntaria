@@ -44,17 +44,41 @@ Original generations and exact built-in imagegen prompts are in
 [lossless export tool](../../scripts/world_assets.py) produces the runtime WebP
 files and verifies decoded RGBA equality. No source bitmap is resampled or edited.
 
-The renderer retains at most two regional atlases plus the two shared landscape
-atlases. The new pair adds about 12 MiB of decoded RGBA data. Ground chunks retain
+The renderer retains at most two regional atlases plus two general landscape
+atlases and one tower stonework atlas, loaded on first visiting the cemetery or
+tower. The three shared sheets occupy about 18 MiB of decoded RGBA data (the
+tower sheet adds 6 MiB); the regression bound is 19 MiB. Ground chunks retain
 the existing 28-canvas bound (28 MiB), with one prefetch per visual interval.
 These are backing-store estimates, not total browser/GPU memory measurements.
 Physical-device budget acceptance remains open; do not infer it from desktop tests.
+
+## Ghost tower stonework
+
+`ghost-tower-stonework-v1` uses a six-prop transparent atlas: ascending stairs with
+a broken arch, a recessed descending stairwell, a carved burial chest, two
+headstones and a broken obelisk. Weathered limestone, moss and worn edges match
+the surrounding painted architecture. The entrance and rooftop use all four
+burial silhouettes; rooftop rows clear the interior wall.
+
+`world-renderer.js` owns these visual props and measured atlas rectangles. Stairs
+sit beneath actors; upright grave markers use foot-depth sorting and fade when
+covering the player. Low effects retains both stairs and burial markers.
+`region.js` fits each stair interaction to the painted bounds and routes taps to
+the existing gate position. Direction and nearby destination labels sit on the
+steps, leaving the approach clear. IDs, arrivals, collision and saved positions
+are unchanged; this revision needs no layout migration.
+
+During loading or a failed atlas request, ground-painted stairs and graves remain
+available. Retry replaces the fallback and clears cached ground chunks without
+changing the save. Source and prompt: [tower assets](../../assets/landscapes/README.md).
 
 ## Verification and review
 
 Run `python tests/landscapes_check.py --browser chrome` for all forty maps:
 reciprocal gate reachability, services, wildlife quotas/positions, world-space
 shading continuity, atlas loading, bounded caches and ordinary phone viewports.
+Tower checks exercise all eight stair transitions by tapping the side of the
+painting, low-effects grave visibility, and failed stonework download/retry.
 The suite uses disposable browser contexts. Screenshots and reports are generated
 under ignored `tests/artifacts/`; they do not belong in Git.
 

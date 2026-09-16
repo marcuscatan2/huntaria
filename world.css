@@ -18,4 +18,8 @@
 @media(max-width:600px){.world-overview{left:3%;right:3%}.world-overview button{font-size:8px;line-height:1.3}.region-toast{font-size:11px}.world-landmark{width:170px;height:170px}}
 @media(prefers-reduced-motion:reduce){.world-ambient{display:none}.region-scout .world-art{animation:none}}
 /* The illustrated stairwell remains visible under its accessible interaction target. */
-.tower-stair-hitbox{display:block;width:150px;height:130px;background:transparent}.world-node:has(.tower-stair-hitbox) .gate-badge{background:#405a69;border-color:#afc7cd}.world-node:has(.tower-stair-hitbox) .world-label{white-space:normal;max-width:170px}
+.tower-stair-hitbox{display:block;width:100%;height:100%;background:transparent}
+#world-actors .world-node:has(.tower-stair-hitbox)::before,#world-actors .world-node:has(.tower-stair-hitbox)::after{display:none}
+#world-actors .world-node:has(.tower-stair-hitbox) .gate-badge{top:auto;bottom:36%;left:50%;transform:translateX(-50%);background:#253b3ddb;color:#efdfba;border:1px solid #c4b28b99;border-radius:5px;padding:4px 8px;font:700 9px/1.3 system-ui;letter-spacing:.6px;white-space:nowrap;pointer-events:none}
+#world-actors .world-node:has(.tower-stair-hitbox):not(.nearby):not(:hover):not(:focus-visible) .gate-badge{opacity:.8}
+#world-actors .world-node:has(.tower-stair-hitbox) .world-label{white-space:normal;min-width:0;width:max-content;max-width:190px;top:68%}

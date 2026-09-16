@@ -63,9 +63,10 @@ reserved encounters retain their original map, levels, lives and rolls. The
 reviewed roster's source levels remain historical source metadata; the habitat
 reference records current world levels and every additional habitat.
 
-The tower uses the existing stone materials and city/world art. Floor paving,
-stairs and cemetery markers extend the canvas renderer. No new creature art or
-combat element is introduced; Casketot is the chosen coffin spirit.
+The tower uses stone floor materials with painted stairs and varied burial
+markers. [Landscape contracts](../world/LANDSCAPES.md#ghost-tower-stonework) own
+the stonework art, interaction bounds and loading fallback. Casketot is the
+chosen coffin spirit.
 
 ## Authority and replay
 

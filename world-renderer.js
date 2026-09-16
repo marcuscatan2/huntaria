@@ -22,7 +22,22 @@ const landmarkRects={
  ashen:{5:[349,324,616,610],8:[0,606,329,901],9:[330,605,641,907],11:[939,617,1254,904],15:[959,913,1254,1254]}
 };
 const signOutline=[[970,925],[1254,925],[1254,1254],[970,1254],[970,1120],[1000,1100],[1000,1045],[970,1030]];
+const towerFrames=[[68,5,460,501],[556,94,985,476],[1045,171,1495,464],[105,538,415,996],[602,515,936,990],[1116,548,1437,969]];
 const sheets=new Map(),landscapeSheets=new Map(),chunks=new Map(),nodes=new Map(),backdrops=new Map();
+const towerProps=new Map();
+function towerScenery(m){
+ if(!m.cemetery&&!m.towerFloor)return [];
+ if(towerProps.has(m.id))return towerProps.get(m.id);
+ const props=m.neighbors.filter(g=>g.kind==='stairs').map(g=>({key:g.id+':stairs',x:g.x,y:g.y+135,size:g.direction==='up'?340:325,art:4,sceneryAtlas:'ghost-tower',sceneryFrame:g.direction==='up'?0:1,towerKind:'stairs',grounded:true}));
+ if(m.cemetery||m.towerFloor===4){
+  const cx=m.interior?m.width/2:m.hero.x,cy=m.interior?1050:m.hero.y;
+  for(const side of [-1,1])for(let row=0;row<4;row++)for(let col=0;col<3;col++){
+   const key=m.id+':burial:'+side+':'+row+':'+col,seed=A.hash(key),frame=2+(row+col+(side===1?1:0))%4;
+   props.push({key,x:cx+side*(430+col*190)+(seed%17)-8,y:cy-380+row*(m.interior?225:260)+((seed>>>8)%17)-8,size:frame===2?150:112+(seed%18),art:4,sceneryAtlas:'ghost-tower',sceneryFrame:frame,towerKind:'burial'});
+  }
+ }
+ towerProps.set(m.id,props);return props;
+}
 const terrainImage=new Image(),materials=[];let terrainReady=false,terrainError=false;
 terrainImage.onload=()=>{for(let i=0;i<9;i++){const c=document.createElement('canvas');c.width=c.height=384;const g=c.getContext('2d');g.drawImage(terrainImage,(i%3)*terrainImage.width/3,Math.floor(i/3)*terrainImage.height/3,terrainImage.width/3,terrainImage.height/3,0,0,384,384);materials[i]=c;}terrainReady=true;terrainError=false;for(const c of chunks.values())c.width=c.height=1;chunks.clear();backdrops.clear();};
 terrainImage.onerror=()=>{terrainError=true;};terrainImage.src='assets/world-runtime/terrain-atlas.webp';
@@ -33,10 +48,10 @@ const material=(ctx,index,fallback)=>terrainReady?ctx.createPattern(materials[in
 let parent=null,current=null,mode='standard',stats={frames:0,renderMs:[],chunksBuilt:0,peakChunks:0,visibleProps:0,assetErrors:[]},lastTexture=0;
 const rand=seed=>{let s=seed>>>0;return ()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296;};};
 function sheet(id){
- if(BondScenery.FRAMES[id]){
+ if(BondScenery.FRAMES[id]||id==='ghost-tower'){
   if(landscapeSheets.has(id))return landscapeSheets.get(id);
   const image=new Image(),s={image,ready:false,error:false,url:'assets/world-runtime/'+id+'-atlas.webp'};
-  landscapeSheets.set(id,s);image.onload=()=>{s.ready=true;backdrops.clear();};image.onerror=()=>{s.error=true;stats.assetErrors.push(id);};image.src=s.url;return s;
+  landscapeSheets.set(id,s);image.onload=()=>{s.ready=true;backdrops.clear();if(id==='ghost-tower'){for(const c of chunks.values())c.width=c.height=1;chunks.clear();}};image.onerror=()=>{s.error=true;stats.assetErrors.push(id);};image.src=s.url;return s;
  }
  if(sheets.has(id)){const s=sheets.get(id);s.last=performance.now();return s;}
  const image=new Image(),s={image,ready:false,error:false,last:performance.now(),url:'assets/world-runtime/'+id+'-atlas.webp'};
@@ -47,7 +62,7 @@ function sheet(id){
 function assetState(){const active=[...(current?[sheet(current.theme.id)]:[]),...landscapeSheets.values()];return {loading:active.some(s=>!s.ready&&!s.error),fallback:active.some(s=>s.error)};}
 function frameRect(id,index){
  const s=sheet(id),rect=landmarkRects[id]?.[index],outline=foliage[id]?.[index]||(id==='windstep'&&index===15?signOutline:rect?[[rect[0],rect[1]],[rect[2],rect[1]],[rect[2],rect[3]],[rect[0],rect[3]]]:null);
- if(BondScenery.FRAMES[id]){const [x,y,right,bottom]=BondScenery.FRAMES[id][index];return {x,y,w:right-x,h:bottom-y};}
+ if(BondScenery.FRAMES[id]||id==='ghost-tower'){const [x,y,right,bottom]=(id==='ghost-tower'?towerFrames:BondScenery.FRAMES[id])[index];return {x,y,w:right-x,h:bottom-y};}
  if(outline){const points=outline.map(([x,y])=>[x*s.image.width/1254,y*s.image.height/1254]),xs=points.map(p=>p[0]),ys=points.map(p=>p[1]),x=Math.min(...xs),y=Math.min(...ys);return {x,y,w:Math.max(...xs)-x,h:Math.max(...ys)-y,points};}
  const rows=bounds[id],row=Math.floor(index/4),col=index%4,pad=s.image.width/4*.035;return {x:col*s.image.width/4+pad,y:rows[row]*s.image.height,w:s.image.width/4-pad*2,h:(rows[row+1]-rows[row])*s.image.height};
 }
@@ -131,7 +146,7 @@ function makeChunk(m,cx,cy){
    ctx.fillStyle=t.light+'99';ctx.fillRect(x-24,y-50,48,5);
   }
  }
- if(m.cemetery||m.towerFloor===4){
+ if((m.cemetery||m.towerFloor===4)&&!sheet('ghost-tower').ready){
   const cx=m.interior?m.width/2:m.hero.x,cy=m.interior?1050:m.hero.y;
   for(const side of [-1,1])for(let row=0;row<4;row++)for(let col=0;col<3;col++){
    const x=cx+side*(430+col*190),y=cy-440+row*260;
@@ -160,6 +175,7 @@ function makeChunk(m,cx,cy){
   ctx.strokeStyle='#d0dbd0aa';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-62,-62);ctx.lineTo(len+62,-62);ctx.stroke();ctx.restore();
  }
  for(const g of m.neighbors.filter(g=>g.kind==='stairs')){
+  if(sheet('ghost-tower').ready)continue;
   ctx.save();ctx.translate(g.x,g.y);
   ctx.fillStyle='#1e263a';ctx.beginPath();ctx.roundRect(-128,-158,256,290,16);ctx.fill();
   for(let n=0;n<8;n++){const step=g.direction==='up'?n:7-n,y=95-n*30,width=216-n*5;
@@ -198,7 +214,7 @@ function spriteStyle(el,id,index,width){
  const q=frameRect(id,index),factor=width/q.w;el.style.width=width+'px';el.style.height=q.h*factor+'px';el.style.backgroundImage='url("'+s.url+'")';el.style.backgroundSize=s.image.width*factor+'px '+s.image.height*factor+'px';el.style.backgroundPosition=-q.x*factor+'px '+(-q.y*factor)+'px';
  el.style.clipPath=q.points?'polygon('+q.points.map(([x,y])=>((x-q.x)/q.w*100)+'% '+((y-q.y)/q.h*100)+'%').join(',')+')':'';
 }
-function mount(layer,map){dispose();parent=layer;current=map;sheet(map.theme.id);document.body.dataset.worldBiome=map.theme.id;}
+function mount(layer,map){dispose();parent=layer;current=map;sheet(map.theme.id);if(map.cemetery||map.towerFloor)sheet('ghost-tower');document.body.dataset.worldBiome=map.theme.id;}
 function dispose(){for(const el of nodes.values())el.remove();nodes.clear();parent=null;}
 function draw(ctx,m,camera,scale,width,height,now,player,options={}){
  const began=performance.now();mode=options.mode||'standard';const reduced=!!options.reduced,t=m.theme,vertical=options.vertical||.78;
@@ -216,18 +232,18 @@ function draw(ctx,m,camera,scale,width,height,now,player,options={}){
  ctx.restore();
  if(parent){
   const visible=new Set(),margin=650;
-  for(const p of m.scenery){
+  for(const p of [...m.scenery,...towerScenery(m)]){
    if(p.towerWall)continue;
    const x=(p.x-camera.x)*scale,y=(p.y-camera.y)*scale*vertical;
    if(x<-margin||y<-80||x>width+margin||y>height+margin)continue;
-   if(mode==='low'&&p.size<180&&![13,14,15].includes(p.art))continue;
+   if(mode==='low'&&p.size<180&&!p.towerKind&&![13,14,15].includes(p.art))continue;
    visible.add(p.key);let el=nodes.get(p.key);
-   if(!el){el=document.createElement('div');el.className='world-prop';el.setAttribute('aria-hidden','true');parent.append(el);nodes.set(p.key,el);}
+   if(!el){el=document.createElement('div');el.className='world-prop';el.setAttribute('aria-hidden','true');if(p.towerKind){el.dataset.towerArt=p.towerKind;el.dataset.towerFrame=p.sceneryFrame;}parent.append(el);nodes.set(p.key,el);}
    if(Number.isInteger(p.cityArt))BondCityArt.building(el,p.cityArt,p.size*scale);else spriteStyle(el,p.sceneryAtlas||t.id,p.sceneryFrame??p.art,p.size*scale);
-   el.style.left=x+'px';el.style.top=y+'px';el.style.zIndex=String(Math.round(y+300));
+   el.style.left=x+'px';el.style.top=y+'px';el.style.zIndex=p.grounded?'1':String(Math.round(y+300));
    const depth=parseFloat(el.style.height)/scale/vertical*.94;
    const overlap=[player,options.focus].filter(Boolean).some(subject=>subject.y<p.y&&p.y-subject.y<depth&&Math.abs(subject.x-p.x)<p.size*.42);
-   el.style.opacity=overlap?'.34':'1';
+   el.style.opacity=overlap&&!p.grounded?'.34':'1';
    const sway=p.sway&&!reduced&&mode!=='low'?Math.sin(now/3400+A.hash(p.key)%13)*.55:0;
    el.style.transform='translate(-50%,-94%) rotate('+sway+'deg)';
   }

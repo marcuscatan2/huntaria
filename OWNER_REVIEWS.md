@@ -137,6 +137,7 @@ Priority: **NEXT**. State: **Needs revision**.
 
 **AI prepares:**
 
+- Review ghost-tower-stonework-v1 in features/world/LANDSCAPES.md and the local game: ascending/descending stairs, painted tap bounds, four weathered burial silhouettes, rooftop wall clearance and phone labels. The owner requested this scoped revision; final visual acceptance and physical-device budgets remain open.
 - Review landscape-identity-v1 in features/world/LANDSCAPES.md and the local game: forty distinct map profiles, original tree/ridge/ruin art, guarded roadside placement, continuous ground shading and cemetery planting. Compare the birch meadow, willow mill, copperleaf kiln, library, mountain watch, basalt cave and rooftop on desktop and phone. The owner explicitly requested this revision; final visual acceptance remains pending.
 - AI prepares one coherent village → field → forest/cave slice with roads, bridge, service, landmark, varied enemies and a return route.
 - Show a walk-through and minimap/atlas; measure actual representative crossings and recovery travel, preserving the existing ≥30-second large-map requirement.
