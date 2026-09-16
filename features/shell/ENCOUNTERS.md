@@ -61,6 +61,11 @@ tick atomically. Only then is the initialized enemy added to the simulator.
 restoreBattle reconstructs initial inputs and inserts each join at its saved tick.
 Initial encounter options must never be rewritten to contain later joiners.
 
+CombatView adds and measures each arriving actor before its first visible frame.
+If another screen is open, measurement waits until the arena is visible. A join
+retains existing actor nodes, animation rigs, selection, health queues and impact
+timing; it never remounts the fight. Resizing is not required to place an arrival.
+
 Joined lives remain reserved. Their per-kill claims settle exactly once; NPC
 challenge rewards remain separate. No online players, networking or allied
 joining rules are implemented. Explicit Pause also stops incoming pursuit.
@@ -91,6 +96,8 @@ AGENTS.md; odds and retired mechanics belong outside ordinary player UI.
 
 Run tests/field_polish_check.py for focused/hovered notification expiry, field
 health boundaries, saved escape/replay, same-tick joins and foliage crop evidence.
+The same suite covers visible/background arrivals, first-frame sprite and
+nameplate placement, pending impacts, pause/reload and phone/5×/reduced-motion views.
 The world player has a fixed 46px by 3px HP track and selected companions use
 fixed 40px by 3px tracks: green above 50%, yellow 35–50%, red below 35%. They use
 live combat units when deployed and saved vitality outside combat; character art

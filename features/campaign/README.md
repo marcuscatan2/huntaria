@@ -45,7 +45,7 @@ Shared shapes: [Profile read and command: profile.js](<../../docs/architecture/C
 Commands run from the project root. Use disposable saves. These suites
 cover this feature and shared boundaries; they are not isolated unit tests.
 
-- `python tests/field_polish_check.py --browser chrome` — Fixed-lifetime loot under focus/hover, thin live world HP, foliage isolation, timed escape, pursuit damage, persistence failures and ordered replay.
+- `python tests/field_polish_check.py --browser chrome` — Live joined-actor placement/continuity, phone/fast/reduced-motion combat, fixed-lifetime loot, world HP, foliage, escape, persistence failures and ordered replay.
 - `python tests/pass18_campaign.py --browser chrome` — Current campaign/replay assertions (reuses pass16_cases.js).
 - `python tests/pass18_check.py --browser chrome` — Current mechanics, population/progression/receipt regressions and content export.
 - `python tests/pass18_ui.py --browser chrome` — Played hunt, loot, recovery, atlas and viewport flows.

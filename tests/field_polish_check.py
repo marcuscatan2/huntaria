@@ -33,6 +33,76 @@ with sync_playwright() as pw:
           window.qaShape=b=>JSON.stringify({tick:b.tick,units:b.units,events:b.events,escape:b.escape,escaped:b.escaped,ended:b.ended,winner:b.winner});
         }"""
         page.evaluate(setup)
+        # Join during an active frame, without a resize or a newly loaded class
+        # sheet incidentally repairing the arena's cached actor geometry.
+        for width,speed,reduced in [(1440,1,False),(390,5,False),(390,1,True)]:
+            label=f'{width}px / {speed}x / reduced={reduced}'
+            page.set_viewport_size({'width':width,'height':1000})
+            page.evaluate('(reduced)=>BondSettings.set({reduced})',reduced)
+            page.evaluate('qaHunt();BondApp.setPlaybackSpeed(1)')
+            page.clock.run_for(160)
+            joined=page.evaluate("""()=>{
+              const b=BondApp.getBattle(),view=CombatView,old=[...b.units];
+              view.select(old.find(u=>u.side===1).id);
+              while(!b.ended&&b.time<12&&!b.events.some(e=>e.kind==='damage'&&e.amount>0&&e.time===b.time))b.step();
+              BondApp.renderBattle();
+              const before=view.inspect(),shape=u=>JSON.stringify([u.hp,u.position,u.previousPosition,u.actionRemaining,u.cds]),states=old.map(shape);
+              const nodes=old.map(u=>document.querySelector('.fighter[data-id="'+u.id+'"]'));
+              const art=nodes.map(n=>n.querySelector('.fighter-art').firstElementChild);
+              const spawns=BondProfile.population().filter(s=>s.present&&!b.units.some(u=>u.spawnId===s.id)).slice(0,3);
+              const accepted=spawns.map(s=>BondApp.joinWild(s.id,{x:s.x,y:s.y}));
+              const after=view.inspect();
+              const duplicate=BondApp.joinWild(spawns[0].id,spawns[0]);
+              window.qaJoinTick=b.tick;window.qaJoinAudit=view.impactAudit().length;
+              view.draw(performance.now(),.01);
+              const positions=view.inspect().positions;
+              return {
+                accepted:accepted.every(Boolean)&&!duplicate,
+                actors:old.every((u,i)=>nodes[i]===document.querySelector('.fighter[data-id="'+u.id+'"]')&&art[i]===nodes[i].querySelector('.fighter-art').firstElementChild),
+                state:old.every((u,i)=>shape(u)===states[i]),
+                selection:before.selected===after.selected,
+                pending:before.health.some(h=>h.pending>0)&&before.health.every(h=>JSON.stringify(h)===JSON.stringify(after.health.find(v=>v.id===h.id))),
+                placed:b.units.every(u=>positions.some(p=>p.id===u.id&&Number.isFinite(p.x)&&Number.isFinite(p.foot))),
+                located:b.units.every(u=>{const n=document.querySelector('.fighter[data-id="'+u.id+'"]'),p=u.previousPosition||u.position;return Math.abs(parseFloat(n.style.left)-(p.x+(u.position.x-p.x)*.2)/100*view.inspect().width)<.02;}),
+                unique:document.querySelectorAll('.fighter').length===b.units.length&&document.querySelectorAll('.initiative-unit').length===b.units.length
+              };
+            }""")
+            check('Live joins accepted once: '+label,joined['accepted'] and joined['unique'])
+            check('Joining preserves actors, health, cooldowns and selection: '+label,joined['actors'] and joined['state'] and joined['selection'] and joined['pending'])
+            check('Every joining sprite and nameplate is positioned on its first frame: '+label,joined['placed'] and joined['located'])
+            page.evaluate('(speed)=>BondApp.setPlaybackSpeed(speed)',speed)
+            page.clock.run_for(650)
+            check('Joined fight keeps moving and delivers pending impacts: '+label,page.evaluate('BondApp.getBattle().tick>qaJoinTick&&CombatView.impactAudit().length>qaJoinAudit&&CombatView.inspect().positions.length===BondApp.getBattle().units.length'))
+            page.evaluate('document.querySelector("#pause").click()')
+            frozen=page.evaluate('({tick:BondApp.getBattle().tick,view:CombatView.inspect().positions})')
+            page.clock.run_for(200)
+            check('Pause holds the entire joined encounter: '+label,page.evaluate('({tick:BondApp.getBattle().tick,view:CombatView.inspect().positions})')==frozen)
+            page.locator('#arena').screenshot(path=str(ARTIFACTS/f'combat-joins-{width}-{speed}-{args.browser}.png'))
+            page.evaluate('BondProfile.checkpoint(BondApp.getBattle())')
+            check('Joined encounter still replays exactly: '+label,page.evaluate('qaShape(BondApp.getBattle())===qaShape(BondProfile.restoreBattle(BondApp.getEncounter()))'))
+        page.set_viewport_size({'width':1440,'height':1000})
+        page.evaluate('BondSettings.set({reduced:false});BondApp.setPlaybackSpeed(1)')
+        page.evaluate('qaHunt()');page.clock.run_for(160)
+        background=page.evaluate("""()=>{
+          const b=BondApp.getBattle();BondApp.switchTab('loadout');
+          const sp=BondProfile.population().find(s=>s.present&&!b.units.some(u=>u.spawnId===s.id));
+          const joined=BondApp.joinWild(sp.id,sp),hidden=BondApp.getTab()==='loadout';
+          document.querySelector('#pause').click();BondApp.switchTab('battle');
+          // Reopen at the same size and draw before ResizeObserver can help.
+          CombatView.draw(performance.now());
+          return joined&&hidden&&CombatView.inspect().positions.length===b.units.length&&
+            [...document.querySelectorAll('.fighter')].every(n=>Number.isFinite(parseFloat(n.style.left)));
+        }""")
+        check('A background arrival is ready on the first frame back in combat',background)
+        page.evaluate('BondProfile.checkpoint(BondApp.getBattle())')
+        joined_save=page.evaluate('qaShape(BondApp.getBattle())')
+        page.reload();page.wait_for_function('!!window.BondApp');page.evaluate(setup)
+        page.locator('#field-resume').click();page.clock.run_for(32)
+        check('Reload restores every joined actor and its saved state',page.evaluate('qaShape(BondApp.getBattle())')==joined_save and page.evaluate('CombatView.inspect().positions.length===BondApp.getBattle().units.length'))
+        page.evaluate('BondApp.getBattle().run();BondApp.renderBattle();BondApp.finish()')
+        check('A joined encounter settles and returns to exploration',page.evaluate('BondApp.getBattle().ended&&!BondProfile.snapshot().encounterSave&&BondApp.getTab()==="region"'))
+        page.evaluate("BondProfile.travel('clearing-hub');BondApp.switchTab('region')")
+        page.clock.run_for(6500)
         # Simulated ordinary battle, without a receipt stub: focus and hover
         # were both capable of cancelling the old timer forever.
         page.evaluate('qaHunt();BondApp.getBattle().run();BondApp.renderBattle();BondApp.finish()')

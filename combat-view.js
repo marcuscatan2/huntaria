@@ -11,7 +11,7 @@
   let quietFX = BondSettings.snapshot().quiet, shake = {born:-10, life:.22, power:0};
   const geometry = new Map();
   let lastNow = 0, endTail = 0, lastHud = -1, sequence = 0;
-  let lastDrawTime = -1, needsPaint = true;
+  let lastDrawTime = -1, needsPaint = true, geometryDirty = true;
   let impactAudit=[];
   $('#fx-mode').addEventListener('click', () => {
     BondSettings.set({quiet:!quietFX});
@@ -38,6 +38,7 @@
       const art = node.querySelector('.fighter-art');
       geometry.set(id, {height: node.offsetHeight, artTop: art.offsetTop, artHeight: art.offsetHeight});
     }
+    geometryDirty = false;
   }
   function project(p) { return {x: p.x / 100 * width, y: height * (.37 + (p.y - 32) / 46 * .42)}; }
   function place(alpha) {
@@ -83,7 +84,7 @@
 
   function mount(battle, art) {
     model = battle; makeArt = art; effects = []; motions.clear(); hits.clear(); positions.clear();
-    casts.clear(); displayPositions.clear(); geometry.clear(); focusId = null;
+    casts.clear(); displayPositions.clear(); geometry.clear(); geometryDirty = true; focusId = null;
     rigs.clear(); health.clear(); deaths.clear(); lastDust.clear(); shake = {born:-10,life:.22,power:0};
     endTail = 0; lastNow = 0; lastHud = -1; sequence = 0; lastDrawTime = -1; needsPaint = true;impactAudit=[];
     nodes = new Map([...document.querySelectorAll('.fighter')].map(node => [node.dataset.id, node]));
@@ -95,10 +96,13 @@
     select('0-0'); resize(); draw(0);
   }
   function addUnit(u){
-    const node=document.querySelector('.fighter[data-id="'+u.id+'"]');if(!node||!model)return;
-    nodes.set(u.id,node);rigs.set(u.id,CharacterRig.mount(node.querySelector('.fighter-art'),u.type));
+    const node=document.querySelector('.fighter[data-id="'+u.id+'"]');if(!node||!model||nodes.has(u.id))return;
+    nodes.set(u.id,node);rigs.set(u.id,CharacterRig.mount(node.querySelector('.fighter-art'),u.appearance||u.type));
     health.set(u.id,{shown:u.hp,logical:u.hp,version:0,displayed:0,queue:[]});
-    $('#initiative').insertAdjacentHTML('beforeend','<button type="button" class="initiative-unit enemy" data-unit="'+u.id+'" aria-pressed="false">'+makeArt(u.type)+'</button>');
+    $('#initiative').insertAdjacentHTML('beforeend','<button type="button" class="initiative-unit enemy" data-unit="'+u.id+'" aria-pressed="false">'+makeArt(u.appearance||u.type)+'</button>');
+    // A join does not resize the arena. Measure its actor before projection,
+    // or defer until the battle view is visible; keep all live rigs and cues.
+    geometryDirty=true;resize();
     lastHud=-1;needsPaint=true;
   }
   function render(battle) {
@@ -312,7 +316,7 @@
   }
   function draw(now, phase = 0) {
     if (!model || !stage.clientWidth || $('#panel-battle').hidden) return;
-    if (stage.clientWidth !== width || stage.clientHeight !== height) resize();
+    if (geometryDirty || stage.clientWidth !== width || stage.clientHeight !== height) resize();
     const delta = lastNow ? Math.min(.1, Math.max(0, (now - lastNow) / 1000)) : 0; lastNow = now;
     if (model.ended) endTail = Math.min(2, endTail + delta);
     // Interpolate within the fixed simulation tick for smooth 60Hz presentation.
