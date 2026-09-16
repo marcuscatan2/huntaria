@@ -10,13 +10,14 @@
         "style.css",
         "app.js",
         "test-controls.js",
-        "boot-status.js"
+        "boot-status.js",
+        "training-view.js"
       ],
       "backlog": [
         "F-008"
       ],
       "entry": "BondApp.prepareBattle / renderBattle / finish / switchTab",
-      "contract": "Owns screen transitions, scheduling and settlement. Explore/Loadout do not stop running fights; edits affect future builds. Adventure deployment benches selected fallen companions without removing them from the saved loadout; only the fallen trainer blocks a new adventure. All player Run controls request a saved three-second retreat; successful escape keeps wounds/accepted drops without victory rewards or rescue. Internal cancel is lifecycle/QA cleanup. Browser-hidden/Pause and reload remain resumable. Events feed CombatView; visuals cannot grant rewards. Isolated ?test=1 alone uses 3× world travel, automatic recovery after settled adventure wins/losses and visible 5× playback; normal mode keeps standard travel, 1×/2× playback and normal recovery. Player-visible patch notes announce material progression/world changes. Delegates audio/device preferences to experience; new creation does not mount the old world first. Region and preparation occupy the shared #game-frame; modal bounds follow it. Preparation stops field input while live encounters continue and settle without changing the selected menu. Local Settings switches between normal and test adventures without copying or merging saves; the test-mode switch and tools are omitted from packaged builds.",
+      "contract": "Owns screen transitions, scheduling and settlement. Explore/Loadout do not stop running fights; edits affect future builds. Adventure deployment benches selected fallen companions without removing them from the saved loadout; only the fallen trainer blocks a new adventure. All player Run controls request a saved three-second retreat; successful escape keeps wounds/accepted drops without victory rewards or rescue. Internal cancel is lifecycle/QA cleanup. Browser-hidden/Pause and reload remain resumable. Events feed CombatView; visuals cannot grant rewards. Isolated ?test=1 alone uses 3× world travel, automatic recovery after settled adventure wins/losses and visible 5× playback; normal mode keeps standard travel, 1×/2× playback and normal recovery. Player-visible patch notes announce material progression/world changes. Delegates audio/device preferences to experience; new creation does not mount the old world first. Region and preparation occupy the shared #game-frame; modal bounds follow it. Preparation stops field input while live encounters continue and settle without changing the selected menu. Local Settings switches between normal and test adventures without copying or merging saves; the test-mode switch and tools are omitted from packaged builds. Dummy tests bypass adventure reservation, supplies and settlement. Accepted authored NPC victories display Victory for two real seconds before returning to exploration; open menus and newer encounters keep their navigation.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -27,7 +28,8 @@
         "boundaries",
         "experience",
         "game-frame",
-        "relic-quest"
+        "relic-quest",
+        "player-experience"
       ],
       "docs": [
         "docs/PLAYER_GUIDE.md",
@@ -114,7 +116,8 @@
         "data/simulator-modules.json",
         "tests/runtime_cases.js",
         "tests/runtime_check.py",
-        "raid-rules.js"
+        "raid-rules.js",
+        "training.js"
       ],
       "backlog": [
         "F-001",
@@ -124,7 +127,7 @@
         "F-036"
       ],
       "entry": "BondGame.Battle.step / emit / run; BondRules",
-      "contract": "Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective. The class rescue uses two raiders, a boss and a Lv100 master; old seven-enemy reservations remain accepted. raid-rules.js guarantees player-party defeat at 8 seconds and the master's victory by 14 seconds; saved tick replay uses the same deterministic choreography. Normal attacks choose the closest living enemy, including trainers; explicit skills can override this target.",
+      "contract": "Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective. The class rescue uses two raiders, a boss and a Lv100 master; old seven-enemy reservations remain accepted. raid-rules.js guarantees player-party defeat at 8 seconds and the master's victory by 14 seconds; saved tick replay uses the same deterministic choreography. Normal attacks choose the closest living enemy, including trainers; explicit skills can override this target. training.js configures a stationary neutral dummy and optional two-second party damage pulses. Training lasts 30 simulation seconds, prevents defeat, skips overtime and reports event-based DPS, effective healing and newly granted shield rates by party and individual.",
       "tests": [
         "field-polish",
         "mechanics",
@@ -132,12 +135,14 @@
         "boundaries",
         "runtime",
         "farm-classes",
-        "relic-quest"
+        "relic-quest",
+        "player-experience"
       ],
       "docs": [
         "Companion stats.md",
         "features/combat/RUNTIME.md",
-        "features/campaign/SACRED_TREASURES.md"
+        "features/campaign/SACRED_TREASURES.md",
+        "features/combat/TRAINING.md"
       ],
       "summary": "Simulates targeting, damage and outcomes; sends events to animation and results to persistence."
     },
@@ -184,21 +189,23 @@
         "menu.css",
         "formation.css",
         "pass14.css",
-        "game-frame.css"
+        "game-frame.css",
+        "tests/player_experience_check.py"
       ],
       "backlog": [
         "F-005",
         "F-013"
       ],
       "entry": "BondMenu.render; BondPicker; BondFormation.assign; BondApp.changeUnit / changeSkills",
-      "contract": "UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials preserve the current Apprentice party. Any party slots may share a formation row; shared rows spread actors vertically. Formation is an opening position, not a targeting override. Profile owns saved skills/trees. Preparation shares the exploration game frame. Native framed menus retain internal scrolling and focus; mobile item details return to their item grid. Homestead, owned companions and catalog are separate Inner Sea views.",
+      "contract": "UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials preserve the current Apprentice party. Any party slots may share a formation row; shared rows spread actors vertically. Formation is an opening position, not a targeting override. Profile owns saved skills/trees. Preparation shares the exploration game frame. Native framed menus retain internal scrolling and focus; mobile item details return to their item grid. Homestead, owned companions and catalog are separate Inner Sea views. Main navigation separates Class Skill Tree from Inner Sea and Inventory. Party, formation, attributes and companion mastery are Inner Sea subsections; current()/section() expose that routing. Party launches a 30-second dummy test.",
       "tests": [
         "mechanics",
         "ui",
         "boundaries",
         "experience",
         "farm-classes",
-        "game-frame"
+        "game-frame",
+        "player-experience"
       ],
       "docs": [
         "Companion stats.md",
@@ -450,7 +457,7 @@
         "F-062"
       ],
       "entry": "BondCampaign.reconcile / bosses; BondCampaignMenu; BondProfile.reserveBattle / restoreBattle",
-      "contract": "Campaign definitions feed encounters; profile reserves party/seed/supplies and accepted kills. BondCampaign.questMarker deterministically maps the current receipt-backed objective to `offer`, `delivery` or no marker; presentation does not infer or award quest state. The early route records two acquisitions, a Forest Mage meeting/proof gate, four distinct Druid/Mage/Hunter/Swordsman demonstrations, fixed Lv15 Tidecrown, one rewarded master acceptance battle, confirmed Lv20 specialization, an ability-change/counter loop, fixed Lv30 Amber guardian and monster-tree proof. Authored trainer XP reaches thresholds100/600/1500/6600/10500/19000/30000/43500 without repeat grinding; monster XP remains separate. One tiny in-frame current objective and its destination region/map guide the opening; the Mage proof is the only opening road lock and later levels communicate danger without invisible gates. Launch story trainers clamp to the Lv60 player ceiling while preserving sourceLevel. Practice boss scaling is reward-free and separate from progression bosses; no human multiplayer or essence source exists. Hunter and Swordsman are playable specializations. The master fights as its offered class; the player retains the current Apprentice party and confirms after victory at Lv20. Farm establishment joins the route at Lv25. Class masters occupy matching starting-city courtyards; the quest destination after acceptance follows the defeated master’s city. Trial/reward IDs and battle kits are unchanged. The current main quest continues immediately after class ascension: an alarm conversation and guaranteed Lv100 master rescue against three Lv60 enemies, a bounded Echo hand-in, active-party Casketot communication with Tully atop four ghost-tower floors, then one class-specific inventory weapon. The final tracker ends here; old regional and Amber lessons remain optional. relic-quest.js owns the stage rules and relic-quest-view.js displays profile-owned actions. Tidecrown completion presents four class portraits and city directions. NPC class tests require an explicit class choice followed by Ok; ascension has its own in-frame confirmation.",
+      "contract": "Campaign definitions feed encounters; profile reserves party/seed/supplies and accepted kills. BondCampaign.questMarker deterministically maps the current receipt-backed objective to `offer`, `delivery` or no marker; presentation does not infer or award quest state. The early route records two acquisitions, a Forest Mage meeting/proof gate, four distinct Druid/Mage/Hunter/Swordsman demonstrations, fixed Lv15 Tidecrown, one rewarded master acceptance battle, confirmed Lv20 specialization, an ability-change/counter loop, fixed Lv30 Amber guardian and monster-tree proof. Authored trainer XP reaches thresholds100/600/1500/6600/10500/19000/30000/43500 without repeat grinding; monster XP remains separate. One tiny in-frame current objective and its destination region/map guide the opening; the Mage proof is the only opening road lock and later levels communicate danger without invisible gates. Launch story trainers clamp to the Lv60 player ceiling while preserving sourceLevel. Practice boss scaling is reward-free and separate from progression bosses; no human multiplayer or essence source exists. Hunter and Swordsman are playable specializations. The master fights as its offered class; the player retains the current Apprentice party and confirms after victory at Lv20. Farm establishment joins the route at Lv25. Class masters occupy matching starting-city courtyards; the quest destination after acceptance follows the defeated master’s city. Trial/reward IDs and battle kits are unchanged. The current main quest continues immediately after class ascension: an alarm conversation and guaranteed Lv100 master rescue against three Lv60 enemies, a bounded Echo hand-in, active-party Casketot communication with Tully atop four ghost-tower floors, then one class-specific inventory weapon. The final tracker ends here; old regional and Amber lessons remain optional. relic-quest.js owns the stage rules and relic-quest-view.js displays profile-owned actions. Tidecrown completion presents four class portraits and city directions. NPC class tests require an explicit class choice followed by Ok; ascension has its own in-frame confirmation. Authored NPC victories are one-time challenges, including class trials; completed masters retain story and ascension dialogue without a rematch action.",
       "tests": [
         "field-polish",
         "campaign",
@@ -459,7 +466,8 @@
         "boundaries",
         "farm-classes",
         "city-world",
-        "relic-quest"
+        "relic-quest",
+        "player-experience"
       ],
       "docs": [
         "features/opening/EARLY_PROGRESSION_SCOPE.md",
@@ -478,7 +486,7 @@
       ],
       "backlog": [],
       "entry": "BondProfile.commit (private); normalize / reserveBattle / checkpoint / restoreBattle / settleKills / complete / summon",
-      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions. Normalized journey.relic stages and critical nearby relicAction transactions own Echo delivery and the one-time class weapon. Rescue settlement restores vitality and advances the story atomically; no raid Echo or repeat loot is issued. Border transitions optionally accept the current walked position, validate finite coordinates/collision/proximity and commit arrival atomically; exploration does not issue a separate position write before this critical save.",
+      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions. Normalized journey.relic stages and critical nearby relicAction transactions own Echo delivery and the one-time class weapon. Rescue settlement restores vitality and advances the story atomically; no raid Echo or repeat loot is issued. Border transitions optionally accept the current walked position, validate finite coordinates/collision/proximity and commit arrival atomically; exploration does not issue a separate position write before this critical save. Defeated authored NPCs cannot reserve rematches; existing reservations and first-win receipt retries remain resumable. Dummy tests never mutate the profile.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -492,7 +500,8 @@
         "city-world",
         "field-encounters",
         "relic-quest",
-        "landscapes"
+        "landscapes",
+        "player-experience"
       ],
       "docs": [
         "features/persistence/SAVES.md",
@@ -712,7 +721,8 @@
     ],
     "game.js": [
       "BondContent",
-      "BondRaidRules"
+      "BondRaidRules",
+      "BondTraining"
     ],
     "creature-art.js": [
       "BondContent"
@@ -798,7 +808,8 @@
       "BondFarm",
       "BondMoonCalendar",
       "BondCities",
-      "BondRelicQuest"
+      "BondRelicQuest",
+      "BondTraining"
     ],
     "world-atlas.js": [
       "BondAtlas",
@@ -881,7 +892,8 @@
       "BondFormationView",
       "BondCreation",
       "BondAudio",
-      "BondBoot"
+      "BondBoot",
+      "BondTrainingView"
     ],
     "reference-scene.js": [
       "BondApp"
@@ -975,6 +987,10 @@
     "world-passages.js": [
       "BondAtlas",
       "BondScenery"
+    ],
+    "training.js": [],
+    "training-view.js": [
+      "BondTraining"
     ]
   },
   "unloaded": [
@@ -997,7 +1013,8 @@
     "raid-rules.js",
     "relic-quest.js",
     "world-scenery.js",
-    "world-passages.js"
+    "world-passages.js",
+    "training.js"
   ],
   "storage_writers": {
     "profile.js": "Profile document and receipts",
@@ -1168,6 +1185,13 @@
       ],
       "browser": true,
       "purpose": "Forty map profiles, seamless ground patches, reachable services, destination-specific passage taps/walking, lock/save retry, stairs, asset recovery, phone touch and bounded landscape caches"
+    },
+    "player-experience": {
+      "command": [
+        "tests/player_experience_check.py"
+      ],
+      "browser": true,
+      "purpose": "Concise player copy, Inner Sea/class-tree routing, dummy DPS/healing/shield rates, save isolation, responsive reports and one-time NPC victory return"
     }
   },
   "connections": [

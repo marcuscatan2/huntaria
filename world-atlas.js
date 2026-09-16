@@ -22,7 +22,7 @@ function render(container){
 function select(id){
  const m=A.get(id);if(!m||!host)return;selected=id;const s=P.snapshot(),locked=!A.unlocked(s,id),levels=m.habitats.map(h=>h.level);
  host.querySelectorAll('[data-atlas-select]').forEach(b=>{b.classList.toggle('selected',b.dataset.atlasSelect===id);b.setAttribute('aria-pressed',b.dataset.atlasSelect===id);});
- const description=m.kind==='hub'?BondCities.theme(m).title+' · Arrival restores your party · Enterable buildings'+(m.teleport?' · City waystone':''):m.kind==='boss'?'Group boss practice':'Wildlife Lv '+Math.min(...levels)+'–'+Math.max(...levels);
+ const description=m.kind==='hub'?BondCities.theme(m).title+' · Arrival restores your party'+(m.teleport?' · City waystone':''):m.kind==='boss'?'Training grounds':'Wildlife Lv '+Math.min(...levels)+'–'+Math.max(...levels);
  host.querySelector('.atlas-destination').innerHTML='<div><p class="eyebrow">'+A.REGIONS[m.regionIndex].name+' · '+String.fromCharCode(65+cell(m).grid.x)+(cell(m).grid.y+1)+'</p><h3>'+m.name+'</h3><p>'+description+'</p><small>'+(locked?'The Forest Mage guards the road.':id===s.map?'Your current location.':s.encounterSave?'Finish your encounter before traveling.':'Follow the border portals. WASD or Escape cancels the walk.')+'</small></div><button class="button primary" data-world-travel="'+id+'" '+(locked||id===s.map||s.encounterSave?'disabled':'')+'>'+(locked?'Unavailable':id===s.map?'You are here':'Walk here →')+'</button>';
 }
 function center(id){if(!host||!A.get(id))return;const el=host.querySelector('.atlas-scroll'),p=point(A.get(id)),sheet=host.querySelector('.atlas-sheet');el.scrollLeft=p.x/EXTENT*sheet.clientWidth-el.clientWidth/2;el.scrollTop=p.y/EXTENT*sheet.clientHeight-el.clientHeight/2;}

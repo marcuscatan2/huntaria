@@ -53,7 +53,7 @@ for(const m of A.maps){
  }
  if(m.kind==='boss'){
   const cx=m.width*.56,cy=m.height*.5,radius=920;
-  m.info='A compact boss domain reached through the nearby cave. The altar starts a reward-free local group-combat practice.';
+  m.info='A guardian waits beyond the cave.';
   m.layoutKind='domain';m.hero={id:m.id+':hero',name:C.UNITS[m.boss].name+' altar',x:cx,y:cy-220,art:11,size:620};
   m.shelter={x:520,y:cy+360};m.cache={x:520,y:cy+520};m.guide={x:430,y:cy-300};
   const approach=road(m,'main',[{x:80,y:cy},{x:1150,y:cy},{x:cx-radius,y:cy},{x:cx,y:cy}],240,'boss-trail');

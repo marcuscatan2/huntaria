@@ -1,5 +1,15 @@
 /* Combat presentation, illustrated artwork pass 06. Model rules are separate. */
 body.combat-mode .intro {display:none}
+.victory-banner{position:absolute;inset:40% 0 auto;z-index:40;text-align:center;color:#fff1b9;font:bold clamp(32px,7vw,64px) Georgia;text-shadow:0 3px 0 #68512b,0 0 22px #3c2d14;pointer-events:none}
+.training-results{margin:16px 0;padding:16px;background:#f6efda;border:1px solid #b2a17c;border-radius:12px;color:#314735}
+.training-results h3{margin:0 0 12px}.training-results h3 small{float:right;font:12px var(--sans);font-variant-numeric:tabular-nums}
+.training-table{overflow-x:auto}.training-results table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.training-results th,.training-results td{padding:10px 6px;border-bottom:1px solid #d7ccb0;text-align:right}.training-results th:first-child{text-align:left}
+.training-results tr[data-training-unit="party"]{background:#dfdfbd}.training-results p{font-size:11px;margin-bottom:0}
+.training-arena .enemy-bond .bond-track,.training-arena .fighter.enemy :is(.fighter-hp,.hp-text){display:none}
+#panel-battle:has(.training-arena) .battle-layout{grid-template-columns:1fr}
+#panel-battle:has(.training-arena) .battle-sidebar{display:none}
+@media(max-width:600px){.training-results{padding:10px}.training-results table{font-size:11px}.training-results th,.training-results td{padding:9px 4px}}
 body.combat-mode .topbar {height:72px}
 body.combat-mode .section-heading {padding:18px 0 15px}
 body.combat-mode .section-heading h2 {font-size:23px}

@@ -9,7 +9,7 @@ Status: **local**. Selects individuals, skills and formation; connects saved bui
 
 `BondMenu.render; BondPicker; BondFormation.assign; BondApp.changeUnit / changeSkills`
 
-UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials preserve the current Apprentice party. Any party slots may share a formation row; shared rows spread actors vertically. Formation is an opening position, not a targeting override. Profile owns saved skills/trees. Preparation shares the exploration game frame. Native framed menus retain internal scrolling and focus; mobile item details return to their item grid. Homestead, owned companions and catalog are separate Inner Sea views.
+UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials preserve the current Apprentice party. Any party slots may share a formation row; shared rows spread actors vertically. Formation is an opening position, not a targeting override. Profile owns saved skills/trees. Preparation shares the exploration game frame. Native framed menus retain internal scrolling and focus; mobile item details return to their item grid. Homestead, owned companions and catalog are separate Inner Sea views. Main navigation separates Class Skill Tree from Inner Sea and Inventory. Party, formation, attributes and companion mastery are Inner Sea subsections; current()/section() expose that routing. Party launches a 30-second dummy test.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -26,12 +26,13 @@ The links below point to the actual source; root browser paths remain in use.
 | [formation.css](<../../formation.css>) | Owned source/configuration; inspect before editing. |
 | [pass14.css](<../../pass14.css>) | Owned source/configuration; inspect before editing. |
 | [game-frame.css](<../../game-frame.css>) | Owned source/configuration; inspect before editing. |
+| [tests/player_experience_check.py](<../../tests/player_experience_check.py>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
 Observed references include optional and late callbacks, not only boot dependencies.
 
-- Uses: [animation](<../../features/animation/README.md>), [collection](<../../features/collection/README.md>), [combat](<../../features/combat/README.md>), [content](<../../features/content/README.md>), [experience](<../../features/experience/README.md>), [growth](<../../features/growth/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [opening](<../../features/opening/README.md>), [persistence](<../../features/persistence/README.md>), [recovery](<../../features/recovery/README.md>), [shell](<../../features/shell/README.md>), [world](<../../features/world/README.md>)
+- Uses: [animation](<../../features/animation/README.md>), [collection](<../../features/collection/README.md>), [combat](<../../features/combat/README.md>), [content](<../../features/content/README.md>), [experience](<../../features/experience/README.md>), [growth](<../../features/growth/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [opening](<../../features/opening/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>), [world](<../../features/world/README.md>)
 - Used by: [animation](<../../features/animation/README.md>), [campaign](<../../features/campaign/README.md>), [collection](<../../features/collection/README.md>), [combat](<../../features/combat/README.md>), [exploration](<../../features/exploration/README.md>), [growth](<../../features/growth/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>)
 
 - [owned-build](<../../docs/architecture/CONNECTIONS.md#owned-build>) (party → persistence): Visual picker chooses instance ID; migrateParty/setSkills validates ownership; bond-growth invalidates stale builds while preserving reservations.
@@ -53,6 +54,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/experience_check.py --browser chrome` — Preferences/audio lifecycle, owned scene drafting/persistence, PNG export and responsive input.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
 - `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
+- `python tests/player_experience_check.py --browser chrome` — Concise player copy, Inner Sea/class-tree routing, dummy DPS/healing/shield rates, save isolation, responsive reports and one-time NPC victory return.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

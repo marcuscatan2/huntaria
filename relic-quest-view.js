@@ -24,8 +24,8 @@ function open(id){
     if(page<d.lines.length-1){page++;render();return;}
     if(d.action==='raid'){dialog.close();BondApp.startRegionBattle(Q.raidId(P.snapshot()));return;}
     const result=P.relicAction(id,d.action,BondApp.getBuild()[0]);
-    if(!result){line.textContent=P.error()||'Come closer and check your party and Echoes, then try again.';return;}
-    if(result.item){dialog.replaceChildren();const heading=document.createElement('h2');heading.textContent='You received '+BondWorld.ITEMS[result.item].name;const text=document.createElement('p');text.textContent='Your weapon is in the Bag. The main quest is complete for now.';const done=document.createElement('button');done.className='button primary';done.id='relic-done';done.textContent='Return to the world';done.onclick=()=>dialog.close();dialog.append(heading,text,done);return;}
+    if(!result){line.textContent=P.error()||'Come closer to continue.';return;}
+    if(result.item){dialog.replaceChildren();const heading=document.createElement('h2');heading.textContent='You received '+BondWorld.ITEMS[result.item].name;const text=document.createElement('p');text.textContent='Quest complete.';const done=document.createElement('button');done.className='button primary';done.id='relic-done';done.textContent='Return to the world';done.onclick=()=>dialog.close();dialog.append(heading,text,done);return;}
     dialog.close();if(d.action==='deliver')open(id);
    };controls.append(next);
   }

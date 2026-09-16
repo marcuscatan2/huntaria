@@ -34,7 +34,7 @@ def main():
             page.locator('#open-settings').click();page.locator('[data-setting="muted"]').check();page.wait_for_function('BondAudio.inspect().state==="suspended"')
             check('Mute removes all active sources',page.evaluate('BondAudio.inspect().loops===0&&BondAudio.inspect().voices===0'))
             page.locator('[data-setting="muted"]').uncheck();page.locator('#settings-close').click()
-            page.evaluate('BondApp.switchTab("loadout")');page.locator('#fight').click()
+            page.evaluate('BondApp.switchTab("loadout");BondMenu.open("party")');page.locator('#fight').click()
             page.wait_for_function('BondAudio.inspect().state==="running"&&BondAudio.inspect().scene==="combat"')
             check('Combat selects its own music without duplicate beds',page.evaluate('BondAudio.inspect().loops<=2'))
             page.locator('#pause').click();page.wait_for_function('BondAudio.inspect().state==="suspended"')

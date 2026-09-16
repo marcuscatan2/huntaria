@@ -8,6 +8,7 @@
   "progression.js",
   "formation.js",
   "raid-rules.js",
+  "training.js",
   "game.js",
   "world-data.js",
   "atlas-data.js",

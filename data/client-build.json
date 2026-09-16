@@ -33,6 +33,7 @@
     "progression.js",
     "formation.js",
     "growth.js",
+    "training.js",
     "game.js",
     "campaign.js",
     "atlas-data.js",

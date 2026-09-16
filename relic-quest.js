@@ -50,7 +50,7 @@ function dialogue(s,id,party){
  if(stage==='briefing')return {lines:['We need the sacred treasures in this time of crisis. Ask Tully where he hid them.','You: Where can I find him?',"Master: Oh, he's dead of course, didn't you know? He's a hero, how did you not get this news?",'You: How will I ask a dead person then!?','Master: … Of course, with any ghost type mon? Go catch Casketot. Its spectral arms can reach him.','You will find Casketot around the Ghost Tower entrance in the cemetery. Summon it and keep it in your active party. Tully waits at the top, on the fourth floor.'],action:'seek-tully',button:'Find Casketot and Tully'};
  if(stage==='ghost')return {lines:['Bring Casketot in your active party to Tully, at the rooftop cemetery on the fourth floor.'],action:null};
  if(stage==='report')return {lines:["You: Tully says the relics are in the hatch right below the knight's room.",'Master: Thanks.',"Master: Oh, you want the relics!? Are you crazy? They're for me, of course. You can have this though."],action:'claim-weapon',button:'Receive '+WEAPONS[s.progression.specialization][0]};
- return {lines:['Keep that weapon. You earned it.'],hint:'The main quest is complete for now.',action:null};
+ return {lines:['Keep that weapon. You earned it.'],action:null};
 }
 function command(s,id,action,party){
  if(!active(s)||s.encounterSave)return false;

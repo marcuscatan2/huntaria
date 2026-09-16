@@ -9,7 +9,7 @@ Status: **local**. Coordinates screens and ticks; connects combat, presentation 
 
 `BondApp.prepareBattle / renderBattle / finish / switchTab`
 
-Owns screen transitions, scheduling and settlement. Explore/Loadout do not stop running fights; edits affect future builds. Adventure deployment benches selected fallen companions without removing them from the saved loadout; only the fallen trainer blocks a new adventure. All player Run controls request a saved three-second retreat; successful escape keeps wounds/accepted drops without victory rewards or rescue. Internal cancel is lifecycle/QA cleanup. Browser-hidden/Pause and reload remain resumable. Events feed CombatView; visuals cannot grant rewards. Isolated ?test=1 alone uses 3× world travel, automatic recovery after settled adventure wins/losses and visible 5× playback; normal mode keeps standard travel, 1×/2× playback and normal recovery. Player-visible patch notes announce material progression/world changes. Delegates audio/device preferences to experience; new creation does not mount the old world first. Region and preparation occupy the shared #game-frame; modal bounds follow it. Preparation stops field input while live encounters continue and settle without changing the selected menu. Local Settings switches between normal and test adventures without copying or merging saves; the test-mode switch and tools are omitted from packaged builds.
+Owns screen transitions, scheduling and settlement. Explore/Loadout do not stop running fights; edits affect future builds. Adventure deployment benches selected fallen companions without removing them from the saved loadout; only the fallen trainer blocks a new adventure. All player Run controls request a saved three-second retreat; successful escape keeps wounds/accepted drops without victory rewards or rescue. Internal cancel is lifecycle/QA cleanup. Browser-hidden/Pause and reload remain resumable. Events feed CombatView; visuals cannot grant rewards. Isolated ?test=1 alone uses 3× world travel, automatic recovery after settled adventure wins/losses and visible 5× playback; normal mode keeps standard travel, 1×/2× playback and normal recovery. Player-visible patch notes announce material progression/world changes. Delegates audio/device preferences to experience; new creation does not mount the old world first. Region and preparation occupy the shared #game-frame; modal bounds follow it. Preparation stops field input while live encounters continue and settle without changing the selected menu. Local Settings switches between normal and test adventures without copying or merging saves; the test-mode switch and tools are omitted from packaged builds. Dummy tests bypass adventure reservation, supplies and settlement. Accepted authored NPC victories display Victory for two real seconds before returning to exploration; open menus and newer encounters keep their navigation.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -23,13 +23,14 @@ The links below point to the actual source; root browser paths remain in use.
 | [app.js](<../../app.js>) | `BondApp` |
 | [test-controls.js](<../../test-controls.js>) | Owned source/configuration; inspect before editing. |
 | [boot-status.js](<../../boot-status.js>) | `BondBoot` |
+| [training-view.js](<../../training-view.js>) | `BondTrainingView` |
 
 ## Connections
 
 Observed references include optional and late callbacks, not only boot dependencies.
 
 - Uses: [animation](<../../features/animation/README.md>), [campaign](<../../features/campaign/README.md>), [collection](<../../features/collection/README.md>), [combat](<../../features/combat/README.md>), [content](<../../features/content/README.md>), [experience](<../../features/experience/README.md>), [exploration](<../../features/exploration/README.md>), [legacy](<../../features/legacy/README.md>), [opening](<../../features/opening/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [recovery](<../../features/recovery/README.md>), [world](<../../features/world/README.md>)
-- Used by: [animation](<../../features/animation/README.md>), [campaign](<../../features/campaign/README.md>), [collection](<../../features/collection/README.md>), [exploration](<../../features/exploration/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [opening](<../../features/opening/README.md>), [party](<../../features/party/README.md>), [recovery](<../../features/recovery/README.md>)
+- Used by: [animation](<../../features/animation/README.md>), [campaign](<../../features/campaign/README.md>), [collection](<../../features/collection/README.md>), [exploration](<../../features/exploration/README.md>), [growth](<../../features/growth/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [opening](<../../features/opening/README.md>), [party](<../../features/party/README.md>), [recovery](<../../features/recovery/README.md>)
 
 No explicit cross-feature connection recorded; check the observed dependencies above.
 
@@ -50,6 +51,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/experience_check.py --browser chrome` — Preferences/audio lifecycle, owned scene drafting/persistence, PNG export and responsive input.
 - `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
 - `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
+- `python tests/player_experience_check.py --browser chrome` — Concise player copy, Inner Sea/class-tree routing, dummy DPS/healing/shield rates, save isolation, responsive reports and one-time NPC victory return.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

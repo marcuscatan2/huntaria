@@ -139,6 +139,7 @@ def main():
             page.reload()
             page.wait_for_function('!!window.BondApp')
             check('Completed quest and inventory weapon survive reload', page.evaluate("BondProfile.snapshot().journey.relic.stage==='complete'&&BondProfile.snapshot().inventory['weapon:class:mage']===1"))
+            check('Completed master dialogue stays in character', page.evaluate("BondRelicQuest.dialogue(BondProfile.snapshot(),'early:master:mage',BondApp.getBuild()[0]).hint===undefined"))
             check('Every class receives its own once-only inventory weapon', page.evaluate("""()=>BondContent.CLASSES.every(type=>{
               const s=BondProfile.snapshot(),m=BondWorld.NPCS['early:master:'+type];s.progression.specialization=type;s.journey.relic={stage:'report'};s.inventory={};s.map=m.map;s.position={x:m.x,y:m.y};
               const r=BondRelicQuest.command(s,m.id,'claim-weapon',[]);return r?.item==='weapon:class:'+type&&s.inventory[r.item]===1&&!BondRelicQuest.command(s,m.id,'claim-weapon',[])&&BondRelicQuest.next(s).complete;

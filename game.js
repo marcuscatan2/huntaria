@@ -43,6 +43,7 @@
       if (!validBuild(build)) throw new Error('Invalid team or skill selection');
       this.build = JSON.parse(JSON.stringify(build)); this.time = 0; this.tick = 0; this.events = []; this.ended = false; this.winner = null; this.reason = ''; this.overcharge = false;
       this.adventure=options.adventure===true;
+      this.training=options.training===true;
       this.random=root.BondRules?.rng(options.seed??1)||(()=>.5);this.seed=options.seed??1;this.group=!!options.groupParties;this.ownerProfiles=[options.profile];
       this.obstacles=(options.obstacles||[]).filter(o=>Number.isFinite(o.x)&&Number.isFinite(o.y)&&Number.isFinite(o.radius)&&o.radius>0).map(o=>({...o}));
       this.units = build.flatMap((team, side) => team.flatMap((u, slot) => u ? ({ ...UNITS[u.type], ...(u.type==='apprentice'?root.BondOpening.base(u.weapon):{}), ...(side===1?authoredOpponentTuning(u):{}), weapon:u.weapon, instanceId:u.instanceId||null, id: `${side}-${slot}`, type: u.type, side, slot, position: {...FORMATION[side][slot]}, previousPosition: {...FORMATION[side][slot]}, moving: false, moveTargetId: null, moveSkill: null, recoveryUntil: 0, targetId: null, maxHp: UNITS[u.type].hp, hp: UNITS[u.type].hp, skills: [...u.skills], cds: [0, 0, 0], basics: 0, passiveUsed: false, actionRemaining: 0.6 + slot * 0.15, status: {}, shield: 0, shieldUntil: 0, damage: 0, healing: 0, blocked: 0, casts: 0, owner:side===0?'player-0':'enemy', ownerIndex:0, eliminated:false, regenBuffer:0 }) : []));
@@ -117,10 +118,11 @@
       }
       if(this.adventure&&root.BondAdventure)for(const u of this.units.filter(u=>u.side===0&&u.ownerIndex===0)){const hp=BondAdventure.health(options.profile||{},u.slot===0?'trainer':u.instanceId);u.hp=hp===0?0:Math.max(1,Math.round(u.maxHp*hp/10000));}
       this.refreshTargets();
+      if(this.training)root.BondTraining.attach(this);
       for (const u of this.units) if (u.passive==='shell') this.shield(u,u,160,12,'Shell Reserve');
     }
     addEnemy(entry) {
-      if(this.ended||!entry?.spawnId||this.units.some(u=>u.spawnId===entry.spawnId&&u.life===entry.life))return false;
+      if(this.training||this.ended||!entry?.spawnId||this.units.some(u=>u.spawnId===entry.spawnId&&u.life===entry.life))return false;
       // Reuse the same stat/passive initialization as an initial wild encounter.
       const proxy=new Battle(soloBuild(),{profile:this.spawnOptions.profile,seed:this.seed,
         adventure:this.adventure,wildPartySize:this.wildPartySize,encounter:{kind:'wild',enemies:[entry]}});
@@ -188,6 +190,7 @@
       // without a navigation grid; the clearing deliberately has no obstacles.
       const alive = this.units.filter(u => u.hp > 0&&!u.eliminated);
       const plans = alive.map(u => {
+        if(this.training&&u.side===1)return {u,x:u.position.x,y:u.position.y};
         if(this.fleeing(u)){u.moveTargetId=null;u.moveSkill=null;return {u,x:u.position.x-this.speed(u)*DT,y:u.position.y};}
         const {skill, target} = this.intent(u), reach = this.reach(u, this.offensive(skill) ? skill : null);
         if(!target)return {u,x:u.position.x,y:u.position.y};
@@ -233,6 +236,7 @@
         plans.forEach((p, i) => { p.x = Math.max(FIELD.minX, Math.min(FIELD.maxX, p.x + pushes[i].x)); p.y = Math.max(FIELD.minY, Math.min(FIELD.maxY, p.y + pushes[i].y)); });
       }
       for (const p of plans) {
+        if(this.training&&p.u.side===1)continue;
         if(this.channeling(p.u)){p.u.moving=false;continue;}
         p.u.moving = Math.hypot(p.x - p.u.position.x, p.y - p.u.position.y) > .001;
         for(const o of this.obstacles){const dx=p.x-o.x,dy=p.y-o.y,d=Math.hypot(dx,dy),r=o.radius+2;if(d<r){p.x=o.x+(d?dx/d:1)*r;p.y=o.y+(d?dy/d:0)*r;}}
@@ -268,7 +272,7 @@
       // Expiry is checked at the hit too, so processing order cannot extend a shield.
       if (target.shieldUntil <= this.time) target.shield = 0;
       const absorbed = Math.min(target.shield, raw); target.shield -= absorbed; target.blocked += absorbed;
-      const floor=this.rescue?BondRaidRules.floor(this,target):0;
+      const floor=this.training?1:this.rescue?BondRaidRules.floor(this,target):0;
       const dealt = Math.min(Math.max(0,target.hp-floor), raw - absorbed); target.hp -= dealt; if(actor)actor.damage += dealt;
       this.emit('damage', actor, target, `${actor?.name||'Environment'} → ${target.name}: ${label} · ${dealt} damage${absorbed ? ` (${absorbed} shielded)` : ''}.`, dealt, details);
       if (target.hp <= 0) { target.hp = 0; target.shield = 0; target.status = {}; this.emit('defeat', actor, target, `${target.name} fell.`); }
@@ -292,8 +296,9 @@
       if (!target || target.hp<=0 || target.eliminated || this.ended) return;
       if (target.shieldUntil<=this.time) target.shield=0;
       if (target.shield>amount) return;
+      const granted=amount-target.shield;
       target.shield=amount; target.shieldUntil=this.time+duration;
-      this.emit('shield',actor,target,`${target.name}: ${label} · ${amount} shield for ${duration}s.`,amount);
+      this.emit('shield',actor,target,`${target.name}: ${label} · ${amount} shield for ${duration}s.`,amount,this.training?{granted}:{});
     }
     effect(actor, target, effect, duration) {
       if (!target || target.hp <= 0 || target.eliminated || this.ended) return;
@@ -402,6 +407,7 @@
       if (this.ended) return;
       this.tick++; this.time = Math.round(this.tick * DT * 100) / 100;
       for (const u of this.units) { u.previousPosition = {...u.position}; u.wasMoving=u.moving; u.moving = false; }
+      if(this.training){root.BondTraining.step(this);if(this.ended)return;}
       if(this.rescue){BondRaidRules.step(this);if(this.ended)return;}
       this.refreshTargets();
       if (!this.overcharge && this.time >= 55) { this.overcharge = true; this.emit('overcharge', null, null, 'OVERCHARGE · Healing stops. All damage doubles.'); }

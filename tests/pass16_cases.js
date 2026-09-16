@@ -80,9 +80,11 @@
  const trained=P.snapshot();trained.trainerXP=BondProgress.threshold(60);P.testing.replace(trained);
  const t=C.trainers[0];P.travel(t.map);
  const attempt=()=>{const options={profile:P.snapshot(),enemyLevel:t.level,seed:16},b=new G.Battle([actor,t.team],options);P.reserveBattle(b,t.id,options);b.run();return {b,result:P.complete(b,t.id)};};
- const startCoins=P.snapshot().coins,first=attempt(),afterFirst=P.snapshot(),twice=P.complete(first.b,t.id),second=attempt();
- check('Trainer first and repeat rewards differ, with no pet Echo rolls',first.result.coins===t.coins&&second.result.coins===t.repeatCoins&&P.snapshot().coins===startCoins+t.coins+t.repeatCoins&&Object.keys(P.snapshot().claims).length===0&&Object.values(P.snapshot().echoes).every(x=>x.length===0));
- check('Trainer repeat receipt cannot pay twice',P.complete(second.b,t.id).coins===t.repeatCoins&&P.snapshot().coins===startCoins+t.coins+t.repeatCoins);
+ const startCoins=P.snapshot().coins,first=attempt(),afterFirst=P.export(),twice=P.complete(first.b,t.id);
+ check('NPC victory pays once with no companion Echo rolls',first.result.coins===t.coins&&P.snapshot().coins===startCoins+t.coins&&Object.keys(P.snapshot().claims).length===0&&Object.values(P.snapshot().echoes).every(x=>x.length===0));
+ const repeatOptions={profile:P.snapshot(),enemyLevel:t.level,seed:16},repeatBattle=new G.Battle([actor,t.team],repeatOptions);
+ check('Defeated NPC cannot reserve a rematch',!P.validEncounter(t.id)&&!P.reserveBattle(repeatBattle,t.id,repeatOptions)&&P.export()===afterFirst);
+ check('NPC receipt retry cannot pay twice',twice.coins===t.coins&&P.export()===afterFirst);
  // Snapshot a pack, accept one real killed member, then force trainer death as a boundary fixture.
  P.travel('clearing-1');e=P.beginPack('pack:clearing-1');const opts={profile:P.snapshot(),encounter:e,seed:e.seed};b=new G.Battle([actor,G.defaultBuild()[1]],opts);P.reserveBattle(b,e.id,opts);
  const victim=b.units.find(u=>u.side===1);victim.hp=0;P.settleKills(b,e.id);const partial=P.snapshot();

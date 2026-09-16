@@ -28,6 +28,7 @@
     return people[hash%people.length];
   }
   function art(type){
+    if(type==='training-dummy')return '<svg class="character-sprite training-dummy" data-character="training-dummy" viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="80" cy="166" rx="52" ry="10" fill="#18352e55"/><path d="M68 163L74 68H88L96 163M25 69H137" stroke="#704423" stroke-width="14" stroke-linecap="round"/><path d="M53 166H111" stroke="#543723" stroke-width="10" stroke-linecap="round"/><path d="M48 65L61 49H100L114 65L104 119L54 119Z" fill="#c7a46b" stroke="#765c3c" stroke-width="4"/><circle cx="80" cy="31" r="22" fill="#dec391" stroke="#765c3c" stroke-width="4"/><path d="M61 22L98 39M59 37L98 23M51 75L109 107M51 103L108 74" stroke="#a98250" stroke-width="3"/><circle cx="80" cy="87" r="19" fill="#963d37"/><circle cx="80" cy="87" r="11" fill="#eedac1"/><circle cx="80" cy="87" r="4" fill="#963d37"/></svg>';
     if(BondCities.spriteNames.includes(type.replace('npc-','')))return BondCityArt.npc(type);
     if(painted.has(type)){
       const config=BondAnimationData[type],[l,t,r,b]=config.frames[13].rect,clip='class-portrait-'+(++portraitSerial);

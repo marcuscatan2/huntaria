@@ -11,7 +11,7 @@ const key=type=>'echo:'+type,rate=bp=>bp===1000?'10%':(bp/100).toFixed(bp<100?2:
 function item(type){
  const u=root.BondContent.UNITS[type];if(!u||u.role==='Trainer')return null;
  return {id:key(type),type,name:u.name+(u.source==='boss'?' Essence':' Soul Echo'),category:'Echoes',icon:'✧',
- description:'Summon '+u.name+' as an independent companion.'};
+ description:'Summon '+u.name+'.'};
 }
 root.BondEchoes={qualifies,roll,key,rate,item};
 })(globalThis);

@@ -113,6 +113,7 @@
       const trainer = battle.objective(side), prefix = side ? '#dusk' : '#grove';
       $(prefix + '-bond-text').textContent = trainer.label + ' ' + trainer.hp + '/' + trainer.maxHp;
       $(prefix + '-bond-fill').style.width = 100 * trainer.hp / trainer.maxHp + '%';
+      if(battle.training&&side===1)$(prefix+'-bond-text').textContent='Training Dummy';
       if(side===1&&battle.ritual?.state==='complete'){$(prefix+'-bond-text').textContent='BONDED · INNER HAVEN';$(prefix+'-bond-fill').style.width='100%';}
     }
     const order = [...battle.units].sort((a, b) => (a.hp > 0 ? a.actionRemaining / rate(a) : Infinity) - (b.hp > 0 ? b.actionRemaining / rate(b) : Infinity) || a.id.localeCompare(b.id));
@@ -128,15 +129,15 @@
     const u = unit(selected);
     const focus = !battle.ended && u.hp > 0 ? battle.target(u) : null;
     focusId = focus?.id || null;
-    $('#selected-target').textContent = focus ? 'Focus → ' + focus.name : 'No active target';
-    $('#selected-target').title = 'Normal target. Explicit TRAINER skills can bypass enemy monsters.';
+    $('#selected-target').textContent = focus ? 'Target: ' + focus.name : '';
+    $('#selected-target').title = '';
     for (const [id, node] of nodes) node.classList.toggle('targeted', id === focusId);
     const intent = battle.intent(u), moving = u.hp > 0 && !battle.ended && u.moving;
     const attackRange = battle.reach(u, battle.offensive(intent.skill) ? intent.skill : null);
     $('#selected-description').textContent = guild(u) + ' · ' + (u.hp > 0 ? u.hp + ' HP · ' + (battle.ended ? 'finished' : moving ? 'moving' : 'holding') : 'defeated');
     if(bonded(u))$('#selected-description').textContent='Inner Haven · bonded';
-    $('#selected-movement').textContent = 'Lv ' + u.level + ' · ' + (u.element||'Neutral') + ' · '+BondRules.categoryLabel(u.basicCategory)+' · Speed ' + (u.speed*battle.rate(u)).toFixed(1) + ' ('+(100/(u.speed*battle.rate(u))).toFixed(2)+'s) · Move ' + battle.speed(u).toFixed(1) + ' · Reach ' + attackRange;
-    $('#selected-movement').title = 'Arena units. Dashed ellipse shows current attack reach. ' + (intent.skill?.kind === 'trainer' ? intent.skill.name + ' pursues ' + (intent.target?.name||'No target') + ' directly.' : 'Pursues the closest living enemy.');
+    $('#selected-movement').textContent = battle.training&&u.side===1?'':'Atk: '+(BondRules.categories[u.basicCategory]?.short||'STR')+' Based';
+    $('#selected-movement').title = '';
     if (!battle.ended && u.hp > 0 && intent.skill?.kind === 'trainer') {
       $('#selected-target').textContent = (moving ? 'Pursue → ' : 'Strike → ') + (intent.target?.name||'No target');
       $('#selected-target').title = intent.skill.name + ' targets the trainer directly. Normal focus: ' + battle.target(u).name + '.';
@@ -304,6 +305,7 @@
       ctx.lineWidth=3;ctx.strokeStyle='#253d32';ctx.fillStyle=isSelected?'#fff0b2':'#f4f2dd';
       const name=(actor.slot?'':'♛ ')+actor.name+(model.group&&!actor.side?' · P'+(actor.ownerIndex+1):'');
       ctx.strokeText(name,x,y);ctx.fillText(name,x,y);
+      if(model.training&&actor.side===1){ctx.restore();continue;}
       ctx.fillStyle='#162e28';ctx.fillRect(x-barWidth/2-1,y+5,barWidth+2,7);
       ctx.fillStyle=actor.side?'#d4a7d6':'#cae69a';ctx.fillRect(x-barWidth/2,y+6,barWidth*hp/actor.maxHp,4);
       if(actor.shield>0){ctx.fillStyle='#ffe7a0';ctx.fillRect(x-barWidth/2,y+6,barWidth*Math.min(1,actor.shield/actor.maxHp),1.5);}

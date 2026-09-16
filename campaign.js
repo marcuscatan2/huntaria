@@ -3,14 +3,14 @@
 'use strict';
 const C=BondContent,A=BondAtlas,W=BondWorld,R=BondProgress;
 const LESSONS=[
- ['front','Hold the line','A tank buys time, but cannot win alone.','Put a damage dealer behind a tank. Prioritize damage before a second defensive spell.', ['Tank','DPS'],'druid',[0,1,2]],
- ['cleanse','Break the snare','Our bindings slow both feet and action meters.','Bring a cleanse or haste; cooldown reduction is different from Speed.', ['Support','DPS'],'mage',[1,3,0]],
+ ['front','Hold the line','Let us see if you can hold this road.','Put a damage dealer behind a tank. Prioritize damage before a second defensive spell.', ['Tank','DPS'],'druid',[0,1,2]],
+ ['cleanse','Break the snare','Mind the roots. They have a way of catching travelers.','Bring a cleanse or haste; cooldown reduction is different from Speed.', ['Support','DPS'],'mage',[1,3,0]],
  ['pressure','Cinder Court scouts','The Court wants every Echo for itself. We will not let them take this road.','Two attackers race your defenses. A shield first can protect your opening.', ['DPS','DPS'],'mage',[0,2,4]],
- ['sustain','A long breath','A full health bar is not a victory. Find the opening between heals.','Focus damage; healing stops at 55 seconds. Do not bring only healers.', ['Support','Tank'],'druid',[0,4,2]],
- ['bypass','Watch your bond','Some spells ignore the monsters and reach the trainer.','Keep your trainer back and use guard or ward against explicit trainer strikes.', ['DPS','Support'],'mage',[4,0,1]],
- ['armor','The stone test','Armor makes small strikes feel smaller.','Compare damage elements. A faster attack is not necessarily a harder one.', ['Tank','Tank'],'druid',[2,0,3]],
- ['tempo','A quicker answer','Speed fills the next-action meter, not the skill cooldowns.','Haste improves attacks and movement. AGI and DEX improve attack speed.', ['DPS','Tank'],'druid',[3,1,4]],
- ['area','No safe crowd','Spread your preparation against sweeping attacks.','Team shields and healing help against area damage; keep an attacker equipped.', ['Support','DPS'],'mage',[3,2,0]],
+ ['sustain','A long breath','I can keep this up all day. Can you?','Focus damage; healing stops at 55 seconds. Do not bring only healers.', ['Support','Tank'],'druid',[0,4,2]],
+ ['bypass','Watch your bond','Stay alert. My spells can reach you.','Keep your trainer back and use guard or ward against explicit trainer strikes.', ['DPS','Support'],'mage',[4,0,1]],
+ ['armor','The stone test','Try your strength against my stone companions.','Compare damage elements. A faster attack is not necessarily a harder one.', ['Tank','Tank'],'druid',[2,0,3]],
+ ['tempo','A quicker answer','Keep up, if you can.','Haste improves attacks and movement. AGI and DEX improve attack speed.', ['DPS','Tank'],'druid',[3,1,4]],
+ ['area','No safe crowd','There is nowhere to hide from this storm.','Team shields and healing help against area damage; keep an attacker equipped.', ['Support','DPS'],'mage',[3,2,0]],
  ['attrition','Court quartermaster','These stolen wards keep our patrol on this road.','Break through their sustain before Overcharge. You do not need rare monsters.', ['Tank','Support'],'mage',[2,4,1]],
  ['final','The road is yours','Show me a bond that can stand without the Court.','Use a balanced common party, allocate attributes and spend your tree points.', ['DPS','Tank'],'druid',[4,3,0]]
 ];
@@ -65,8 +65,8 @@ for(const [r,region] of A.REGIONS.entries()){
  ].map(([key,label,map,kind,target,count],n)=>({id:'ch'+(r+1)+':'+key,label,map,kind,target,count,prerequisite:n?'ch'+(r+1)+':'+stepsKey(n-1):r?'ch'+r+':return':null}));
  chapters.push({id:'chapter-'+(r+1),region:region.id,title,intro,ending,steps,coins:100+r*75,xp:[2800,16200,59000,99000,139000,171000][r]});
  for(const kind of ['naturalist','tactician','convergence']){
-  const id=region.id+':'+kind,item='honor:'+id;W.ITEMS[item]={name:region.name+' '+kind+' ribbon',icon:'✧',category:'Trophies',description:'Earned recognition. Decorative only; no account stat buff.'};
-  challenges.push({id,region:region.id,kind,item,coins:60+r*20,label:kind==='naturalist'?'Defeat five residents':kind==='tactician'?'Win two different trainer lessons':'Clear the forest and cave packs',count:kind==='naturalist'?5:2,scope:'Personal · local receipts'});
+  const id=region.id+':'+kind,item='honor:'+id;W.ITEMS[item]={name:region.name+' '+kind+' ribbon',icon:'✧',category:'Trophies',description:'A ribbon awarded for your deeds.'};
+  challenges.push({id,region:region.id,kind,item,coins:60+r*20,label:kind==='naturalist'?'Defeat five residents':kind==='tactician'?'Win two different trainer lessons':'Clear the forest and cave packs',count:kind==='naturalist'?5:2,scope:'Regional challenge'});
  }
  const type=C.MONSTERS.find(t=>C.UNITS[t].source==='boss'&&C.UNITS[t].region===r);
  const patterns=[['Bramblequake','all','Shield the whole party',2.4,90,'slow'],['Tidal Return','rear','Protect your rear-rank trainer',2.8,150,'slow'],['Glassfall','front','Brace your frontline',2.2,160,'burn'],['Eclipse Bell','all','Cleanse the moonfire',3,100,'burn'],['Skybreaker','rear','Keep a ward on your trainer',1.8,145,'slow'],['Last Furnace','all','Recover between furnace waves',3.2,125,'burn']];
@@ -120,7 +120,7 @@ addEarly({id:'early:ability',name:'Copperleaf Tactician',appearance:'druid',titl
 addEarly({id:'early:resolution',name:'Amber Gatekeeper',appearance:'mage',title:'Amber route resolution',level:24,seed:403,earlyKey:'resolution',trainerXP:4000,coins:70,
  greeting:'Keep the answer you built. Finish the route.',advice:'Use the class, formation and companion adjustment that worked in the earlier trials.',team:trainerTeam('mage','cindrake','ironback'),...placed('hollow-3')});
 for(const [n,map,xp,level] of [[1,'hollow-0',3000,26],[2,'hollow-1',2500,27],[3,'hollow-2',3000,28]])addEarly({id:'early:amber:'+n,name:'Amber Challenger '+n,appearance:n===2?'mage':'druid',title:'Amber mastery '+n,level,seed:500+n,earlyKey:'amber'+n,trainerXP:xp,coins:60,
- greeting:['Read the formation before choosing your response.','A familiar answer can work in a harder fight.','Bring the whole build together.'][n-1],advice:'Inspect the team, adjust one priority or formation rank, then retry.',team:trainerTeam(n===2?'mage':'druid',n===1?'ironback':'cindrake',n===3?'lumimoth':'thornstag'),...placed(map)});
+ greeting:['You have come far. Let us see what you have learned.','Ready for another challenge?','Show me what your party can do.'][n-1],advice:'Inspect the team, adjust one priority or formation rank, then retry.',team:trainerTeam(n===2?'mage':'druid',n===1?'ironback':'cindrake',n===3?'lumimoth':'thornstag'),...placed(map)});
 addEarly({id:'early:boss:amber',name:C.UNITS[ambercolossus].name,appearance:ambercolossus,title:'Amber guardian · Lv 30',kind:'boss',level:30,seed:3030,earlyKey:'amberBoss',trainerXP:5000,coins:120,
  greeting:'The colossus seals the last lesson of Amber Hollow.',advice:'Glassfall marks the frontline. Brace it, then use the recovery window.',requiresEarly:'amber3',
  enemies:[{type:ambercolossus,skills:[...C.UNITS[ambercolossus].default],hp:3400,power:42,boss:true,passive:C.UNITS[ambercolossus].passive}],...placed('hollow-boss',{x:A.get('hollow-boss').hero.x,y:A.get('hollow-boss').hero.y+240})});

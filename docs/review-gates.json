@@ -388,6 +388,7 @@
       "before": "Before locking asset detail/texture budgets or expanding screens and control patterns.",
       "why": "Changing screen density, touch/mouse assumptions or the minimum device later affects asset sizes, camera distance, labels, effects, input, layouts and performance budgets.",
       "packet": [
+        "Review player-menu-v1: concise copy, Inner Sea party controls, a separate Class Skill Tree, dummy throughput tables and two-second NPC victories. Use features/party/GAME_FRAME.md and features/combat/TRAINING.md on the intended phones before accepting this interaction standard.",
         "Review class-flow-v2 conversations and the four-class panel on the intended phones. game-frame.css bounds dialogue to the playfield, with internal scrolling and touch-size actions. Target-device and final layout approval remain pending.",
         "Review the framed Bag, painted Inner Sea, recovery, settings and exploration HUD on the chosen physical devices. Emulated viewport checks do not certify hardware; the supported desktop/browser baseline and Android launch requirement remain owner decisions. Use features/party/GAME_FRAME.md and features/inner-sea/DISPLAY.md."
       ],
@@ -912,6 +913,36 @@
         {
           "path": "world-passages.js",
           "sha256": "0ebd8498d834a7ecbed3a9dda79262f0fda9deb86d6f6170965802442513c793"
+        }
+      ]
+    },
+    {
+      "id": "player-menu-v1-2026-09-16",
+      "source": "Current owner conversation, 2026-09-16",
+      "scope": [
+        "Audit and shorten player text; place party management inside Inner Sea and separate Class Skill Tree",
+        "Replace Practice battle with a dummy performance test",
+        "Show NPC Victory for two seconds, return to exploration and prevent rematches"
+      ],
+      "quotes": [
+        "Do a complete analysis of the text everywhere. Get rid of unecessary text and be less AI and more game.",
+        "All party management should be INSIDE the 'Inner Sea'.",
+        "Just display a 'victory' somewhere, wait 2s and go back.",
+        "Don't allow to re-challenge NPCs."
+      ],
+      "boundary": "Explicit implementation authority for this local UI and encounter revision. Final physical-device acceptance, broad art production and external release remain open.",
+      "evidence": [
+        {
+          "path": "features/party/GAME_FRAME.md",
+          "sha256": "b48747c5e46f3a5d045f6434f4c183812d391cf78f80d076084b7c9d9c2095e7"
+        },
+        {
+          "path": "features/combat/TRAINING.md",
+          "sha256": "299e1ce68e7b0c9a9222cb647a37b79fbaf9f181b4c4b52bb25144e38d2ba242"
+        },
+        {
+          "path": "features/shell/ENCOUNTERS.md",
+          "sha256": "e35fa4ebaa682867f7fdcb3c7c873193613ba9687d78ece6daf7a0b1f2ca2ea1"
         }
       ]
     }

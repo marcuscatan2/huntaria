@@ -2,8 +2,8 @@
   'use strict';
   const ITEMS={
     bondcontract:{name:'Bond Contract',icon:'❧',category:'Rituals',description:'Arm Try to catch during an eligible fight. After victory, one contract is consumed for a 65% chance to welcome that spirit. Failed rolls use paper; defeat and unarmed fights do not.'},
-    biscuit:{name:'Bond Biscuit',icon:'◈',category:'Supplies',description:'Prepare one before a fresh battle: your trainer starts with an 80 HP shield lasting 10 seconds. Consumed when that battle begins; never on preview or resume.'},
-    mossbloom:{name:'Mossbloom',icon:'✿',category:'Materials',description:'A soft pink flower from Mosslight Clearing. A collectible keepsake; no combat effect or crafting in this prototype.'},
+    biscuit:{name:'Bond Biscuit',icon:'◈',category:'Supplies',description:'Grants your trainer an 80 HP shield for the first 10 seconds of the next battle.'},
+    mossbloom:{name:'Mossbloom',icon:'✿',category:'Materials',description:'A soft pink flower from Mosslight Clearing. A keepsake from the forest.'},
     riverstone:{name:'Riverstone',icon:'◆',category:'Materials',description:'Smoothed by the Willowbrook current. A collectible keepsake; no combat effect.'},
     amberleaf:{name:'Amberleaf',icon:'❧',category:'Materials',description:'A golden leaf that keeps its autumn color. A collectible keepsake; no combat effect.'},
     moonshard:{name:'Moonshard',icon:'◇',category:'Materials',description:'A pale crystal from the old Moonwell. A collectible keepsake; no combat effect.'},
@@ -14,8 +14,8 @@
   };
   Object.assign(ITEMS,{
     rarecontract:{name:'Illuminated Contract',icon:'❧',category:'Rituals',description:'A rarer papyrus with a 90% post-victory catch chance. Arm it during a catchable fight. A resolved attempt consumes one, including a failed roll.'},
-    trailfood:{name:'Memory Fruit',icon:'✿',category:'Supplies',description:'Feed an owned companion to grant 120 XP. Consumed immediately; cannot be used at the current Lv 60 launch cap.'},
-    battlefood:{name:'Trail Ration',icon:'✦',category:'Supplies',description:'Prepare for the next fresh battle: all three allies gain 10% maximum HP for that fight. Consumed at battle start, not on resume.'},
+    trailfood:{name:'Memory Fruit',icon:'✿',category:'Supplies',description:'Grants a companion 120 XP.'},
+    battlefood:{name:'Trail Ration',icon:'✦',category:'Supplies',description:'Grants your party +10% max HP for the next battle.'},
     starseed:{name:'Starseed',icon:'✧',category:'Materials',description:'A rare expedition keepsake (2% faction drop). Decorative collection item; no hidden power or current crafting use.'}
   });
   const SCENES=[
@@ -27,7 +27,7 @@
   ];
   const team=entries=>entries.map(([type,pool])=>({type,skills:pool.split(' ')}));
   const NPCS={
-    mira:{name:'Mira',title:'Grove keeper',area:'clearing',level:'FIRST CHALLENGE',greeting:'A bond is more than strength. Let your companions protect you, and give them something worth protecting. Shall we practice?',advice:'Try a tank with a damage dealer. Put a useful defensive skill early in your priority, then let your damage dealer pressure my monsters. Your trainer must survive.',coins:20,badge:'grovebadge',team:team([['druid','mend bramble bark'],['emberfox','pounce pierce quickstep'],['cindrake','fireball scorch wingdraft']])},
+    mira:{name:'Mira',title:'Grove keeper',area:'clearing',level:'FIRST CHALLENGE',greeting:'Ready to show me what your party can do?',advice:'Try a tank with a damage dealer. Put a useful defensive skill early in your priority, then let your damage dealer pressure my monsters. Your trainer must survive.',coins:20,badge:'grovebadge',team:team([['druid','mend bramble bark'],['emberfox','pounce pierce quickstep'],['cindrake','fireball scorch wingdraft']])},
     orin:{name:'Orin',title:'River warden',area:'brook',level:'SECOND CHALLENGE',greeting:'Water finds a way around the strongest wall. My friends prefer patience, but do not mistake that for weakness. Ready to test your current?',advice:'Ironback begins with a shield, and Tideotter can remove Slow when healing others. Sustained damage and Burn can help. Shields do not stack, and healing stops after 55 seconds.',coins:35,badge:'riverbadge',team:team([['mage','frost comet aegis'],['ironback','shellguard shellbash carapace'],['tideotter','springwater riptide bubbleward']])},
     vesper:{name:'Vesper',title:'Storm adept',area:'rise',level:'FINAL CHALLENGE',greeting:'You made it to the rise. Up here, the smallest opening can decide a battle. Show me what you and your companions have learned.',advice:'Tempestool’s Skyneedle and my Crown Hex can target your trainer directly. Bondguard, Shellguard or Wildguard intercept that damage. A prepared Bond Biscuit helps with the opening.',coins:50,badge:'stormbadge',team:team([['mage','hex frost aegis'],['stormowl','snipe chain gust'],['frostfang','frostbite icepounce snowhide']])}
   };
@@ -48,7 +48,7 @@
       advice:'My support and guardian protect each other. Try sustained damage, Burn, or direct-trainer skills. Healing stops in Overcharge.',
       team:team([['mage','nova comet aegis'],['thornstag','wildguard antler lifebud'],['lumimoth','moondust moonbeam aurora']])},
     wildpack:{name:'Wandering pack',title:'Five small foes',appearance:'frostfang',area:'hollow',kind:'pack',level:'WILD ENCOUNTER · 5 ENEMIES',coins:35,badge:'packbadge',
-      greeting:'Five young creatures are blocking the trail. No enemy trainer this time: defeat every creature before 75 seconds. Your trainer must survive.',
+      greeting:'A pack blocks the trail. Clear a path.',
       advice:'Area attacks reward you for hitting several enemies. Each creature has less health and lower basic damage than its full-grown counterpart.',
       enemies:[
         {type:'emberfox',name:'Young Brimble',hp:270,power:20,interval:2.4,passive:null,skills:['quickstep','pounce','burn']},

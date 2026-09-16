@@ -20,14 +20,14 @@ real multiplayer and payments are not implemented.
 | Poses, class/NPC sprites, hit feedback | [Animation](features/animation/README.md) / [Supplied roster](features/animation/SUPPLIED_SPRITES.md) | Painted class sheets, cropped portraits and civilian NPCs share the rig with species sprites. |
 | Maps, passages, stairs or scenery | [World](features/world/README.md) / [Exploration](features/exploration/README.md) | The 36-square grid and four tower interiors connect routes; [landscapes, passages and stonework](features/world/LANDSCAPES.md) define scenery; [cities](features/world/CITIES.md) add buildings, rooms, healing and waystones. |
 | Spawn density, wild levels, free healing | [Populations](features/population/README.md) / [Recovery](features/recovery/README.md) | Tripled roaming populations attack everywhere except Firstlight; saved lives connect to camp and village services. |
-| Monsters, skills, levels, builds | [Content](features/content/README.md) / [Growth](features/growth/README.md) / [Party](features/party/README.md) | The reviewed Google Sheet snapshot owns creature identity; stable species/individual IDs and the Lv60 player/Lv100 engine boundary flow into combat. |
-| Inventory, item popups, summoning, lost/duplicate progress | [Collection](features/collection/README.md) / [Game frame](features/party/GAME_FRAME.md) | Framed Bag actions and loot presentation use profile-owned items and individuals. |
+| Monsters, skills, levels, builds | [Content](features/content/README.md) / [Growth](features/growth/README.md) / [Party](features/party/README.md) | The reviewed Sheet owns creature identity; stable IDs connect content, growth and combat. |
+| Menus, party, dummy test, items or summoning | [Collection](features/collection/README.md) / [Game frame](features/party/GAME_FRAME.md) | Inner Sea owns party management; Class Skill Tree is separate. [Dummy test](features/combat/TRAINING.md) measures party performance. |
 | Sound, Settings, reduced motion | [Preferences/audio](features/experience/README.md) | Device choices affect presentation, never combat rules. |
 | Inner Sea farming, defense or picture export | [Inner Sea](features/inner-sea/README.md) | A painted homestead inside the game frame connects habitats, training, defenses and care to saved progress. |
 | Other features or an unclear bug | [Feature index](FEATURE_MAP.md) | Symptoms route to the owner and its connecting boundary. |
 
 Feature guides link to root browser modules; do not create parallel copies.
-For an exact route: `python scripts/project.py context combat`.
+Route lookup: `python scripts/project.py context combat`.
 Also accepts `game.js`, `BondGame`, `F-002` or `combat-feedback`.
 
 ## Run and check

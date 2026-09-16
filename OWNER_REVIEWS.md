@@ -226,6 +226,7 @@ Priority: **NEXT**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
+- Review player-menu-v1: concise copy, Inner Sea party controls, a separate Class Skill Tree, dummy throughput tables and two-second NPC victories. Use features/party/GAME_FRAME.md and features/combat/TRAINING.md on the intended phones before accepting this interaction standard.
 - Review class-flow-v2 conversations and the four-class panel on the intended phones. game-frame.css bounds dialogue to the playfield, with internal scrolling and touch-size actions. Target-device and final layout approval remain pending.
 - Review the framed Bag, painted Inner Sea, recovery, settings and exploration HUD on the chosen physical devices. Emulated viewport checks do not certify hardware; the supported desktop/browser baseline and Android launch requirement remain owner decisions. Use features/party/GAME_FRAME.md and features/inner-sea/DISPLAY.md.
 

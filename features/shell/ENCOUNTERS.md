@@ -72,6 +72,16 @@ joining rules are implemented. Explicit Pause also stops incoming pursuit.
 
 ## Presentation and regression
 
+Accepted victories over authored NPCs show an in-arena Victory banner for two
+real seconds, then return to exploration. Playback speed does not shorten it.
+Background completion preserves an open menu; an old banner timer cannot navigate
+a newer encounter. Failed settlement stays available for retry. Class-rescue
+aftermath keeps its existing story dialogue.
+
+Defeated NPC IDs cannot reserve another challenge and their dialogue hides the
+fight action. Existing reserved saves can finish; normal wildlife and training
+encounters remain repeatable. First-win receipts stay idempotent across retries.
+
 loot-popup.js and loot.css display one compact in-frame pickup per accepted item
 type, with icon, name and quantity. Coins and XP have their own pickups. Each item
 expires three seconds after it becomes visible, regardless of hover/focus or

@@ -2,7 +2,7 @@
 (function(root){
 'use strict';
 // A partial client must never normalize or overwrite an otherwise valid save.
-for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','BondAtlas','BondWorld','BondEchoes','BondPopulation','BondAdventure','BondGrowth','BondCampaign','BondOpening','BondFormation','BondHaven','BondGame']){
+for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','BondAtlas','BondWorld','BondEchoes','BondPopulation','BondAdventure','BondGrowth','BondCampaign','BondOpening','BondFormation','BondHaven','BondGame','BondTraining']){
  if(!root[dependency])throw Error('Required game module unavailable: '+dependency);
 }
 const C=BondContent,R=BondProgress,A=BondAtlas,W=BondWorld,E=BondEchoes,Q=BondPopulation,clone=x=>JSON.parse(JSON.stringify(x));
@@ -159,10 +159,10 @@ function beginPack(id){
  const members=population(p.map).filter(x=>x.present&&['Common','Uncommon'].includes(x.habitat.rarity)).slice(0,p.count);
  if(members.length<2)return null;
  const enemies=members.map(x=>{const h=hunt(x.id).enemies[0];return {...h,hp:Math.round(C.UNITS[h.type].hp*.38),power:Math.round(C.UNITS[h.type].power*.4),skillScale:.4,passive:null};});
- const key=id+':'+A.hash(members.map(x=>x.id+':'+x.life).join('|')),e={id:key,packId:id,kind:'pack',map:p.map,area:p.region,name:p.name,title:'Resident pack · '+enemies.length+' foes',level:Math.max(...enemies.map(x=>x.level)),seed:members.reduce((n,x)=>(n^x.seed)>>>0,16),enemies,advice:p.lesson,greeting:p.lesson+' These are existing map residents. Every accepted kill keeps its ordinary loot and Echo roll.'};
+ const key=id+':'+A.hash(members.map(x=>x.id+':'+x.life).join('|')),e={id:key,packId:id,kind:'pack',map:p.map,area:p.region,name:p.name,title:'Resident pack · '+enemies.length+' foes',level:Math.max(...enemies.map(x=>x.level)),seed:members.reduce((n,x)=>(n^x.seed)>>>0,16),enemies,advice:p.lesson,greeting:p.lesson+''};
  active.set(key,e);return clone(e);
 }
-function validEncounter(id){sync();const e=encounter(id);return !!e&&(!state.encounterSave||state.encounterSave.id===id)&&(!e.enemies?.some(u=>u.spawnId)||e.enemies.filter(u=>u.spawnId).every(u=>(state.spawns[u.spawnId]?.life===u.life&&state.spawns[u.spawnId]?.present)||(state.encounterSave?.id===id&&state.claims[u.spawnId+':'+u.life])));}
+function validEncounter(id){sync();const e=encounter(id);return !!e&&(!W.NPCS[id]||e.practice||!state.defeated.includes(id)||state.encounterSave?.id===id)&&(!state.encounterSave||state.encounterSave.id===id)&&(!e.enemies?.some(u=>u.spawnId)||e.enemies.filter(u=>u.spawnId).every(u=>(state.spawns[u.spawnId]?.life===u.life&&state.spawns[u.spawnId]?.present)||(state.encounterSave?.id===id&&state.claims[u.spawnId+':'+u.life])));}
 function reserveBattle(b,id,options){
  if(!id)return !state.encounterSave;
  if(b.adventure&&!state.encounterSave&&T.readiness(state,b.build[0]))return false;
@@ -250,8 +250,8 @@ function complete(b,id){
   }
  }
  if(b.winner===0&&W.NPCS[id]&&!e.practice){
-  const first=!state.defeated.includes(id),repeat=e.authored&&!!b._attemptId;
-   if((first||repeat)&&!e.noReward){
+  const first=!state.defeated.includes(id);
+   if(first&&!e.noReward){
    npcReward.coins=first?e.coins||0:e.repeatCoins||0;npcReward.xp=first?e.xp||150:e.repeatXP||0;
    npcReward.trainerXP=first?(e.trialClass&&state.journey.early.trialRewarded?0:e.trainerXP??e.xp??150):0;
    if(first){npcReward.loot.biscuit=1;if(e.badge)npcReward.loot[e.badge]=1;}

@@ -18,7 +18,7 @@ with sync_playwright() as pw:
         legacy_adventure(page)
         page.goto(f'http://127.0.0.1:{server.server_port}/?test=1');page.wait_for_function('!!window.BondApp',timeout=30000)
         page.locator('#open-patch-notes').click()
-        check('Visible notes retain the launch cap and opening-gate disclosure',page.locator('#patch-notes').is_visible() and 'capped at Lv 60' in page.locator('#patch-notes').inner_text() and 'Forest Mage guards the road' in page.locator('#patch-notes').inner_text())
+        check('Updates describe current player actions without launch warnings',page.locator('#patch-notes').is_visible() and 'Class Skill Tree' in page.locator('#patch-notes').inner_text() and 'training dummy' in page.locator('#patch-notes').inner_text() and 'launch' not in page.locator('#patch-notes').inner_text().lower())
         page.locator('#close-patch-notes').click()
         metrics=page.evaluate("""()=>{const out=[];for(const trainer of ['druid','mage'])for(const type of ['emberfox','stonehorn','bloomslime','tideotter']){const h=BondAtlas.home(type),hp=[];let wins=0,times=[];for(let seed=1;seed<=30;seed++){const b=new BondGame.Battle(BondGame.soloBuild(trainer),{adventure:true,profile:BondProfile.fresh(),seed,encounter:{kind:'wild',enemies:[{type,level:h.level,skills:BondContent.UNITS[type].default,...BondAdventure.wild(type)}]}}).run();wins+=b.winner===0;hp.push(b.trainer(0).hp/b.trainer(0).maxHp);times.push(b.time);}out.push({trainer,type,level:h.level,wins,hpMin:Math.min(...hp),hpMax:Math.max(...hp),seconds:times[0]});}return out;}""")
         print(json.dumps({'balance':metrics},indent=2),flush=True)
