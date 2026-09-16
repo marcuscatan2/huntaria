@@ -1,0 +1,84 @@
+{
+  "scope": "city-identities-v1",
+  "tool": "built-in imagegen",
+  "source": "civic-paving.png",
+  "prompts": [
+    "Generate one original ground-material texture atlas for a painted fantasy RPG. Attached image is ONLY a reference for the textured hand-painted game materials and lighting. Make a NEW atlas with exactly THREE equal columns and TWO equal rows, SIX full-bleed square material samples. Canvas exactly 1536 by 1024. Every cell exactly 512 square. No gutters, borders, labels, text, objects, perspective, shadows of objects, UI or transparency. Straight overhead orthographic ground only. Each cell must tile seamlessly with itself: matching opposite edges, even lighting, no vignette. Natural rich stone detail, chipped edges and fine grain; restrained contrast so characters remain legible.\nTop left DRUID paving: irregular pale warm limestone stepping stones in varied organic shapes with broad living green moss-filled seams, small roots and tiny fallen leaves. Stones occupy about 65% of surface, not a geometric grid.\nTop middle MAGE paving: weathered silvery blue stone diamond mosaic with thin warm brass inlaid lines at some joins, occasional tiny star-shaped inlaid details. Elegant, cool, intricate but understated; physical stone, not glowing.\nTop right HUNTER paving: warm ochre/sandstone small rough setts and rounded cobbles laid by hand in sandy packed earth; worn edges, scattered fine gravel and wheel wear. Earthy practical golden brown, no large square slabs.\nBottom left KNIGHT paving: large orderly pale limestone rectangular ashlar slabs in staggered rows, fine dark slate mortar, subtle chisel marks, worn corners and pale grey mottling. Neat and durable, brighter than the other samples without being white.\nBottom middle WINDSTEP paving: overlapping long angular blue-grey slate flagstones with fine layered cleavage, a little ochre grit and muted lichen in joints. Broken diagonal elongated shapes, rugged and windswept.\nBottom right ASHENWATCH paving: warm burnt terracotta herringbone brickwork interspersed with charcoal-dark stone, chipped brick corners and soot worn into the joints. Handmade weathered craftsmanship.\nEach texture has clearly different geometry as well as color. Maintain the same natural painterly finish as the reference, not flat vector art. Entire atlas filled edge-to-edge with the six textures."
+  ],
+  "reference": "assets/world-v15/terrain-atlas.png",
+  "note": "Original generated source copied byte for byte. Six opaque material tiles; runtime crops and downsamples each to 256 square.",
+  "frames": [
+    {
+      "index": 0,
+      "name": "Moss stones",
+      "crop_px": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "rgba_sha256": "8a810492bfcca40f23ff34e263029fe3623810e6aa1ba7e8b46f769d4a0b52fc"
+    },
+    {
+      "index": 1,
+      "name": "Star mosaic",
+      "crop_px": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "rgba_sha256": "942e756e4448cf343ce8da3ade2a969def8d49607ffeb36bb732e0d0f21ee1c6"
+    },
+    {
+      "index": 2,
+      "name": "Ochre setts",
+      "crop_px": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "rgba_sha256": "8121ea8603c9e16a070071a64ba40919f7ac6a7185ce1cabb702469a57af883f"
+    },
+    {
+      "index": 3,
+      "name": "Limestone blocks",
+      "crop_px": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "rgba_sha256": "bc4dd7142bc4a9ee8c7a94acd6ffceb1d964bace3995036d9e22b97d0ec798f6"
+    },
+    {
+      "index": 4,
+      "name": "Slate trail",
+      "crop_px": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "rgba_sha256": "9011b976c09a4dd7a4d0e8801f4295431897d4a34499c3336b78a7aa8e7a7ff1"
+    },
+    {
+      "index": 5,
+      "name": "Ember brick",
+      "crop_px": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "rgba_sha256": "ad947852b2a34f9406ca4785373847324b8c7a723c4c0d592e08c32fe6ea815f"
+    }
+  ],
+  "sha256": "9284a3e12f769cfb7e99fff8a8325924680134d8af768f73c6716b16df1b3b14",
+  "reference_sha256": "e7e8ebddce4625d6417449cca480b42fdae1ae9b513b353636129df3f08239fb",
+  "size": [
+    1536,
+    1024
+  ]
+}

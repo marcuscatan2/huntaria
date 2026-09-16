@@ -48,3 +48,23 @@ Exact prompts, reference/source SHA-256 hashes, crop bounds and pixel hashes:
 Both selected PNGs are copied byte-for-byte from generation. Atlas decoding is
 cached; runtime sources are included by the existing client asset allowlist.
 These are scoped city revisions, not approval of broader art production.
+
+## Class civic landmarks and paving
+
+Scope **city-identities-v1** uses two original built-in imagegen atlases:
+
+- [civic-landmarks.png](civic-landmarks.png): six isolated civic assemblies in
+  three columns and two rows, 512-square crops. The Listening Oak, Open
+  Observatory, Expedition Table, Oath Steps, Wind Cairn and Common Hearth.
+  The street furniture sheet supplies the painting/camera reference. A built-in
+  edit replaced an opaque checkerboard with a magenta key; the runtime decoder
+  removes the key and edge spill. [Exact prompts and hashes](civic-landmarks.json).
+- [civic-paving.png](civic-paving.png): six opaque 512-square ground textures,
+  in the same city order. Mossy stepping stones, blue mosaic, ochre setts,
+  limestone ashlar, layered slate and ember brick. The original terrain atlas
+  supplies the material-painting reference. World rendering crops these to
+  cached 256-square repeating tiles. [Exact prompt and hashes](civic-paving.json).
+
+Selected sources are copied byte-for-byte; source atlas pixels are never
+rewritten by an export step. The city-world suite verifies provenance, crop
+bounds, landmark transparency, material memory and reachable gathering places.

@@ -137,6 +137,7 @@ Priority: **NEXT**. State: **Needs revision**.
 
 **AI prepares:**
 
+- Review city-identities-v1 in features/world/CITIES.md and the local city gallery: six class/regional paving materials, distinct civic landmarks and court shapes, and attending residents with matching work. The owner requested implementation after finding the shared fountain/bench layout too similar; final visual acceptance and device budgets remain open.
 - Review city-neighborhoods-v1 in features/world/CITIES.md and the local game: six larger city layouts, markets/homes/workshops, canal bridges, nineteen residents with daily routines, and phone conversations. The owner explicitly requested this revision; final visual/pacing acceptance and physical-device budgets remain open.
 - Review map-passages-v1 in features/world/LANDSCAPES.md and the local game: destination-specific approaches, open border thresholds, phone labels/taps and keyboard crossings. This scoped owner request authorizes implementation; final art and physical-device approval remain open.
 - Review ghost-tower-stonework-v1 in features/world/LANDSCAPES.md and the local game: ascending/descending stairs, painted tap bounds, four weathered burial silhouettes, rooftop wall clearance and phone labels. The owner requested this scoped revision; final visual acceptance and physical-device budgets remain open.

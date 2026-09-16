@@ -21,9 +21,17 @@ const quarters={
  'rise-hub':{name:'Highwind Terrace',style:'terrace',loop:[[1950,970],[2570,810],[3130,1180],[2380,1740],[3080,2160],[3000,2800],[2160,2700],[1880,2120],[1950,970]],homes:[[2220,580],[2920,880],[3050,1660],[780,2490],[1580,2830],[2750,3000]],work:[2220,2870],market:[[2100,1330],[2470,2020],[2970,2480]],green:[2450,1480]},
  'ashen-hub':{name:'Ember Ward',style:'forge',loop:[[1990,1050],[2990,950],[3140,1610],[2720,1980],[3090,2670],[2100,2770],[1930,2060],[1990,1050]],homes:[[2160,700],[2930,610],[3120,1320],[810,2560],[1510,2860],[2940,3000]],work:[2210,3030],market:[[2110,1440],[2660,1540],[2920,2360]],green:[2370,2030]}
 };
+const civic=[
+ {surface:'moss-stones',court:'root-grove',name:'The Listening Oak',size:380,people:[[-205,80,'gardener','gardening','The roots leave room for everyone. Sit where the moss is soft.'],[165,125,'herbalist','selling','Leave a handful of seeds. Take the herbs you need.']]},
+ {surface:'star-mosaic',court:'star-court',name:'The Open Observatory',size:310,people:[[-190,95,'astronomer','reading','The brass rings follow the sky. This chart follows the river.'],[100,170,'librarian','reading','A new chart every evening. The stars refuse to sit still.']]},
+ {surface:'ochre-setts',court:'outfitter-yard',name:'The Expedition Table',size:355,people:[[-200,110,'ranger','reading','Mark the safe crossings before you pack.'],[180,90,'ranger','carrying','Dry rope, spare arrows, enough food to come back.']]},
+ {surface:'limestone-blocks',court:'muster-square',name:'The Oath Steps',size:355,people:[[-200,115,'captain','patrolling','Shields face the road. We drill to protect the wagons.'],[170,150,'smith','working','A loose strap loses more shields than a sharp blade.']]},
+ {surface:'slate-trail',court:'wayfinder-terrace',name:'The Wind Cairn',size:330,people:[[-170,145,'ranger','reading','Watch the pennants. The high pass turns ugly in an east wind.'],[200,55,'traveler','carrying','We count the ropes twice before leaving.']]},
+ {surface:'ember-brick',court:'forge-yard',name:'The Common Hearth',size:340,people:[[-180,110,'smith','working','The village shares this fire. Bring your broken tools.'],[190,145,'smith','carrying','Fresh charcoal. The night shift will need it.']]}
+];
 const at=([x,y])=>({x,y});
 function layout(m,road){
- const t=theme(m),column=themes.indexOf(t),q=quarters[m.id];m.cityTheme=t.id;m.width=m.height=3600;m.cityQuarter=q.name;
+ const t=theme(m),column=themes.indexOf(t),q=quarters[m.id];m.cityTheme=t.id;m.width=m.height=3600;m.cityQuarter=q.name;m.cityCivic=civic[m.regionIndex];
  m.entry={x:1200,y:1600};m.guide={x:1040,y:1390};m.cache={x:1260,y:1920};m.shelter={x:1200,y:1510};
  m.buildings=[
   {id:m.id+':hall',name:t.hall,x:730,y:780,size:580,art:column,room:'hall'},
@@ -65,15 +73,15 @@ function neighborhood(m,q,column,road){
  m.cityBuildings=buildings.map(b=>({...b,id:m.id+':'+b.id,...at(b.p),door:{x:b.p[0],y:b.p[1]+b.size*.2+40}}));
  for(const b of m.cityBuildings){road(m,'stoop:'+b.id,[join(b.door),b.door],105,'paving');m.scenery.push({key:b.id,x:b.x,y:b.y,size:b.size,art:12,cityArt:b.frame,citySheet:'neighborhoods',solid:b.size*.2});}
  const green=at(q.green);road(m,'quarter-court',[join(green),green,{x:green.x+60,y:green.y}],290,'paving');
- m.cityGround={style:q.style,center:green,beds:[],benches:[],lamps:[]};
+ m.cityGround={style:q.style,center:green,arrival:{x:1200,y:1600},surface:m.cityCivic.surface,court:m.cityCivic.court,beds:[],benches:[],lamps:[]};
  const trees=[0,1,4,3,2,5][m.regionIndex];
  for(const [i,p] of q.homes.entries()){
   const x=p[0]-190,y=p[1]+20;
-  m.cityGround.beds.push({x:x-15,y:y-95,width:85,height:125});
+  if(column===0)m.cityGround.beds.push({x:x-15,y:y-95,width:85,height:125});
   m.scenery.push({key:m.id+':yard-tree:'+i,x,y:y-95,art:0,sceneryAtlas:'nature',sceneryFrame:trees,size:235,solid:24,sway:true});
  }
  for(const p of [[780,1210],[1740,1330],[790,2150],[1610,2180],[600,3000],[1840,3090]])m.cityGround.lamps.push(at(p));
- m.cityGround.benches.push({x:green.x-190,y:green.y+95},{x:green.x+190,y:green.y+95},{x:920,y:2240});
+ if(column===1)m.cityGround.benches.push({x:2060,y:2430});
  // The old courtyard stays clear for saved positions, masters, caches and waystones.
  const names=[
   ['Mara','Ellis','Fen','Lina','Beren','Ada','Cora','Oswin','Milo','Tess','Rook','Syl','Hettie','Dain','Una','Jori'],
@@ -90,9 +98,8 @@ function neighborhood(m,q,column,road){
  });
  const w=m.cityBuildings.find(b=>b.id===m.id+':workshop');
  add(6,{x:w.x+125,y:w.y+110},['gardener','librarian','smith','smith'][column],['gardening','reading','working','working'][column],['These seedlings will shade the street one day.','I mend the spines. I leave the stories alone.','A sound wheel gets you farther than a fine saddle.','Hold it steady. The edge is almost ready.'][column]);
- add(7,{x:green.x-190,y:green.y+155},column===1?'librarian':'bard','reading','A quiet corner, a good book. That is enough.');
- add(8,{x:green.x+190,y:green.y+155},'villager','resting','I save this seat for the afternoon sun.');
- add(9,{x:q.homes[3][0]-175,y:q.homes[3][1]+45},'gardener','gardening','The flowers survived another winter.');
+ m.cityCivic.people.forEach(([dx,dy,appearance,activity,text],i)=>add(7+i,{x:green.x+dx,y:green.y+dy},appearance,activity,text));
+ add(9,{x:q.homes[3][0]-175,y:q.homes[3][1]+45},['gardener','alchemist','ranger','smith'][column],['gardening','reading','carrying','working'][column],['The flowers survived another winter.','One leaf too many, and the whole flask turns blue.','Mending the trail markers before the next hunt.','A good hinge ought to outlast its door.'][column]);
  const routes=[
   [[900,2210],[1180,2210],[1180,2730],[1180,3000],[900,3000],[1180,3000],[1180,2210]],
   q.loop.slice(0,3).concat(q.loop.slice(0,2).reverse()),
@@ -103,7 +110,7 @@ function neighborhood(m,q,column,road){
  add(14,{x:1010,y:2290},'villager','listening','She plays this one every market day.');
  add(15,{x:2060,y:1200},'traveler','resting','A roof and a warm meal. That is my plan.');
  const furniture=(id,p,frame,size,solid=0)=>m.scenery.push({key:m.id+':street:'+id,...p,art:12,cityArt:frame,citySheet:'street-furniture',size,solid,cityFurniture:true});
- furniture('center',{x:green.x,y:green.y+55},q.style==='garden'?1:0,190,35);
+ m.scenery.push({key:m.id+':civic-heart',name:m.cityCivic.name,x:green.x,y:green.y+35,art:12,cityArt:m.regionIndex,citySheet:'civic-landmarks',size:m.cityCivic.size,solid:62,cityFurniture:true});
  m.cityGround.beds.forEach((b,i)=>furniture('bed-'+i,{x:b.x+b.width/2,y:b.y+b.height},7,105));
  m.cityGround.benches.forEach((p,i)=>furniture('bench-'+i,{x:p.x,y:p.y+25},2,135));
  m.cityGround.lamps.forEach((p,i)=>furniture('lamp-'+i,p,3,90));

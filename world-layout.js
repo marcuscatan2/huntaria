@@ -43,7 +43,7 @@ const length=points=>points.slice(1).reduce((n,p,i)=>n+distance(p,points[i]),0);
 const point=(m,x,y)=>({x:x*m.width,y:y*m.height});
 function closest(p,points){return points.reduce((a,b)=>distance(p,a)<distance(p,b)?a:b);}
 function road(m,id,points,width=190,style='trail'){const out={id,points,width,style};m.roads.push(out);return out;}
-const specs={};let revision=23;
+const specs={};let revision=24;
 for(const m of A.maps){
  m.theme=THEMES[m.regionIndex];m.roads=[];m.water=[];m.rooms=[];m.scenery=[];m.obstacles=[];m.landmarks=[];m.bridges=[];m.neighbors=[];m.layoutRevision=revision;
  if(m.interior){BondGhostTower.layout(m,road);continue;}

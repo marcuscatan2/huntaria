@@ -1,0 +1,86 @@
+{
+  "scope": "city-identities-v1",
+  "tool": "built-in imagegen",
+  "source": "civic-landmarks.png",
+  "prompts": [
+    "Create one original sprite atlas for a cozy painted fantasy RPG. Use the attached street-furniture sheet ONLY as a reference for brushwork, material detail, top-down three-quarter camera and soft daylight. NEW objects, not an edit of its contents. Exactly SIX isolated large civic landmark assemblies, evenly spaced in a strict THREE-column TWO-row grid. Every assembly fully contained in its cell with generous clear gutters. True transparent RGBA background, no checkerboard, no ground rectangle, no labels or text, no people. Readable small game scenery: overhead roofs and tabletops visible, camera looking down about 50 degrees, south-facing fronts, fine warm ink edges and textured hand painting. All six have strongly different silhouettes; NO fountains and NO park benches.\nTop-left DRUID: low spreading ancient living oak council tree, curved exposed roots cradle a green mossy meeting hollow, a few stone stools and herb baskets integrated around roots. Compact broad tree, canopy not enormous, earthy lush muted greens, pale blossoms, organic irregular base.\nTop-middle MAGE: elegant brass armillary with interlocking celestial rings and small blue globe, on a pale hexagonal stone base, two low slanted reading desks with open star charts, three small teal crystal lanterns; precise scholarly architecture, silver-blue and brass, restrained magic.\nTop-right HUNTER: wide rectangular communal expedition table of rough oak with an unfurled map, rolled canvas, rope, packs and bow rack at one end; two rough split-log seats, warm amber timber, practical weathered provisioning station.\nBottom-left KNIGHT: compact raised rectangular limestone oath dais with three broad shallow steps, upright sword and shield monument at back, paired tall navy-and-gold cloth standards; symmetrical disciplined architecture, pale stone with slate-blue inlay.\nBottom-middle WINDSTEP SCOUTS: tall mountain wayfinder cairn of stacked grey slate, wooden crosspiece wind vane with ochre pennants and coiled climbing rope, small weathered route-chart stand, angular lean silhouette; windswept alpine outpost identity.\nBottom-right ASHENWATCH FORGE: squat communal blackstone smithing hearth, small glowing coals, iron hood, heavy anvil, grindstone, tongs and stacked charcoal on an irregular charcoal-brick base; warm ember light, industrial craft without large smoke.\nConsistent object scale across cells. Keep all leaves, flags, steps and props inside their own cells; at least 40 pixels transparent margin at every cell edge. Complete assemblies with small tight contact shadows only. Landscape image, 3:2 aspect ratio, high detail.",
+    "Edit this six-sprite game atlas. Preserve the six objects, their identities, painted style, materials, and the exact three-column/two-row positions. Replace EVERY grey and white checkerboard background pixel, including gaps between branches, flags, rings and furniture legs, with one uniform solid pure magenta #FF00FF. No checkerboard anywhere. No magenta inside opaque object surfaces. Keep tight natural contact shadows. Slightly shrink each whole assembly about 8 percent within its existing cell so ALL six have a clear magenta gutter on every side and no object crosses a cell boundary. Keep the exact 1536 by 1024 canvas. Do not add labels or any new objects. This is a chroma-key sprite sheet; a flat bright magenta background is required."
+  ],
+  "reference": "assets/cities/street-furniture.png",
+  "note": "Original generated source copied byte for byte. A second built-in edit replaces the opaque checkerboard with a flat magenta key, removed and despilled at decode. Crops preserve source pixels.",
+  "frames": [
+    {
+      "index": 0,
+      "name": "Listening Oak",
+      "crop_px": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "rgba_sha256": "82c66f883502adbb876c6d5870e7e5d89e8d7e1b9359c9395dae4d3d6a936bbc"
+    },
+    {
+      "index": 1,
+      "name": "Open Observatory",
+      "crop_px": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "rgba_sha256": "284bddf12675a157107a8cb02d31ee328475a5d261a2f42e87ee267df4d9b2f5"
+    },
+    {
+      "index": 2,
+      "name": "Expedition Table",
+      "crop_px": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "rgba_sha256": "ab870399306cd1c9dc74aa4bf5ef12bb165c3b413a511eed6bbedb92563def74"
+    },
+    {
+      "index": 3,
+      "name": "Oath Steps",
+      "crop_px": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "rgba_sha256": "767d3bcb2da8c04e9cd0d49dd65f98e37e76f370c942c0f96d2df98c64991049"
+    },
+    {
+      "index": 4,
+      "name": "Wind Cairn",
+      "crop_px": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "rgba_sha256": "b91af7fcd69ad058b7f402c84b008782337f20e2883a9be0d20c37ff803d8f76"
+    },
+    {
+      "index": 5,
+      "name": "Common Hearth",
+      "crop_px": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "rgba_sha256": "c0efdbe61100589084daedb2c5d4a17e497cb1ff7ff7ec565cdb5c7dfd77cbaa"
+    }
+  ],
+  "sha256": "9a236329caadda4fb2fb3585e50d157cf5ea44ae53a359999b99fe4ab8afdf0c",
+  "reference_sha256": "fd823dbdb64d72c371bda8f8f37b2ca6e12035eafdfe00225afde47737d661bb",
+  "size": [
+    1536,
+    1024
+  ],
+  "edit_input_sha256": "9703d190ad62e815047c631bd7ae3b679a0dacda7e67c2ae6886360415efb7ff"
+}

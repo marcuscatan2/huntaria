@@ -130,6 +130,7 @@
       "before": "Before producing the remaining full-detail maps, quest routes or region-wide art placement.",
       "why": "Map scale and visual language constrain camera, gates, collision, pathfinding, prop sizes, spawn density, recovery trips and quest travel.",
       "packet": [
+        "Review city-identities-v1 in features/world/CITIES.md and the local city gallery: six class/regional paving materials, distinct civic landmarks and court shapes, and attending residents with matching work. The owner requested implementation after finding the shared fountain/bench layout too similar; final visual acceptance and device budgets remain open.",
         "Review city-neighborhoods-v1 in features/world/CITIES.md and the local game: six larger city layouts, markets/homes/workshops, canal bridges, nineteen residents with daily routines, and phone conversations. The owner explicitly requested this revision; final visual/pacing acceptance and physical-device budgets remain open.",
         "Review map-passages-v1 in features/world/LANDSCAPES.md and the local game: destination-specific approaches, open border thresholds, phone labels/taps and keyboard crossings. This scoped owner request authorizes implementation; final art and physical-device approval remain open.",
         "Review ghost-tower-stonework-v1 in features/world/LANDSCAPES.md and the local game: ascending/descending stairs, painted tap bounds, four weathered burial silhouettes, rooftop wall clearance and phone labels. The owner requested this scoped revision; final visual acceptance and physical-device budgets remain open.",
@@ -989,6 +990,33 @@
         {
           "path": "assets/cities/street-furniture.json",
           "sha256": "419d0ddffa26f69812f3d0c4cdec97dd09d37dc87f09aa48172336029ed3dc2c"
+        }
+      ]
+    },
+    {
+      "id": "city-identities-v1-2026-09-16",
+      "source": "Current owner conversation, 2026-09-16",
+      "scope": [
+        "Differentiate existing city stone pathways, gathering places and resident activities around Druid, Mage, Hunter and Knight culture, with regional variations for Windstep and Ashenwatch"
+      ],
+      "quotes": [
+        "They're already getting a personality but try to differentiate the stone pathways for each of them, and the central area looks almost exactly the same with the benches and the fountain.",
+        "Think how a village shaped by 'Knights' / 'Mages' / 'Hunters' and 'Druids' would actually look like",
+        "Then go on and implement this identity"
+      ],
+      "boundary": "Explicit implementation authority for this city revision and its scenery/material assets. This is not approval of the previous generic centerpiece or a final world/art/device standard. Broader production and external release gates remain open; stable IDs, normal saves and service positions are preserved.",
+      "evidence": [
+        {
+          "path": "features/world/CITIES.md",
+          "sha256": "5715a5992fc0a28ed0078bfb1fde87c9bbb74f13216a0bd8e1452822ebd0f3b8"
+        },
+        {
+          "path": "assets/cities/civic-landmarks.json",
+          "sha256": "555a9b2f73020e9bc8de022d8a2665f54306f0267c2b918e675322e092a5b1a5"
+        },
+        {
+          "path": "assets/cities/civic-paving.json",
+          "sha256": "9432990818d6c27873ac273bdf71d15846b118045c8e7f565d45ffcfa49a5ea1"
         }
       ]
     }

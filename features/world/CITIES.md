@@ -45,7 +45,7 @@ existing civilians. [Asset sources and exact prompts](../../assets/cities/README
 ## City neighborhoods
 
 Scope **city-neighborhoods-v1** expands all six existing hubs from 2,400 to 3,600
-units per side (2.25× the area), with layout revision 23. Each has the three
+units per side (2.25× the area). Each has the three
 existing enterable public buildings, six homes, a workshop, three market stalls
 and nineteen residents, in addition to its Keeper and campaign NPCs. Homes,
 workshops and stalls dress the outdoor streets; the original hall, shop and
@@ -56,7 +56,7 @@ annex retain their room and supply interactions and stable IDs.
 | Mosslight | Orchard Green | Bent garden lanes, nursery, planted square and leafy homes |
 | Willowbrook | Lantern Quay | Canal, bridges, blue-roofed homes and bookbinders |
 | Amber Crossing | Caravan Market | Broad market circuit, timber yard and copperleaf trees |
-| Moonwell | Banner Square | Formal streets, fountain, armorers and practice yard |
+| Moonwell | Banner Square | Formal streets, oath steps, armorers and practice yard |
 | Windstep | Highwind Terrace | Angled terrace roads, pine trees and lodge houses |
 | Ashenwatch | Ember Ward | Forge courtyards, replanted yards and stone houses |
 
@@ -82,6 +82,35 @@ benches, lamps, carts, wells, practice equipment and seedling beds. Furniture
 remains visible in low effects. Each atlas decodes lazily and is cached once;
 only visible scenery has DOM nodes. Sources, measured crops and prompts are in
 `assets/cities/neighborhoods.json` and `assets/cities/street-furniture.json`.
+
+### Class identity
+
+Scope **city-identities-v1**, layout revision 24, gives each city its own road
+material, gathering-place geometry and painted civic landmark. The same material
+continues through the arrival courtyard, residential lanes and main square.
+
+| City | Paving | Gathering place and daily use |
+| --- | --- | --- |
+| Mosslight / Druids | Irregular limestone stepping stones with living moss seams | The Listening Oak, an organic root grove where gardeners and herbalists tend and share plants |
+| Willowbrook / Mages | Cool blue diamond mosaic with brass inlay | The Open Observatory, an octagonal study court with an armillary, charts and scholars |
+| Amber Crossing / Hunters | Rough ochre setts in packed earth | The Expedition Table, an uneven provisioning yard where scouts plan routes and pack supplies |
+| Moonwell / Knights | Orderly pale limestone blocks with slate borders | The Oath Steps, a rectangular muster square with standards, drill marks, a captain and an armorer |
+| Windstep / Highland scouts | Layered blue-grey slate | The Wind Cairn, an angular terrace with a weather vane, route charts and climbing supplies |
+| Ashenwatch / Smiths | Soot-worn terracotta brickwork | The Common Hearth, a communal forge yard with an anvil, charcoal and working smiths |
+
+The class landmarks replace the shared fountain/paired-bench centerpiece.
+Seedling beds belong to the druid gardens; the mage city retains a quiet seat
+beside the canal. Resident IDs and all quest/service positions remain stable.
+Each landmark has a solid footprint; attending residents remain reachable.
+
+`world-renderer.js` paints the road network with six cached 256-square material
+tiles from `assets/cities/civic-paving.png`. Pattern coordinates stay in world
+space, including chunk edges; courtyard patterns use a stable local origin.
+The source plus tile cache uses 7.5 MiB of decoded RGBA storage. A failed paving
+download retains solid fallback colors and navigation; the renderer's existing
+retry clears affected city chunks after loading. Landmark art decodes through
+`city-art.js`; `assets/cities/civic-landmarks.json` and `civic-paving.json` record
+source/reference hashes, original prompts and measured crops.
 
 Buildings use their painted bounds as click targets and clear door points for
 navigation/proximity. Entering opens an overhead interactive room: speak to
