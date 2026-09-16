@@ -79,8 +79,7 @@ function buildObjects(){
   else if(o.kind==='pack')visual='<div class="world-art">'+CharacterRig.art(m.habitats[0]?.type||'emberfox')+'</div>';
   else if(o.kind==='cache')visual='<span class="world-chest" aria-hidden="true"><i></i></span>';
   else if(o.kind==='openingSign')visual='<span class="opening-sign-art" aria-hidden="true"><i></i><b></b></span>';
-  else if(o.kind==='gate')visual=(o.gateKind==='stairs'?'<span class="tower-stair-hitbox" aria-hidden="true"></span>':'<div class="world-gate-visual"></div>')+'<span class="gate-badge" aria-hidden="true">'+(m.neighbors.findIndex(g=>g.id===o.id)+1)+' · '+(o.locked?'LOCKED':'EXIT')+'</span>';
-  else visual='<span class="landmark-art">'+({habitat:'❧',cache:'◈',sea:'✧',shop:'⚑',guide:'☷',rest:'⌂',discovery:'✦'}[o.kind])+'</span>';
+  else if(o.kind==='gate')visual=(o.gateKind==='stairs'?'<span class="tower-stair-hitbox" aria-hidden="true"></span>':'<span class="world-exit-hitbox" aria-hidden="true"></span>')+'<span class="gate-badge" aria-hidden="true">'+(m.neighbors.findIndex(g=>g.id===o.id)+1)+' · '+(o.locked?'LOCKED':'EXIT')+'</span>';
   if(o.kind==='wild'||o.kind==='npc')visual=visual.replace(' src="',' data-world-src="');
   const label=o.kind==='wild'?'':'<span class="world-label">'+o.label+'<small>'+(o.kind==='building'?'ENTER':o.kind==='waystone'?'TRAVEL TO A CITY':o.kind==='resident'?'TALK':o.kind==='gate'?o.direction.toUpperCase()+' PORTAL':o.kind==='habitat'?'FIXED SPAWNS':o.kind==='pack'?'CHALLENGE PACK':o.kind==='npc'?'TALK / CHALLENGE':o.kind==='cache'?'OPEN':o.kind==='shop'?'BUY SUPPLIES':o.kind==='sanctuary'?'REST':o.roadSign||o.kind==='openingSign'?'READ THE SIGN':'INTERACT')+'</small></span>';
   const aria=o.kind==='wild'?'Wild creature, level '+(o.habitat?.level||''):o.label;o.baseAria=aria;
@@ -139,7 +138,6 @@ function paint(now){
   if(o.kind==='wild'){o.el.classList.toggle('hostile',!!BondWildBehavior.policy(m.id,o.type,o,trainerLevel));o.el.classList.toggle('alert',o.mode==='alert');o.el.classList.toggle('chase',o.mode==='chase');if(o.mode&&o.mode!=='idle')o.el.classList.toggle('facing-left',!!o.facingLeft);}
   place(o.el,o);const q=project(o),visible=q.x>-240&&q.x<width+140&&q.y>-90&&q.y<height+260;o.el.hidden=!visible;o.el.tabIndex=visible?0:-1;if(visible)for(const img of o.el.querySelectorAll('img[data-world-src]')){img.src=img.dataset.worldSrc;delete img.dataset.worldSrc;}o.el.classList.toggle('nearby',distance(pos,o)<=150);
   if(o.sceneryService&&visible){const key=o.sceneryKey||(o.roadSign?o.sightId:o.kind==='shop'?m.id+':shop':m.hero.id),p=WorldRenderer.bounds(key);if(p){o.el.style.left=p.x+'px';o.el.style.top=p.y+'px';o.el.style.width=p.width+'px';o.el.style.height=p.height+'px';o.el.style.marginTop='0';o.el.style.transform='translate(-50%,-94%)';}}
-  if(o.kind==='gate'&&visible&&o.gateKind!=='stairs'){WorldRenderer.spriteStyle(o.el.querySelector('.world-gate-visual'),m.theme.id,o.gateKind==='cave'?7:o.gateKind==='forest'?9:o.gateKind==='town'?12:o.gateKind==='boss'?11:15,o.gateKind==='cave'||o.gateKind==='boss'?165:130);}
   if(o.kind==='discovery')o.el.classList.toggle('recorded',discovered.has(o.sightId));
  }
  if(now-lastHud>150){

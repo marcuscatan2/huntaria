@@ -1,7 +1,7 @@
 # Lossless scenery exports
 
 These WebP files are runtime encodings of the original world-v15 atlases and
-world-v17 bridge. No creature/trainer sprite, artwork design, crop, resolution or
+world-v17 bridge, plus the [landscape atlases](../landscapes/README.md). No source sprite, artwork design, resolution or
 decoded RGBA pixel is changed. Original PNGs and their provenance remain intact.
 
 [world_assets.py](../../scripts/world_assets.py) uses pinned Pillow to regenerate

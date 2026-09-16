@@ -43,7 +43,7 @@ const length=points=>points.slice(1).reduce((n,p,i)=>n+distance(p,points[i]),0);
 const point=(m,x,y)=>({x:x*m.width,y:y*m.height});
 function closest(p,points){return points.reduce((a,b)=>distance(p,a)<distance(p,b)?a:b);}
 function road(m,id,points,width=190,style='trail'){const out={id,points,width,style};m.roads.push(out);return out;}
-const specs={};let revision=21;
+const specs={};let revision=22;
 for(const m of A.maps){
  m.theme=THEMES[m.regionIndex];m.roads=[];m.water=[];m.rooms=[];m.scenery=[];m.obstacles=[];m.landmarks=[];m.bridges=[];m.neighbors=[];m.layoutRevision=revision;
  if(m.interior){BondGhostTower.layout(m,road);continue;}
@@ -166,6 +166,7 @@ for(const m of A.maps){
   if(onFloor(m,p, -28)||p.x<70||p.y<70||p.x>m.width-70||p.y>m.height-70)continue;
   m.scenery.push({key:m.id+':wall:'+ri+':'+j,...p,art:4,size:180+(j%3)*30,solid:0});
  }
+ BondScenery.dress(m,{safeClear,waterAt,onFloor,pathDistance,segment});
  // Exact compact collision footprints, not full illustration rectangles.
  m.obstacles=m.scenery.filter(s=>s.solid).filter(s=>!m.habitats.some(h=>distance(h,s)<280)&&!m.neighbors.some(g=>distance(g,s)<180)).map(s=>({id:s.key,x:s.x,y:s.y,radius:s.solid,kind:s.art<4?'tree':'rock'}));
  m.collisionBuckets=new Map();for(const o of m.obstacles){const key=Math.floor(o.x/384)+','+Math.floor(o.y/384);if(!m.collisionBuckets.has(key))m.collisionBuckets.set(key,[]);m.collisionBuckets.get(key).push(o);}

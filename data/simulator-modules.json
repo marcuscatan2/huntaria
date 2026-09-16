@@ -13,6 +13,7 @@
   "atlas-data.js",
   "city-data.js",
   "ghost-tower.js",
+  "world-scenery.js",
   "world-layout.js",
   "world-nav.js",
   "growth.js",

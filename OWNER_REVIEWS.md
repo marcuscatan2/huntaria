@@ -137,10 +137,9 @@ Priority: **NEXT**. State: **Needs revision**.
 
 **AI prepares:**
 
-- Review city-perspective-v3 in assets/cities/README.md and features/world/CITIES.md: nine upright right-facing NPCs match the class camera; buildings and rooms retain overhead scenery. Compare the actual streets/interiors in tests/artifacts/city-review.html. Review triple wildlife density and the ten-level aggression boundary in the local game before extending maps or locking pacing. The owner requested these corrections; final visual and pacing acceptance remains pending.
+- Review landscape-identity-v1 in features/world/LANDSCAPES.md and the local game: forty distinct map profiles, original tree/ridge/ruin art, guarded roadside placement, continuous ground shading and cemetery planting. Compare the birch meadow, willow mill, copperleaf kiln, library, mountain watch, basalt cave and rooftop on desktop and phone. The owner explicitly requested this revision; final visual acceptance remains pending.
 - AI prepares one coherent village → field → forest/cave slice with roads, bridge, service, landmark, varied enemies and a return route.
 - Show a walk-through and minimap/atlas; measure actual representative crossings and recovery travel, preserving the existing ≥30-second large-map requirement.
-- Use final-candidate art in a small area and blockout elsewhere; do not decorate all 24 fields to request this review.
 - Review sacred-treasures-v1 in features/campaign/SACRED_TREASURES.md: post-class rescue, Echo list, cemetery tower, Tully dialogue and class weapon. The owner explicitly requested this named route; final pacing and world-slice acceptance remain pending before wider expansion.
 
 **You validate / acceptance:**
@@ -155,7 +154,7 @@ Priority: **NEXT**. State: **Needs revision**.
 
 **Reopen when:** Camera/perspective, scale, traversal speed, map topology or biome kit changes.
 
-**Related specifications:** [WORLD_DESIGN.md](<WORLD_DESIGN.md>), [WORLD_IMPLEMENTATION.md](<WORLD_IMPLEMENTATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/world/CITIES.md](<features/world/CITIES.md>).
+**Related specifications:** [WORLD_DESIGN.md](<WORLD_DESIGN.md>), [WORLD_IMPLEMENTATION.md](<WORLD_IMPLEMENTATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/world/CITIES.md](<features/world/CITIES.md>), [features/world/LANDSCAPES.md](<features/world/LANDSCAPES.md>).
 
 <a id="or-04"></a>
 ### OR-04 — Approve the animation and impact reference

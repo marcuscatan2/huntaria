@@ -13,6 +13,7 @@
 | Master rescue, Echo hunt, ghost tower and class weapon | `python tests/relic_quest_check.py --browser chrome` |
 | Mechanics and runtime reference export | `python tests/pass18_check.py --browser chrome` |
 | Square maps, cities and teleport/save safety | `python tests/city_world_check.py --browser chrome` |
+| Landscape assets, chunk seams, all-map paths and phone views | `python tests/landscapes_check.py --browser chrome` |
 | Played UI flows | `python tests/pass18_ui.py --browser chrome` |
 | Campaign/replay integration | `python tests/pass18_campaign.py --browser chrome` |
 | Boot/headless/presentation boundaries | `python tests/architecture_browser.py --browser chrome` |

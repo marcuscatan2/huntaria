@@ -1,6 +1,7 @@
 # Six Reaches — local world implementation
 Patch20 update over the Pass15 authored world · 2026-09-13. Not commercial acceptance.
 Current topology and city behavior: [Square world and cities](features/world/CITIES.md).
+Current map scenery and asset budgets: [Landscape identity](features/world/LANDSCAPES.md).
 Adventure tuning: [current playtest walkthrough](<features/opening/VALIDATION.md>).
 
 ## What is built
@@ -8,7 +9,7 @@ Adventure tuning: [current playtest walkthrough](<features/opening/VALIDATION.md
 | World capability | Implementation | Validation |
 | --- | --- | --- |
 | 24 large maps / six towns / six boss domains | Stable IDs, 24 authored route specifications, six compact boss arenas, Cartesian grid and reciprocal border portals | 36-place atlas count/connectivity; reciprocal gates; route fixtures |
-| Readable varied scenery | Six transparent 16-object atlases; nine ground materials; unique hero art per exploration map, themed enterable city buildings | All 30 rendered in browser; desktop/mobile screenshots; owner art review pending |
+| Readable varied scenery | Forty landscape profiles, six regional atlases, two shared tree/ridge/ruin atlases, nine ground materials and themed city buildings | All-map landscape/navigation suite; desktop/phone screenshots; owner art review pending |
 | Continuous exploration | Follow camera, 0.78 oblique Y projection, click routing, keyboard movement, physical multi-gate itineraries | Real movement-loop crossings and gate journey; no atlas teleport |
 | Cave and water navigation | Walkable cave rooms/corridors, visible rock rims, water masks and explicit bridge polygons | Collision and A* reachability to gates, residents, landmarks, rest/cache/guide |
 | Map-wide wildlife populations | 94 wild species retain source maps; Common8/Uncommon5/Rare1 per species, persisted random reachable positions; ordinary0s/rare60s replacement | Pass17 quotas, reachability, death/respawn, reload, reserved legacy-slot and write-failure checks |
@@ -17,7 +18,7 @@ Adventure tuning: [current playtest walkthrough](<features/opening/VALIDATION.md
 | Discovery | 72 wilderness + six town landmark identities; persistent visited maps and sightings | Walk up, discover, dismiss, reload; no hidden stat or loot reward |
 | Town and trail interactions | Physical gates, Keepers, fighting NPCs and direct painted road signs. Enterable city shops sell earned-coin supplies; arrival heals the party automatically. City waystones connect the four starting cities. Edit builds and summon only in Loadout | Played city room/shop/waystone and field-recovery flows; optional packs still use resident lives |
 | Battle continuity | Biome/cave-aware arena backgrounds; existing immediate wild-win return and loot popup | Real starter fight plus full pack/duel/save-failure regressions |
-| Delivery resilience | Chunk LRU, two logical scenery sheets, ground fallback, silent progressive loading and concise failure/retry feedback | 100 remounts; aborted asset request/retry; real-time browser sample |
+| Delivery resilience | Chunk LRU, two regional and two shared landscape sheets, ground fallback, silent progressive loading and concise failure/retry feedback | Bounded map transitions; aborted asset request/retry; real-time browser sample |
 | World HUD | Cartesian 36-square atlas with shared-border roads, six boss domains, trainer-relative average-level hover/focus cards, local minimap, travel health, recovery and journal | Desktop/mobile, keyboard/modal, graph and exact green/yellow/red boundary checks; danger never becomes an invisible lock |
 | Adventure stakes | Trainer-only opening values remain intact; lone wilds scale from 1× to 2.6× HP and 1.3× offense as the deployed party grows to three. HP persists across fights/reloads/build changes; Firstlight defeat restores at camp and other defeat rescues restore at their city | Exact scaling fixtures, seeded opening samples, played hunts, health/replay/migration/transaction assertions |
 | Painted bridge and facing | Original timber bitmap aligned to actual crossing polygons, fallback/retry; sprite size independent of directional mirror, followers track actual movement | Pass17 played crossing/screenshots and canvas/portrait/vector left/right checks |
@@ -39,6 +40,8 @@ These are original generated game assets, not extracted Ragnarok or Sword x Staf
   creature region/source-level/availability fields drive non-starter habitats.
 - world-layout.js supplies authored routes, landmark/habitat placement, bridge geometry,
   cave floors, deterministic scenery dressing and compact collision footprints.
+- world-scenery.js supplies forty scenery profiles, measured prop frames, guarded
+  verge placement and continuous world-space ground patches.
 - world-nav.js performs bounded A* and collision-checked path simplification.
   Four maps of neighbor-edge tests are cached; art/camera never change movement speed.
 - world-renderer.js paints ground chunks, clips atlas objects at runtime and mounts
@@ -67,7 +70,8 @@ mathematical proof of the globally shortest walkable path.
 Chunks cover 1,024 world units, rasterized at 512 square pixels, with at most 28
 retained canvases (28 MiB for those RGBA backing stores). One-ring prefetch is
 limited to one new chunk per visual interval. Six scene atlases are 1,254 square;
-at most two are logically retained (about 12 MiB decoded). The material atlas plus
+at most two are logically retained (about 12 MiB decoded). Two shared landscape
+atlases add about 12 MiB. The material atlas plus
 nine 384-square crops adds about 11 MiB. Browser/GPU/image caches, DOM surfaces,
 combat assets and runtime overhead are additional: these estimates are not a
 measured total-process memory claim.

@@ -12,6 +12,7 @@
 - [Exploration owner](../features/exploration/README.md): scenery and world props.
 - [Inner Sea homestead](inner-sea/README.md): painted farm background and exact generation provenance.
 - [Lossless scenery exports](world-runtime/README.md): pixel-identical runtime encoding; original images remain intact.
+- [Landscape props](landscapes/README.md): original trees, ridges and ruins; exact prompts and measured runtime frames.
 - [Original audio](audio/README.md): procedural scores and reproducible loop files.
 - [Art Bible](../ART_BIBLE.md): visual conventions and acceptance, not an
   assertion that current art is approved.

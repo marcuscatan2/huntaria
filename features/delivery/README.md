@@ -46,6 +46,7 @@ The links below point to the actual source; root browser paths remain in use.
 | [tests/farm_classes_cases.js](<../../tests/farm_classes_cases.js>) | Owned source/configuration; inspect before editing. |
 | [tests/field_encounters_check.py](<../../tests/field_encounters_check.py>) | Owned source/configuration; inspect before editing. |
 | [tests/relic_quest_check.py](<../../tests/relic_quest_check.py>) | Owned source/configuration; inspect before editing. |
+| [tests/landscapes_check.py](<../../tests/landscapes_check.py>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 

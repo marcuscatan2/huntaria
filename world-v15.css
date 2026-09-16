@@ -17,10 +17,9 @@
 #world-actors .map-object:not(.nearby):not(:hover):not(:focus-visible) .world-label{opacity:0}
 #world-actors .region-player .world-label{opacity:.8;top:103%;font-size:9px;padding:3px 7px}
 #world-actors .map-object:focus-visible{outline:3px solid #fff0b1;outline-offset:4px;border-radius:12px}
-#world-actors .gate{width:135px;height:140px}.gate .gate-art{display:none}.world-gate-visual{position:absolute;bottom:0;left:50%;transform:translateX(-50%);pointer-events:none;background-repeat:no-repeat}
+#world-actors .gate{width:135px;height:140px}.gate .gate-art{display:none}.world-exit-hitbox{display:block;width:135px;height:140px}
 #world-actors .guide,#world-actors .rest,#world-actors .discovery{width:65px;height:72px}
-#world-actors .landmark-art{font-size:34px;display:grid;place-items:center;height:56px;width:56px;background:#fff8deed;border-radius:50%;color:#436856;border:3px solid #91aa7b;box-shadow:0 4px 12px #15383344}
-#world-actors .discovery .landmark-art{font-size:24px;width:36px;height:36px;background:#edddb8ed}
+#world-actors .scenery-service::before,#world-actors .scenery-service::after{display:none}
 .region-map-heading{z-index:2010;left:22px;top:20px;pointer-events:none}.region-map-heading>span{color:#f8efd2;text-shadow:0 2px 5px #133833;font-size:10px;letter-spacing:2px;background:#173e39c9;border:1px solid #bed1a453;border-radius:10px;padding:12px 16px;display:block}
 .region-map-heading small{display:block;font:600 21px Georgia,serif;letter-spacing:0;margin-top:5px}
 .world-toolbar{position:absolute;top:20px;right:18px;z-index:2050;display:flex;gap:6px;align-items:center;background:#183c36de;padding:5px;border-radius:10px;border:1px solid #b7cba169}

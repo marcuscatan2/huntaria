@@ -37,6 +37,7 @@
     "campaign.js",
     "atlas-data.js",
     "city-data.js",
+    "world-scenery.js",
     "world-layout.js",
     "world-data.js",
     "echoes.js",

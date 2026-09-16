@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--check',action='store_true');args=p.parse_args()
     out=ROOT/'assets/world-runtime';out.mkdir(exist_ok=True);rows=[]
-    sources=sorted((ROOT/'assets/world-v15').glob('*.png'))+[ROOT/'assets/world-v17/timber-bridge.png']
+    sources=sorted((ROOT/'assets/world-v15').glob('*.png'))+[ROOT/'assets/world-v17/timber-bridge.png']+sorted((ROOT/'assets/landscapes').glob('*.png'))
     for src in sources:
         target=out/(src.stem+'.webp')
         with Image.open(src) as original:

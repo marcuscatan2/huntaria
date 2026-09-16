@@ -266,7 +266,8 @@
         "world-layout.js",
         "world-nav.js",
         "city-data.js",
-        "ghost-tower.js"
+        "ghost-tower.js",
+        "world-scenery.js"
       ],
       "backlog": [
         "F-016",
@@ -275,20 +276,22 @@
         "F-058"
       ],
       "entry": "BondAtlas.get / maps / collision; BondWorldLayout; BondNav.find",
-      "contract": "36 stable places occupy unique Cartesian cells: 24 existing large maps, six square safe cities and six boss domains. GRID_EDGES owns reciprocal north/east/south/west border portals; world-layout derives physical gates and safe arrivals. City links exist only across their authored shared borders; no field-wide town shortcuts. Firstlight exits stay locked until the Forest Mage proof; subsequent level bands warn of danger. The atlas draws the same grid and plans walking through gates. city-data owns themed city buildings, doorway/service points, civilian companions and the four-city waystone allowlist. Interior view state does not create new world maps or alter field geometry. Ghost Tower Entrance retains hollow-2 and its Cartesian borders; four separate saved interiors connect by reciprocal stairs. Primary ghost habitats retain their spawn prefixes; repeated floor populations use distinct IDs. The atlas projects interiors onto the entrance cell. Ghost-tower interiors have solid internal walls and offset stairways; one geometry drives their visible stonework and navigation.",
+      "contract": "36 stable places occupy unique Cartesian cells: 24 existing large maps, six square safe cities and six boss domains. GRID_EDGES owns reciprocal north/east/south/west border portals; world-layout derives physical gates and safe arrivals. City links exist only across their authored shared borders; no field-wide town shortcuts. Firstlight exits stay locked until the Forest Mage proof; subsequent level bands warn of danger. The atlas draws the same grid and plans walking through gates. city-data owns themed city buildings, doorway/service points, civilian companions and the four-city waystone allowlist. Interior view state does not create new world maps or alter field geometry. Ghost Tower Entrance retains hollow-2 and its Cartesian borders; four separate saved interiors connect by reciprocal stairs. Primary ghost habitats retain their spawn prefixes; repeated floor populations use distinct IDs. The atlas projects interiors onto the entrance cell. Ghost-tower interiors have solid internal walls and offset stairways; one geometry drives their visible stonework and navigation. world-scenery owns forty map-specific landscape profiles, measured atlas frames and deterministic verge placement; layout derives solid footprints before navigation and saved-position validation.",
       "tests": [
         "mechanics",
         "ui",
         "campaign",
         "boundaries",
         "city-world",
-        "relic-quest"
+        "relic-quest",
+        "landscapes"
       ],
       "docs": [
         "WORLD_DESIGN.md",
         "WORLD_IMPLEMENTATION.md",
         "features/world/CITIES.md",
-        "features/campaign/SACRED_TREASURES.md"
+        "features/campaign/SACRED_TREASURES.md",
+        "features/world/LANDSCAPES.md"
       ],
       "summary": "Defines maps, geometry and paths; supplies exploration and population placement."
     },
@@ -314,7 +317,7 @@
         "F-035"
       ],
       "entry": "BondRegion.enter / leave / frame; WorldRenderer.mount / dispose / draw; BondWorldMap",
-      "contract": "Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; every roaming species is hostile outside Firstlight at every trainer level; the starting map remains passive. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Pack previews use a participating monster portrait and reserve lives only on Challenge; cancelling preserves walking and loot. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The Forest Mage onboarding trial and four class-master acceptance battles are protected from roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction. Ordinary NPCs and keepers use civilian art; class masters retain their class portrait through the shared CharacterRig appearance selector. City buildings use painted hit bounds and clear doorway proximity. Enterable overhead rooms retain source proportions on desktop and phones and contain resident conversations, prop interactions and profile-owned supply purchases; closing/reload returns outside. Cities replace generic markers with painted buildings, people, companions, waystones and chest objects. The Cartesian atlas draws equal squares and actual shared-border routes; waystone travel is a separate physical interaction.",
+      "contract": "Owns input/camera, physical encounter anchors, crossed-swords markers and proximity. Exploration uses an in-frame current objective with its destination region/map, upper-right minimap/Atlas entry, event-only status line and three-destination bottom menu; legacy external travel cards are hidden on this screen. Authored map-description prose remains world-building data and is not shown automatically on entry, in the HUD, or in sign/Keeper panels. Successful progressive scenery loading is silent; an actual asset failure remains concise and visible. Campaign rules expose `offer`/`delivery` state: the field and local minimap render a yellow ! at the current quest giver's real map position and a yellow ? on the NPC ready for delivery, with the same meaning in accessible field labels. Roaming wild species nameplates are hidden while accessible labels and the combat HUD retain identity. Player contact with clicked wildlife and hostile wildlife contact immediately start the reserved fight; every roaming species is hostile outside Firstlight at every trainer level; the starting map remains passive. The Forest Mage and physical locked-exit badges expose the only opening road gate. NPC/pack/boss entries use concise dialogue. Pack previews use a participating monster portrait and reserve lives only on Challenge; cancelling preserves walking and loot. Progression bosses have fixed authored levels/rewards; later altar rematches retain selectable reward-free practice levels. Engaged trainers cannot move. Hostile pursuit continues during an active fight across in-game tabs; contact joins the same saved attempt as an enemy. The Forest Mage onboarding trial and four class-master acceptance battles are protected from roaming joins. No online participants. Discovery text omits backend tuning. Fixed thin HP tracks read live combat or saved vitality for the trainer and selected companions. In-frame notices are click-through except for their explicit controls, so reminders never block world interaction. Ordinary NPCs and keepers use civilian art; class masters retain their class portrait through the shared CharacterRig appearance selector. City buildings use painted hit bounds and clear doorway proximity. Enterable overhead rooms retain source proportions on desktop and phones and contain resident conversations, prop interactions and profile-owned supply purchases; closing/reload returns outside. Cities replace generic markers with painted buildings, people, companions, waystones and chest objects. The Cartesian atlas draws equal squares and actual shared-border routes; waystone travel is a separate physical interaction. Landscape props use two shared lossless atlases with measured silhouette frames. Ground shading includes world-space patch halos across chunk boundaries. Painted stone exit posts replace floating gate thumbnails; scenery services retain their real hit bounds without generic icon markers.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -326,13 +329,16 @@
         "farm-classes",
         "city-world",
         "field-encounters",
-        "relic-quest"
+        "relic-quest",
+        "landscapes"
       ],
       "docs": [
         "WORLD_DESIGN.md",
         "WORLD_IMPLEMENTATION.md",
         "assets/world-runtime/README.md",
-        "features/world/CITIES.md"
+        "features/world/CITIES.md",
+        "features/world/LANDSCAPES.md",
+        "assets/landscapes/README.md"
       ],
       "summary": "Handles walking, camera, atlas and scenery; connects world geometry to profile and shared rigs."
     },
@@ -647,7 +653,8 @@
         "tests/farm_classes_check.py",
         "tests/farm_classes_cases.js",
         "tests/field_encounters_check.py",
-        "tests/relic_quest_check.py"
+        "tests/relic_quest_check.py",
+        "tests/landscapes_check.py"
       ],
       "backlog": [
         "F-034",
@@ -733,7 +740,8 @@
       "BondAtlas",
       "BondContent",
       "BondCities",
-      "BondGhostTower"
+      "BondGhostTower",
+      "BondScenery"
     ],
     "world-nav.js": [
       "BondAtlas",
@@ -749,7 +757,8 @@
     "world-renderer.js": [
       "BondAtlas",
       "BondWorldLayout",
-      "BondCityArt"
+      "BondCityArt",
+      "BondScenery"
     ],
     "echoes.js": [
       "BondContent"
@@ -955,6 +964,9 @@
     "relic-quest-view.js": [
       "BondProfile",
       "BondRelicQuest"
+    ],
+    "world-scenery.js": [
+      "BondAtlas"
     ]
   },
   "unloaded": [
@@ -975,7 +987,8 @@
     "moon-calendar.js",
     "city-data.js",
     "raid-rules.js",
-    "relic-quest.js"
+    "relic-quest.js",
+    "world-scenery.js"
   ],
   "storage_writers": {
     "profile.js": "Profile document and receipts",
@@ -999,7 +1012,8 @@
     "exploration": [
       "assets/world-v15",
       "assets/world-v17",
-      "assets/world-runtime"
+      "assets/world-runtime",
+      "assets/landscapes"
     ],
     "experience": [
       "assets/audio"
@@ -1138,6 +1152,13 @@
       ],
       "browser": true,
       "purpose": "Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward"
+    },
+    "landscapes": {
+      "command": [
+        "tests/landscapes_check.py"
+      ],
+      "browser": true,
+      "purpose": "Forty map profiles, seamless ground patches, reachable scenery/gates/services, real atlas crops, phone readability and bounded landscape caches"
     }
   },
   "connections": [

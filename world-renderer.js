@@ -13,7 +13,16 @@ const foliage={
  windstep:[[[17,0],[345,0],[345,314],[17,314]],[[350,29],[698,29],[698,154],[668,181],[638,199],[638,313],[350,313]],[[674,61],[953,61],[953,313],[660,313],[660,199],[670,181],[700,154],[694,100]],[[964,69],[1254,69],[1254,310],[964,310]]],
  ashen:[[[8,0],[331,0],[331,325],[8,325]],[[358,9],[624,9],[624,325],[358,325]],[[646,74],[952,74],[952,328],[646,328]],[[958,36],[1254,36],[1254,324],[958,324]]]
 };
-const sheets=new Map(),chunks=new Map(),nodes=new Map(),backdrops=new Map();
+const landmarkRects={
+ mosslight:{5:[330,370,607,623],8:[0,621,335,934],11:[938,638,1254,934],13:[330,937,641,1254],15:[957,938,1254,1254]},
+ willowbrook:{5:[340,330,630,600],9:[353,603,696,924],11:[950,600,1254,925],15:[974,926,1254,1254]},
+ amber:{5:[358,333,596,589],8:[0,603,331,908],11:[950,601,1254,912],15:[965,910,1254,1254]},
+ moonwell:{5:[318,320,617,616],11:[950,615,1254,927],15:[964,927,1254,1254]},
+ windstep:{5:[344,313,592,598],8:[0,582,311,931],11:[950,582,1254,933]},
+ ashen:{5:[349,324,616,610],8:[0,606,329,901],9:[330,605,641,907],11:[939,617,1254,904],15:[959,913,1254,1254]}
+};
+const signOutline=[[970,925],[1254,925],[1254,1254],[970,1254],[970,1120],[1000,1100],[1000,1045],[970,1030]];
+const sheets=new Map(),landscapeSheets=new Map(),chunks=new Map(),nodes=new Map(),backdrops=new Map();
 const terrainImage=new Image(),materials=[];let terrainReady=false,terrainError=false;
 terrainImage.onload=()=>{for(let i=0;i<9;i++){const c=document.createElement('canvas');c.width=c.height=384;const g=c.getContext('2d');g.drawImage(terrainImage,(i%3)*terrainImage.width/3,Math.floor(i/3)*terrainImage.height/3,terrainImage.width/3,terrainImage.height/3,0,0,384,384);materials[i]=c;}terrainReady=true;terrainError=false;for(const c of chunks.values())c.width=c.height=1;chunks.clear();backdrops.clear();};
 terrainImage.onerror=()=>{terrainError=true;};terrainImage.src='assets/world-runtime/terrain-atlas.webp';
@@ -24,14 +33,21 @@ const material=(ctx,index,fallback)=>terrainReady?ctx.createPattern(materials[in
 let parent=null,current=null,mode='standard',stats={frames:0,renderMs:[],chunksBuilt:0,peakChunks:0,visibleProps:0,assetErrors:[]},lastTexture=0;
 const rand=seed=>{let s=seed>>>0;return ()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296;};};
 function sheet(id){
+ if(BondScenery.FRAMES[id]){
+  if(landscapeSheets.has(id))return landscapeSheets.get(id);
+  const image=new Image(),s={image,ready:false,error:false,url:'assets/world-runtime/'+id+'-atlas.webp'};
+  landscapeSheets.set(id,s);image.onload=()=>{s.ready=true;backdrops.clear();};image.onerror=()=>{s.error=true;stats.assetErrors.push(id);};image.src=s.url;return s;
+ }
  if(sheets.has(id)){const s=sheets.get(id);s.last=performance.now();return s;}
  const image=new Image(),s={image,ready:false,error:false,last:performance.now(),url:'assets/world-runtime/'+id+'-atlas.webp'};
  if(sheets.size>=2){const candidates=[...sheets.entries()].filter(([k])=>k!==current?.theme.id).sort((a,b)=>a[1].last-b[1].last);if(candidates.length)sheets.delete(candidates[0][0]);}
  sheets.set(id,s);image.onload=()=>{s.ready=true;s.error=false;};image.onerror=()=>{s.error=true;stats.assetErrors.push(id);};image.src=s.url;
  return s;
 }
+function assetState(){const active=[...(current?[sheet(current.theme.id)]:[]),...landscapeSheets.values()];return {loading:active.some(s=>!s.ready&&!s.error),fallback:active.some(s=>s.error)};}
 function frameRect(id,index){
- const s=sheet(id),outline=foliage[id]?.[index];
+ const s=sheet(id),rect=landmarkRects[id]?.[index],outline=foliage[id]?.[index]||(id==='windstep'&&index===15?signOutline:rect?[[rect[0],rect[1]],[rect[2],rect[1]],[rect[2],rect[3]],[rect[0],rect[3]]]:null);
+ if(BondScenery.FRAMES[id]){const [x,y,right,bottom]=BondScenery.FRAMES[id][index];return {x,y,w:right-x,h:bottom-y};}
  if(outline){const points=outline.map(([x,y])=>[x*s.image.width/1254,y*s.image.height/1254]),xs=points.map(p=>p[0]),ys=points.map(p=>p[1]),x=Math.min(...xs),y=Math.min(...ys);return {x,y,w:Math.max(...xs)-x,h:Math.max(...ys)-y,points};}
  const rows=bounds[id],row=Math.floor(index/4),col=index%4,pad=s.image.width/4*.035;return {x:col*s.image.width/4+pad,y:rows[row]*s.image.height,w:s.image.width/4-pad*2,h:(rows[row+1]-rows[row])*s.image.height};
 }
@@ -47,7 +63,7 @@ function caveFloor(m){
 function floor(ctx,m){
  const t=m.theme;
  ctx.fillStyle=material(ctx,m.interior?7:m.kind==='cave'?8:m.regionIndex,m.kind==='cave'?'#2c353d':t.ground);ctx.fillRect(0,0,m.width,m.height);
- ctx.fillStyle=m.kind==='cave'?'#101d29cc':t.ground+'38';ctx.fillRect(0,0,m.width,m.height);
+ ctx.fillStyle=m.kind==='cave'?'#101d29cc':t.ground+'60';ctx.fillRect(0,0,m.width,m.height);
  if(m.kind==='cave'){const p=caveFloor(m);ctx.save();ctx.shadowBlur=24;ctx.shadowColor='#102131';ctx.fillStyle=material(ctx,8,t.stone);ctx.fill(p);ctx.restore();ctx.fillStyle=t.stone+'24';ctx.fill(p);}
 }
 function makeChunk(m,cx,cy){
@@ -60,15 +76,27 @@ function makeChunk(m,cx,cy){
   ctx.strokeStyle='#2a2e43';ctx.lineWidth=75;ctx.strokeRect(100,100,m.width-200,m.height-200);
  }
 
- const r=rand(A.hash(m.id+':ground:'+cx+':'+cy));
- // Soft material patches, fine brush flecks and gentle path-edge blends.
- for(let i=0;i<45;i++){const x=(cx+r())*CHUNK,y=(cy+r())*CHUNK,rad=70+r()*230;
+ // World-space patches include their full halo in every intersecting chunk.
+ // A patch on a texture boundary must be painted on BOTH sides of that boundary.
+ const cover=m.landscape.cover;
+ for(const p of BondScenery.groundPatches(m.id,cx*CHUNK,cy*CHUNK,(cx+1)*CHUNK,(cy+1)*CHUNK)){
+  const {x,y,radius:rad,seed}=p,r=rand(seed);
   if(m.kind==='cave'&&!L.onFloor(m,{x,y}))continue;
-  const g=ctx.createRadialGradient(x,y,1,x,y,rad);g.addColorStop(0,(m.kind==='cave'?'#89969c':i%2?t.light:t.shade)+'24');g.addColorStop(1,(m.kind==='cave'?'#89969c':i%2?t.light:t.shade)+'00');ctx.fillStyle=g;ctx.fillRect(x-rad,y-rad,rad*2,rad*2);
- }
- for(let i=0;i<550;i++){const x=(cx+r())*CHUNK,y=(cy+r())*CHUNK;
-  if(m.kind==='cave'&&!L.onFloor(m,{x,y}))continue;
-  ctx.globalAlpha=.12+r()*.15;ctx.fillStyle=i%3?t.light:t.shade;ctx.beginPath();ctx.ellipse(x,y,1+r()*4,1+r()*2,r()*3,0,Math.PI*2);ctx.fill();
+  const color=m.kind==='cave'?t.stone:seed%2?t.light:t.shade;
+  const g=ctx.createRadialGradient(x,y,1,x,y,rad);g.addColorStop(0,color+'36');g.addColorStop(1,color+'00');ctx.fillStyle=g;ctx.fillRect(x-rad,y-rad,rad*2,rad*2);
+  for(let i=0;i<24;i++){
+   const px=x+(r()-.5)*210,py=y+(r()-.5)*170,angle=r()*Math.PI;
+   ctx.globalAlpha=.18+r()*.20;ctx.fillStyle=cover==='leaves'?(i%2?'#d38a40':'#925239'):cover==='ash'?'#b2aaa0':i%3?t.light:t.shade;
+   ctx.beginPath();ctx.ellipse(px,py,2+r()*5,1+r()*2,angle,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  if(!m.interior&&m.kind!=='cave'&&!L.waterAt(m,p)&&L.pathDistance(p,m.roads[0].points)>180){
+   for(let i=0;i<5;i++){
+    const px=x+(r()-.5)*110,py=y+(r()-.5)*80;
+    ctx.strokeStyle=t.shade+'aa';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(px-6,py-10);ctx.quadraticCurveTo(px-1,py-6,px,py);ctx.quadraticCurveTo(px+1,py-9,px+8,py-16);ctx.stroke();
+    if(cover==='flowers'||cover==='heath'){ctx.fillStyle=cover==='flowers'?(i%2?'#ece5ac':'#d2dce4'):'#c9b583';ctx.beginPath();ctx.ellipse(px-6,py-11,3,2,0,0,Math.PI*2);ctx.fill();}
+   }
+  }
  }ctx.globalAlpha=1;
  for(const road of m.roads){
   if(m.kind==='cave')continue;
@@ -77,10 +105,31 @@ function makeChunk(m,cx,cy){
   ctx.strokeStyle=t.soil+'24';ctx.lineWidth=road.width*.88;ctx.stroke();
   
  }
+ // Incomplete foundations and worn paving around actual ruins, below props.
+ for(const site of m.scenerySites){
+  const r=rand(site.seed),radius=site.radius;
+  ctx.save();ctx.translate(site.x,site.y+5);ctx.scale(1,.62);
+  for(let row=-5;row<=5;row++)for(let col=-5;col<=5;col++){
+   const x=col*70+(row%2)*35,y=row*65,wear=r();if(Math.hypot(x,y)>radius||wear<.24)continue;
+   ctx.fillStyle='#293b3730';ctx.fillRect(x-29,y-25,62,55);
+   ctx.fillStyle=wear>.65?t.stone+'86':t.soil+'78';ctx.beginPath();ctx.moveTo(x-28,y-26);ctx.lineTo(x+25,y-24);ctx.lineTo(x+29,y+20);ctx.lineTo(x-24,y+24);ctx.closePath();ctx.fill();
+   ctx.strokeStyle=t.light+'50';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-28,y-26);ctx.lineTo(x+25,y-24);ctx.stroke();
+  }ctx.restore();
+ }
  for(const w of m.water){
   ctx.fillStyle=t.deep;ctx.strokeStyle=t.shade;ctx.lineWidth=18;
   if(w.points){path(ctx,w.points);ctx.lineWidth=w.width+24;ctx.stroke();ctx.strokeStyle=t.water;ctx.lineWidth=w.width;ctx.stroke();ctx.strokeStyle=t.deep+'70';ctx.lineWidth=w.width*.48;ctx.stroke();}
   else{ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx+16,w.ry+16,0,0,Math.PI*2);ctx.fillStyle=t.soil;ctx.fill();ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx,w.ry,0,0,Math.PI*2);ctx.fillStyle=t.water;ctx.fill();ctx.beginPath();ctx.ellipse(w.x,w.y,w.rx*.78,w.ry*.70,0,0,Math.PI*2);ctx.fillStyle=t.deep+'65';ctx.fill();}
+ }
+ // Border routes are physical stone posts. Destination badges remain nearby.
+ for(const g of m.neighbors.filter(g=>g.kind!=='stairs')){
+  const vertical=g.direction==='north'||g.direction==='south';
+  for(const sign of [-1,1]){
+   const x=g.x+(vertical?150*sign:0),y=g.y+(vertical?0:150*sign);
+   ctx.fillStyle='#25393050';ctx.beginPath();ctx.ellipse(x+9,y+12,32,19,0,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle=t.shade;ctx.fillRect(x-21,y-39,42,47);ctx.fillStyle=t.stone;ctx.fillRect(x-24,y-50,48,19);
+   ctx.fillStyle=t.light+'99';ctx.fillRect(x-24,y-50,48,5);
+  }
  }
  if(m.cemetery||m.towerFloor===4){
   const cx=m.interior?m.width/2:m.hero.x,cy=m.interior?1050:m.hero.y;
@@ -174,9 +223,10 @@ function draw(ctx,m,camera,scale,width,height,now,player,options={}){
    if(mode==='low'&&p.size<180&&![13,14,15].includes(p.art))continue;
    visible.add(p.key);let el=nodes.get(p.key);
    if(!el){el=document.createElement('div');el.className='world-prop';el.setAttribute('aria-hidden','true');parent.append(el);nodes.set(p.key,el);}
-   if(Number.isInteger(p.cityArt))BondCityArt.building(el,p.cityArt,p.size*scale);else spriteStyle(el,t.id,p.art,p.size*scale);
+   if(Number.isInteger(p.cityArt))BondCityArt.building(el,p.cityArt,p.size*scale);else spriteStyle(el,p.sceneryAtlas||t.id,p.sceneryFrame??p.art,p.size*scale);
    el.style.left=x+'px';el.style.top=y+'px';el.style.zIndex=String(Math.round(y+300));
-   const overlap=[player,options.focus].filter(Boolean).some(subject=>subject.y<p.y&&p.y-subject.y<(p.art<4?250:130)&&Math.abs(subject.x-p.x)<p.size*.30);
+   const depth=parseFloat(el.style.height)/scale/vertical*.94;
+   const overlap=[player,options.focus].filter(Boolean).some(subject=>subject.y<p.y&&p.y-subject.y<depth&&Math.abs(subject.x-p.x)<p.size*.42);
    el.style.opacity=overlap?'.34':'1';
    const sway=p.sway&&!reduced&&mode!=='low'?Math.sin(now/3400+A.hash(p.key)%13)*.55:0;
    el.style.transform='translate(-50%,-94%) rotate('+sway+'deg)';
@@ -184,7 +234,7 @@ function draw(ctx,m,camera,scale,width,height,now,player,options={}){
   for(const [key,el]of nodes)if(!visible.has(key)){el.remove();nodes.delete(key);}
   stats.visibleProps=nodes.size;
  }
- const loading=sheet(t.id);stats.loading=!loading.ready&&!loading.error;stats.fallback=loading.error;
+ Object.assign(stats,assetState());
  const time=performance.now()-began;stats.frames++;stats.renderMs.push(time);if(stats.renderMs.length>600)stats.renderMs.shift();
 }
 function mini(ctx,m,width=160,height=120){
@@ -204,5 +254,5 @@ function battleBackdrop(m){
  drawFrame(ctx,m,m.kind==='cave'?4:0,90,280,360);drawFrame(ctx,m,m.kind==='cave'?7:1,1110,275,340);drawFrame(ctx,m,8+m.index,640,210,260);drawFrame(ctx,m,2,70,660,220);drawFrame(ctx,m,4,1140,640,220);
  const url=c.toDataURL('image/webp',.82);backdrops.set(key,url);return url;
 }
-root.WorldRenderer={bounds(key){const e=nodes.get(key);return e?{x:parseFloat(e.style.left),y:parseFloat(e.style.top),width:parseFloat(e.style.width),height:parseFloat(e.style.height)}:null;},mount,dispose,draw,mini,spriteStyle,battleBackdrop,prefetch:id=>sheet(A.get(id)?.theme.id||id),retry(){if(bridgeError){bridgeError=false;bridgeImage.src='assets/world-runtime/timber-bridge.webp?retry='+Date.now();}if(terrainError){terrainError=false;terrainImage.src='assets/world-runtime/terrain-atlas.webp?retry='+Date.now();}const id=current?.theme.id;if(id){sheets.delete(id);sheet(id);}},inspect(){const times=[...stats.renderMs].sort((a,b)=>a-b);return {...stats,bridgeReady,bridgeError,bridgeAsset:'assets/world-runtime/timber-bridge.webp',terrainReady,terrainError,estimatedMaterialBytes:materials.length*384*384*4+(terrainReady?terrainImage.width*terrainImage.height*4:0),loading:current?!sheet(current.theme.id).ready&&!sheet(current.theme.id).error:false,fallback:current?sheet(current.theme.id).error:false,renderMs:undefined,p95RenderMs:times[Math.floor(times.length*.95)]||0,chunkCount:chunks.size,estimatedChunkBytes:chunks.size*RES*RES*4,sheetCount:sheets.size,decodedSheetBytes:[...sheets.values()].reduce((n,s)=>n+(s.ready?s.image.width*s.image.height*4:0),0)};}};
+root.WorldRenderer={bounds(key){const e=nodes.get(key);return e?{x:parseFloat(e.style.left),y:parseFloat(e.style.top),width:parseFloat(e.style.width),height:parseFloat(e.style.height)}:null;},mount,dispose,draw,mini,spriteStyle,battleBackdrop,prefetch:id=>sheet(A.get(id)?.theme.id||id),retry(){if(bridgeError){bridgeError=false;bridgeImage.src='assets/world-runtime/timber-bridge.webp?retry='+Date.now();}if(terrainError){terrainError=false;terrainImage.src='assets/world-runtime/terrain-atlas.webp?retry='+Date.now();}for(const [key,s] of landscapeSheets)if(s.error){landscapeSheets.delete(key);sheet(key);}const id=current?.theme.id;if(id){sheets.delete(id);sheet(id);}},inspect(){const times=[...stats.renderMs].sort((a,b)=>a-b);return {...stats,bridgeReady,bridgeError,bridgeAsset:'assets/world-runtime/timber-bridge.webp',terrainReady,terrainError,estimatedMaterialBytes:materials.length*384*384*4+(terrainReady?terrainImage.width*terrainImage.height*4:0),...assetState(),renderMs:undefined,p95RenderMs:times[Math.floor(times.length*.95)]||0,chunkCount:chunks.size,estimatedChunkBytes:chunks.size*RES*RES*4,sheetCount:sheets.size,landscapeSheetCount:landscapeSheets.size,landscapeReady:[...landscapeSheets.values()].every(s=>s.ready),decodedLandscapeBytes:[...landscapeSheets.values()].reduce((n,s)=>n+(s.ready?s.image.width*s.image.height*4:0),0),decodedSheetBytes:[...sheets.values()].reduce((n,s)=>n+(s.ready?s.image.width*s.image.height*4:0),0)};}};
 })(globalThis);
