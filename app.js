@@ -165,7 +165,7 @@
     $('#battle-description').textContent=npc.name+' · '+npc.title+(npc.kind?' · Defeat every enemy. Your trainer must survive.':' · A fixed NPC team. Your party is from Party & bag.');
     if(npc.kind==='boss')$('#battle-description').textContent=npc.practice?npc.name+' · Test level '+BondProfile.snapshot().bossLevel+' · '+(battle.group?'Simulated allied parties, NOT online players. All allied trainers must fall to lose.':'Your party alone.')+' Reward-free practice: no coins, XP or essence.':npc.name+' · Lv '+npc.level+' · Defeat the guardian. Your trainer must survive.';
     if(npc.kind==='wild')$('#battle-description').textContent=npc.name+' · Lv '+npc.level;
-    if(battle.rescue){$('#battle-description').textContent='A raid! Your Lv 80 master stands with you against six Lv 60 monsters and their leader.';$('#result').innerHTML='<h3>Stand with your master.</h3><p>The courtyard is under attack.</p>';}
+    if(battle.rescue){$('#battle-description').textContent='A raid! Your Lv 100 master stands with you against two Lv 60 monsters and their leader.';$('#result').innerHTML='<h3>Stand with your master.</h3><p>The courtyard is under attack.</p>';}
     $('#return-region').focus({preventScroll:true});
     $('#panel-battle').scrollIntoView({block:'start'});
     return true;

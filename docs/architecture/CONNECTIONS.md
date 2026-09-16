@@ -116,7 +116,7 @@ Trace through: [character-creation.js](<../../character-creation.js>) → [openi
 
 [exploration](<../../features/exploration/README.md>) → [persistence](<../../features/persistence/README.md>)
 
-Every roaming species attacks outside Firstlight at every player level. Notice -> warning -> chase/contact -> reserve existing spawn life. Firstlight residents stay passive and accept clicked hunts. With an active fight, joinBattle saves entry and tick before Battle.addEnemy. In-game tabs/modals do not pause active-fight pursuit; explicit Pause/browser-hidden does. Leash and line of sight apply. No visual reward authority.
+Every roaming species attacks outside Firstlight at every player level. Notice -> warning -> chase/contact -> reserve existing spawn life. Firstlight residents stay passive and accept clicked hunts. With an active fight, joinBattle saves entry and tick before Battle.addEnemy. In-game tabs/modals do not pause active-fight pursuit; explicit Pause/browser-hidden does. Leash and line of sight apply. No visual reward authority. A clicked wild target stays selected while it moves; approach routes update and contact is checked even when the player has stopped moving.
 
 Trace through: [wild-behavior.js](<../../wild-behavior.js>) → [region.js](<../../region.js>) → [profile.js](<../../profile.js>) → [app.js](<../../app.js>) → [map-population.js](<../../map-population.js>).
 

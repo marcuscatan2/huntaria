@@ -164,7 +164,7 @@ function paint(now){
 function markBattle(el,on){let badge=el.querySelector('.battle-marker');if(on&&!badge){badge=document.createElement('span');badge.className='battle-marker';badge.textContent='⚔';badge.setAttribute('aria-label','In battle');el.append(badge);}if(badge)badge.hidden=!on;}
 function nearest(){return objects.filter(o=>o.kind!=='habitat'&&distance(pos,o)<120).sort((a,b)=>distance(pos,a)-distance(pos,b))[0];}
 function walkTo(p,continuing=false){if(P.snapshot().encounterSave){message('In battle. View it or retreat to move.');return false;}stop();if(!continuing)travelPlan=[];const result=BondNav.find(m.id,pos,A.clamp(m.id,p));if(!result.ok){message(result.reason);return false;}route=result.path;dest=route.shift()||null;host.focus({preventScroll:true});return true;}
-function approach(o,continuing=false){if(!o)return;const saved=P.snapshot().encounterSave;if(saved){BondApp.startRegionBattle(saved.id);return;}if(!walkTo(o,continuing))return;pending=o;if(distance(pos,o)<=115)interact(o);}
+function approach(o,continuing=false){if(!o)return;const saved=P.snapshot().encounterSave;if(saved){BondApp.startRegionBattle(saved.id);return;}if(!continuing)travelPlan=[];if(distance(pos,o)<=115){interact(o);return;}if(!walkTo(o,continuing))return;pending=o;}
 const bossControls=document.createElement('div');bossControls.id='boss-test-controls';bossControls.hidden=true;bossControls.innerHTML='<label>Boss level · reward-free test <input id="boss-test-level" type="number" min="1" max="100" step="1" value="1"></label><button id="boss-match-level" class="text-button">Match trainer level</button><p id="boss-test-preview"></p>';$('#npc-team').after(bossControls);
 bossControls.insertAdjacentHTML('beforeend','<label>Practice parties <select id="boss-practice-parties"><option value="1">Your party only</option><option value="2">Two parties · simulated ally</option><option value="3">Three parties · two simulated allies</option></select></label><p>Local training only, not online players. Group scaling and three weaker attendants apply with allies. No coins, XP or essence.</p>');
 const trialControls=document.createElement('div');trialControls.id='trial-skill-controls';trialControls.hidden=true;bossControls.after(trialControls);
@@ -242,10 +242,17 @@ function frame(now){
  const fighting=!!P.snapshot().encounterSave;if(!active&&!fighting)return;const dt=last?Math.min(.05,(now-last)/1000):0;last=now;
  if((fighting||!document.querySelector('dialog[open]'))&&!document.hidden){
   if(fighting){keys.clear();dest=null;pending=null;route=[];travelPlan=[];const anchor=P.snapshot().encounterSave.anchor;if(anchor?.map===m.id)pos={...anchor.position};}
+  if(pending){
+   if(distance(pos,pending)<=115){interact(pending);return;}
+   const goal=route.at(-1)||dest;
+   if(pending.kind==='wild'&&(!goal||distance(goal,pending)>80)){
+    const target=pending;if(!walkTo(target,true))return;pending=target;
+   }
+  }
   let dx=0,dy=0;for(const k of keys){dx+=dirs[k][0];dy+=dirs[k][1];}
   if(dest&&!keys.size){dx=dest.x-pos.x;dy=dest.y-pos.y;}
   const length=Math.hypot(dx,dy);if(length>.1){const step=Math.min(A.BASE_SPEED*TEST_MOVE_MULTIPLIER*dt,dest&&!keys.size?length:Infinity),next=motionStep(pos,dx/length*step,dy/length*step);if(distance(pos,next)>.001){if(Math.abs(next.x-pos.x)>.01)playerLeft=next.x<pos.x;pos=next;dirty=true;}
-   if(pending&&distance(pos,pending)<=115){const o=pending;interact(o);}else if(dest&&distance(pos,dest)<3){dest=route.shift()||null;if(!dest){if(pending&&distance(pos,pending)<=135)interact(pending);else pending=null;}}
+   if(pending&&distance(pos,pending)<=115){const o=pending;interact(o);}else if(dest&&distance(pos,dest)<3){dest=route.shift()||null;if(!dest){if(pending&&distance(pos,pending)<=135)interact(pending);else if(pending?.kind!=='wild')pending=null;}}
   }
   aggroGrace=Math.max(0,aggroGrace-dt);
  const pursuitProfile=P.snapshot(),trainerLevel=BondProgress.trainerLevel(pursuitProfile),protectedFight=fighting&&pursuitProfile.encounterSave?.encounter?.protectedEncounter===true,

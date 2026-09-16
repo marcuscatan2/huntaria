@@ -8,6 +8,10 @@ flow on contact outside Firstlight; the starting map stays passive. Wild encount
 confirmation dialog; NPC conversations, pack entries and boss difficulty
 selection remain deliberate interactions.
 
+A clicked monster remains the approach target as it moves. The walking route
+updates to its current position; reaching its previous position does not cancel
+the hunt. Contact is checked even when the character has no movement left.
+
 Pack previews use the first participating monster as their portrait. Opening or
 closing a preview does not reserve its residents; only Challenge reserves the
 selected lives. Cancel returns to walking. This applies to all forest/cave packs,

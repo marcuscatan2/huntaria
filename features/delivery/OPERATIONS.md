@@ -23,6 +23,12 @@ at a personal browser profile. [Save rules](../persistence/SAVES.md).
 
 ## Test controls
 
+In the local development game, open **Settings → Test mode → Enable test mode**.
+The game navigates to `?test=1` and resumes its separate test adventure. Use
+**Return to normal mode** in Settings or **Normal mode** in the test bar to switch
+back. Switching does not copy, merge or reset either save. These controls are
+owned by `test-controls.js`, which is excluded from packaged player builds.
+
 In `?test=1`, the visible **TEST MODE** bar above the tabs contains:
 
 - **3× travel**: exploration movement uses three times the normal base speed

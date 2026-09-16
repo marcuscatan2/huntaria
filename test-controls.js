@@ -2,10 +2,17 @@
 (function(){
 'use strict';
 const P=BondProfile;
+const modeURL=new URL(location.href);modeURL.hash='';
+if(P.TEST)modeURL.searchParams.delete('test');else modeURL.searchParams.set('test','1');
+const mode=document.createElement('fieldset');mode.id='test-mode-settings';
+mode.innerHTML='<legend>Test mode'+(P.TEST?' · On':'')+'</legend><p>3× movement speed, automatic healing after fights and a 5× combat speed button.</p><a id="test-mode-switch" class="button '+(P.TEST?'secondary':'primary')+'">'+(P.TEST?'Return to normal mode':'Enable test mode')+'</a><p>Normal and test adventures have separate saves. Switching resumes the selected adventure.</p>';
+mode.querySelector('a').href=modeURL.href;
+document.querySelector('#settings-dialog .settings-heading').after(mode);
 if(!P.TEST||!P.testing)return;
 const bar=document.createElement('aside');
 bar.className='test-controls';bar.setAttribute('aria-label','Test controls');
-bar.innerHTML='<div><strong>TEST MODE</strong><span>3× travel · auto-heal after combat · normal adventure separate</span></div><div class="test-controls-actions"><button id="qa-new-character" class="button secondary">Restart progress</button><button id="qa-heal" class="button primary">Heal party</button></div><p id="test-controls-status" role="status" aria-live="polite"></p>';
+bar.innerHTML='<div><strong>TEST MODE</strong><span>3× travel · auto-heal after combat · normal adventure separate</span></div><div class="test-controls-actions"><button id="qa-new-character" class="button secondary">Restart progress</button><button id="qa-heal" class="button primary">Heal party</button><a id="test-mode-exit" class="button secondary">Normal mode</a></div><p id="test-controls-status" role="status" aria-live="polite"></p>';
+bar.querySelector('#test-mode-exit').href=modeURL.href;
 document.querySelector('.workspace-bar').before(bar);
 const restart=bar.querySelector('#qa-new-character'),heal=bar.querySelector('#qa-heal'),status=bar.querySelector('#test-controls-status');
 const fast=document.createElement('button');fast.id='qa-speed-5';fast.dataset.speed='5';fast.setAttribute('aria-pressed','false');fast.textContent='5×';document.querySelector('.speed-control').append(fast);fast.onclick=()=>BondApp.setPlaybackSpeed(5);

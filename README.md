@@ -41,6 +41,7 @@ python scripts/project.py check
 
 The server runs until stopped; run checks in another terminal.
 Open [play](http://127.0.0.1:8765/) or [isolated QA](http://127.0.0.1:8765/?test=1).
+Use **Settings → Test mode** to switch between them inside the local game.
 Keep normal saves untouched. [Setup, browser tests, Git checkpoints and troubleshooting](features/delivery/OPERATIONS.md).
 
 ## Other routes

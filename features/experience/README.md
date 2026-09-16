@@ -9,7 +9,7 @@ Status: **local-reference**. Owns sound and device settings; connects presentati
 
 `BondSettings.set / reduced / open; BondAudio.scene / impact / inspect`
 
-Owns local device preferences and lazy gesture-unlocked audio, never gameplay. Three original loops and a procedural cue bank use separate volume buses; pause/hidden/mute stop sources. Combat and exploration consume persisted motion/FX flags. Local save export is a user-requested download, not cloud recovery or authenticated data export.
+Owns local device preferences and lazy gesture-unlocked audio, never gameplay. Three original loops and a procedural cue bank use separate volume buses; pause/hidden/mute stop sources. Combat and exploration consume persisted motion/FX flags. Local save export is a user-requested download, not cloud recovery or authenticated data export. On phones the compact brand mark leaves Settings and patch notes inside the header, above the playfield.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
