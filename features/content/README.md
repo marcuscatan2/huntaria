@@ -34,6 +34,12 @@ The links below point to the actual source; root browser paths remain in use.
 | [scripts/monster_progression.py](<../../scripts/monster_progression.py>) | Owned source/configuration; inspect before editing. |
 | [docs/Huntaria - Mons-by-level.csv](<../../docs/Huntaria - Mons-by-level.csv>) | Owned source/configuration; inspect before editing. |
 | [docs/Huntaria - mon-skills.csv](<../../docs/Huntaria - mon-skills.csv>) | Owned source/configuration; inspect before editing. |
+| [item-catalog.js](<../../item-catalog.js>) | `BondItemCatalog` |
+| [scripts/equipment_catalog.py](<../../scripts/equipment_catalog.py>) | Owned source/configuration; inspect before editing. |
+| [docs/Huntaria - Equipment.csv](<../../docs/Huntaria - Equipment.csv>) | Owned source/configuration; inspect before editing. |
+| [docs/Huntaria - Held_Items.csv](<../../docs/Huntaria - Held_Items.csv>) | Owned source/configuration; inspect before editing. |
+| [scripts/item_icons.py](<../../scripts/item_icons.py>) | Owned source/configuration; inspect before editing. |
+| [assets/items/manifest.json](<../../assets/items/manifest.json>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -57,6 +63,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/monster_sprites_check.py --browser chrome` — 100 supplied sprites, workbook identity, unchanged mechanics, shared rendering, poses, facing and save preservation.
 - `python tests/combat_workbooks_check.py --browser chrome` — Imported workbook integrity, shield/guardian/debt/critical/entity contracts, all proposed loadouts and responsive summon presentation.
 - `python tests/monster_progression_check.py --browser chrome` — Exact 10,000-row CSV stats, 100 talent kits, quest budgets, shared shields, effect regressions, legacy/current encounter replay and responsive individual trees.
+- `python tests/equipment_ui_check.py --browser chrome` — All 200 item loadouts, independent drops, ownership, effect contracts, frozen combat gear, failed-save rollback and phone equipment menus.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -69,5 +76,7 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [features/animation/SUPPLIED_SPRITES.md](<../../features/animation/SUPPLIED_SPRITES.md>)
 - [features/content/COMBAT_WORKBOOKS.md](<../../features/content/COMBAT_WORKBOOKS.md>)
 - [features/growth/COMPANION_TREES.md](<../../features/growth/COMPANION_TREES.md>)
+- [features/collection/EQUIPMENT.md](<../../features/collection/EQUIPMENT.md>)
+- Art and provenance: [assets/items](<../../assets/items>)
 - Commercial cards: [F-006](<../../FEATURE_BACKLOG.md>), [F-064](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-01](<../../OWNER_REVIEWS.md#or-01>), [OR-05](<../../OWNER_REVIEWS.md#or-05>), [OR-07](<../../OWNER_REVIEWS.md#or-07>) Use the live board/preflight for status, not an approval copied here.

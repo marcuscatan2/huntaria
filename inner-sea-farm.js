@@ -54,7 +54,7 @@ function attack(s,at){const f=s.farm,phase=moon(at),level=R.trainerLevel(s),seed
  if(b)b.run();const won=b?.winner===0,loot={},xpLost={};
  if(won){for(const [i,e] of enemies.entries()){
    const map=BondAtlas.home(e.type)?.map||'clearing-0',claim='sea:'+at+':'+i;
-   const drops=BondOpening.loot(e.type,map,(seed+i)>>>0);for(const [id,n] of Object.entries(drops)){s.inventory[id]=(s.inventory[id]||0)+n;loot[id]=(loot[id]||0)+n;}
+   const drops={...BondOpening.loot(e.type,map,(seed+i)>>>0),...BondEquipment.loot(e.type,claim)};for(const [id,n] of Object.entries(drops)){s.inventory[id]=(s.inventory[id]||0)+n;loot[id]=(loot[id]||0)+n;}
    const coins=6+Math.floor(level/3);s.coins=Math.min(1000000000,s.coins+coins);loot.coins=(loot.coins||0)+coins;
    if(BondEchoes.qualifies(Math.floor(random()*10000),C.UNITS[e.type].echoBP)){s.echoes[e.type]||=[];s.echoes[e.type].push({id:claim,level,map});const key=BondEchoes.key(e.type);s.inventory[key]=s.echoes[e.type].length;loot[key]=(loot[key]||0)+1;}
  }}else{

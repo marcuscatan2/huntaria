@@ -9,7 +9,7 @@ Status: **local**. Shows inventory and Soul Echo summoning; persistence owns dro
 
 `BondEchoes.qualifies / key; BondInventory; BondJourney; BondLoot; BondProfile.summon / complete`
 
-Profile grants once locally; menus and individual in-field pickups display accepted receipts. Inventory stays authoritative after notifications expire. Level gains show a transient accessible LEVEL UP effect with the new level and an actor ring. The accepted first Firstlight Brimble receipt can force one Emberfox Echo; the accepted second-role receipt can force one Bloomslime or Stonehorn Echo. Both use ordinary Echo items, are consumed once and do not change normal drop odds. During the first summon objective, the in-frame Bag destination, owned Brimble Echo and Summon action are highlighted in sequence. Summon consumes one Echo for one independent individual and auto-fills an empty party slot. Player copy never exposes backend odds or receipt language. Each item/coin/XP type has an independent three-second in-frame pickup; overflow waits for its full lifetime. Bag categories, item details and summoning stay in the game frame; up to 850px item inspection replaces the grid until Back to items. Loot popup art/text pass pointer input to the world and Bag; only explicit popup buttons intercept clicks.
+Profile grants once locally; menus and individual in-field pickups display accepted receipts. Inventory stays authoritative after notifications expire. Level gains show a transient accessible LEVEL UP effect with the new level and an actor ring. The accepted first Firstlight Brimble receipt can force one Emberfox Echo; the accepted second-role receipt can force one Bloomslime or Stonehorn Echo. Both use ordinary Echo items, are consumed once and do not change normal drop odds. During the first summon objective, the in-frame Bag destination, owned Brimble Echo and Summon action are highlighted in sequence. Summon consumes one Echo for one independent individual and auto-fills an empty party slot. Player copy never exposes backend odds or receipt language. Each item/coin/XP type has an independent three-second in-frame pickup; overflow waits for its full lifetime. Bag categories, item details and summoning stay in the game frame; up to 850px item inspection replaces the grid until Back to items. Loot popup art/text pass pointer input to the world and Bag; only explicit popup buttons intercept clicks. Equipment uses six trainer slots and one held item per individual. Sheet eligibility and copy availability are pure; profile commands own assignment and once-only 1% item drops. Item rules and original sources are specified in EQUIPMENT.md. The four existing relic-quest weapons retain their IDs and equip at level 20 with class-specific personal stats.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -24,13 +24,18 @@ The links below point to the actual source; root browser paths remain in use.
 | [loot-popup.js](<../../loot-popup.js>) | `BondLoot` |
 | [journey.css](<../../journey.css>) | Owned source/configuration; inspect before editing. |
 | [loot.css](<../../loot.css>) | Owned source/configuration; inspect before editing. |
+| [equipment.js](<../../equipment.js>) | `BondEquipment` |
+| [equipment-menu.js](<../../equipment-menu.js>) | `BondEquipmentView` |
+| [equipment.css](<../../equipment.css>) | Owned source/configuration; inspect before editing. |
+| [tests/equipment_check.cjs](<../../tests/equipment_check.cjs>) | Owned source/configuration; inspect before editing. |
+| [tests/equipment_ui_check.py](<../../tests/equipment_ui_check.py>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
 Observed references include optional and late callbacks, not only boot dependencies.
 
-- Uses: [animation](<../../features/animation/README.md>), [content](<../../features/content/README.md>), [experience](<../../features/experience/README.md>), [growth](<../../features/growth/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [recovery](<../../features/recovery/README.md>), [shell](<../../features/shell/README.md>), [world](<../../features/world/README.md>)
-- Used by: [campaign](<../../features/campaign/README.md>), [exploration](<../../features/exploration/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>)
+- Uses: [animation](<../../features/animation/README.md>), [combat](<../../features/combat/README.md>), [content](<../../features/content/README.md>), [experience](<../../features/experience/README.md>), [growth](<../../features/growth/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [recovery](<../../features/recovery/README.md>), [shell](<../../features/shell/README.md>), [world](<../../features/world/README.md>)
+- Used by: [campaign](<../../features/campaign/README.md>), [combat](<../../features/combat/README.md>), [exploration](<../../features/exploration/README.md>), [growth](<../../features/growth/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>)
 
 - [echo-to-individual](<../../docs/architecture/CONNECTIONS.md#echo-to-individual>) (collection → persistence): Echo item/receipt -> profile.summon -> consume one Echo and create one instance atomically locally -> refresh collection and picker.
 
@@ -51,6 +56,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
 - `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
 - `python tests/menu_upgrades_check.py --browser chrome` — Read-only upgrade routes, independent trainer/companion level-ups, affordable points, individual pagination, purchases, resets, reload and responsive shared SVG navigation.
+- `python tests/equipment_ui_check.py --browser chrome` — All 200 item loadouts, independent drops, ownership, effect contracts, frozen combat gear, failed-save rollback and phone equipment menus.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -58,5 +64,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 
 - [CREATURE_DROPS.md](<../../CREATURE_DROPS.md>)
 - [features/campaign/SACRED_TREASURES.md](<../../features/campaign/SACRED_TREASURES.md>)
+- [features/collection/EQUIPMENT.md](<../../features/collection/EQUIPMENT.md>)
 - Commercial cards: [F-011](<../../FEATURE_BACKLOG.md>), [F-012](<../../FEATURE_BACKLOG.md>), [F-014](<../../FEATURE_BACKLOG.md>), [F-015](<../../FEATURE_BACKLOG.md>), [F-060](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-06](<../../OWNER_REVIEWS.md#or-06>), [OR-07](<../../OWNER_REVIEWS.md#or-07>), [OR-09](<../../OWNER_REVIEWS.md#or-09>) Use the live board/preflight for status, not an approval copied here.

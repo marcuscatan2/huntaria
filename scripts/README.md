@@ -24,6 +24,10 @@ Do not update reviewed data merely to conceal a runtime/reference mismatch.
 `docs/architecture.json` and `docs/review-gates.json`.
 Use stdlib for routing/check tools; new dependencies need a concrete benefit.
 
+`equipment_catalog.py` imports the two original item CSVs into `item-catalog.js`.
+`item_icons.py` generates all 200 original vector item icons and their manifest.
+Both accept `--check` to verify reproducible output without changing files.
+
 `monster_sprites.py --write --check` generates and validates the supplied
 roster's stable-ID/name/PNG overlay (stdlib only).
 After a fresh mechanics export, its `--publish-reference` option publishes

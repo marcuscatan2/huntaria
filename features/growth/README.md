@@ -35,7 +35,7 @@ The links below point to the actual source; root browser paths remain in use.
 
 Observed references include optional and late callbacks, not only boot dependencies.
 
-- Uses: [combat](<../../features/combat/README.md>), [content](<../../features/content/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>)
+- Uses: [collection](<../../features/collection/README.md>), [combat](<../../features/combat/README.md>), [content](<../../features/content/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [shell](<../../features/shell/README.md>)
 - Used by: [campaign](<../../features/campaign/README.md>), [collection](<../../features/collection/README.md>), [combat](<../../features/combat/README.md>), [exploration](<../../features/exploration/README.md>), [inner-sea](<../../features/inner-sea/README.md>), [party](<../../features/party/README.md>), [persistence](<../../features/persistence/README.md>), [recovery](<../../features/recovery/README.md>)
 
 - [derived-stats](<../../docs/architecture/CONNECTIONS.md#derived-stats>) (growth → combat): Profile snapshot + species bases + individual XP/ranks + formation -> battle initialization. UI preview must use the same derived formulas.
@@ -60,6 +60,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/talent_tree_check.py --browser chrome` — All four illustrated talent graphs, authoritative unlock lines, inspect-versus-learn behavior, responsive geometry, mobile dialog focus and save isolation.
 - `python tests/monster_progression_check.py --browser chrome` — Exact 10,000-row CSV stats, 100 talent kits, quest budgets, shared shields, effect regressions, legacy/current encounter replay and responsive individual trees.
 - `python tests/menu_upgrades_check.py --browser chrome` — Read-only upgrade routes, independent trainer/companion level-ups, affordable points, individual pagination, purchases, resets, reload and responsive shared SVG navigation.
+- `python tests/equipment_ui_check.py --browser chrome` — All 200 item loadouts, independent drops, ownership, effect contracts, frozen combat gear, failed-save rollback and phone equipment menus.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -70,6 +71,7 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [features/content/COMBAT_WORKBOOKS.md](<../../features/content/COMBAT_WORKBOOKS.md>)
 - [features/growth/TALENT_TREE.md](<../../features/growth/TALENT_TREE.md>)
 - [features/growth/COMPANION_TREES.md](<../../features/growth/COMPANION_TREES.md>)
+- [features/collection/EQUIPMENT.md](<../../features/collection/EQUIPMENT.md>)
 - Art and provenance: [assets/talents](<../../assets/talents>)
 - Commercial cards: [F-003](<../../FEATURE_BACKLOG.md>), [F-009](<../../FEATURE_BACKLOG.md>), [F-010](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-07](<../../OWNER_REVIEWS.md#or-07>) Use the live board/preflight for status, not an approval copied here.

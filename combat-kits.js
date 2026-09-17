@@ -4,7 +4,7 @@
 const C=root.BondContent, catalog=root.BondCombatCatalog, definitions=new Map();
 const alive=u=>root.BondCombatEffects.alive(u);
 class Context{
- constructor(f,u,s){this.f=f;this.b=f.battle;this.u=u;this.s=s;const {A,M,H,P}=f.stats(u);Object.assign(this,{A,M,H,P});this.t=this.b.target(u);this.tr=f.trainer(u);this.all=f.core(u);this.low=f.lowest(u);this.other=f.others(u);this.primary=null;this.results=[];this.receivers=[];this.deployments=0;this.startHP=u.hp/u.maxHp;this.startShield=u.shield;this.resources={...u.kit};this.mods={};this.skillPower=1+(u.growth?.skillPower?.[s.id]||0);}
+ constructor(f,u,s){this.f=f;this.b=f.battle;this.u=u;this.s=s;const {A,M,H,P}=f.stats(u);Object.assign(this,{A,M,H,P});this.t=this.b.target(u);this.tr=f.trainer(u);this.all=f.core(u);this.low=f.lowest(u);this.other=f.others(u);this.primary=null;this.itemCastId=u.id+':a'+(u.casts+1);this.results=[];this.receivers=[];this.deployments=0;this.startHP=u.hp/u.maxHp;this.startShield=u.shield;this.resources={...u.kit};this.mods={};this.skillPower=1+(u.growth?.skillPower?.[s.id]||0);}
  r(k){return this.u.kit[k]||0;}
  markHit(){this.statusLanded=this.f.direct(this.u,this.t,0,this.s.name,{statusOnly:true,primary:false,category:this.u.basicCategory}).hit;return this.statusLanded;}
  add(k,n,max=Infinity){return this.f.add(this.u,k,n,max);}
@@ -16,37 +16,37 @@ class Context{
  trainerGate(p=.75){return alive(this.tr)&&(this.threat(this.tr)||this.hp(this.tr)<=p);}
  wardGate(p=.75){return this.all.some(u=>this.threat(u)||this.hp(u)<=p);}
  mark(key,t=this.t){return this.f.get(t,key);}
- buff(t,key,kind,value,duration,extra={}){return this.f.put(this.u,t,key,kind,value,duration,extra);}
+ buff(t,key,kind,value,duration,extra={}){return this.f.put(this.u,t,key,kind,value,duration,{active:true,castId:this.itemCastId,...extra});}
  debuff(key,kind,value,duration,t=this.t,extra={}){if(!this.results.length||this.results[0].hit)return this.buff(t,key,kind,value,duration,{harmful:true,...extra});}
  hit(amount,options={}){
   const target=options.target||this.t,primary=!this.primary&&!options.secondary;
   if(primary)this.primary={kind:'damage',amount,category:options.category||this.u.basicCategory,target};
-  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'damage',amount);amount=root.BondCompanionTalents?.change(this.f,'primary',amount,this,'damage')??amount;}
+  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'damage',amount);amount=root.BondCombatHooks?.change(this.f,'primary',amount,this,'damage')??amount;}
   const bonus=primary?(this.mods.bonus||0):0;
   const power=(amount+bonus)*(primary?(this.mods.damageMultiplier||1):1)*this.skillPower*(1+(this.u.growth?.attack||0));
   if(primary)this.primary.offered=power;
-  const result=this.f.direct(this.u,target,power,this.s.name,{active:true,primary,blockable:this.u.delivery==='ranged'&&!options.area&&!options.secondary,...options,hitBonus:(options.hitBonus||0)+(this.mods.hit||0)});
+  const result=this.f.direct(this.u,target,power,this.s.name,{active:true,primary,castId:this.itemCastId,blockable:this.u.delivery==='ranged'&&!options.area&&!options.secondary,...options,hitBonus:(options.hitBonus||0)+(this.mods.hit||0)});
   this.results.push({...result,target,primary,category:options.category||this.u.basicCategory});if(primary)this.primary.result=result;
   return result;
  }
  splash(amount,radius=18,cap=2,category=this.u.basicCategory){for(const v of this.f.nearby(this.u,this.t,radius,cap+1,this.t).filter(v=>v!==this.t).slice(0,cap))this.hit(amount,{target:v,category,secondary:true,primary:false,area:true,ignoreRange:true});}
  heal(target,amount,options={}){
   const primary=!this.primary;if(primary)this.primary={kind:'heal',amount,target};
-  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'heal',amount);amount=root.BondCompanionTalents?.change(this.f,'primary',amount,this,'heal')??amount;}
-  const before=target?target.hp/target.maxHp:1,receipt={},actual=this.f.heal(this.u,target,this.skillPower*(amount+(primary?(this.mods.supportBonus||0):0))*(this.mods.healMultiplier||1),this.s.name,{primary:true,skill:this.s,...options,receipt});
+  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'heal',amount);amount=root.BondCombatHooks?.change(this.f,'primary',amount,this,'heal')??amount;}
+  const before=target?target.hp/target.maxHp:1,receipt={},actual=this.f.heal(this.u,target,this.skillPower*(amount+(primary?(this.mods.supportBonus||0):0))*(this.mods.healMultiplier||1),this.s.name,{primary:true,active:true,itemPrimary:primary,castId:this.itemCastId,skill:this.s,...options,receipt});
   this.receivers.push({kind:'heal',target,actual,primary,before,offered:receipt.offered||0});return actual;
  }
  shield(target,amount,duration=3,options={}){
   const primary=!this.primary;if(primary)this.primary={kind:'shield',amount,target};
-  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'shield',amount);amount=root.BondCompanionTalents?.change(this.f,'primary',amount,this,'shield')??amount;}
-  const actual=this.f.shield(this.u,target,this.skillPower*(amount+(primary?(this.mods.supportBonus||0):0))*(this.mods.shieldMultiplier||1),duration,this.s.name,{primary:true,skill:this.s,...options});
+  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'shield',amount);amount=root.BondCombatHooks?.change(this.f,'primary',amount,this,'shield')??amount;}
+  const actual=this.f.shield(this.u,target,this.skillPower*(amount+(primary?(this.mods.supportBonus||0):0))*(this.mods.shieldMultiplier||1),duration,this.s.name,{primary:true,active:true,itemPrimary:primary,castId:this.itemCastId,skill:this.s,...options});
   this.receivers.push({kind:'shield',target,actual,primary});return actual;
  }
  selfward(amount,duration=3){return this.shield(this.u,amount,duration);}
  sharedShield(targets,amount,duration=3,options={}){
   const primary=!this.primary;if(primary)this.primary={kind:'shield',amount,target:targets[0]};
-  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'shield',amount);amount=root.BondCompanionTalents?.change(this.f,'primary',amount,this,'shield')??amount;}
-  const actual=this.f.sharedShield(this.u,targets,this.skillPower*(amount+(primary?(this.mods.supportBonus||0):0))*(this.mods.shieldMultiplier||1),duration,this.s.name,{primary:true,skill:this.s,...options});
+  if(primary){amount=root.BondCombatPassives.primary(this.f,this,'shield',amount);amount=root.BondCombatHooks?.change(this.f,'primary',amount,this,'shield')??amount;}
+  const actual=this.f.sharedShield(this.u,targets,this.skillPower*(amount+(primary?(this.mods.supportBonus||0):0))*(this.mods.shieldMultiplier||1),duration,this.s.name,{primary:true,active:true,itemPrimary:primary,castId:this.itemCastId,skill:this.s,...options});
   targets.forEach((target,i)=>this.receivers.push({kind:'shield',target,actual:i===0?actual:0,primary:primary&&i===0}));return actual;
  }
  teamheal(amount){for(const u of this.all)this.heal(u,amount);}
@@ -55,9 +55,9 @@ class Context{
  dr(value,duration=3,kind='dr',target=this.u,once=false){return this.buff(target,this.s.name,kind,value,duration,{once});}
  guard(value,duration=3,minHP=0,target=this.tr){if(target)this.buff(this.u,'Intercept','intercept',value,duration,{target:target.id,minHP});}
  cleanse(target=this.low,kind=null){return this.f.cleanse(this.u,target,kind);}
- taunt(all=true){for(const v of all?this.f.enemies(this.u):[this.t])this.f.taunt(this.u,v,2);}
+ taunt(all=true){this.taunted=true;for(const v of all?this.f.enemies(this.u):[this.t])this.f.taunt(this.u,v,2);}
  control(seconds,kind='Interrupt'){if(this.results[0]?.hit)this.f.control(this.u,this.t,kind,seconds);}
- deploy(id,options={}){if(!this.primary)this.primary={kind:'deployment',amount:0,target:this.u};const e=root.BondCombatEntities.spawn(this.f,this.u,id,options);if(e)this.deployments++;return e;}
+ deploy(id,options={}){if(!this.primary)this.primary={kind:'deployment',amount:0,target:this.u};const e=root.BondCombatEntities.spawn(this.f,this.u,id,{deploymentCast:this.itemCastId,...options});if(e)this.deployments++;return e;}
  count(id){return this.f.entities.filter(e=>alive(e)&&e.master===this.u&&(e.profile===id||e.capGroup===id)).length;}
  best(){return [...this.other].sort((a,b)=>this.f.stats(b).P-this.f.stats(a).P||a.id.localeCompare(b.id))[0]||this.u;}
 }
@@ -95,7 +95,8 @@ species(25,[hit(c=>{c.hit(1.3*c.A);c.debuff('Briar Bite','healReceived',-.2,3);}
 
 function delayed(c,amount,seconds,ward=0){
  c.primary={kind:'damage',amount,category:'magic',target:c.t};const target=c.t,value=root.BondCombatPassives.primary(c.f,c,'damage',amount)+(c.mods.bonus||0),reach=c.b.reach(c.u);
- c.f.later(c.u,target,seconds,()=>{let t=target,power=value;if(!alive(t)&&c.u.kit.number===26){t=c.b.target(c.u);power*=.5;}if(alive(t)){const r=c.f.direct(c.u,t,power*c.skillPower*(1+(c.u.growth?.attack||0)),c.s.name,{category:'magic',active:true,primary:true,reach});}if(ward)c.f.shield(c.u,c.u,ward,3,c.s.name);},{label:c.s.name});
+ const pending={source:c.u,target,delay:seconds,amount:value,retarget:0};root.BondEquipmentEffects.each(c.f,'delayed',pending);
+ c.f.later(c.u,target,pending.delay,()=>{let t=target,power=pending.amount;if(!alive(t)&&(pending.retarget||c.u.kit.number===26)){t=pending.retarget?root.BondEquipmentEffects.H.normal(c.f,c.u):c.b.target(c.u);if(!alive(t))t=c.f.enemies(c.u).filter(v=>!v.temporary).sort((a,b)=>c.b.distance(c.u,a)-c.b.distance(c.u,b)||a.id.localeCompare(b.id))[0];power*=pending.retarget||.5;}if(alive(t)){c.f.direct(c.u,t,power*c.skillPower*(1+(c.u.growth?.attack||0)),c.s.name,{category:'magic',active:true,primary:true,delayed:true,castId:c.itemCastId,reach});}if(ward)c.f.shield(c.u,c.u,ward,3,c.s.name,{active:true,castId:c.itemCastId});},{label:c.s.name});
 }
 species(26,[hit(c=>delayed(c,1.5*c.M,.6)),hit(c=>delayed(c,1.9*c.M,.8,.5*c.M)),hit(c=>delayed(c,3.2*c.M,1.2))]);
 species(27,[hit(c=>{if(c.hit(1.4*c.A).hit)c.selfward(.03*c.H,2);}),support(c=>{c.dr(.2,2,'physicalDR');c.buff(c.u,'Stonewing counter','nextBasic',.35*c.A,3);},c=>c.threat()),hit(c=>{c.hit(2.7*c.A);c.debuff('Quarry Beak','flee',-25,3);})]);
@@ -159,7 +160,7 @@ species(84,[support(c=>c.heal(c.low,.7*c.M),c=>c.wounded()),support(c=>{const ca
 species(85,[hit(c=>{c.hit(1.15*c.M);c.heal(c.u,.3*c.M);}),support(c=>c.heal(c.u,.8*c.M+.07*c.H),c=>c.hp()<=.75),support(c=>{c.shield(c.tr,1.1*c.M+.04*c.H,4);c.heal(c.u,.6*c.M);},c=>c.trainerGate(.7))]);
 species(86,[hit(c=>c.hit(1.15*c.A+Math.min(.02*c.H,.6*c.A))),support(c=>{c.heal(c.u,.08*c.H);c.dr(.1,3,'dr',c.tr);},c=>c.hp()<.75||c.threat(c.tr)),support(c=>{for(const t of [c.tr,c.u].filter(alive))c.deploy('sapling-warden',{assigned:t});},c=>!c.count('sapling-warden')&&(c.threat()||c.threat(c.tr)))]);
 species(87,[attack(1.3),hit(c=>{c.hit(1.45*c.M,{area:true});c.splash(.35*c.M);c.selfward(.35*c.M);}),support(c=>c.deploy('seedjaw'),c=>alive(c.t)&&c.b.inRange(c.u,c.t)&&!c.count('seedjaw'))]);
-species(88,[support(c=>{const t=c.low,amount=.7*c.M; c.primary={kind:'heal',amount,target:t};c.shield(t,.25*c.M,1);c.buff(t,'Pending Glowseed','pendingHeal',amount,1.05);c.f.later(c.u,t,1,()=>c.f.heal(c.u,t,amount,'Glowseed',{primary:true}),{label:'Glowseed'});},c=>c.wounded()&&(!c.mark('Pending Glowseed',c.low)||c.hp(c.low)<.55)),support(c=>c.deploy('nightlight-cap',{assigned:c.low}),c=>!c.count('nightlight-cap')&&c.wardGate(.85)),support(c=>{c.teamheal(.75*c.M);const e=c.f.entities.find(e=>alive(e)&&e.master===c.u&&e.profile==='nightlight-cap');if(e)root.BondCombatEntities.pulse(c.f,e,{heal:.6});},c=>c.partyGate())]);
+species(88,[support(c=>{const t=c.low,amount=.7*c.M;c.primary={kind:'heal',amount,target:t};c.shield(t,.25*c.M,1);c.buff(t,'Pending Glowseed','pendingHeal',amount,1.05);root.BondEquipmentEffects.each(c.f,'delayedHeal',{source:c.u,target:t,delay:1,castId:c.itemCastId});c.f.later(c.u,t,1,()=>{c.f.heal(c.u,t,root.BondEquipmentEffects.change(c.f,'primary',amount,c,'heal'),'Glowseed',{primary:true,active:true,itemPrimary:true,castId:c.itemCastId,delayed:true});root.BondEquipmentEffects.each(c.f,'delayedHealResolved',c.u,t);},{label:'Glowseed'});},c=>c.wounded()&&(!c.mark('Pending Glowseed',c.low)||c.hp(c.low)<.55)),support(c=>c.deploy('nightlight-cap',{assigned:c.low}),c=>!c.count('nightlight-cap')&&c.wardGate(.85)),support(c=>{c.teamheal(.75*c.M);const e=c.f.entities.find(e=>alive(e)&&e.master===c.u&&e.profile==='nightlight-cap');if(e)root.BondCombatEntities.pulse(c.f,e,{heal:.6});},c=>c.partyGate())]);
 species(89,[support(c=>{c.heal(c.low,.65*c.M);c.dr(.3,2,'nextDotDR',c.low,true);},c=>c.wounded()),support(c=>{const low=c.hp(c.low)<=.4;c.heal(c.low,1.2*c.M);if(low)c.shield(c.low,.4*c.M);},c=>c.wounded(.7)),support(c=>{c.cleanse(c.low,'heal');c.heal(c.low,2*c.M);},c=>c.wounded(.6)||c.all.some(u=>c.hp(u)<.8&&c.f.value(u,'healReceived')<0))]);
 species(90,[hit(c=>{c.hit(1.1*c.A);c.heal(c.u,.02*c.H);}),support(c=>c.shield(c.tr,(.08+.02*c.take('Seedling'))*c.H),c=>c.trainerGate(.7)),support(c=>{const n=c.take('Seedling');for(const t of c.all)c.heal(t,(.75+(t===c.low?.25*n:0))*c.M);},c=>c.partyGate())]);
 species(91,[attack(1.3),hit(c=>{c.hit(1.75*c.M);c.debuff('Magic exposure','magicExposure',.05,3);}),hit(c=>{c.mods.bonus+=(c.resources.Crosswind||0)*.15*c.M;c.hit(2.7*c.M,{area:true});c.splash(.4*c.M,24);})]);
@@ -223,13 +224,14 @@ function cast(f,u,skill){
  const offensive=support===undefined?d.kind==='hit':!support;
  if(f.has(u,'Silence')||!(gate??(support?c.all.length>0:!d.gate||d.gate(c)))||!fits(c)||offensive&&!f.battle.inRange(u,c.t,skill))return false;
  if(support!==undefined)c.s={...d,kind:offensive?'hit':'utility'};
- c.mods=root.BondCombatPassives?.beforeCast(f,c)||{};root.BondClassTalents?.beforeCast(f,c);root.BondCompanionTalents?.each(f,'beforeCast',c);
+ c.mods=root.BondCombatPassives?.beforeCast(f,c)||{};root.BondClassTalents?.beforeCast(f,c);root.BondCombatHooks?.each(f,'beforeCast',c);
  u.casts++;f.battle.emit('cast',u,offensive?c.t:u,d.name,0,{skillName:d.name,skillKind:offensive?'hit':skill.kind,skillId:d.id});
+ root.BondEquipmentEffects.each(f,'castStarted',c);if(!alive(u)||f.battle.ended)return true;
  // Set execution cooldown first; any explicit refund applies to this real timer.
  const index=u.skills.indexOf(d.id);if(index>=0)u.cds[index]=d.cd*(1-Math.min(.5,(u.growth?.cooldown||0)+(u.growth?.skillCooldown?.[d.id]||0)));
  f.begin();f.currentCompanionCast=c;if(!root.BondCompanionTalents?.own(f,'cast',u,c))d.act(c);f.currentCompanionCast=null;f.finish();
  if(c.primary?.kind==='deployment'&&!c.logicalDeployment&&!c.deployments&&!c.receivers.length){if(index>=0)u.cds[index]=0;u.casts--;return false;}
- if(!f.battle.ended){root.BondCombatPassives?.afterCast(f,c);root.BondClassTalents?.afterCast(f,c);root.BondCompanionTalents?.each(f,'afterCast',c);}
+ if(!f.battle.ended){root.BondCombatPassives?.afterCast(f,c);root.BondClassTalents?.afterCast(f,c);root.BondCombatHooks?.each(f,'afterCast',c);}
  return true;
 }
 // Missing definitions fail boot; spreadsheet prose is never used as a fallback implementation.

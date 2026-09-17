@@ -33,8 +33,9 @@ does not approve commercial pacing, final art or online rewards.
 | Hunter | Watchkeeper Bow | `weapon:class:hunter` |
 | Knight | Oathkeeper Blade | `weapon:class:swordsman` |
 
-Weapons are inventory items. Equipment slots and combat bonuses are outside this
-scope. The final tracker and Journey screen state that the main quest is complete.
+These rewards equip in the trainer weapon slot at level 20. Their modest,
+class-specific stats and existing-copy compatibility are defined in
+[Equipment](../collection/EQUIPMENT.md#class-quest-weapons). The final tracker and Journey screen state that the main quest is complete.
 
 ## Cemetery and ghost tower
 

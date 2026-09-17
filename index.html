@@ -29,6 +29,12 @@
   <script src="roster.js" defer></script>
   <script src="monster-sprites.js" defer></script>
   <script src="combat-catalog.js" defer></script>
+  <script src="item-catalog.js" defer></script>
+  <script src="equipment.js" defer></script>
+  <script src="equipment-effects.js" defer></script>
+  <script src="equipment-passives.js" defer></script>
+  <script src="held-passives.js" defer></script>
+  <script src="combat-hooks.js" defer></script>
   <script src="combat-effects.js" defer></script>
   <script src="combat-entities.js" defer></script>
   <script src="combat-passives.js" defer></script>
@@ -84,6 +90,7 @@
   <script src="talent-tree-view.js" defer></script>
   <script src="tree-menu.js" defer></script>
   <script src="inventory-menu.js" defer></script>
+  <script src="equipment-menu.js" defer></script>
   <script src="menu.js" defer></script>
   <script src="wild-behavior.js" defer></script>
   <link rel="stylesheet" href="city.css">
@@ -99,6 +106,7 @@
   <link rel="stylesheet" href="game-frame.css">
   <link rel="stylesheet" href="talent-tree.css">
   <link rel="stylesheet" href="menu-navigation.css">
+  <link rel="stylesheet" href="equipment.css">
   <script src="character-creation.js" defer></script>
   <script src="training-view.js" defer></script>
   <script src="app.js" defer></script>
@@ -110,7 +118,7 @@
     <a class="brand" href="#" aria-label="Bond and Bolt home"><span class="brand-mark">✦</span><span>BOND <i>&</i> BOLT</span></a>
     <div class="topbar-actions"><button id="open-patch-notes" class="button secondary" aria-haspopup="dialog">Updates</button><button id="open-settings" class="button secondary" aria-haspopup="dialog">Settings</button></div>
   </header>
-  <dialog id="patch-notes" aria-labelledby="patch-notes-title"><div class="patch-notes-heading"><h2 id="patch-notes-title">Updates</h2><button id="close-patch-notes" class="button secondary">Close</button></div><ul><li>Every companion has a new 24-talent tree in the Inner Sea. Previous mastery points have been refunded.</li><li>Companions start with one talent point and earn another every five levels. Defeat Tidecrown and finish Tully?s quest for two more.</li><li>Monster stats now follow their new level progression.</li><li>Each class now has 15 talents across three branches.</li><li>Previous class investments have been reset. Spend your points in Class Skill Tree.</li><li>Earn two talent points at Lv 20, then one every three levels, up to 15.</li><li>Manage your party, formation and companions in the Inner Sea.</li><li>Open Class Skill Tree from the menu.</li><li>Test damage, healing and shields against the training dummy.</li><li>Defeated challengers yield the path. Victories return you to exploration.</li></ul></dialog>
+  <dialog id="patch-notes" aria-labelledby="patch-notes-title"><div class="patch-notes-heading"><h2 id="patch-notes-title">Updates</h2><button id="close-patch-notes" class="button secondary">Close</button></div><ul><li>Equip your trainer and give companions held items in Inner Sea ? Equipment.</li><li>Monsters can now drop weapons, armor and held items.</li><li>Every companion has a new 24-talent tree in the Inner Sea. Previous mastery points have been refunded.</li><li>Companions start with one talent point and earn another every five levels. Defeat Tidecrown and finish Tully?s quest for two more.</li><li>Monster stats now follow their new level progression.</li><li>Each class now has 15 talents across three branches.</li><li>Previous class investments have been reset. Spend your points in Class Skill Tree.</li><li>Earn two talent points at Lv 20, then one every three levels, up to 15.</li><li>Manage your party, formation and companions in the Inner Sea.</li><li>Open Class Skill Tree from the menu.</li><li>Test damage, healing and shields against the training dummy.</li><li>Defeated challengers yield the path. Victories return you to exploration.</li></ul></dialog>
   <main>
     <section id="boot-status" role="status"><p>Loading your adventure…</p><a class="button secondary" href="">Reload</a></section>
     <div class="workspace-bar"><div class="tabs" role="tablist" aria-label="Game modes"><button id="tab-region" class="tab active" role="tab" aria-selected="true" aria-controls="panel-region"><span>01</span> Explore</button><button id="tab-loadout" class="tab" role="tab" aria-selected="false" aria-controls="panel-loadout" tabindex="-1"><span>02</span> Menu</button><button id="tab-battle" class="tab" role="tab" aria-selected="false" aria-controls="panel-battle" tabindex="-1"><span>03</span> Battle <span id="battle-tab-dot"></span></button></div><span id="save-status" class="save-status" role="status">Saved on this device</span></div>

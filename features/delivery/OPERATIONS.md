@@ -23,6 +23,10 @@ at a personal browser profile. [Save rules](../persistence/SAVES.md).
 
 ## Test controls
 
+**Equipment samples** adds one of every trainer item and two of every held item
+to the isolated test Bag, then opens Equipment. Repeating it tops up those
+counts; it does not change character levels or bypass equip requirements.
+
 In the local development game, open **Settings → Test mode → Enable test mode**.
 The game navigates to `?test=1` and resumes its separate test adventure. Use
 **Return to normal mode** in Settings or **Normal mode** in the test bar to switch

@@ -15,3 +15,7 @@
 *.jpg binary
 *.webp binary
 *.zip binary
+
+"docs/Huntaria - Equipment.csv" -text whitespace=cr-at-eol
+"docs/Huntaria - Held_Items.csv" -text whitespace=cr-at-eol
+assets/items/*.svg text eol=lf

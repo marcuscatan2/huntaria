@@ -24,7 +24,8 @@
     "assets/cities/*.png",
     "assets/summons/*.png",
     "assets/talents/*.png",
-    "assets/interface/*.svg"
+    "assets/interface/*.svg",
+    "assets/items/*.svg"
   ],
   "rules": [
     "content.js",
@@ -32,6 +33,12 @@
     "roster.js",
     "monster-sprites.js",
     "combat-catalog.js",
+    "item-catalog.js",
+    "equipment.js",
+    "equipment-effects.js",
+    "equipment-passives.js",
+    "held-passives.js",
+    "combat-hooks.js",
     "combat-effects.js",
     "combat-entities.js",
     "combat-passives.js",

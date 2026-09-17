@@ -55,10 +55,10 @@ function spawn(f,u,id,options={}){
   growth:{armor:0,cooldown:0},statRules:false,structure:p.structure!==false,shield:0,shieldUntil:0,pools:[],effects:{},kit:{},debt:[],status:{},skills:[],cds:[],damage:0,healing:0,blocked:0,
   basicCategory:p.category||u.basicCategory,range:4,entityReach:p.reach==='owner'?b.reach(u):p.reach||R,critChance:0,element:u.element,moveSpeed:u.moveSpeed,
   born:b.time,until:b.time+p.life,next:b.time+(p.first||0),pulseIndex:0,shots:0,triggers:0,untargetable:!!p.untargetable,linked:options.linked||null,assigned:options.assigned?.id||null,
-  guards:p.trainer?f.trainer(u)?.id:p.intercept?options.assigned?.id:null,intercept:p.intercept||0,attack:options.attack??p.attack,heal:options.heal??p.heal,parent:options.parent||null,charge:0,contributors:{}};
+  guards:p.trainer?f.trainer(u)?.id:p.intercept?options.assigned?.id:null,intercept:p.intercept||0,attack:options.attack??p.attack,heal:options.heal??p.heal,parent:options.parent||null,charge:0,contributors:{},deploymentCast:options.deploymentCast||f.currentCompanionCast?.itemCastId||f.currentCast?.itemCastId||null};
  if(p.lure)e.lureUntil=b.time+1.5;
  e.targetId=alive(b.target(u))?b.target(u).id:null;if(b.monsterRules&&id==='soldier-ant'){e.targetId=null;e.targetId=target(f,e)?.id||null;}f.entities.push(e);
- root.BondCompanionTalents?.own(f,'entityCreated',u,e,options);
+ root.BondCompanionTalents?.own(f,'entityCreated',u,e,options);root.BondEquipmentEffects.each(f,'entityCreated',u,e,options);
  b.emit('summon',u,e,p.name,0,{entity:e.id,profile:id,temporary:true,until:e.until,position:{...position}});
  if(p.initialShield&&options.assigned)f.shield(u,options.assigned,p.initialShield*stats.M,3,p.name);
  if(p.initialAreaShield)for(const t of covered(f,e))f.shield(u,t,p.initialAreaShield*stats.M,2,p.name);
@@ -81,17 +81,17 @@ function pulse(f,e,override={}){
   const enemies=f.nearby(e,e,p.radius,3,b.target(e.master));
   for(let i=0;i<enemies.length;i++){
    const coefficient=i===0||p.fullSplash?(e.pulseIndex===0?p.initialAttack??e.attack:e.attack):p.splash,amount=coefficient*e.snapshot[p.stat||'M'];
-   f.proc(e,enemies[i],amount,p.category,e.name,{area:true,secondary:i>0});
+   f.proc(e,enemies[i],amount,p.category,e.name,{area:true,secondary:i>0,entityPulse:e.pulseIndex});
    if(e.profile==='stormcap'&&e.pulseIndex===0)root.BondCombatPassives.spore(f,e.master,enemies[i]);
    if(e.profile==='silk-anchor')f.put(e.master,enemies[i],'Thread','thread',.12,3,{harmful:true});
   }
  }else if(p.attack&&p.pulses){
   const t=target(f,e);if(t){const marked=f.get(t,'Lens mark')?.source===e.master.id,markBonus=marked?(e.master.talents?.MA2===2?.4:e.master.talents?.MA2?.25:0):0;
-   f.proc(e,t,e.attack*e.snapshot[p.stat||'M']*(1+markBonus)+e.charge,p.category,e.name,{ignoreRange:false,reach:e.entityReach});e.charge=0;e.shots++;}
+   f.proc(e,t,e.attack*e.snapshot[p.stat||'M']*(1+markBonus)+e.charge,p.category,e.name,{ignoreRange:false,reach:e.entityReach,entityPulse:e.pulseIndex});e.charge=0;e.shots++;}
  }
  const heal=override.heal??e.heal;
  if(heal){const targets=p.assignedOnly?covered(f,e).filter(u=>u.id===e.assigned):covered(f,e),t=f.lowest(e.master,targets.filter(u=>u.hp<u.maxHp));
-  if(t){f.heal(e,t,heal*e.snapshot.M+e.charge,e.name);e.charge=0;}
+  if(t){f.heal(e,t,heal*e.snapshot.M+e.charge,e.name,{entityPulse:true,itemPrimary:true});e.charge=0;}
   if(e.profile==='heartwood')root.BondClassTalents?.treePulse(f,e);
  }
  if(p.shield)for(const t of covered(f,e))f.shield(e.master,t,p.shield*e.snapshot.M,2,e.name);
@@ -120,7 +120,7 @@ function step(f){
   if(e.next<=b.time+1e-8){e.next+=p.interval;if(p.maxShots&&e.shots>=p.maxShots)continue;e.shots++;
    if(t&&b.distance(e,t)<=e.entityReach+.001){let amount=e.attack*e.snapshot[p.stat||'M'];let hitBonus=0;
     if(e.profile==='soldier-ant'){if(e.master.targetId===t.id)amount*=1.15;if(f.get(t,'Queen mark')?.source===e.master.id)hitBonus=20;}
-    const result=f.proc(e,t,amount,p.category,e.name,{ignoreRange:false,reach:e.entityReach,hitBonus});
+    const result=f.proc(e,t,amount,p.category,e.name,{ignoreRange:false,reach:e.entityReach,hitBonus,entityBasic:true});
     if(e.profile==='seedjaw'&&!e.pollenUsed&&result.hit){e.pollenUsed=true;root.BondCombatPassives.pollen(f,e.master,t);}
    }
   }

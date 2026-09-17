@@ -2,11 +2,11 @@
 (function(root){
 'use strict';
 // A partial client must never normalize or overwrite an otherwise valid save.
-for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','BondAtlas','BondWorld','BondEchoes','BondPopulation','BondAdventure','BondGrowth','BondCampaign','BondOpening','BondFormation','BondHaven','BondGame','BondTraining','BondCombatCatalog','BondCombatEffects','BondCombatEntities','BondCombatPassives','BondCombatKits','BondClassTrees','BondClassTalents','BondMonsterProgression','BondCompanionTrees','BondCompanionTalents']){
+for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','BondAtlas','BondWorld','BondEchoes','BondPopulation','BondAdventure','BondGrowth','BondCampaign','BondOpening','BondFormation','BondHaven','BondGame','BondTraining','BondCombatCatalog','BondCombatEffects','BondCombatEntities','BondCombatPassives','BondCombatKits','BondClassTrees','BondClassTalents','BondMonsterProgression','BondCompanionTrees','BondCompanionTalents','BondItemCatalog','BondEquipment','BondEquipmentEffects','BondCombatHooks']){
  if(!root[dependency])throw Error('Required game module unavailable: '+dependency);
 }
 const C=BondContent,R=BondProgress,A=BondAtlas,W=BondWorld,E=BondEchoes,Q=BondPopulation,clone=x=>JSON.parse(JSON.stringify(x));
-const T=BondAdventure;Object.assign(W.ITEMS,T.items);
+const T=BondAdventure;Object.assign(W.ITEMS,T.items);BondEquipment.install(W);
 if(!root.BondFarm||!root.BondMoonCalendar)throw Error('Required Inner Sea module unavailable');
 W.ITEMS.timber={name:'Timber',icon:'▤',category:'Materials',description:'Used to upgrade an Inner Sea habitat.'};
 W.ITEMS.repairkit={name:'Farm repair kit',icon:'⚒',category:'Materials',description:'Repairs the Inner Sea after a failed defense.'};
@@ -24,7 +24,7 @@ function summarize(s){
 }
 const resolve=(s,id)=>s.companions.find(m=>m.id===id)||null;
 const fresh=()=>({version:7,revision:0,character:null,map:'clearing-0',area:'clearing',position:{...A.get('clearing-0').entry},visited:['clearing-0'],
- vitality:{trainer:10000,companions:{}},trainerXP:0,apprenticeXP:0,progression:{version:2,specialization:null,treeGrandfathered:false},companions:[],formation:[...BondFormation.DEFAULT],bossLevel:1,growth:{},owned:[],xp:{},attributes:R.cleanAttributes(null,1),pacts:{},
+ vitality:{trainer:10000,companions:{}},trainerXP:0,apprenticeXP:0,progression:{version:2,specialization:null,treeGrandfathered:false},companions:[],equipment:{},formation:[...BondFormation.DEFAULT],bossLevel:1,growth:{},owned:[],xp:{},attributes:R.cleanAttributes(null,1),pacts:{},
  haven:BondHaven.fresh(),farm:BondFarm.fresh(),sights:[],collected:[],defeated:[],inventory:{biscuit:2},echoes:{},coins:0,prepared:false,boost:false,sequence:0,
  journey:root.BondCampaign?.fresh()||{},encounterSave:null,encounterReceipts:{},spawns:{},claims:{},summons:{},tutorial:{moved:false,kills:0,summons:0},migration:null});
 function normalize(raw){
@@ -40,7 +40,7 @@ function normalize(raw){
   seen.add(m.id);ordinals[m.type]=(ordinals[m.type]||0)+1;
   const skills=validSkills(m.type,m.skills)?[...m.skills]:[...C.UNITS[m.type].default],pact=m.pact,engineXP=R.clampXP(m.xp),excess=Math.max(0,engineXP-R.PLAYER_MAX_XP);
   if(excess)cappedCompanions++;
-  s.companions.push({id:m.id,type:m.type,ordinal:ordinals[m.type],xp:R.clampPlayerXP(engineXP),treeLevel:Number.isInteger(m.treeLevel)?Math.max(R.level(engineXP),Math.min(60,integer(m.treeLevel))):undefined,deferredXP:Math.max(integer(m.deferredXP,R.ENGINE_MAX_XP),excess),sourceLevel:Number.isInteger(m.sourceLevel)?Math.max(1,Math.min(R.ENGINE_LEVEL_CAP,m.sourceLevel)):undefined,skills,growth:m.growth||{},pact:{map:A.get(pact?.map)?pact.map:'clearing-0',trainerClass:BondContent.TRAINERS.includes(pact?.trainerClass)?pact.trainerClass:'druid'}});
+  s.companions.push({id:m.id,type:m.type,ordinal:ordinals[m.type],xp:R.clampPlayerXP(engineXP),treeLevel:Number.isInteger(m.treeLevel)?Math.max(R.level(engineXP),Math.min(60,integer(m.treeLevel))):undefined,deferredXP:Math.max(integer(m.deferredXP,R.ENGINE_MAX_XP),excess),sourceLevel:Number.isInteger(m.sourceLevel)?Math.max(1,Math.min(R.ENGINE_LEVEL_CAP,m.sourceLevel)):undefined,skills,growth:m.growth||{},heldItem:m.heldItem||null,pact:{map:A.get(pact?.map)?pact.map:'clearing-0',trainerClass:BondContent.TRAINERS.includes(pact?.trainerClass)?pact.trainerClass:'druid'}});
  }
  summarize(s);
  s.journey=root.BondCampaign?.clean(raw.journey)||{};
@@ -52,6 +52,7 @@ function normalize(raw){
   treeGrandfathered:raw.progression?.treeGrandfathered===true||!currentProgression&&seeds.some(m=>m?.growth&&BondGrowth.used(m.growth)>0)};
  s.inventory={};
  for(const k of Object.keys(W.ITEMS))if(!k.startsWith('echo:')&&integer(raw.inventory?.[k]))s.inventory[k]=integer(raw.inventory[k]);
+ BondEquipment.clean(s,raw);
  s.coins=integer(raw.coins);s.sequence=integer(raw.sequence);s.revision=integer(raw.revision);
  s.formation=BondFormation.clean(raw.formation);s.bossLevel=Number.isInteger(raw.bossLevel)&&raw.bossLevel>=1&&raw.bossLevel<=100?raw.bossLevel:1;
  s.attributes=R.cleanAttributes(raw.attributes,R.trainerLevel(s));
@@ -93,7 +94,7 @@ function normalize(raw){
  }else s.migration='Your earlier companions, items, coins and builds were retained. The original save is untouched. A new world awaits; '+refunded+' out-of-budget tree ranks were removed from this migrated copy.';
  s.encounterReceipts=Object.fromEntries(Object.entries(raw.encounterReceipts||{}).filter(([id,v])=>id.length<220&&v&&Number.isInteger(v.coins)&&v.coins>=0));
  const saved=raw.encounterSave;
- if(saved&&saved.encounter&&A.get(saved.encounter.map)&&typeof saved.id==='string'&&saved.id.length<220&&(!saved.build||BondGame.validBuild(saved.build))&&Number.isInteger(saved.tick)&&saved.tick>=0&&saved.tick<=1500){s.encounterSave=clone(saved);s.encounterSave.options||={};s.encounterSave.options.classTrees??=0;s.encounterSave.options.monsterRules??=0;s.encounterSave.options.profile||={};if(!Number.isSafeInteger(s.encounterSave.options.profile.trainerXP))s.encounterSave.options.profile.trainerXP=s.trainerXP;}
+ if(saved&&saved.encounter&&A.get(saved.encounter.map)&&typeof saved.id==='string'&&saved.id.length<220&&(!saved.build||BondGame.validBuild(saved.build))&&Number.isInteger(saved.tick)&&saved.tick>=0&&saved.tick<=1500){s.encounterSave=clone(saved);s.encounterSave.options||={};s.encounterSave.options.classTrees??=0;s.encounterSave.options.monsterRules??=0;s.encounterSave.options.equipmentRules??=0;s.encounterSave.options.profile||={};if(!Number.isSafeInteger(s.encounterSave.options.profile.trainerXP))s.encounterSave.options.profile.trainerXP=s.trainerXP;}
  for(const m of A.maps)for(const h of m.habitats){
   const selected=new Set(Q.selected(h,s.spawns,s.encounterSave?.encounter?.enemies));
   for(const id of Q.keys(h))if(s.spawns[id])s.spawns[id].activeSlot=selected.has(id);
@@ -170,7 +171,7 @@ function reserveBattle(b,id,options){
  if(BondCampaign.requirement(e,state,b.build[0]))return false;
  if(state.encounterSave?.id===id){b._attemptId=state.encounterSave.attempt;return true;}
  const profile=clone(options.profile);delete profile.encounterSave;delete profile.encounterReceipts;delete profile.claims;delete profile.spawns;
- const saved={id,attempt:'attempt:'+(state.sequence+1),encounter:e,build:clone(b.build),options:{...clone(options),profile,classTrees:b.classTrees,monsterRules:b.monsterRules},tick:0,supply:null,joins:[],anchor:clone(options.worldAnchor||{map:state.map,position:state.position,actors:[]})};
+ const saved={id,attempt:'attempt:'+(state.sequence+1),encounter:e,build:clone(b.build),options:{...clone(options),profile,classTrees:b.classTrees,monsterRules:b.monsterRules,equipmentRules:b.equipmentRules},tick:0,supply:null,joins:[],anchor:clone(options.worldAnchor||{map:state.map,position:state.position,actors:[]})};
  const ok=commit(s=>{if(s.encounterSave)return false;s.sequence++;s.encounterSave=saved;return true;},{critical:true});
  if(ok)b._attemptId=saved.attempt;return ok;
 }
@@ -222,7 +223,7 @@ function settleKills(b,id){
    const sp=s.spawns[u.spawnId],h=habitat(u.spawnId),claim=u.spawnId+':'+u.life;
    if(!sp?.present||sp.life!==u.life||!h||s.claims[claim])continue;
    const source=e.enemies.find(v=>v.spawnId===u.spawnId&&v.life===u.life),level=source.level||h.level,map=e.map||h.map;
-   const r={type:u.type,map,level,coins:6+Math.floor(level/3),xp:T.xp(level),echo:E.qualifies(sp.roll,h.echoBP),loot:BondOpening.loot(u.type,map,sp.seed),at:Date.now()};
+   const r={type:u.type,map,level,coins:6+Math.floor(level/3),xp:T.xp(level),echo:E.qualifies(sp.roll,h.echoBP),loot:{...BondOpening.loot(u.type,map,sp.seed),...(b.equipmentRules?BondEquipment.loot(u.type,sp.seed):{})},at:Date.now()};
    const progress=BondCampaign.wildProgress(s,{spawnId:u.spawnId,type:u.type,map,claim,xp:r.xp});r.trainerXP=progress.trainerXP;r.echo||=progress.forceEcho;grantTrainerXP(s,r.trainerXP);
    if(r.echo){s.echoes[u.type]||=[];s.echoes[u.type].push({id:claim,level,map});s.inventory[E.key(u.type)]=s.echoes[u.type].length;}
    for(const [key,n] of Object.entries(r.loot))add(s,key,n);
@@ -255,6 +256,7 @@ function complete(b,id){
    npcReward.coins=first?e.coins||0:e.repeatCoins||0;npcReward.xp=first?e.xp||150:e.repeatXP||0;
    npcReward.trainerXP=first?(e.trialClass&&state.journey.early.trialRewarded?0:e.trainerXP??e.xp??150):0;
    if(first){npcReward.loot.biscuit=1;if(e.badge)npcReward.loot[e.badge]=1;}
+   for(const enemy of b.units.filter(u=>u.side===1&&u.hp<=0&&!u.spawnId&&!u.temporary&&C.MONSTERS.includes(u.type))){for(const [key,n] of Object.entries(b.equipmentRules?BondEquipment.loot(enemy.type,id+':'+b.seed+':'+enemy.id):{}))npcReward.loot[key]=(npcReward.loot[key]||0)+n;}
    result.coins+=npcReward.coins;result.xp+=npcReward.xp;result.trainerXP+=npcReward.trainerXP;
    for(const [key,n] of Object.entries(npcReward.loot))result.loot[key]=(result.loot[key]||0)+n;
   }
@@ -291,7 +293,7 @@ function summon(type,trainerClass='druid',requestId){
   let instanceId;do{instanceId='companion:'+(++s.sequence);}while(resolve(s,instanceId));
   const ordinal=1+s.companions.filter(m=>m.type===type).length;
   const ownedLevel=Math.min(R.PLAYER_LEVEL_CAP,echo.level);
-  s.companions.push({id:instanceId,type,ordinal,xp:R.threshold(ownedLevel),deferredXP:0,sourceLevel:echo.level,skills:[...C.UNITS[type].default],growth:{},pact:{map:echo.map,trainerClass}});
+  s.companions.push({id:instanceId,type,ordinal,xp:R.threshold(ownedLevel),deferredXP:0,sourceLevel:echo.level,heldItem:null,skills:[...C.UNITS[type].default],growth:{},pact:{map:echo.map,trainerClass}});
   s.echoes[type].splice(echoIndex,1);s.inventory[E.key(type)]=s.echoes[type].length;
   s.summons[echo.id]={type,instanceId};s.tutorial.summons++;BondCampaign.recordSummon(s);
   return {ok:true,type,instanceId,id:echo.id,level:ownedLevel,sourceLevel:echo.level};
@@ -339,6 +341,7 @@ root.BondProfile={
  recover(id,target){return commit(s=>{const item=T.items[id];if(!item||s.encounterSave||!s.inventory[id]||(target!=='trainer'&&!resolve(s,target)))return false;const hp=T.health(s,target);if(item.revive?hp!==0:hp===0||hp===10000)return false;T.setHealth(s,target,item.revive||Math.min(10000,hp+T.recovery(s,target,item)));s.inventory[id]--;return true;},{critical:true});},
  rest(){return commit(s=>{if(s.encounterSave||!nearService(s,'sanctuary'))return false;s.vitality={trainer:10000,companions:Object.fromEntries(s.companions.map(m=>[m.id,10000]))};if(A.get(s.map).kind==='hub'){const sight=A.get(s.map).hero.id;if(!s.sights.includes(sight))s.sights.push(sight);}return true;},{critical:true});},
  canService:kind=>nearService(state,kind)&&!state.encounterSave,
+ equip(ref,id,slot){return commit(s=>BondEquipment.command(s,ref,id,slot),{critical:true,growth:true});},
  allocate(k){return commit(s=>{const a=R.attributes(s);if(!R.ATTRS.includes(k)||a[k]>=99||R.statBudget(R.trainerLevel(s))-R.spent(a)<R.cost(a[k]))return false;a[k]++;s.attributes=a;},{growth:true});},
  resetAttributes(){return commit(s=>{s.attributes=R.cleanAttributes(null,1);},{growth:true});},
  learn(ref,id){return commit(s=>{
@@ -359,6 +362,8 @@ root.BondProfile={
   restart(){const result=commit(s=>{for(const k of Object.keys(s))delete s[k];Object.assign(s,fresh());},{quiet:true,critical:true});if(result){active.clear();notify(true);}return result;},
   heal(){return commit(s=>{if(!s.character||s.encounterSave)return false;s.vitality={trainer:10000,companions:Object.fromEntries(s.companions.map(m=>[m.id,10000]))};return true;},{critical:true});},
   grantEcho(type,level=1){if(!C.MONSTERS.includes(type)||!Number.isInteger(level)||level<1||level>100)return false;return commit(s=>{const id='test:'+type+':'+(++s.sequence);s.echoes[type]||=[];s.echoes[type].push({id,level,map:A.home(type)?.map||A.REGIONS[C.UNITS[type].region].id+'-0'});s.inventory[E.key(type)]=s.echoes[type].length;return id;},{critical:true});},
+  grantItem(id,count=1){if(!BondEquipment.get(id)||!Number.isSafeInteger(count)||count<1||count>100)return false;return commit(s=>{add(s,id,count);return true;},{critical:true});},
+  equipmentSamples(){return commit(s=>{if(!s.character)return false;for(const item of BondEquipment.list())s.inventory[item.id]=Math.max(s.inventory[item.id]||0,item.kind==='held'?2:1);return true;},{critical:true});},
   setXP(id,xp){return commit(s=>{const m=resolve(s,id);if(!m)return false;const engineXP=R.clampXP(xp);m.xp=R.clampPlayerXP(engineXP);m.deferredXP=Math.max(0,engineXP-R.PLAYER_MAX_XP);},{growth:true});},
   setTrainerXP(xp){return commit(s=>{s.trainerXP=R.clampPlayerXP(xp);},{growth:true});},
   setRoll(id,roll){return commit(s=>{if(!s.spawns[id]||!Number.isInteger(roll)||roll<0||roll>=10000)return false;s.spawns[id].roll=roll;});},

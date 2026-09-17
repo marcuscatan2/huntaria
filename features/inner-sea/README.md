@@ -9,7 +9,7 @@ Status: **local-prototype**. Trains the owned collection and stages daily monste
 
 `BondFarm.advance / command / attack; BondProfile.farmAction / settleFarm; BondFarmView; BondInnerSea.draw / exportPicture`
 
-Lv25 farm ownership, wooden house and five independently upgraded habitats; each displays the highest-level compatible owned individual. All bag copies train while clean and intact. Power counts the strongest of each species once. Five separate defenders fight real daily monster-only battles at trainer level, scaled by bundled lunar phases. Success settles ordinary attacker loot once; loss removes XP from all owned monsters and damages the farm, suspending training/account bonuses until an item repair. Saved last outcome supplies a read-only replay. Original decoration drafts, styles, legacy selected IDs and local PNG export remain. Future habitat equipment and authoritative online settlement are unimplemented. Haunted cellar compatibility uses current ghost, undead, haunted-object and demon/fiend families before legacy animal shapes; saved cellar upgrades retain their key. Painted homestead scenery and resident placement share the PNG renderer. Clickable habitat labels focus their controls; native frames contain care, owned companions and catalog views.
+Lv25 farm ownership, wooden house and five independently upgraded habitats; each displays the highest-level compatible owned individual. All bag copies train while clean and intact. Power counts the strongest of each species once. Five separate defenders fight real daily monster-only battles at trainer level, scaled by bundled lunar phases. Success settles ordinary attacker loot once; loss removes XP from all owned monsters and damages the farm, suspending training/account bonuses until an item repair. Saved last outcome supplies a read-only replay. Original decoration drafts, styles, legacy selected IDs and local PNG export remain. Future habitat equipment and authoritative online settlement are unimplemented. Haunted cellar compatibility uses current ghost, undead, haunted-object and demon/fiend families before legacy animal shapes; saved cellar upgrades retain their key. Painted homestead scenery and resident placement share the PNG renderer. Clickable habitat labels focus their controls; native frames contain care, owned companions and catalog views. Successful defenses include the equipment and held-item species rolls in their atomic reward receipt.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -48,6 +48,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/architecture_browser.py --browser chrome` — Boot globals, DOM-free rules, deterministic replay and view/model isolation.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
 - `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
+- `python tests/equipment_ui_check.py --browser chrome` — All 200 item loadouts, independent drops, ownership, effect contracts, frozen combat gear, failed-save rollback and phone equipment menus.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -56,5 +57,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [features/inner-sea/DISPLAY.md](<../../features/inner-sea/DISPLAY.md>)
 - [features/inner-sea/FARM_SCOPE.md](<../../features/inner-sea/FARM_SCOPE.md>)
 - [assets/inner-sea/README.md](<../../assets/inner-sea/README.md>)
+- [features/collection/EQUIPMENT.md](<../../features/collection/EQUIPMENT.md>)
 - Commercial cards: [F-031](<../../FEATURE_BACKLOG.md>), [F-032](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-01](<../../OWNER_REVIEWS.md#or-01>), [OR-02](<../../OWNER_REVIEWS.md#or-02>), [OR-06](<../../OWNER_REVIEWS.md#or-06>), [OR-08](<../../OWNER_REVIEWS.md#or-08>), [OR-09](<../../OWNER_REVIEWS.md#or-09>), [OR-10](<../../OWNER_REVIEWS.md#or-10>) Use the live board/preflight for status, not an approval copied here.

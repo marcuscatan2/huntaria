@@ -54,14 +54,14 @@ function derived(type,s,base=C.UNITS[type],enemyLevel=null,legacyMonster=false){
    healing:1+stat(a.int)*.01,speed:100/Math.max(.2,base.interval*stats.delayMultiplier),hardDefense:row[7]/100,
    armor:0,cooldown:0,regenPerSecond:hpRecovery(hp,a.vit)/6};
  }
- const source=attributes(s),a=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,enemyLevel!==null?0:trainer?source[k]:source[k]*source.leadership*.005])),stats=classic(a,l);
+ const source=attributes(s),gear=trainer&&enemyLevel===null&&base.equipment!==false?(root.BondEquipment?.bonuses(s,type,l)||{}):{},a=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,enemyLevel!==null?0:trainer?source[k]+(gear[k]||0):source[k]*source.leadership*.005])),stats=classic(a,l);
  const hpScale=(1+.04*(l-1))*stats.hpMultiplier,levelOffense=1+.025*(l-1),innate=base.power*levelOffense;
- const magicRange=[innate+stats.magicMin,innate+stats.magicMax];
- const factors={melee:(innate+stats.melee)/base.power,ranged:(innate+stats.ranged)/base.power,magic:(magicRange[0]+magicRange[1])/2/base.power};
- const offense=factors[base.basicCategory],farmHP=enemyLevel===null?(root.BondFarm?.bonuses(s).hp||0):0,hp=Math.round(base.hp*hpScale*(1+farmHP));
+ const magicRange=[innate+stats.magicMin+(gear.matk||0),innate+stats.magicMax+(gear.matk||0)];
+ const factors={melee:(innate+stats.melee+(gear.atk||0))/base.power,ranged:(innate+stats.ranged+(gear.atk||0))/base.power,magic:(magicRange[0]+magicRange[1])/2/base.power};
+ const offense=factors[base.basicCategory],farmHP=enemyLevel===null?(root.BondFarm?.bonuses(s).hp||0):0,hp=Math.max(1,Math.round(base.hp*hpScale*(1+farmHP)+(gear.hp||0)));
  return {level:l,element:ELEMENT[type],hp,power:Math.round(base.power*offense),offense,factors,effective:a,stats,magicRange,
   healing:levelOffense*(1+stat(a.int)*.01),speed:100/(Math.max(.2,base.interval*stats.delayMultiplier)),
-  armor:0,cooldown:0,regenPerSecond:hpRecovery(hp,a.vit)/6,shared:trainer?null:a};
+  itemStats:gear,hardDefense:Math.min(.95,(gear.def||0)/100),hardMagicDefense:Math.min(.95,(gear.mdef||0)/100),armor:0,cooldown:0,regenPerSecond:hpRecovery(hp,a.vit)/6,shared:trainer?null:a};
 }
 for(const [id,u] of Object.entries(C.UNITS)){u.speed=100/u.interval;u.element=ELEMENT[id];}
 root.BondProgress={classic,physicalDefense,hpRecovery,castTime,instance,ATTRS,ELEMENT,ELEMENTS,MAX_COOLDOWN_REDUCTION,ENGINE_LEVEL_CAP,PLAYER_LEVEL_CAP,ENGINE_MAX_XP,PLAYER_MAX_XP,multiplier,clampXP,clampPlayerXP,threshold,engineLevel,level,monLevel,trainerLevel,statBudget,cost,spent,cleanAttributes,validAttributes,attributes,derived};

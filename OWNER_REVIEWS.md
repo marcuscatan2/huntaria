@@ -26,7 +26,7 @@ not replace technical tests or automatically accept commercial criteria.
 ## What happens next
 
 - **OR-01 — Approve the visual direction with a small creature set** (Needs revision). The owner supplied 100 replacement PNGs and a numbered stable-ID workbook; integration is authorized, final commercial art approval is not recorded. Current source and 100-species contact sheets are routed through features/animation/SUPPLIED_SPRITES.md. Review the supplied starter set in actual world/combat/collection sizes before dependent production.
-- **OR-02 — Approve the first 20–30 minutes and core combat feel** (Pending review packet / decision). Review the supplied monster CSV revision: exact level stats, 24-node individual trees and Tidecrown/relic quest points. The owner retained existing wild levels, including level80+ Ashen challenges above the owned level60 cap. Implementation is authorized; final pacing acceptance remains pending. See features/growth/COMPANION_TREES.md.
+- **OR-02 — Approve the first 20–30 minutes and core combat feel** (Pending review packet / decision). Review the explicitly authorized equipment/held-item feature and supplied CSV revision in features/collection/EQUIPMENT.md: personal trainer stats, six slots, individual held items, nonrecursive effects and temporary 1% drops. Implementation is authorized; broader combat pacing and release balance are not approved.
 
 Coming next: OR-03, OR-04, OR-05, OR-06.
 The AI prepares a named packet before asking for approval. A pending gate
@@ -109,6 +109,7 @@ Priority: **NOW**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
+- Review the explicitly authorized equipment/held-item feature and supplied CSV revision in features/collection/EQUIPMENT.md: personal trainer stats, six slots, individual held items, nonrecursive effects and temporary 1% drops. Implementation is authorized; broader combat pacing and release balance are not approved.
 - Review the supplied monster CSV revision: exact level stats, 24-node individual trees and Tidecrown/relic quest points. The owner retained existing wild levels, including level80+ Ashen challenges above the owned level60 cap. Implementation is authorized; final pacing acceptance remains pending. See features/growth/COMPANION_TREES.md.
 - Review class-flow-v2 in the local game: four-city class choice, explicit class confirmation, the alarm and shorter Lv100-master rescue, closest-target combat, shared rows and classic stat contributions. Firstlight stays passive; all other roaming wildlife attacks at every level.
 - The broader opening review remains due: both starting weapons, first Echo and Bag guidance, second-companion choice, Forest Mage proof, camp recovery, reloads, and the sacred-treasures route. Use features/opening/VALIDATION.md, features/opening/CLASSES.md and features/campaign/SACRED_TREASURES.md.

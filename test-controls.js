@@ -15,8 +15,10 @@ bar.innerHTML='<div><strong>TEST MODE</strong><span>3× travel · auto-heal afte
 bar.querySelector('#test-mode-exit').href=modeURL.href;
 document.querySelector('.workspace-bar').before(bar);
 const restart=bar.querySelector('#qa-new-character'),heal=bar.querySelector('#qa-heal'),status=bar.querySelector('#test-controls-status');
+const samples=document.createElement('button');samples.id='qa-equipment';samples.className='button secondary';samples.textContent='Equipment samples';bar.querySelector('.test-controls-actions').append(samples);
+samples.onclick=()=>{if(P.testing.equipmentSamples()){status.textContent='Equipment samples added to your test Bag.';BondEquipmentView.open();}else status.textContent=P.error()||'Create a test character first.';};
 const fast=document.createElement('button');fast.id='qa-speed-5';fast.dataset.speed='5';fast.setAttribute('aria-pressed','false');fast.textContent='5×';document.querySelector('.speed-control').append(fast);fast.onclick=()=>BondApp.setPlaybackSpeed(5);
-function refresh(){const s=P.snapshot();heal.disabled=!s.character||!!s.encounterSave;heal.title=s.encounterSave?'Finish the battle or escape before healing.':'Restore your trainer and all companions, including fallen ones. Free, between encounters.';}
+function refresh(){const s=P.snapshot();samples.disabled=!s.character;heal.disabled=!s.character||!!s.encounterSave;heal.title=s.encounterSave?'Finish the battle or escape before healing.':'Restore your trainer and all companions, including fallen ones. Free, between encounters.';}
 restart.onclick=()=>{
  if(!confirm('Restart this TEST adventure from character creation? This permanently clears its character, monsters, levels, coins, inventory and current encounter. Your normal adventure is untouched.'))return;
  if(!P.testing.restart()){status.textContent=P.error()||'Restart failed. Your test progress was kept.';return;}

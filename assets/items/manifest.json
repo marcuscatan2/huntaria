@@ -1,0 +1,1237 @@
+{
+  "version": 1,
+  "method": "Original code-authored SVG; scripts/item_icons.py",
+  "viewBox": [
+    0,
+    0,
+    96,
+    96
+  ],
+  "icons": [
+    {
+      "id": "equipment:acornboar",
+      "path": "assets/items/equipment-acornboar.svg",
+      "sha256": "08976d2ef23fe84d3557cdbf1fe44aa0345be0f45e1bf93f4641257ec994bc2d",
+      "bytes": 1680
+    },
+    {
+      "id": "equipment:ashporcupine",
+      "path": "assets/items/equipment-ashporcupine.svg",
+      "sha256": "a5f5d59347814c4691c220d9e4b6395c5ca2588ee57d9c5956761ea24a8db0ff",
+      "bytes": 1580
+    },
+    {
+      "id": "equipment:astralfox",
+      "path": "assets/items/equipment-astralfox.svg",
+      "sha256": "c61b5ac42f176153d5eff1192bb82a404cf497eaae4b28e15c54aefb37385803",
+      "bytes": 1690
+    },
+    {
+      "id": "equipment:coalbadger",
+      "path": "assets/items/equipment-coalbadger.svg",
+      "sha256": "417c7e5ca30ebffb13407336efb1725ab4eb8efe2cbe309285fe24285124d7e7",
+      "bytes": 1631
+    },
+    {
+      "id": "equipment:copperhog",
+      "path": "assets/items/equipment-copperhog.svg",
+      "sha256": "39a34d9f6b425bd1cd592c1cfad9a99f2eb5a948da39fa664cb6999a309b8a75",
+      "bytes": 1621
+    },
+    {
+      "id": "equipment:dreamtapir",
+      "path": "assets/items/equipment-dreamtapir.svg",
+      "sha256": "b3fec83ce95775302760c59957802894f66a15c8bc3e7a63ad269dfaf7261c77",
+      "bytes": 1653
+    },
+    {
+      "id": "equipment:duskmarten",
+      "path": "assets/items/equipment-duskmarten.svg",
+      "sha256": "00828036830e53950585d1e2e27028bbf7168ec5b18f489575e6420e192f2e33",
+      "bytes": 1604
+    },
+    {
+      "id": "equipment:emberfox",
+      "path": "assets/items/equipment-emberfox.svg",
+      "sha256": "fe531bd24c70c5cf77d675a7695bbcf70b6cc864e56f3106bfab07598e524600",
+      "bytes": 1576
+    },
+    {
+      "id": "equipment:flintjackal",
+      "path": "assets/items/equipment-flintjackal.svg",
+      "sha256": "5cfde2bad84cf4da4218914a14ddff1b057fc9562e4d82c5e896faf169f0a629",
+      "bytes": 1728
+    },
+    {
+      "id": "equipment:fluffyak",
+      "path": "assets/items/equipment-fluffyak.svg",
+      "sha256": "a83766681730da698454bb3485c691f2825319da5c155e2be1f94fb57bd92eb9",
+      "bytes": 1685
+    },
+    {
+      "id": "equipment:frostfang",
+      "path": "assets/items/equipment-frostfang.svg",
+      "sha256": "abb59681e5dcab02f53c0ce5ecede44fafa3302a0e0ac3a3df67a12dbb2bc557",
+      "bytes": 1692
+    },
+    {
+      "id": "equipment:galeibex",
+      "path": "assets/items/equipment-galeibex.svg",
+      "sha256": "75ddb474728b03ac2fb70d0a19885d4cd3cca3cb4d247068580b4a5b4a7d36d2",
+      "bytes": 1630
+    },
+    {
+      "id": "equipment:lilydeer",
+      "path": "assets/items/equipment-lilydeer.svg",
+      "sha256": "54856b8ab428d4dce2a7feca9c43d16c0d3f5227c0cf320729eee8bedc6ae4ed",
+      "bytes": 1666
+    },
+    {
+      "id": "equipment:moonrabbit",
+      "path": "assets/items/equipment-moonrabbit.svg",
+      "sha256": "313870b12148c1e923c711948ae8de85e539c9f2d00323ea9e54c85a01cd0b9a",
+      "bytes": 1585
+    },
+    {
+      "id": "equipment:mudmole",
+      "path": "assets/items/equipment-mudmole.svg",
+      "sha256": "5ea0b1c0a396386dd9af61071a51b301227571c335d0192d1705bed6498d5a31",
+      "bytes": 1608
+    },
+    {
+      "id": "equipment:obsidianram",
+      "path": "assets/items/equipment-obsidianram.svg",
+      "sha256": "fbf9e2e8cd7b6348916c1228cf0b53000207f7e6b9940c09c085f4fb2a08f977",
+      "bytes": 1740
+    },
+    {
+      "id": "equipment:pebblepup",
+      "path": "assets/items/equipment-pebblepup.svg",
+      "sha256": "ca218ce2d549730f47b6692cdf6dbe5086228865d6fe67e86918971c38e95310",
+      "bytes": 1680
+    },
+    {
+      "id": "equipment:pyrewolf",
+      "path": "assets/items/equipment-pyrewolf.svg",
+      "sha256": "9740d8b81193436fdc9e1648bc14109cbd8d79636d67935ef5b1d7468421063f",
+      "bytes": 1754
+    },
+    {
+      "id": "equipment:rainram",
+      "path": "assets/items/equipment-rainram.svg",
+      "sha256": "5b96ebd93ed41338a2d44c34809d74d448ee2114e0af717dd689663d003cb23c",
+      "bytes": 1734
+    },
+    {
+      "id": "equipment:ripplelynx",
+      "path": "assets/items/equipment-ripplelynx.svg",
+      "sha256": "9e90d4865c6027b7f1cd750483a5135175ff3b64cbdc907327d9480c852bd647",
+      "bytes": 1658
+    },
+    {
+      "id": "equipment:seedhare",
+      "path": "assets/items/equipment-seedhare.svg",
+      "sha256": "89630f4a002962332b1da691c25b324e984935c4410d3ac6f2102991b09b2bac",
+      "bytes": 1653
+    },
+    {
+      "id": "equipment:stonehorn",
+      "path": "assets/items/equipment-stonehorn.svg",
+      "sha256": "74735ec2de82d751cac21983fe7574342fbe00849509a4ed9f5523d7a500e84d",
+      "bytes": 1589
+    },
+    {
+      "id": "equipment:tempestcub",
+      "path": "assets/items/equipment-tempestcub.svg",
+      "sha256": "9743d2de35663620c869327af6e6b521dccabbfd60621b7c62e1acce9423373d",
+      "bytes": 1681
+    },
+    {
+      "id": "equipment:thistlehare",
+      "path": "assets/items/equipment-thistlehare.svg",
+      "sha256": "278866406981d8512d7a663f8c85cca173e87f74f0c3edaf63bb41e5e34bc06d",
+      "bytes": 1701
+    },
+    {
+      "id": "equipment:thornstag",
+      "path": "assets/items/equipment-thornstag.svg",
+      "sha256": "6a8100166a9567fd555ebb7fe0dd88d3e4f2db2ee5bb6eb1d6afacf97ef3a581",
+      "bytes": 1773
+    },
+    {
+      "id": "equipment:amberkite",
+      "path": "assets/items/equipment-amberkite.svg",
+      "sha256": "c1e6082d2d2690fb78c1a997fffcf4ae099cc35b6de9c1e3ef15c3d0f7258f9f",
+      "bytes": 1735
+    },
+    {
+      "id": "equipment:bouldereagle",
+      "path": "assets/items/equipment-bouldereagle.svg",
+      "sha256": "a2e2dc8f695611d5a060d9116dd1c6b1ac2fdf74561851744c33e8cae5129d57",
+      "bytes": 1611
+    },
+    {
+      "id": "equipment:bronzebuck",
+      "path": "assets/items/equipment-bronzebuck.svg",
+      "sha256": "f5238c2fd06191721e91f507fcac505353fa1622e7698e328f2c2ac585294ed6",
+      "bytes": 1719
+    },
+    {
+      "id": "equipment:glassphoenix",
+      "path": "assets/items/equipment-glassphoenix.svg",
+      "sha256": "2c38dff80b65c4408e9366246a13e2307b4b8ae1f83b605f7397e23ff0660b48",
+      "bytes": 1820
+    },
+    {
+      "id": "equipment:heronveil",
+      "path": "assets/items/equipment-heronveil.svg",
+      "sha256": "e40ea42f83d45bb69f21d42d6b67440f66cbed3703c38778da298a06af6fd41f",
+      "bytes": 1608
+    },
+    {
+      "id": "equipment:honeybat",
+      "path": "assets/items/equipment-honeybat.svg",
+      "sha256": "28d79bcc2a3cc70b66ca30017536356121a3e24de546d36ffdaee3d2166c7b7c",
+      "bytes": 1657
+    },
+    {
+      "id": "equipment:opalowl",
+      "path": "assets/items/equipment-opalowl.svg",
+      "sha256": "1d42cda3a1f7c0b3db6a548ba645b840a96eb8531f79263335a5cf212c040374",
+      "bytes": 1641
+    },
+    {
+      "id": "equipment:razorswift",
+      "path": "assets/items/equipment-razorswift.svg",
+      "sha256": "a7cd81bdcda18dad2234909c1331721350b89478e2ae38ca20f29a107c42eac2",
+      "bytes": 1763
+    },
+    {
+      "id": "equipment:reedwren",
+      "path": "assets/items/equipment-reedwren.svg",
+      "sha256": "aed8d719c77cf4d70995cdb0bd2fa989245ae8a3a51f1f0db975ae7bc69439f5",
+      "bytes": 1666
+    },
+    {
+      "id": "equipment:rillrook",
+      "path": "assets/items/equipment-rillrook.svg",
+      "sha256": "3fd5c0734b609c8a0efb14ce9383f3e338ec9c5d9250b9466fe8384096fa939a",
+      "bytes": 1587
+    },
+    {
+      "id": "equipment:skyrabbit",
+      "path": "assets/items/equipment-skyrabbit.svg",
+      "sha256": "6f0b6cde9ad92052fd8c02158fe90883498517b874adc2b69d40f103e6e7b8c9",
+      "bytes": 1647
+    },
+    {
+      "id": "equipment:stormowl",
+      "path": "assets/items/equipment-stormowl.svg",
+      "sha256": "e5cc6290e42e6e5230d2453483aed333b7c77ddf0452a8794797068f45a50d2d",
+      "bytes": 1652
+    },
+    {
+      "id": "equipment:stormstilt",
+      "path": "assets/items/equipment-stormstilt.svg",
+      "sha256": "aaa089c5344f33b3240219b84aa27834b96c2b66c3fb5574deb528a26f8ce179",
+      "bytes": 1739
+    },
+    {
+      "id": "equipment:tempestrook",
+      "path": "assets/items/equipment-tempestrook.svg",
+      "sha256": "60b407cbdcb1d53dec33ebc5d571ee83cf7c28d682550e9d35d153e3b0015598",
+      "bytes": 1832
+    },
+    {
+      "id": "equipment:zephyrlynx",
+      "path": "assets/items/equipment-zephyrlynx.svg",
+      "sha256": "3765a92467721871f0df060d033ba6e94aaaf5024b8ae8bceb14977330d230c0",
+      "bytes": 1646
+    },
+    {
+      "id": "equipment:brooktoad",
+      "path": "assets/items/equipment-brooktoad.svg",
+      "sha256": "cc5f12822ebba14999e622f67917ef17b84a33c5112d2f75e838dc117ec7c5d4",
+      "bytes": 1591
+    },
+    {
+      "id": "equipment:embersalam",
+      "path": "assets/items/equipment-embersalam.svg",
+      "sha256": "38350d09a113e6c60dfeff36eb7f0fed804eab8bda8d86a6f2f9f8e64bb07b14",
+      "bytes": 1670
+    },
+    {
+      "id": "equipment:magmatoad",
+      "path": "assets/items/equipment-magmatoad.svg",
+      "sha256": "b2a2a3835613d235cea33b84c0a719a5bbdba8ea517b3063453dc9f7ed5eda5b",
+      "bytes": 1738
+    },
+    {
+      "id": "equipment:starnewt",
+      "path": "assets/items/equipment-starnewt.svg",
+      "sha256": "fed7fac0a8f7c2887d644677b486326dbe04386279f0cd0dc52f5921e515d407",
+      "bytes": 1576
+    },
+    {
+      "id": "equipment:auroradrake",
+      "path": "assets/items/equipment-auroradrake.svg",
+      "sha256": "21234f3f666dc1d129c3130b7dae5238f4d6253921ef7bc435ea952a1e62e166",
+      "bytes": 1747
+    },
+    {
+      "id": "equipment:cindermole",
+      "path": "assets/items/equipment-cindermole.svg",
+      "sha256": "e03c0b1d6ee22efb362fe224054dd783ea5de06da158fa96698f12d3d44274f6",
+      "bytes": 1728
+    },
+    {
+      "id": "equipment:cloverbug",
+      "path": "assets/items/equipment-cloverbug.svg",
+      "sha256": "cce7aaf2e63a01706c55ec0d85813df5708e5e9805dd2c42672e5b618627a867",
+      "bytes": 1740
+    },
+    {
+      "id": "equipment:coralimp",
+      "path": "assets/items/equipment-coralimp.svg",
+      "sha256": "dd0441ead9a6e15e7dd135bc8733c6ddbaa74abaf430060638dfee1b7f0d5226",
+      "bytes": 1583
+    },
+    {
+      "id": "equipment:lavaurchin",
+      "path": "assets/items/equipment-lavaurchin.svg",
+      "sha256": "4e142720f007c72960b8ff9ac6427914514d9ee5ff8eb93b97c0496bee5ec954",
+      "bytes": 1736
+    },
+    {
+      "id": "equipment:leafmantis",
+      "path": "assets/items/equipment-leafmantis.svg",
+      "sha256": "16c9dfbf619ce7970b1a9049366476ffb035466fa97f05e0dbfe8004911df9c9",
+      "bytes": 1690
+    },
+    {
+      "id": "equipment:lumimoth",
+      "path": "assets/items/equipment-lumimoth.svg",
+      "sha256": "10195fd23e1b56b6ad4f8e2d4545a63f0ee247eae908423f4f080005beea701e",
+      "bytes": 1584
+    },
+    {
+      "id": "equipment:mirrormantis",
+      "path": "assets/items/equipment-mirrormantis.svg",
+      "sha256": "f93bd2028f3eda6872876a35c8f55903425f1808699c68a66d2b9cff1f6dc778",
+      "bytes": 1721
+    },
+    {
+      "id": "equipment:prismwasp",
+      "path": "assets/items/equipment-prismwasp.svg",
+      "sha256": "78fc3dc7ce20bf1bf8ba7f8cbe0e14db48769d723e8eefa3589f1e24f745ed3a",
+      "bytes": 1760
+    },
+    {
+      "id": "equipment:resinroach",
+      "path": "assets/items/equipment-resinroach.svg",
+      "sha256": "6e5a0b7311729d91cbd4a4837a6d63fa9b54e0b206772d88fc4b54f5c9b91690",
+      "bytes": 1732
+    },
+    {
+      "id": "equipment:saffronmoth",
+      "path": "assets/items/equipment-saffronmoth.svg",
+      "sha256": "28d269358a0e656cfa1613d4e7a04c5885e8e9fce001fdd59ec4b1a9d6a79ce8",
+      "bytes": 1666
+    },
+    {
+      "id": "equipment:sootimp",
+      "path": "assets/items/equipment-sootimp.svg",
+      "sha256": "bfcbb897df263173bb8365f21b0368ae6862cb639d9b8c7c6d9705aba42deca1",
+      "bytes": 1568
+    },
+    {
+      "id": "equipment:sunscarab",
+      "path": "assets/items/equipment-sunscarab.svg",
+      "sha256": "28f9790ed140b1baa54103d324070c5ed14f643bca44b672cfd16b66f396adfe",
+      "bytes": 1650
+    },
+    {
+      "id": "equipment:thunderbeetle",
+      "path": "assets/items/equipment-thunderbeetle.svg",
+      "sha256": "ecd39a0f7a84f593614cb0341607f942c3c4384bf9e2e788cb568ce455c04198",
+      "bytes": 1759
+    },
+    {
+      "id": "equipment:volcanomoth",
+      "path": "assets/items/equipment-volcanomoth.svg",
+      "sha256": "d5a8d8b4266ab18c752dde452ee2327b6a8e3a0c55abeb52a5e08e6937b00975",
+      "bytes": 1770
+    },
+    {
+      "id": "equipment:whistleweasel",
+      "path": "assets/items/equipment-whistleweasel.svg",
+      "sha256": "28288e6a370afe1afd58f76e961c58cf1eb339fa3d78e7691b7489056f9cddc7",
+      "bytes": 1602
+    },
+    {
+      "id": "equipment:moonweaver",
+      "path": "assets/items/equipment-moonweaver.svg",
+      "sha256": "aeb04596bd2b0e63775f619348f011ced530950f9ccc4cc5766ed0454cef0d4b",
+      "bytes": 1774
+    },
+    {
+      "id": "equipment:pearlwyrm",
+      "path": "assets/items/equipment-pearlwyrm.svg",
+      "sha256": "91a36862760db858da45680bbfa3ac239a51400901ddc8071bc7b23ac9e66b4c",
+      "bytes": 1796
+    },
+    {
+      "id": "equipment:siltwyrm",
+      "path": "assets/items/equipment-siltwyrm.svg",
+      "sha256": "d0f60e3cde0ece7ae98914c991d6255362e66aa955054d4386df96c8d8cd93db",
+      "bytes": 1671
+    },
+    {
+      "id": "equipment:briarcrab",
+      "path": "assets/items/equipment-briarcrab.svg",
+      "sha256": "05aba3256af5e2b49c6df6435f08acf7f93f6ad0f9544dcb43b5c48afe8dd51f",
+      "bytes": 1615
+    },
+    {
+      "id": "equipment:cloudfin",
+      "path": "assets/items/equipment-cloudfin.svg",
+      "sha256": "2e122b7a8cac13ea997ed240729a3e373c0206c606124f23d6b2d738deb87f6d",
+      "bytes": 1666
+    },
+    {
+      "id": "equipment:crystalurchin",
+      "path": "assets/items/equipment-crystalurchin.svg",
+      "sha256": "cbcb8cfc854272d5fb7061fd541a43723c95ce20f0f83514ef9d77fc3c4c1993",
+      "bytes": 1820
+    },
+    {
+      "id": "equipment:dewfin",
+      "path": "assets/items/equipment-dewfin.svg",
+      "sha256": "2d715b938a44ee95a3dec4b4703de71b43332ca626b67a2b147b5341116c2386",
+      "bytes": 1657
+    },
+    {
+      "id": "equipment:driftjelly",
+      "path": "assets/items/equipment-driftjelly.svg",
+      "sha256": "8d8bfdbacdefb8a75201836fc0e56e07f04bca42cce087e16961c846059a6436",
+      "bytes": 1632
+    },
+    {
+      "id": "equipment:glassshrimp",
+      "path": "assets/items/equipment-glassshrimp.svg",
+      "sha256": "40fece1685428dd2b15b575380191fa3ce3ebd2d1d993ce9fcc1160906ef9192",
+      "bytes": 1848
+    },
+    {
+      "id": "equipment:kitejelly",
+      "path": "assets/items/equipment-kitejelly.svg",
+      "sha256": "e083fe99d9fc279b1a52c9d44461d3e8e60fbbc253dc46c4245e51d3bd191fac",
+      "bytes": 1771
+    },
+    {
+      "id": "equipment:lotusmanta",
+      "path": "assets/items/equipment-lotusmanta.svg",
+      "sha256": "5b45262e7384ab7c8cd55cfbef4e24848a1f416c7f8cbec02ae862a7fa1e9138",
+      "bytes": 1692
+    },
+    {
+      "id": "equipment:mistseal",
+      "path": "assets/items/equipment-mistseal.svg",
+      "sha256": "56db9f07d4f3eaa52609b04ced7fc4739710ff5ea16c609c0c4bac031f528e4e",
+      "bytes": 1643
+    },
+    {
+      "id": "equipment:runecrab",
+      "path": "assets/items/equipment-runecrab.svg",
+      "sha256": "eedaacb4be5012627cbb495f17693bac3242cf8b01adcfe9962925346c99c2e3",
+      "bytes": 1677
+    },
+    {
+      "id": "equipment:tideotter",
+      "path": "assets/items/equipment-tideotter.svg",
+      "sha256": "a6482c34f06704a32f56fbe7c1390428328eed2c1ca3e49029ea1c7fc274c467",
+      "bytes": 1602
+    },
+    {
+      "id": "equipment:veilray",
+      "path": "assets/items/equipment-veilray.svg",
+      "sha256": "bad257e7d72dabb7f8d608f88ba585d4b898412e013faad1a93cd1e787828781",
+      "bytes": 1691
+    },
+    {
+      "id": "equipment:ashbasilisk",
+      "path": "assets/items/equipment-ashbasilisk.svg",
+      "sha256": "0c5fef4c2747029f01bccce621c013dee81b48c085f374c2cf01b4d559db829d",
+      "bytes": 1660
+    },
+    {
+      "id": "equipment:basalturtle",
+      "path": "assets/items/equipment-basalturtle.svg",
+      "sha256": "49347c411918c77f7307671f7d441d4f2759571092854318617ba9a4ee3426bb",
+      "bytes": 1626
+    },
+    {
+      "id": "equipment:cinderempress",
+      "path": "assets/items/equipment-cinderempress.svg",
+      "sha256": "66d20da2b52a85fb379013007abc284933fcb19f768f5ad793ef2f430f6af3ea",
+      "bytes": 1801
+    },
+    {
+      "id": "equipment:cindrake",
+      "path": "assets/items/equipment-cindrake.svg",
+      "sha256": "2b55481db58ad1adaa3dea8cc46489c8004994d539e25f015470d9fede612519",
+      "bytes": 1748
+    },
+    {
+      "id": "equipment:dunecoil",
+      "path": "assets/items/equipment-dunecoil.svg",
+      "sha256": "4c1766353845e3f6c99365fd6445db129b863ecfe226a25f205f173b7a116c9e",
+      "bytes": 1643
+    },
+    {
+      "id": "equipment:ferncoil",
+      "path": "assets/items/equipment-ferncoil.svg",
+      "sha256": "c190d7ec982be4b98233c30a96c1800cfd10a68609eced0e901addf2f4ed1217",
+      "bytes": 1613
+    },
+    {
+      "id": "equipment:ironback",
+      "path": "assets/items/equipment-ironback.svg",
+      "sha256": "9c8af5e817d87f8c232cbbb85876e4a37386fb5d29c5f88938b965efdf9fe8bf",
+      "bytes": 1734
+    },
+    {
+      "id": "equipment:moltencoil",
+      "path": "assets/items/equipment-moltencoil.svg",
+      "sha256": "6f3012c9a1534f7d5b4f2e2bb7ffc80586c9e6126694f906e9da3afc3aed5b67",
+      "bytes": 1660
+    },
+    {
+      "id": "equipment:steamaxolotl",
+      "path": "assets/items/equipment-steamaxolotl.svg",
+      "sha256": "9d2bfa22653b1b44c0ce8d39907f6d3cc203eff82fcc39f186414f5893cbf66c",
+      "bytes": 1631
+    },
+    {
+      "id": "equipment:tidecrown",
+      "path": "assets/items/equipment-tidecrown.svg",
+      "sha256": "bc682136b9f8e72b36862ea31d2a7a9152ca8e0998f1528fea8c04961d3d8674",
+      "bytes": 1839
+    },
+    {
+      "id": "equipment:elderroot",
+      "path": "assets/items/equipment-elderroot.svg",
+      "sha256": "1d42780b99811237dfda14dc4fc6e93ea1da20a31ebd9302c9821c6899c26e81",
+      "bytes": 1744
+    },
+    {
+      "id": "equipment:emberorchid",
+      "path": "assets/items/equipment-emberorchid.svg",
+      "sha256": "146a9f2d6c7051052ad796eebd33e416565af53898589c2e9438719c70a78149",
+      "bytes": 1743
+    },
+    {
+      "id": "equipment:glowcap",
+      "path": "assets/items/equipment-glowcap.svg",
+      "sha256": "41664b8fa8cba3ef6df4c3d136c1367df6ce6ceb25fbfa284e3a382c42748285",
+      "bytes": 1570
+    },
+    {
+      "id": "equipment:marigoldia",
+      "path": "assets/items/equipment-marigoldia.svg",
+      "sha256": "48c660721d84b737f7fc1df97426d42542916770cdcb0ac137444249bf5750c3",
+      "bytes": 1702
+    },
+    {
+      "id": "equipment:mossling",
+      "path": "assets/items/equipment-mossling.svg",
+      "sha256": "6f72678162f5c3905605a132b81c4d73856a43528119b71afeda2adaccc31be8",
+      "bytes": 1664
+    },
+    {
+      "id": "equipment:skycorolla",
+      "path": "assets/items/equipment-skycorolla.svg",
+      "sha256": "a421e153f02600e5cf3e4d9415d6ba89309172c6780ae048b8a81cef5ba81a41",
+      "bytes": 1796
+    },
+    {
+      "id": "equipment:ambercolossus",
+      "path": "assets/items/equipment-ambercolossus.svg",
+      "sha256": "b1ab1d21765938ac2e87d7bf7ce9dd1a6bdfff1adf30e69f972a757dc7b1ed85",
+      "bytes": 1785
+    },
+    {
+      "id": "equipment:bloomslime",
+      "path": "assets/items/equipment-bloomslime.svg",
+      "sha256": "5b7c6f223b2832d56d9b3038348dc23970b8d29347eef207fa3ee2b9aebe92c0",
+      "bytes": 1656
+    },
+    {
+      "id": "equipment:echochime",
+      "path": "assets/items/equipment-echochime.svg",
+      "sha256": "5bbc2c504f5740d6bf1405a72b327227a87411c8a63f47181fe36d44975eb2ba",
+      "bytes": 1746
+    },
+    {
+      "id": "equipment:inksprite",
+      "path": "assets/items/equipment-inksprite.svg",
+      "sha256": "c97c22d8ee39ca4279908bd9fd06a7db11b1c604f30193401ae1a3022f5bb388",
+      "bytes": 1601
+    },
+    {
+      "id": "equipment:moongolem",
+      "path": "assets/items/equipment-moongolem.svg",
+      "sha256": "4e1873f01cbe837c028149303172e4683052f54d515d0ec3ccd06c441edfc902",
+      "bytes": 1801
+    },
+    {
+      "id": "equipment:ochrewisp",
+      "path": "assets/items/equipment-ochrewisp.svg",
+      "sha256": "a50d7b3becf2b828158cb323f0d0d5ea162aff606f6c70851b8d00ce15a6990b",
+      "bytes": 1744
+    },
+    {
+      "id": "equipment:cindercentipede",
+      "path": "assets/items/equipment-cindercentipede.svg",
+      "sha256": "2730756a8f286ef7fe9ec1f057eb41b9154812220f63701c7f24a905366a90a9",
+      "bytes": 1757
+    },
+    {
+      "id": "equipment:lanternslug",
+      "path": "assets/items/equipment-lanternslug.svg",
+      "sha256": "fef95fe9ddd5457262aab39669ecffd84ba63ea38dca234bc6275935e7ad6026",
+      "bytes": 1734
+    },
+    {
+      "id": "equipment:shellsnail",
+      "path": "assets/items/equipment-shellsnail.svg",
+      "sha256": "d305764e0a5ed230dccb653d450cd2e74aabff0138b80cb28e5fff20332fa519",
+      "bytes": 1652
+    },
+    {
+      "id": "held:acornboar",
+      "path": "assets/items/held-acornboar.svg",
+      "sha256": "e43fbc65141181e63779663ff2205dc33255a3df30d20f45ebd29c860c3bca46",
+      "bytes": 1507
+    },
+    {
+      "id": "held:ashporcupine",
+      "path": "assets/items/held-ashporcupine.svg",
+      "sha256": "8965a857d2f388aba327e0f70cc48b2d55f4e7625fb32ce3b5cd701508305414",
+      "bytes": 1519
+    },
+    {
+      "id": "held:astralfox",
+      "path": "assets/items/held-astralfox.svg",
+      "sha256": "efe467778646e5ee0168516f5ff5f2b997f3122a6c3cb6fb9a5c94159984541f",
+      "bytes": 1538
+    },
+    {
+      "id": "held:coalbadger",
+      "path": "assets/items/held-coalbadger.svg",
+      "sha256": "32e25e35c32c3c12a544c107192924f3a1520e5d5a4cc97ff6fb8162add7615c",
+      "bytes": 1479
+    },
+    {
+      "id": "held:copperhog",
+      "path": "assets/items/held-copperhog.svg",
+      "sha256": "f15167098573f35d4e1e96d7d04e774feea0550c50be5a2958d7113be1bf18ef",
+      "bytes": 1565
+    },
+    {
+      "id": "held:dreamtapir",
+      "path": "assets/items/held-dreamtapir.svg",
+      "sha256": "0d4a6e004f39613cb3b6c57f7a29235e68d66ace344d55044536d96e54a41e26",
+      "bytes": 1533
+    },
+    {
+      "id": "held:duskmarten",
+      "path": "assets/items/held-duskmarten.svg",
+      "sha256": "84d6b435091ac9232dd70c33691b37665831e73497288d51743bf7de355b7a5b",
+      "bytes": 1526
+    },
+    {
+      "id": "held:emberfox",
+      "path": "assets/items/held-emberfox.svg",
+      "sha256": "96c6689d645212c12f5dbb18901eedfe133aa1cb58b7ae168761b6ec81cdd9ab",
+      "bytes": 1517
+    },
+    {
+      "id": "held:flintjackal",
+      "path": "assets/items/held-flintjackal.svg",
+      "sha256": "1f0c91cfa553bc978e91c9fb9d6dc016c54c05e3aff89a451734a816956b0e8a",
+      "bytes": 1516
+    },
+    {
+      "id": "held:fluffyak",
+      "path": "assets/items/held-fluffyak.svg",
+      "sha256": "bced61840cee9171ae836d63af917aac6ad2a28f2845c73e21cdac205004e611",
+      "bytes": 1543
+    },
+    {
+      "id": "held:frostfang",
+      "path": "assets/items/held-frostfang.svg",
+      "sha256": "f478484d7008ac67662e534f280f52cf0f2cc30ad07825a63efd0f63db5da72e",
+      "bytes": 1479
+    },
+    {
+      "id": "held:galeibex",
+      "path": "assets/items/held-galeibex.svg",
+      "sha256": "604b261d4a02b17d5695bea7ddf39e841721b9d064e44b15e3c21306c69fc97a",
+      "bytes": 1473
+    },
+    {
+      "id": "held:lilydeer",
+      "path": "assets/items/held-lilydeer.svg",
+      "sha256": "9ec090fb137b977af3bc24cf5e96e9a5f20e77825ce017a863e58a9bd2927efa",
+      "bytes": 1534
+    },
+    {
+      "id": "held:moonrabbit",
+      "path": "assets/items/held-moonrabbit.svg",
+      "sha256": "ab08e1e61b9dcc11a0e27c9852b7f5da81ef2a9b51fef8872877978a17eae06e",
+      "bytes": 1575
+    },
+    {
+      "id": "held:mudmole",
+      "path": "assets/items/held-mudmole.svg",
+      "sha256": "02939659f8d805b3b76317a835fbc31430783714517b78124991522de710f1e8",
+      "bytes": 1607
+    },
+    {
+      "id": "held:obsidianram",
+      "path": "assets/items/held-obsidianram.svg",
+      "sha256": "d7db53d5f4f62cd953ba4a72bb988a826851beef24ee4b37113edfeb3c63b984",
+      "bytes": 1563
+    },
+    {
+      "id": "held:pebblepup",
+      "path": "assets/items/held-pebblepup.svg",
+      "sha256": "5b0a7478960e1f1c74b6de5d03baca5c308d0967415590bd93c0ec8a2ed3a869",
+      "bytes": 1600
+    },
+    {
+      "id": "held:pyrewolf",
+      "path": "assets/items/held-pyrewolf.svg",
+      "sha256": "dd1deec44daadde62a7eea5996d460a236edb73c01311fa12ef0960c17df2995",
+      "bytes": 1530
+    },
+    {
+      "id": "held:rainram",
+      "path": "assets/items/held-rainram.svg",
+      "sha256": "e8d97f3d3c98aed1e5b4449b8c9f7d7370d7e142e293d6f327d0bfffc363207c",
+      "bytes": 1564
+    },
+    {
+      "id": "held:ripplelynx",
+      "path": "assets/items/held-ripplelynx.svg",
+      "sha256": "dda24f60d400d4985972dd0d40172018ba0afb0c1dfd3b25fe0181bc30fa6177",
+      "bytes": 1531
+    },
+    {
+      "id": "held:seedhare",
+      "path": "assets/items/held-seedhare.svg",
+      "sha256": "40af9b4942f65f503ed17613be3b9de6d20e4a787c83bdb97bce205e519be0c6",
+      "bytes": 1537
+    },
+    {
+      "id": "held:stonehorn",
+      "path": "assets/items/held-stonehorn.svg",
+      "sha256": "0c56e00e1117ae72419cfddad24cf5c5c56e8c766fde2c9dbc25676f126f2b89",
+      "bytes": 1510
+    },
+    {
+      "id": "held:tempestcub",
+      "path": "assets/items/held-tempestcub.svg",
+      "sha256": "9e94c65cf2e0039452e6bc53b401954380e182a07ab294d38ad8deb6b4d127aa",
+      "bytes": 1490
+    },
+    {
+      "id": "held:thistlehare",
+      "path": "assets/items/held-thistlehare.svg",
+      "sha256": "b49492b1b4022b7e0496ddee50dc890944a1f9860c8afa81ef1815468070c857",
+      "bytes": 1486
+    },
+    {
+      "id": "held:thornstag",
+      "path": "assets/items/held-thornstag.svg",
+      "sha256": "da584604bfb868e5f0c936ca2b1fbb6ca919a4c449181cd367378e9a7047698a",
+      "bytes": 1466
+    },
+    {
+      "id": "held:amberkite",
+      "path": "assets/items/held-amberkite.svg",
+      "sha256": "711b2ab79b97331001bd9bb6d67edd5fb6d0a5e15dee405e693f60fb001f5b2b",
+      "bytes": 1574
+    },
+    {
+      "id": "held:bouldereagle",
+      "path": "assets/items/held-bouldereagle.svg",
+      "sha256": "86c9c660eb47efa630edfa0a82bb8e72336fb4eeac817d1c383bd0b6b52934ee",
+      "bytes": 1478
+    },
+    {
+      "id": "held:bronzebuck",
+      "path": "assets/items/held-bronzebuck.svg",
+      "sha256": "a3eb03cf7d1d26a8db5e876c855a05b27e0bd9a674675515b07cbcf43a5f038d",
+      "bytes": 1523
+    },
+    {
+      "id": "held:glassphoenix",
+      "path": "assets/items/held-glassphoenix.svg",
+      "sha256": "84b48406ac6125a9e763e6a88171a11007f9b50be2bdfe1c015ed2833223bee2",
+      "bytes": 1529
+    },
+    {
+      "id": "held:heronveil",
+      "path": "assets/items/held-heronveil.svg",
+      "sha256": "35cb37ccca9da1a14c895e0e9accecd55f8b94164bad0795093ed19ed4de340f",
+      "bytes": 1600
+    },
+    {
+      "id": "held:honeybat",
+      "path": "assets/items/held-honeybat.svg",
+      "sha256": "c7ca387b4ed8f389b60e961a775447bfcac0aecd0504dd6e3fa984fcc0c22a5a",
+      "bytes": 1602
+    },
+    {
+      "id": "held:opalowl",
+      "path": "assets/items/held-opalowl.svg",
+      "sha256": "0ad29a299168c9d23db9d728a0296304e915e06c9864f040c0d2dbb329fd34ab",
+      "bytes": 1589
+    },
+    {
+      "id": "held:razorswift",
+      "path": "assets/items/held-razorswift.svg",
+      "sha256": "ffe562bff2827080c6772a086c71cd01db35c09a4e09b7dbf5ac634a1d5c964c",
+      "bytes": 1607
+    },
+    {
+      "id": "held:reedwren",
+      "path": "assets/items/held-reedwren.svg",
+      "sha256": "04e0a61b36b524e4352753b1085ff5ccd8cd3f3a5b737014d2e8c3ea1d202a3a",
+      "bytes": 1542
+    },
+    {
+      "id": "held:rillrook",
+      "path": "assets/items/held-rillrook.svg",
+      "sha256": "58e51958e77a4056413190f5aede29f6010b31fcdf318e8f6ea2f9b52fd6868d",
+      "bytes": 1670
+    },
+    {
+      "id": "held:skyrabbit",
+      "path": "assets/items/held-skyrabbit.svg",
+      "sha256": "879923b5f446e1fae46f954c71155c2b9f1173fd842f52fde68cb2efe74f4250",
+      "bytes": 1588
+    },
+    {
+      "id": "held:stormowl",
+      "path": "assets/items/held-stormowl.svg",
+      "sha256": "a67367ca4df589460d16111aed7769eab933bef079e2a4e0791b4044d09b2062",
+      "bytes": 1618
+    },
+    {
+      "id": "held:stormstilt",
+      "path": "assets/items/held-stormstilt.svg",
+      "sha256": "f7aa35194754cec9fc7ad7ee2ea1ab8957f79c0add3637c00c8ff503dc35c3f8",
+      "bytes": 1693
+    },
+    {
+      "id": "held:tempestrook",
+      "path": "assets/items/held-tempestrook.svg",
+      "sha256": "d51f96e3a7ec7db2cc1dd17058462f5feffdc57584e68d6199066e59bdbdc962",
+      "bytes": 1588
+    },
+    {
+      "id": "held:zephyrlynx",
+      "path": "assets/items/held-zephyrlynx.svg",
+      "sha256": "dcb2af1062eaa4f2226c6aaadd10e4de9e16e3016ba4afe9992cd0a68c932cfe",
+      "bytes": 1575
+    },
+    {
+      "id": "held:brooktoad",
+      "path": "assets/items/held-brooktoad.svg",
+      "sha256": "f6700d2baa20fff470ef4d3ee6b9976d3e45514bd903b5e04ffb5ee08df2d54b",
+      "bytes": 1589
+    },
+    {
+      "id": "held:embersalam",
+      "path": "assets/items/held-embersalam.svg",
+      "sha256": "92600b281b1a9488ed0141878731aceed7a94742a4b45fc361c2d00bfe7f09ed",
+      "bytes": 1578
+    },
+    {
+      "id": "held:magmatoad",
+      "path": "assets/items/held-magmatoad.svg",
+      "sha256": "73a36a35a144c83d2e193a067ca19fad0dd38c89fda9ff4441d05fe81f5258f7",
+      "bytes": 1639
+    },
+    {
+      "id": "held:starnewt",
+      "path": "assets/items/held-starnewt.svg",
+      "sha256": "77c8d6011c45da0728a84f6c3f2d71f5bdc0f6c7c04d1694dd57c145539306a5",
+      "bytes": 1599
+    },
+    {
+      "id": "held:auroradrake",
+      "path": "assets/items/held-auroradrake.svg",
+      "sha256": "c9101cce70dacf65315654f32cf778728126de8a6b1820903d0f8f2ab7d65701",
+      "bytes": 1572
+    },
+    {
+      "id": "held:cindermole",
+      "path": "assets/items/held-cindermole.svg",
+      "sha256": "3890fa031cbc650f174972768329b514a88c3942006d5d366b38ddc773544454",
+      "bytes": 1588
+    },
+    {
+      "id": "held:cloverbug",
+      "path": "assets/items/held-cloverbug.svg",
+      "sha256": "9f23648428ac1d19142079539a545882baaea20befd3a09346a9600bcb62d86b",
+      "bytes": 1600
+    },
+    {
+      "id": "held:coralimp",
+      "path": "assets/items/held-coralimp.svg",
+      "sha256": "737ddb93367b1e706358f742e1d86c60c9aec6f49854e24913738ed8f973ea63",
+      "bytes": 1590
+    },
+    {
+      "id": "held:lavaurchin",
+      "path": "assets/items/held-lavaurchin.svg",
+      "sha256": "fef0fcccc7cfa4a73025e7ef68e6f8acb9ab3989a01255c9f853f200e85f39e2",
+      "bytes": 1584
+    },
+    {
+      "id": "held:leafmantis",
+      "path": "assets/items/held-leafmantis.svg",
+      "sha256": "00047c8778ce929c75f5a5c7279afa6e3a999dbd478ba325ddcaf38bee220d4d",
+      "bytes": 1593
+    },
+    {
+      "id": "held:lumimoth",
+      "path": "assets/items/held-lumimoth.svg",
+      "sha256": "ef1f2be1077ba299ab5dde0ddb4facead4d980fb975ef9739b489a2879f62446",
+      "bytes": 1551
+    },
+    {
+      "id": "held:mirrormantis",
+      "path": "assets/items/held-mirrormantis.svg",
+      "sha256": "8fca462d65141910ecdc435b63a49131947583c50ba05536c9e1160d12eee38e",
+      "bytes": 1600
+    },
+    {
+      "id": "held:prismwasp",
+      "path": "assets/items/held-prismwasp.svg",
+      "sha256": "8515d628efeaca29aa1571d3a5a9e8434762e07fad721442642a7060b0462206",
+      "bytes": 1598
+    },
+    {
+      "id": "held:resinroach",
+      "path": "assets/items/held-resinroach.svg",
+      "sha256": "2c2a316db38f16fdc670110313cad2a6d73ce6461ca0aabe2588a178a739024a",
+      "bytes": 1574
+    },
+    {
+      "id": "held:saffronmoth",
+      "path": "assets/items/held-saffronmoth.svg",
+      "sha256": "107c56778189d9a9824602aae13c9eb021f7859735a470fa4d6feb34c5d3b8a9",
+      "bytes": 1604
+    },
+    {
+      "id": "held:sootimp",
+      "path": "assets/items/held-sootimp.svg",
+      "sha256": "443deb43c8d8e55139814864b6d763da30a1c4ba9c08cd32910f700a9116a45a",
+      "bytes": 1599
+    },
+    {
+      "id": "held:sunscarab",
+      "path": "assets/items/held-sunscarab.svg",
+      "sha256": "37eed5a57ed0f66f63bfc61b08825d798ef56217013a061187ef4784df9714bd",
+      "bytes": 1601
+    },
+    {
+      "id": "held:thunderbeetle",
+      "path": "assets/items/held-thunderbeetle.svg",
+      "sha256": "fbb238e6eebee652e665f17540c2b621247c0d70acbb4aa814d805b75d1d63be",
+      "bytes": 1602
+    },
+    {
+      "id": "held:volcanomoth",
+      "path": "assets/items/held-volcanomoth.svg",
+      "sha256": "7eed2d8c7f7093d3ec4f09bcc7ff2c0c339ddf3ba777a87c65ff08674969403e",
+      "bytes": 1576
+    },
+    {
+      "id": "held:whistleweasel",
+      "path": "assets/items/held-whistleweasel.svg",
+      "sha256": "2cdbffaacf0dc61b3128945b84afe908b2f50d69993855d91a32336f874e6c62",
+      "bytes": 1680
+    },
+    {
+      "id": "held:moonweaver",
+      "path": "assets/items/held-moonweaver.svg",
+      "sha256": "84eb3ea4b1b0a4bfb1069f6235a6fc182b80d8d1947a4f26d603abe1d43870f2",
+      "bytes": 1688
+    },
+    {
+      "id": "held:pearlwyrm",
+      "path": "assets/items/held-pearlwyrm.svg",
+      "sha256": "f10773c1cea303af17e2e7c41ce4923ce8c7f2e3f5977353b564a20b4b345c74",
+      "bytes": 1681
+    },
+    {
+      "id": "held:siltwyrm",
+      "path": "assets/items/held-siltwyrm.svg",
+      "sha256": "563b54a78533b6515dea9d6ba3923444ed47f447e5daf84c03e6e654dea748a2",
+      "bytes": 1655
+    },
+    {
+      "id": "held:briarcrab",
+      "path": "assets/items/held-briarcrab.svg",
+      "sha256": "a9001936ec71268a02ed21bd151d472de792611f5e81dd750a5630a2f12db16e",
+      "bytes": 1712
+    },
+    {
+      "id": "held:cloudfin",
+      "path": "assets/items/held-cloudfin.svg",
+      "sha256": "306a7d68d5b0907978a71ec0fe1c4bf5adb04ee3dcbba60438b3402d53ddc10f",
+      "bytes": 1695
+    },
+    {
+      "id": "held:crystalurchin",
+      "path": "assets/items/held-crystalurchin.svg",
+      "sha256": "7526504f5fadc9024a91372eb48e513d2642778ae0c43d4442a658f7e158b3ec",
+      "bytes": 1634
+    },
+    {
+      "id": "held:dewfin",
+      "path": "assets/items/held-dewfin.svg",
+      "sha256": "f08e4baa1fd43951b5257583bccba25922f2386afcc2f48cdd8ee37adaf0b039",
+      "bytes": 1680
+    },
+    {
+      "id": "held:driftjelly",
+      "path": "assets/items/held-driftjelly.svg",
+      "sha256": "cd66b996f4c1d3ae37a3c1dafcf3a8fdc6ca48ae8d3844b34ff9cd53bb12e4c4",
+      "bytes": 1656
+    },
+    {
+      "id": "held:glassshrimp",
+      "path": "assets/items/held-glassshrimp.svg",
+      "sha256": "c8055e6fad055494e92c7b3f588605da86abd7fd3800f51fa408d9898f21e400",
+      "bytes": 1709
+    },
+    {
+      "id": "held:kitejelly",
+      "path": "assets/items/held-kitejelly.svg",
+      "sha256": "8a18045f149be986c75f2864898e37418d130478111b39f730debf1b7edd9a21",
+      "bytes": 1716
+    },
+    {
+      "id": "held:lotusmanta",
+      "path": "assets/items/held-lotusmanta.svg",
+      "sha256": "461d5385388886d0f404d280472d8acf7c6401619584531aa44ee2bcdb66f436",
+      "bytes": 1654
+    },
+    {
+      "id": "held:mistseal",
+      "path": "assets/items/held-mistseal.svg",
+      "sha256": "975ee92b5fe426b5f7b231904c030c5e0834319415ac08ad6a0e6cae3154e7fd",
+      "bytes": 1633
+    },
+    {
+      "id": "held:runecrab",
+      "path": "assets/items/held-runecrab.svg",
+      "sha256": "de3c4e827c13bbf7bc076095576f47a26d98e2209f784fd65c01e37f95e24526",
+      "bytes": 1619
+    },
+    {
+      "id": "held:tideotter",
+      "path": "assets/items/held-tideotter.svg",
+      "sha256": "8dbb078e126cf329234fdf706d39b1fab066e176fa0dd2617184fd79862b7c74",
+      "bytes": 1658
+    },
+    {
+      "id": "held:veilray",
+      "path": "assets/items/held-veilray.svg",
+      "sha256": "7fbce8ec8ecc793a12c76cde1a9ecd43663cc048de4f8d4acff1a113055d31a2",
+      "bytes": 1666
+    },
+    {
+      "id": "held:ashbasilisk",
+      "path": "assets/items/held-ashbasilisk.svg",
+      "sha256": "241bc3e6c4aee66bfc7a7fd263ea36967e0d068d4af9a613c68b440fbc977844",
+      "bytes": 1679
+    },
+    {
+      "id": "held:basalturtle",
+      "path": "assets/items/held-basalturtle.svg",
+      "sha256": "59f8383ede1d0dfa47c90229cee90c2ef8abfba4fd587df5481754a4134950af",
+      "bytes": 1670
+    },
+    {
+      "id": "held:cinderempress",
+      "path": "assets/items/held-cinderempress.svg",
+      "sha256": "27fcea9e10211e535013773ad3d5a9f2dee7edfbd6ce70efbfdb696a86a62658",
+      "bytes": 1658
+    },
+    {
+      "id": "held:cindrake",
+      "path": "assets/items/held-cindrake.svg",
+      "sha256": "d7ab6e594d8859059b3a247450839c6a172ba5db1ded817ab07e5da9a0401fa9",
+      "bytes": 1585
+    },
+    {
+      "id": "held:dunecoil",
+      "path": "assets/items/held-dunecoil.svg",
+      "sha256": "990cfea957c46be7c7a1aa226818e6a4a87bbb5fd43611b28196a604e96686aa",
+      "bytes": 1757
+    },
+    {
+      "id": "held:ferncoil",
+      "path": "assets/items/held-ferncoil.svg",
+      "sha256": "48ba3bb31caa23892433e0f4e483a0a7c95fd31cd7dc3437c887bd8cdc09d05a",
+      "bytes": 1670
+    },
+    {
+      "id": "held:ironback",
+      "path": "assets/items/held-ironback.svg",
+      "sha256": "498d65bfd300c2a7261ade2c9cd2ecf9fc74d415740a3e248faaad8e1c03b23e",
+      "bytes": 1680
+    },
+    {
+      "id": "held:moltencoil",
+      "path": "assets/items/held-moltencoil.svg",
+      "sha256": "430251abe48a99f1d228558d41b290e3d6d544f52caccc7fac21976727abf2ce",
+      "bytes": 1672
+    },
+    {
+      "id": "held:steamaxolotl",
+      "path": "assets/items/held-steamaxolotl.svg",
+      "sha256": "1aa9ae41b64c9633566f4af8d389b1665bc64ff58e0db3dfbba01fed084bbeca",
+      "bytes": 1675
+    },
+    {
+      "id": "held:tidecrown",
+      "path": "assets/items/held-tidecrown.svg",
+      "sha256": "246a767d99fe4334bf7b0e4a1c9adee1d6945dfba06fdb5a320f2425aafc820a",
+      "bytes": 1681
+    },
+    {
+      "id": "held:elderroot",
+      "path": "assets/items/held-elderroot.svg",
+      "sha256": "20af90a4b7916cde7587b2b8401859b02656e4402529202615121c065e30bb91",
+      "bytes": 1623
+    },
+    {
+      "id": "held:emberorchid",
+      "path": "assets/items/held-emberorchid.svg",
+      "sha256": "918554ee32874c1899651603f2b47a0f83f572994076cdce60990b37c1747d5f",
+      "bytes": 1684
+    },
+    {
+      "id": "held:glowcap",
+      "path": "assets/items/held-glowcap.svg",
+      "sha256": "b1a91047218988f3bb73fe4c7e903c5d5fac45c9b2839a17fdd67b734459c63b",
+      "bytes": 1683
+    },
+    {
+      "id": "held:marigoldia",
+      "path": "assets/items/held-marigoldia.svg",
+      "sha256": "c04e9be02fe1d1ca6b43f2752854b4932bb61dc59293490fc44f0304f9d22daa",
+      "bytes": 1685
+    },
+    {
+      "id": "held:mossling",
+      "path": "assets/items/held-mossling.svg",
+      "sha256": "9a53a652897ecde6794bf5569fb50c0246941073034aad879cd3d10cda097a3c",
+      "bytes": 1794
+    },
+    {
+      "id": "held:skycorolla",
+      "path": "assets/items/held-skycorolla.svg",
+      "sha256": "f4149d9ed327f982f48668dd9cd7597935b4d9e43c768aaf7c07215a5f0de3ac",
+      "bytes": 1743
+    },
+    {
+      "id": "held:ambercolossus",
+      "path": "assets/items/held-ambercolossus.svg",
+      "sha256": "fe45a745c2d2e612bac8b69cba7ab0a922e098de6e966e3548b6d23358fa9620",
+      "bytes": 1693
+    },
+    {
+      "id": "held:bloomslime",
+      "path": "assets/items/held-bloomslime.svg",
+      "sha256": "637a53b9e511d8c161532fd0177958082fbf1daa9bbb18f2c5e649942341e88f",
+      "bytes": 1757
+    },
+    {
+      "id": "held:echochime",
+      "path": "assets/items/held-echochime.svg",
+      "sha256": "40f89f1cefef32335577a8160a2d0236a5aeb6f4e5c7ac264208e24cc3e72380",
+      "bytes": 1752
+    },
+    {
+      "id": "held:inksprite",
+      "path": "assets/items/held-inksprite.svg",
+      "sha256": "5e979cadf4cf86d8b17a35ba4518d39f51dc717fcbda4d78e7d1b900f7d09360",
+      "bytes": 1740
+    },
+    {
+      "id": "held:moongolem",
+      "path": "assets/items/held-moongolem.svg",
+      "sha256": "1e87f619aa6971aa938bd8dd2f0259cda3ed34d426b15906e2ff9ed01a6dce21",
+      "bytes": 1696
+    },
+    {
+      "id": "held:ochrewisp",
+      "path": "assets/items/held-ochrewisp.svg",
+      "sha256": "d9450f0f9ca11e2936262f3069cf1e86c603011f87006b4919db3a72114f4d7f",
+      "bytes": 1782
+    },
+    {
+      "id": "held:cindercentipede",
+      "path": "assets/items/held-cindercentipede.svg",
+      "sha256": "0a485f8371ad9d69f3e49aeae89a745015d2390050a95518ef405d4544508ee3",
+      "bytes": 1780
+    },
+    {
+      "id": "held:lanternslug",
+      "path": "assets/items/held-lanternslug.svg",
+      "sha256": "6e303a67400a5df2bfa2a0f042779b7bf9bc499c59243ea4add177a3e035a049",
+      "bytes": 1738
+    },
+    {
+      "id": "held:shellsnail",
+      "path": "assets/items/held-shellsnail.svg",
+      "sha256": "f49534384ff9e92a3fcc4451aef565c673d429af632bce6466a9cefac9b48301",
+      "bytes": 1755
+    },
+    {
+      "id": "weapon:class:swordsman",
+      "path": "assets/items/quest-swordsman.svg",
+      "sha256": "199bfbc91e7b1401484f622fd8b0d51b87f73bbbd56b20752d686f77bee07614",
+      "bytes": 1694
+    },
+    {
+      "id": "weapon:class:hunter",
+      "path": "assets/items/quest-hunter.svg",
+      "sha256": "51db18c01b23f84ca4f1fbc952bccaddd00fe1e0b68bb620417916a0bc85efa4",
+      "bytes": 1672
+    },
+    {
+      "id": "weapon:class:mage",
+      "path": "assets/items/quest-mage.svg",
+      "sha256": "0c44fa720bf3fd244d860540a7c196568fb213d4d6fae09e46969c25220656ad",
+      "bytes": 1653
+    },
+    {
+      "id": "weapon:class:druid",
+      "path": "assets/items/quest-druid.svg",
+      "sha256": "4f9d8a3789a24bd56b547bf65c827f618e058d9449398f4bb5fa114595e79467",
+      "bytes": 1648
+    }
+  ],
+  "totalBytes": 336967
+}
