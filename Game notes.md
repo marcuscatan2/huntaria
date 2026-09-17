@@ -354,3 +354,10 @@ independent habitat upgrades and strongest-species power. These mechanics are
 no longer stashed. [FARM_SCOPE.md](features/inner-sea/FARM_SCOPE.md) owns the
 contract and provisional tuning; boss/dungeon habitat equipment is the next batch.
 GN-002 evolution and GN-001's original flat species-stat proposal remain deferred.
+
+## GN-012 — Raid sequence
+
+Status: STASHED. Added: 2026-09-17. Source: user game-notes request.
+
+1. First raid: **Slime castle**.
+2. Second raid: **Flying Circus**.
