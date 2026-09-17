@@ -45,7 +45,7 @@ the first five chapters and validate complete routes and replayable defeats.
   two parallel paths, which converge after four branch points. The next node
   requires five points; the final talent requires seven. Final talents across
   the three branches are mutually exclusive. The innate remains free.
-- Reset is free. Three equipped combat skills and player-selected priority
+- Reset costs one matching Echo at a city Reset talents NPC. Three equipped combat skills and player-selected priority
   remain unchanged.
 
 `talent-tree-view.js` uses the painted sanctuary and role-matched icon atlases.

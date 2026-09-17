@@ -55,17 +55,17 @@ def main():
             state = page.evaluate("""()=>{
                 const P=BondProfile;
                 const a=P.summon('emberfox','druid',P.testing.grantEcho('emberfox',1));
-                const b=P.summon('emberfox','druid',P.testing.grantEcho('emberfox',1));
+                const old=P.snapshot();old.companions.push({...structuredClone(old.companions[0]),id:'legacy:second',ordinal:2});P.testing.replace(old);
                 P.testing.setXP(a.instanceId,1250);
                 return P.snapshot();
             }""")
             page.reload()
             page.wait_for_function("!!window.BondApp")
             after = page.evaluate("BondProfile.snapshot()")
-            check("Two same-species individuals stay independent", len(after['companions'])==2 and after['companions'][0]['id']!=after['companions'][1]['id'] and after['companions'][0]['xp']!=after['companions'][1]['xp'])
+            check("Two legacy same-species individuals stay independent", len(after['companions'])==2 and after['companions'][0]['id']!=after['companions'][1]['id'] and after['companions'][0]['xp']!=after['companions'][1]['xp'])
             check("Owned copies and XP survive reload with stable IDs", state["companions"] == after["companions"])
             page.evaluate("BondApp.switchTab('loadout')")
-            page.locator('[data-menu="collection"]').click()
+            page.locator('[data-frame-menu="collection"]').click();page.locator('[data-sea-tab="party"]').click();page.locator('[data-collection-mode="catalog"]').click()
             page.evaluate("Promise.all([...document.querySelectorAll('#loadout img[src]')].map(i=>i.decode().catch(()=>{})))")
             check("Loadout uses supplied images", page.locator('img.supplied-monster').count() > 0)
             page.screenshot(path=str(ARTIFACTS / "monster-sprites-loadout.png"), full_page=True)

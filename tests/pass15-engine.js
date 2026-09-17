@@ -113,7 +113,7 @@ window.runPass15Engine=()=>{
   const s=P.normalize(raw),build=G.soloBuild('druid');
   build[0][1]={...entry(type),instanceId:'copy:1'};build[0][2]={...entry(type),instanceId:'copy:2'};
   const b=new G.Battle(build,{profile:s,seed:42}),a=b.units.find(x=>x.instanceId==='copy:1'),second=b.units.find(x=>x.instanceId==='copy:2');
-  return a.level===1&&second.level===10&&second.power>a.power&&a.name.endsWith('#1')&&second.name.endsWith('#2')&&b.run().ended;
+  return a.level===1&&second.level===10&&second.power>a.power&&a.name===u.name&&second.name===u.name&&b.run().ended;
  });
  check('P14 duplicate individual and wrong-species reference rejected',()=>{
   const s=P.fresh(),u=C.UNITS.emberfox;s.companions=[{id:'copy:1',type:'emberfox',xp:0,skills:u.default,growth:{}}];

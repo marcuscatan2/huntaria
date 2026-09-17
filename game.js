@@ -12,7 +12,7 @@
     return Array.isArray(team)&&team.length===3&&team[0]&&BondContent.TRAINERS.includes(team[0].type)&&
       (!team[1]||!team[2]||(team[1].instanceId&&team[2].instanceId?team[1].instanceId!==team[2].instanceId:team[1].type!==team[2].type))&&team.every((u,i)=>i>0&&u===null||
         u&&(u.type!=='apprentice'||root.BondOpening&&Object.hasOwn(root.BondOpening.weapons,u.weapon)&&u.skills?.every(k=>root.BondOpening.weapons[u.weapon].skills.includes(k)))&&(i===0?BondContent.TRAINERS:MONSTERS).includes(u.type)&&Array.isArray(u.skills)&&u.skills.length===3&&
-        new Set(u.skills).size===3&&u.skills.every(k=>UNITS[u.type].skills.includes(k)));
+        new Set(u.skills).size===3&&u.skills.every(k=>MONSTERS.includes(u.type)?BondCompanionMoves.validID(u.type,k):UNITS[u.type].skills.includes(k)));
   }
   function validBuild(build) {return Array.isArray(build)&&build.length===2&&build.every(validTeam);}
   function soloBuild(type='druid'){const b=defaultBuild();b[0]=[type==='apprentice'?root.BondOpening.build({weapon:'dagger'}):{type,skills:[...UNITS[type].default]},null,null];return b;}
@@ -56,7 +56,7 @@
       this.defense=Array.isArray(options.defenders);
       if(this.defense){
         const defenders=options.defenders;
-        if(this.group||defenders.length<1||defenders.length>5||new Set(defenders.map(u=>u.instanceId)).size!==defenders.length||defenders.some(u=>!MONSTERS.includes(u.type)||!options.profile?.companions?.some(m=>m.id===u.instanceId&&m.type===u.type)||!Array.isArray(u.skills)||u.skills.length!==3||new Set(u.skills).size!==3||!u.skills.every(k=>UNITS[u.type].skills.includes(k))))throw Error('Invalid Inner Sea defenders');
+        if(this.group||defenders.length<1||defenders.length>5||new Set(defenders.map(u=>u.instanceId)).size!==defenders.length||defenders.some(u=>!MONSTERS.includes(u.type)||!options.profile?.companions?.some(m=>m.id===u.instanceId&&m.type===u.type)||!Array.isArray(u.skills)||u.skills.length!==3||new Set(u.skills).size!==3||!u.skills.every(k=>MONSTERS.includes(u.type)?BondCompanionMoves.validID(u.type,k):UNITS[u.type].skills.includes(k))))throw Error('Invalid Inner Sea defenders');
         const template=this.units.find(u=>u.side===0);
         this.units=this.units.filter(u=>u.side===1).concat(defenders.map((u,i)=>{
           const position={x:i<3?33:17,y:36+(i%3)*17},def=UNITS[u.type];
@@ -102,7 +102,7 @@
         const profile=u.storyMaster?(options.profile||{}):u.side===0?this.ownerProfiles[u.ownerIndex]:options.profile;
         const companion=u.side===0&&u.instanceId?root.BondProgress?.instance(profile||{},u.instanceId):null;
         if(u.side===0&&!u.storyMaster&&u.slot===0&&profile?.character?.name)u.name=profile.character.name;
-        if(companion)u.name=UNITS[u.type].name+' #'+companion.ordinal;
+        if(companion){u.name=UNITS[u.type].name;if(companion.movesVersion===1&&!BondCompanionMoves.validLoadout(companion,u.skills))throw Error('Unlearned companion move');}
         const bonus=u.side===0&&!u.storyMaster&&root.BondGrowth?root.BondGrowth.stats(u.type,companion?companion.growth:(profile?.growth||options.growth)?.[u.type],this.classTrees===0,this.monsterRules===0,this.apprenticeTrees===0):{hp:0,attack:0,armor:0,move:0,cooldown:0};
         u.talents=this.monsterRules&&companion?root.BondCompanionTrees.clean(u.type,companion.growth,root.BondCompanionTrees.budget(profile,companion.id)):{};
         u.growth=bonus;u.basePower=u.power;

@@ -67,7 +67,7 @@ Bonuses are personal and active only as an Apprentice. AGI enters the existing
 classic stat formulas without changing allocated attributes or Leadership
 sharing. Choosing any class retains archived Apprentice ranks but disables
 their effects and spending; class points use their own unchanged budget.
-Upgrade badges lead through Bag to Class Skill Tree, its branches and talents.
+Upgrade badges lead through Inner Sea and Trainer to Class Skill Tree, its branches and talents.
 
 The Apprentice atlas (`assets/talents/apprentice.png`) has two columns and three
 rows, ordered as the table above, and reuses the sanctuary background. Each path

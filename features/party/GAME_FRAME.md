@@ -17,23 +17,24 @@ to 850px, selecting an item opens its detail within the frame; Back to items
 returns to the selected slot. On larger screens, categories, items and the
 selected detail appear alongside each other. Summoning consumes the same Echo,
 automatically fills an available party slot and opens the new individual under
-My companions. The main menu has Inner Sea, Inventory and Class Skill Tree.
-Inner Sea contains Homestead, Party, Formation, Attributes, My companions and
-Species guide. Companion mastery opens within Inner Sea; Class Skill Tree never
-mixes class and companion trees. Existing `BondMenu.open('party'|'formation'|
-'trainer')` calls route to Inner Sea subsections. `current()` returns the main
-screen and `section()` returns the Inner Sea subsection.
+My companions. Bag contains Inventory. Inner Sea has Sea land (Homestead),
+Trainer (attribute overview, Class Skill Tree and Equipment) and Party
+(My companions, Formation and Species Guide). Companion mastery opens within
+Party; Class Skill Tree contains trainer trees. `BondMenu.open('party')` routes
+to Formation, which holds companion substitution and Dummy test. `current()`
+returns Inventory or Inner Sea, `section()` its leaf and `group()` its tab.
 
 `upgrade-notices.js` derives red badges from the current profile's affordable
-attribute upgrades and unlocked class/individual talent nodes. Bag marks any
-available upgrade; Inner Sea marks attributes and companion mastery. The route
+attribute upgrades and unlocked class/individual talent nodes. Inner Sea marks all
+available upgrades; Bag remains Inventory only. Empty held slots also mark a
+route when a compatible unassigned item is owned. The route
 continues through the relevant tab, individual companion and pagination,
 tree branch, node and Learn control. Badges survive inspection and reload;
 spending points clears them and a reset restores them. They never write progress
 or change budgets. `menu-navigation.css` styles the badges and shared SVG
 destination artwork in `assets/interface/` for exploration and preparation.
 
-Party contains the [Dummy test](../combat/TRAINING.md), including its incoming
+Formation contains the [Dummy test](../combat/TRAINING.md), including its incoming
 damage toggle. The button is unavailable while an adventure is reserved.
 Player copy names actions, costs, skill effects and quest destinations. Release
 plans, implementation notes and duplicate tutorials stay out of these screens.
@@ -41,7 +42,7 @@ plans, implementation notes and duplicate tutorials stay out of these screens.
 Exploration input stops during preparation. A live encounter continues to tick
 and settle in the background; completion does not pull the player out of a menu.
 Opening, closing, drawing and exporting these screens cannot award inventory.
-Profile and build formats remain unchanged.
+Stable profile and build identifiers remain unchanged.
 
 `tests/game_frame_check.py --browser chrome` covers field-button navigation,
 shared bounds, keyboard and modal cancellation, summoning, habitat selection,

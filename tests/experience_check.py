@@ -55,7 +55,7 @@ def main():
             page.wait_for_function('document.querySelector("#haven-scene").dataset.ready==="true"')
             check('Empty-owned scene renders a trainer without inventing companions',page.evaluate('BondProfile.snapshot().companions.length===0&&BondProfile.snapshot().haven.companions.every(x=>x===null)'))
             check('Locked decorations and foreign individuals cannot be saved',page.evaluate('!BondProfile.setHaven({version:1,style:"dawn",slots:["lantern",null,null],companions:[null,null]})&&!BondProfile.setHaven({version:1,style:"dawn",slots:[null,null,null],companions:["foreign",null]})'))
-            page.evaluate('''()=>{let s=BondProfile.snapshot();s.tutorial.kills=1;s.sights=BondAtlas.maps.flatMap(m=>m.landmarks).slice(0,3).map(l=>l.id);BondProfile.testing.replace(s);for(let i=0;i<2;i++){const e=BondProfile.testing.grantEcho('emberfox',5);BondProfile.summon('emberfox','druid',e);}BondApp.switchTab('loadout');BondMenu.open('collection');}''')
+            page.evaluate('''()=>{let s=BondProfile.snapshot();s.tutorial.kills=1;s.sights=BondAtlas.maps.flatMap(m=>m.landmarks).slice(0,3).map(l=>l.id);BondProfile.testing.replace(s);for(const type of ['emberfox','stonehorn']){const e=BondProfile.testing.grantEcho(type,5);BondProfile.summon(type,'druid',e);}BondApp.switchTab('loadout');BondMenu.open('collection');}''')
             page.locator('[data-haven-edit]').click()
             check('Exactly three sockets and all three earned decorations',page.locator('[data-haven-slot]').count()==3 and page.evaluate('BondHaven.available(BondProfile.snapshot()).length===3'))
             page.locator('#haven-style').select_option('dusk')

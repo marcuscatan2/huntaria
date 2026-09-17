@@ -9,7 +9,7 @@ Status: **local**. Selects individuals, skills and formation; connects saved bui
 
 `BondMenu.render; BondPicker; BondFormation.assign; BondApp.changeUnit / changeSkills`
 
-UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials preserve the current Apprentice party. Any party slots may share a formation row; shared rows spread actors vertically. Formation is an opening position, not a targeting override. Profile owns saved skills/trees. Preparation shares the exploration game frame. Native framed menus retain internal scrolling and focus; mobile item details return to their item grid. Homestead, owned companions and catalog are separate Inner Sea views. Main navigation separates Class Skill Tree from Inner Sea and Inventory. Party, formation, attributes and companion mastery are Inner Sea subsections; current()/section() expose that routing. Party launches a 30-second dummy test. Read-only red badges guide affordable attribute, class and individual talent upgrades from Bag and Inner Sea through menus, companion pages, branches and upgrade controls. They recompute from accepted profile state and remain until spent. Exploration and preparation share SVG destination icons. Inner Sea Equipment manages six trainer slots and each individual held item. Character selection, owned-copy availability and class/level/family eligibility stay in frame.
+UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials preserve the current Apprentice party. Any party slots may share a formation row; shared rows spread actors vertically. Formation is an opening position, not a targeting override. Profile owns saved skills/trees. Preparation shares the exploration game frame. Native framed menus retain internal scrolling and focus; mobile item details return to their item grid. Bag contains Inventory. Inner Sea groups Sea land (Homestead), Trainer (attributes, Class Skill Tree, Equipment) and Party (My companions, Formation, Species Guide). Formation owns substitutions and Dummy test. current()/section()/group() expose routing. Red badges guide affordable stat/talent upgrades and empty compatible held slots through Inner Sea. Companion pages put Mastery tree first and show held item artwork/name. Signature skills have distinct color and labels; unknown planned moves show levels. City services teach active companions General moves or reset any owned companion for a matching Echo through profile commands. Exploration and preparation share SVG destination icons. Inner Sea Equipment manages six trainer slots and each individual held item. Character selection, owned-copy availability and class/level/family eligibility stay in frame.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -33,6 +33,8 @@ The links below point to the actual source; root browser paths remain in use.
 | [assets/interface/inner-sea.svg](<../../assets/interface/inner-sea.svg>) | Owned source/configuration; inspect before editing. |
 | [assets/interface/explore.svg](<../../assets/interface/explore.svg>) | Owned source/configuration; inspect before editing. |
 | [tests/menu_upgrades_check.py](<../../tests/menu_upgrades_check.py>) | Owned source/configuration; inspect before editing. |
+| [companion-services.js](<../../companion-services.js>) | `BondCompanionServices` |
+| [tests/companion_services_check.py](<../../tests/companion_services_check.py>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -64,6 +66,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/monster_progression_check.py --browser chrome` — Exact 10,000-row CSV stats, 100 talent kits, quest budgets, shared shields, effect regressions, legacy/current encounter replay and responsive individual trees.
 - `python tests/menu_upgrades_check.py --browser chrome` — Read-only upgrade routes, independent trainer/companion level-ups, affordable points, individual pagination, purchases, resets, reload and responsive shared SVG navigation.
 - `python tests/equipment_ui_check.py --browser chrome` — All 200 item loadouts, independent drops, ownership, effect contracts, frozen combat gear, failed-save rollback and phone equipment menus.
+- `python tests/companion_services_check.py --browser chrome` — Companion move unlocks, tutor and Echo reset transactions, class attribute refunds, duplicate prevention, responsive navigation and held badges.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
@@ -72,5 +75,6 @@ For a cross-feature change, run `python scripts/project.py verify --browser chro
 - [Companion stats.md](<../../Companion stats.md>)
 - [features/party/GAME_FRAME.md](<../../features/party/GAME_FRAME.md>)
 - [features/collection/EQUIPMENT.md](<../../features/collection/EQUIPMENT.md>)
+- [features/growth/COMPANION_MOVES.md](<../../features/growth/COMPANION_MOVES.md>)
 - Commercial cards: [F-005](<../../FEATURE_BACKLOG.md>), [F-013](<../../FEATURE_BACKLOG.md>)
 - Owner review routes: [OR-06](<../../OWNER_REVIEWS.md#or-06>), [OR-09](<../../OWNER_REVIEWS.md#or-09>) Use the live board/preflight for status, not an approval copied here.

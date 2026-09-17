@@ -47,7 +47,7 @@ existing civilians. [Asset sources and exact prompts](../../assets/cities/README
 Scope **city-neighborhoods-v1** expands all six existing hubs from 2,400 to 3,600
 units per side (2.25× the area). Each has the three
 existing enterable public buildings, six homes, a workshop, three market stalls
-and nineteen residents, in addition to its Keeper and campaign NPCs. Homes,
+and twenty-one residents (including Move tutor and Reset talents), in addition to its Keeper and campaign NPCs. Homes,
 workshops and stalls dress the outdoor streets; the original hall, shop and
 annex retain their room and supply interactions and stable IDs.
 

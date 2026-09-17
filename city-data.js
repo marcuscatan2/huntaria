@@ -52,6 +52,10 @@ function layout(m,road){
  if(m.teleport)m.scenery.push({key:m.id+':teleport',...m.teleport,art:10,size:255,solid:0});
  m.residents=t.people.map((person,i)=>({id:m.id+':resident:'+i,name:t.names[i],appearance:'npc-'+person,pet:t.pets[i],text:t.lore[i],x:[930,1470,720][i],y:[1040,1440,2250][i]}));
  neighborhood(m,q,column,road);
+ m.residents.push(
+  {id:m.id+':move-tutor',name:'Move tutor',service:'moves',appearance:'npc-librarian',x:1380,y:1210,text:'Ready to learn a new move?'},
+  {id:m.id+':reset-talents',name:'Reset talents',service:'talents',appearance:'npc-astronomer',x:1550,y:1220,text:'One matching Echo, and we can begin again.'}
+ );
  m.landmarks=[{...m.hero,kind:'hero'}];
 }
 function neighborhood(m,q,column,road){
@@ -129,5 +133,6 @@ function stepResident(r,dt,held=false){
 const near=(a,b,r=150)=>!!a&&!!b&&Math.hypot(a.x-b.x,a.y-b.y)<=r;
 function destinations(s){const m=BondAtlas.get(s.map);return !s.encounterSave&&near(s.position,m?.teleport)&&s.journey?.early?.mageGate===true?starters.filter(id=>id!==s.map&&BondAtlas.unlocked(s,id)):[];}
 function building(s,id){const m=BondAtlas.get(s.map),b=m?.buildings?.find(b=>b.id===id);return !s.encounterSave&&b&&near(s.position,b.door)?b:null;}
-root.BondCities={themes,starters,masterCities,roomRoles,exhibitAreas,spriteNames,quarters,theme,layout,stepResident,destinations,building};
+function service(s,id,kind){const r=BondAtlas.get(s.map)?.residents?.find(r=>r.id===id&&r.service);return !s.encounterSave&&r&&(!kind||r.service===kind)&&near(s.position,r)?r:null;}
+root.BondCities={themes,starters,masterCities,roomRoles,exhibitAreas,spriteNames,quarters,theme,layout,stepResident,destinations,building,service};
 })(globalThis);

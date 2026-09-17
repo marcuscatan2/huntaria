@@ -42,10 +42,10 @@ with sync_playwright() as pw:
           s.growth.apprentice=full?Object.fromEntries(BondApprenticeTree.nodes.map(n=>[n.id,3])):{};return s;
         };BondProfile.testing.replace(apprenticeFixture(1));BondApp.switchTab('region');}""")
         dot = lambda selector: page.locator(selector + ' > .upgrade-dot').count() > 0
-        check('First-level Apprentice has one training point and a Bag badge', page.evaluate('BondUpgradeNotices.read(BondProfile.snapshot()).trainer.points===1') and dot('[data-world-menu="inventory"]'))
-        page.locator('[data-world-menu="inventory"]').click()
-        check('Bag marks Class Skill Tree for the new point', dot('.menu-nav [data-menu="trees"]'))
-        page.locator('.menu-nav [data-menu="trees"]').click()
+        check('First-level Apprentice has one training point and an Inner Sea badge', page.evaluate('BondUpgradeNotices.read(BondProfile.snapshot()).trainer.points===1') and dot('[data-world-menu="collection"]'))
+        page.locator('[data-world-menu="collection"]').click();page.locator('[data-sea-tab="trainer"]').click()
+        check('Trainer marks Class Skill Tree for the new point', dot('[data-collection-mode="trees"]'))
+        page.locator('[data-collection-mode="trees"]').click()
         check('Six illustrated talents form three connected paths', page.locator('[data-talent-node]').count() == 6 and page.locator('[data-from]').count() == 3 and page.locator('.talent-threshold').count() == 0)
         check('Each talent uses a different cell of the Apprentice atlas', page.evaluate("()=>new Set([...document.querySelectorAll('.talent-node>.talent-icon')].map(e=>e.getAttribute('style'))).size===6&&[...document.querySelectorAll('.talent-node>.talent-icon')].every(e=>getComputedStyle(e).backgroundSize==='200% 300%')"))
         check('Apprentice illustrations decode', page.evaluate("async()=>{const i=new Image();i.src='assets/talents/apprentice.png';await i.decode();return i.naturalWidth===1024&&i.naturalHeight===1536;}"))
@@ -54,9 +54,9 @@ with sync_playwright() as pw:
         check('Locked talent is inspectable without spending', page.locator('.talent-inspector [data-talent-learn]').is_disabled() and 'Practice Strikes' in page.locator('.talent-requirements').first.inner_text() and page.evaluate('JSON.stringify(BondProfile.snapshot())') == before)
         page.locator('[data-talent-node="apprentice:practice"]').click()
         page.locator('.talent-inspector [data-talent-learn]').click()
-        check('Learning uses the only point and clears its route badge', page.evaluate("BondProfile.snapshot().growth.apprentice['apprentice:practice']===1&&!BondUpgradeNotices.read(BondProfile.snapshot()).trainer.available") and not dot('.menu-nav [data-menu="trees"]'))
+        check('Learning uses the only point and clears its route badge', page.evaluate("BondProfile.snapshot().growth.apprentice['apprentice:practice']===1&&!BondUpgradeNotices.read(BondProfile.snapshot()).trainer.available") and not dot('[data-collection-mode="trees"]'))
         page.evaluate('BondProfile.testing.setTrainerXP(BondProgress.threshold(2))')
-        check('Level two immediately adds a new training point and badge', dot('.menu-nav [data-menu="trees"]') and page.evaluate('BondUpgradeNotices.read(BondProfile.snapshot()).trainer.points===1'))
+        check('Level two immediately adds a new training point and badge', dot('[data-collection-mode="trees"]') and page.evaluate('BondUpgradeNotices.read(BondProfile.snapshot()).trainer.points===1'))
         page.evaluate("BondProfile.testing.replace(apprenticeFixture());BondTree.select('apprentice')")
         for width in [1440, 1024, 768, 390, 320]:
             page.set_viewport_size({'width': width, 'height': 1000 if width > 1000 else 844})
@@ -85,7 +85,7 @@ with sync_playwright() as pw:
         page.evaluate("BondApp.switchTab('loadout');BondTree.select('apprentice')")
         check('Training ranks survive refresh', page.evaluate('BondProfile.snapshot().growth.apprentice') == saved)
         page.locator('[data-respec]').click()
-        check('Free reset refunds eighteen points and restores the badge', page.evaluate('BondUpgradeNotices.read(BondProfile.snapshot()).trainer.points===18') and page.locator('.talent-edge.learned').count() == 0 and dot('.menu-nav [data-menu="trees"]'))
+        check('Free reset refunds eighteen points and restores the badge', page.evaluate('BondUpgradeNotices.read(BondProfile.snapshot()).trainer.points===18') and page.locator('.talent-edge.learned').count() == 0 and dot('[data-collection-mode="trees"]'))
         check('A failed save cannot spend a point', page.evaluate("""()=>{const old=Storage.prototype.setItem,before=BondProfile.export();Storage.prototype.setItem=()=>{throw Error('storage full')};let ok;try{ok=BondProfile.learn('apprentice','apprentice:practice');}finally{Storage.prototype.setItem=old;}return !ok&&BondProfile.export()===before;}"""))
         # Actual class commands must disable training and preserve the new class budget.
         for cls in ['swordsman', 'mage', 'hunter', 'druid']:

@@ -21,17 +21,17 @@ with sync_playwright() as pw:
           s.companions=['emberfox','bloomslime'].map((type,i)=>({id:'copy:'+i,type,ordinal:1,xp:BondProgress.threshold(30),growth:{},skills:BondContent.UNITS[type].default}));
           s.inventory.biscuit=2;P.testing.replace(s);BondApp.changeUnit(0,1,'copy:0');BondApp.changeUnit(0,2,'copy:1');P.prepare();
           BondApp.switchTab('loadout');BondMenu.open('party');}""")
-        check('Party management is inside Inner Sea',page.evaluate('BondMenu.current()==="collection"&&BondMenu.section()==="party"') and page.locator('.game-menu-heading h2').inner_text()=='Inner Sea')
-        check('Main menu separates Class Skill Tree from party controls',page.locator('.menu-nav button').all_text_contents()==['Inner Sea','Inventory','Class Skill Tree'])
-        page.locator('.menu-content').evaluate('(e)=>e.scrollTop=e.scrollHeight')
+        check('Party management is inside Inner Sea',page.evaluate('BondMenu.current()==="collection"&&BondMenu.section()==="formation"') and page.locator('.game-menu-heading h2').inner_text()=='Inner Sea')
+        check('Inner Sea separates land, trainer and party',page.locator('.menu-nav button').all_text_contents()==['Sea land','Trainer','Party'])
+        page.evaluate("BondMenu.open('companions')");page.locator('.menu-content').evaluate('(e)=>e.scrollTop=e.scrollHeight')
         page.evaluate("BondMenu.open('formation')")
         check('Switching Inner Sea sections starts at the top',page.locator('.menu-content').evaluate('(e)=>e.scrollTop')==0)
-        page.evaluate("BondMenu.open('party')")
+        page.evaluate("BondMenu.open('trainer')")
         check('Skills have a concise heading and attack basis',page.locator('.ability-heading h3').inner_text()=='Combat Skills' and page.locator('.reach-note').inner_text()=='Atk: INT Based')
         page.evaluate("BondTree.select('copy:0')")
         check('Companion mastery stays in the Inner Sea',page.evaluate('BondMenu.current()==="collection"&&BondMenu.section()==="mastery"') and page.locator('.tree-pickers [data-class-tree]').count()==0)
-        page.locator('[data-menu="trees"]').click()
-        check('Class Skill Tree contains classes only',page.locator('.game-menu-heading h2').inner_text()=='Class Skill Tree' and page.locator('#pick-tree-companion').count()==0 and page.locator('[data-talent-node]').count()==15 and 'Brimble #1' not in page.locator('.talent-toolbar').inner_text())
+        page.locator('[data-sea-tab="trainer"]').click();page.locator('[data-collection-mode="trees"]').click()
+        check('Class Skill Tree contains classes only',page.locator('.game-menu-heading h2').inner_text()=='Inner Sea' and page.locator('#pick-tree-companion').count()==0 and page.locator('[data-talent-node]').count()==15 and 'Brimble #1' not in page.locator('.talent-toolbar').inner_text())
         banned=['launch cap','launch level','prototyp','changes affect','independent','per ready action','adventure health','choose the order','your opening moves','three skills. your priorities','enemies aim','formation sets']
         for route in ['trainer','formation','party','inventory','trees','collection']:
             page.evaluate('(route)=>BondMenu.open(route)',route)

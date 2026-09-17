@@ -11,4 +11,20 @@
 .talent-node>.upgrade-dot{top:-3px;right:-3px;width:12px;height:12px}
 .has-upgrade[data-talent-node]{position:absolute}
 .has-upgrade[data-stat],.has-upgrade[data-talent-learn]{padding-right:22px}
+.companion-profile>.open-tree-button{display:block;width:100%;margin:0 0 12px}
+.companion-profile>.gear-quick{display:flex;justify-content:center;align-items:center;margin:14px auto;min-height:58px;gap:10px}
+.gear-quick>span{display:grid;gap:5px;text-align:left;font-size:11px}.gear-quick strong{font-size:14px}
+.priority-slot.signature-move,.ability-choice.signature-move{border-color:#a783c8;background:#f0e8f8}
+.priority-slot.signature-move strong,.ability-choice.signature-move strong{color:#6c398c}
+.priority-slot.signature-move.selected,.ability-choice.signature-move.equipped{box-shadow:inset 3px 0 #8a57aa;border-color:#815199}
+.ability-choice.move-locked{opacity:.55}.ability-choice.signature-move small{color:#805798}
+#companion-service-dialog{width:min(720px,calc(100vw - 24px));max-height:min(88svh,850px);padding:0;background:#f0e7cf;color:#30473b;border:1px solid #b29b71;border-radius:12px;overflow:auto}
+.companion-service-body{padding:16px}.service-companions{display:flex;gap:8px;overflow-x:auto;padding:3px 3px 12px}
+.service-companion{flex:0 0 125px;border:1px solid #b9aa88;border-radius:8px;padding:8px;background:#faf3dd;color:#30473b;cursor:pointer}
+.service-companion .character-sprite{display:block;width:80px;height:80px;object-fit:contain;margin:auto;transform:none}
+.service-companion.selected{background:#e0e7cb;border:2px solid #507254}.service-companion strong{display:block;font-size:13px}
+.service-moves{display:grid;gap:8px}.service-moves article{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;background:#fff8e7;border:1px solid #cbbc96;border-radius:8px}
+.service-moves article>div{min-width:0}.service-moves p{font-size:12px;line-height:1.5;margin:5px 0 0}.service-moves button{flex-shrink:0;min-height:44px}
+.service-status{min-height:20px;font-size:13px}.service-reset{padding:14px;background:#fff8e7;border-radius:8px}
+@media(max-width:600px){.service-moves article{gap:8px;padding:10px}.service-moves button{padding:9px}.service-moves strong{font-size:14px}.service-companion{flex-basis:110px}.companion-service-body{padding:12px}}
 @media(max-width:600px){#world-action-menu button{min-height:54px}#world-status{bottom:80px}.frame-destinations .destination-icon{width:27px;height:27px}#world-action-menu .destination-icon{width:31px;height:31px}}

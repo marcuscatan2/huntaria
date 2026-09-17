@@ -42,6 +42,20 @@ clue to your master to receive a class weapon in Bag and finish the current main
 quest. The farm opens at level 25. Each companion has its own skill tree from
 the moment you summon it, with bonus points after Tidecrown and the relic quest.
 
+## Companions and menus
+
+Bag holds Inventory. Inner Sea groups Homestead under Sea land; attributes,
+Class Skill Tree and Equipment under Trainer; and My companions, Formation and
+Species Guide under Party. Use Formation to substitute companions or run a Dummy
+test. Mastery tree is above each companion's portrait; its held item appears
+below the level. Red dots lead to available upgrades and compatible held items.
+
+New companions start with one signature and two basic moves, then learn more
+through level 48. Signature moves are violet. Every city's Move tutor teaches
+General moves to active companions. Reset talents refunds a companion's talents
+for one matching Echo. An owned species cannot be summoned again. Choosing a
+class refunds the trainer's spent attributes.
+
 ## Testing without resetting normal progress
 
 [Isolated QA](http://127.0.0.1:8765/?test=1) has a separate save and visible

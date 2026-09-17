@@ -2,7 +2,7 @@
 (function(root){
 'use strict';
 // A partial client must never normalize or overwrite an otherwise valid save.
-for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','BondAtlas','BondWorld','BondEchoes','BondPopulation','BondAdventure','BondGrowth','BondCampaign','BondOpening','BondFormation','BondHaven','BondGame','BondTraining','BondCombatCatalog','BondCombatEffects','BondCombatEntities','BondCombatPassives','BondCombatKits','BondClassTrees','BondApprenticeTree','BondClassTalents','BondMonsterProgression','BondCompanionTrees','BondCompanionTalents','BondItemCatalog','BondEquipment','BondEquipmentEffects','BondCombatHooks']){
+for(const dependency of ['BondContent','BondRules','BondRoster','BondProgress','BondAtlas','BondWorld','BondEchoes','BondPopulation','BondAdventure','BondGrowth','BondCampaign','BondOpening','BondFormation','BondHaven','BondGame','BondTraining','BondCombatCatalog','BondCombatEffects','BondCombatEntities','BondCombatPassives','BondCombatKits','BondClassTrees','BondApprenticeTree','BondClassTalents','BondMonsterProgression','BondCompanionTrees','BondCompanionMoves','BondCompanionTalents','BondItemCatalog','BondEquipment','BondEquipmentEffects','BondCombatHooks']){
  if(!root[dependency])throw Error('Required game module unavailable: '+dependency);
 }
 const C=BondContent,R=BondProgress,A=BondAtlas,W=BondWorld,E=BondEchoes,Q=BondPopulation,clone=x=>JSON.parse(JSON.stringify(x));
@@ -17,8 +17,9 @@ for(const type of C.MONSTERS)W.ITEMS[E.key(type)]=E.item(type);
 for(const k of ['bondcontract','rarecontract'])W.ITEMS[k]={...W.ITEMS[k],category:'Legacy',description:'An old papyrus keepsake.'};
 W.ITEMS.starseed.description='A legacy expedition keepsake. Preserved from an earlier save; not a current drop. Decorative, with no hidden stat bonus.';
 W.ITEMS.ashglass={name:'Ashglass',icon:'◇',category:'Materials',description:'A smoky piece of ordinary volcanic glass from an Ashen Reach cache. Decorative; no stat bonus.'};
-const validSkills=(type,skills)=>Array.isArray(skills)&&skills.length===3&&new Set(skills).size===3&&skills.every(k=>C.UNITS[type]?.skills.includes(k));
+const validSkills=(type,skills)=>Array.isArray(skills)&&skills.length===3&&new Set(skills).size===3&&skills.every(k=>C.MONSTERS.includes(type)?BondCompanionMoves.validID(type,k):C.UNITS[type]?.skills.includes(k));
 function summarize(s){
+ for(const m of s.companions)BondCompanionMoves.clean(m);
  s.owned=[...new Set(s.companions.map(m=>m.type))];s.xp={};s.pacts={};
  for(const mon of s.companions){s.xp[mon.type]=Math.max(s.xp[mon.type]||0,mon.xp);s.pacts[mon.id]=mon.pact;}
 }
@@ -40,7 +41,7 @@ function normalize(raw){
   seen.add(m.id);ordinals[m.type]=(ordinals[m.type]||0)+1;
   const skills=validSkills(m.type,m.skills)?[...m.skills]:[...C.UNITS[m.type].default],pact=m.pact,engineXP=R.clampXP(m.xp),excess=Math.max(0,engineXP-R.PLAYER_MAX_XP);
   if(excess)cappedCompanions++;
-  s.companions.push({id:m.id,type:m.type,ordinal:ordinals[m.type],xp:R.clampPlayerXP(engineXP),treeLevel:Number.isInteger(m.treeLevel)?Math.max(R.level(engineXP),Math.min(60,integer(m.treeLevel))):undefined,deferredXP:Math.max(integer(m.deferredXP,R.ENGINE_MAX_XP),excess),sourceLevel:Number.isInteger(m.sourceLevel)?Math.max(1,Math.min(R.ENGINE_LEVEL_CAP,m.sourceLevel)):undefined,skills,growth:m.growth||{},heldItem:m.heldItem||null,pact:{map:A.get(pact?.map)?pact.map:'clearing-0',trainerClass:BondContent.TRAINERS.includes(pact?.trainerClass)?pact.trainerClass:'druid'}});
+  s.companions.push({id:m.id,type:m.type,ordinal:ordinals[m.type],xp:R.clampPlayerXP(engineXP),treeLevel:Number.isInteger(m.treeLevel)?Math.max(R.level(engineXP),Math.min(60,integer(m.treeLevel))):undefined,deferredXP:Math.max(integer(m.deferredXP,R.ENGINE_MAX_XP),excess),sourceLevel:Number.isInteger(m.sourceLevel)?Math.max(1,Math.min(R.ENGINE_LEVEL_CAP,m.sourceLevel)):undefined,skills,movesVersion:m.movesVersion,taughtMoves:m.taughtMoves,legacyMoves:m.legacyMoves,moveLevel:m.moveLevel,growth:m.growth||{},heldItem:m.heldItem||null,pact:{map:A.get(pact?.map)?pact.map:'clearing-0',trainerClass:BondContent.TRAINERS.includes(pact?.trainerClass)?pact.trainerClass:'druid'}});
  }
  summarize(s);
  s.journey=root.BondCampaign?.clean(raw.journey)||{};
@@ -288,12 +289,13 @@ function summon(type,trainerClass='druid',requestId){
  return commit(s=>{
   const previous=requestId?s.summons[requestId]:null;
   if(previous?.type===type)return {ok:true,repeated:true,type,instanceId:previous.instanceId,id:requestId};
+  if(s.companions.some(m=>m.type===type))return false;
   const echoIndex=requestId?(s.echoes[type]||[]).findIndex(e=>e.id===requestId):0;
   const echo=s.echoes[type]?.[echoIndex];if(!echo)return false;
   let instanceId;do{instanceId='companion:'+(++s.sequence);}while(resolve(s,instanceId));
   const ordinal=1+s.companions.filter(m=>m.type===type).length;
   const ownedLevel=Math.min(R.PLAYER_LEVEL_CAP,echo.level);
-  s.companions.push({id:instanceId,type,ordinal,xp:R.threshold(ownedLevel),deferredXP:0,sourceLevel:echo.level,heldItem:null,skills:[...C.UNITS[type].default],growth:{},pact:{map:echo.map,trainerClass}});
+  s.companions.push({id:instanceId,type,ordinal,xp:R.threshold(ownedLevel),deferredXP:0,sourceLevel:echo.level,heldItem:null,movesVersion:1,taughtMoves:[],legacyMoves:[],moveLevel:ownedLevel,skills:BondCompanionMoves.initial(type),growth:{},pact:{map:echo.map,trainerClass}});
   s.echoes[type].splice(echoIndex,1);s.inventory[E.key(type)]=s.echoes[type].length;
   s.summons[echo.id]={type,instanceId};s.tutorial.summons++;BondCampaign.recordSummon(s);
   return {ok:true,type,instanceId,id:echo.id,level:ownedLevel,sourceLevel:echo.level};
@@ -310,15 +312,21 @@ function consumePrepared(b){
  if(receipt)b._supplyReceipt=receipt;return receipt;
 }
 function nearService(s,kind){const p=T.service(A.get(s.map),kind);return !!p&&Math.hypot(s.position.x-p.x,s.position.y-p.y)<=150;}
+function activeCompanions(s=state){
+ try{const build=BondGame.migrateBuild(JSON.parse(localStorage.getItem(BUILD_KEY)));return [...new Set((build?.[0]||[]).slice(1).filter(u=>u&&resolve(s,u.instanceId)?.type===u.type).map(u=>u.instanceId))];}catch(_){return [];}
+}
 root.BondProfile={
- KEY,BUILD_KEY,TEST,fresh,normalize,snapshot:()=>{sync();return clone(state);},persistent:()=>persistent,error:()=>lastError,owns:t=>state.owned.includes(t),getCompanion:id=>{sync();const m=resolve(state,id);return m?clone(m):null;},companions:type=>{sync();return clone(state.companions.filter(m=>!type||m.type===type));},label:m=>m?C.UNITS[m.type].name+' #'+m.ordinal:'Empty slot',
+ activeCompanions:()=>{sync();return activeCompanions();},
+ teachMove(npc,id,skill){return commit(s=>{const m=resolve(s,id);if(!m||!BondCities.service(s,npc,'moves')||!activeCompanions(s).includes(id)||!BondCompanionMoves.general.includes(skill)||BondCompanionMoves.learned(m).includes(skill))return false;m.taughtMoves.push(skill);return {ok:true,skill};},{critical:true,growth:true});},
+ resetCompanionTalents(npc,id){return commit(s=>{const m=resolve(s,id);if(!m||!BondCities.service(s,npc,'talents')||!BondGrowth.used(m.growth))return false;const echoes=s.echoes[m.type]||[],echo=[...echoes].sort((a,b)=>a.level-b.level||a.id.localeCompare(b.id))[0];if(!echo)return false;echoes.splice(echoes.findIndex(e=>e.id===echo.id),1);s.inventory[E.key(m.type)]=echoes.length;m.growth={};return {ok:true,echo:echo.id};},{critical:true,growth:true});},
+ KEY,BUILD_KEY,TEST,fresh,normalize,snapshot:()=>{sync();return clone(state);},persistent:()=>persistent,error:()=>lastError,owns:t=>state.owned.includes(t),getCompanion:id=>{sync();const m=resolve(state,id);return m?clone(m):null;},companions:type=>{sync();return clone(state.companions.filter(m=>!type||m.type===type));},label:m=>m?C.UNITS[m.type].name:'Empty slot',
  createCharacter(raw){const c=BondOpening.character(raw);if(!c||c.legacy)return false;return commit(s=>{if(s.character||s.encounterSave||s.companions.length||s.tutorial.kills||s.coins)return false;s.character=c;s.attributes=BondOpening.attributes(c.weapon);s.map=BondOpening.start.map;s.area=A.get(s.map).region;s.position=A.safePoint(s.map,BondOpening.start.position);s.visited=[s.map];s.inventory={leafdraught:2};s.growth.apprentice={};return true;},{critical:true,growth:true});},
  nameCharacter(value){const name=BondOpening.name(value);if(!BondOpening.validName(name)||name.toLocaleLowerCase()==='apprentice')return false;return commit(s=>{if(!s.character||!BondOpening.needsIdentity(s.character))return false;s.character=s.character.legacy?{legacy:true,name}:{...s.character,name};return true;},{critical:true});},
  canSpecialize(type){sync();const e=state.journey.early;return BondContent.CLASSES.includes(type)&&!state.progression.specialization&&R.trainerLevel(state)>=20&&e?.tidecrown===true&&e.demonstrations.length===4&&e.trials[type]===true;},
- specialize(type){if(!this.canSpecialize(type))return false;return commit(s=>{if(s.progression.specialization)return false;s.progression.specialization=type;s.growth[type]||={};s.journey.relic={stage:'raid',autostart:true};healArrival(s);return {ok:true,type};},{critical:true,growth:true});},
+ specialize(type){if(!this.canSpecialize(type))return false;return commit(s=>{if(s.progression.specialization)return false;s.progression.specialization=type;s.attributes=R.cleanAttributes(null,R.trainerLevel(s));s.growth[type]||={};s.journey.relic={stage:'raid',autostart:true};healArrival(s);return {ok:true,type};},{critical:true,growth:true});},
  requirement(id,party){const e=encounter(id);return e?BondCampaign.requirement(e,state,party):'Encounter unavailable.';},
- setSkills(id,skills){return commit(s=>{const m=resolve(s,id);if(!m||!validSkills(m.type,skills))return false;m.skills=[...skills];BondCampaign.recordAbility(s,m);},{critical:true,growth:true});},
- migrateParty(team){return team.map((u,slot)=>{if(!slot&&state.character&&!state.character.legacy){const start=BondOpening.build(state.character,state.progression.specialization);if(u?.type===start.type&&(!start.weapon||u.weapon===start.weapon)&&validSkills(start.type,u.skills))start.skills=[...u.skills];return start;}if(!u||!slot)return u;const m=resolve(state,u.instanceId)||(!u.instanceId?state.companions.find(m=>m.type===u.type):null);if(!m||m.type!==u.type)return null;if(!u.instanceId&&validSkills(u.type,u.skills))commit(s=>{resolve(s,m.id).skills=[...u.skills];},{quiet:true,critical:true});return {type:m.type,instanceId:m.id,skills:!u.instanceId&&validSkills(u.type,u.skills)?[...u.skills]:[...m.skills]};});},
+ setSkills(id,skills){return commit(s=>{const m=resolve(s,id);if(!m||!BondCompanionMoves.validLoadout(m,skills))return false;m.skills=[...skills];BondCampaign.recordAbility(s,m);},{critical:true,growth:true});},
+ migrateParty(team){return team.map((u,slot)=>{if(!slot&&state.character&&!state.character.legacy){const start=BondOpening.build(state.character,state.progression.specialization);if(u?.type===start.type&&(!start.weapon||u.weapon===start.weapon)&&validSkills(start.type,u.skills))start.skills=[...u.skills];return start;}if(!u||!slot)return u;const m=resolve(state,u.instanceId)||(!u.instanceId?state.companions.find(m=>m.type===u.type):null);if(!m||m.type!==u.type)return null;if(!u.instanceId&&validSkills(m.type,u.skills)&&(m.legacyMoves.length||BondCompanionMoves.validLoadout(m,u.skills)))commit(s=>{const saved=resolve(s,m.id);if(saved.legacyMoves.length)saved.legacyMoves=[...new Set([...saved.legacyMoves,...u.skills])];saved.skills=[...u.skills];},{quiet:true,critical:true});return {type:m.type,instanceId:m.id,skills:[...resolve(state,m.id).skills]};});},
  relicAction(id,action,party){return commit(s=>BondRelicQuest.command(s,id,action,party),{critical:true});},
  encounter,beginHunt,beginPack,hunt,validEncounter,population,settleKills,complete,summon,consumePrepared,transition,teleport,reserveBattle,checkpoint,restoreBattle,abandonBattle,joinBattle,requestEscape,
   talkKeeper(map){return commit(s=>{const m=A.get(map);if(map!==s.map||Math.hypot(s.position.x-m.guide.x,s.position.y-m.guide.y)>150)return false;s.journey.talks[map]=++s.journey.sequence;return true;},{critical:true});},
@@ -351,7 +359,7 @@ root.BondProfile={
   if(!n||(r[id]||0)>=n.max||BondGrowth.used(r)>=BondGrowth.budget(s,ref)||!BondGrowth.gate(type,id,r))return false;
   const next={...r,[id]:(r[id]||0)+1};if(mon)mon.growth=next;else s.growth[type]=next;
  },{critical:true,growth:true});},
- respec(ref){return commit(s=>{if(!BondGrowth.unlocked(s,ref))return false;const m=resolve(s,ref);if(m){if(!BondGrowth.used(m.growth))return false;m.growth={};}else{if(!BondContent.TRAINERS.includes(ref)||!BondGrowth.used(s.growth[ref]))return false;s.growth[ref]={};}},{critical:true,growth:true});},
+ respec(ref){return commit(s=>{if(!BondGrowth.unlocked(s,ref))return false;const m=resolve(s,ref);if(m)return false;else{if(!BondContent.TRAINERS.includes(ref)||!BondGrowth.used(s.growth[ref]))return false;s.growth[ref]={};}},{critical:true,growth:true});},
  reset(){active.clear();return commit(s=>{for(const k of Object.keys(s))delete s[k];Object.assign(s,fresh());},{growth:true});},
  setHaven(layout){return commit(s=>{if(!BondHaven.valid(layout,s))return false;s.haven=clone(layout);return true;},{critical:true});},
  farmAction(action,value){return commit(s=>BondFarm.command(s,action,value,Math.max(Date.now(),s.farm.lastAt)),{critical:true,growth:true});},

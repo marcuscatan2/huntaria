@@ -1,6 +1,7 @@
 ()=>{
  const checks=[],check=(name,value,detail=null)=>checks.push({name,pass:!!value,detail});
  const P=BondProfile,C=BondCampaign,G=BondGame,A=BondAtlas;
+ const learnedKit=m=>{const known=BondCompanionMoves.learned(m);return [...known.filter(BondCompanionMoves.signature),...known.filter(id=>!BondCompanionMoves.signature(id))].slice(0,3);};
  const allocate=(s,cls)=>{if(cls==='swordsman')s.formation=['front','middle','front'];s.growth[cls]=BondGrowth.clean(cls,Object.fromEntries(BondGrowth.nodes(cls).map(n=>[n.id,n.max])),BondGrowth.budget(s,cls));for(const m of s.companions)m.growth=BondGrowth.clean(m.type,Object.fromEntries(BondGrowth.nodes(m.type).map(n=>[n.id,1])),BondGrowth.budget(s,m.id));return s;};
  check('60 trainer / 12 pack / 48 objective rows validate',C.validate().length===0,C.validate());
  check('30-map graph validates',A.validate().length===0);
@@ -49,6 +50,7 @@
   const party=[{type:cls,skills:cls==='druid'?['mend','bark','bramble']:cls==='mage'?['aegis','comet','frost']:[...G.UNITS[cls].default]},{type:'emberfox',instanceId:fox,skills:[...G.UNITS.emberfox.default]},{type:'stonehorn',instanceId:stone,skills:[...G.UNITS.stonehorn.default]}];
   const outcomes=[];
   function fight(e){const raw=P.snapshot(),level=Math.min(BondProgress.PLAYER_LEVEL_CAP,e.level||BondProgress.trainerLevel(raw));raw.trainerXP=Math.max(raw.trainerXP,BondProgress.threshold(level));raw.attributes=BondProgress.cleanAttributes({[cls==='hunter'?'dex':cls==='swordsman'?'str':'int']:65,vit:40,leadership:40,agi:20},level);allocate(raw,cls);P.testing.replace(raw);
+   for(const unit of party.slice(1))unit.skills=learnedKit(P.getCompanion(unit.instanceId));
    const opts={profile:P.snapshot(),encounter:e.kind?e:null,enemyLevel:e.level,seed:e.seed||16},b=new G.Battle([party,e.team||G.defaultBuild()[1]],opts);P.reserveBattle(b,e.id,opts);P.consumePrepared(b);b.run();let replayStable=true;if(b.winner!==0){P.checkpoint(b);const restored=P.restoreBattle(e.id);replayStable=!!restored&&restored.winner===b.winner&&JSON.stringify(restored.events)===JSON.stringify(b.events);}const result=P.complete(b,e.id);outcomes.push({id:e.id,winner:b.winner,time:b.time,level:BondProgress.trainerLevel(raw),aboveCapAshen:e.kind==='wild'&&A.get(e.map)?.region==='ashen'&&e.enemies.every(u=>u.level>BondProgress.PLAYER_LEVEL_CAP),replayStable,settled:!!result&&!P.snapshot().encounterSave});return b.winner===0;}
   for(const chapter of C.chapters){for(const step of chapter.steps){
    if(!P.travel(step.map)){outcomes.push({id:step.id,error:'locked route',level:BondProgress.trainerLevel(P.snapshot())});break;}
@@ -68,8 +70,9 @@
  function earlyFight(id,trainer,level,branch,weapon='dagger'){
   const e=P.encounter(id),profile=P.fresh(),ids=['early-fox','early-'+branch];profile.character={version:1,name:'Route Tester',weapon,look:BondOpening.defaultLook};profile.trainerXP=BondProgress.threshold(level);profile.progression={version:2,specialization:trainer==='apprentice'?null:trainer,treeGrandfathered:false};profile.attributes=BondProgress.cleanAttributes(trainer==='apprentice'?(weapon==='bow'?{dex:30,agi:18,vit:24,leadership:16}:{str:30,agi:18,vit:24,leadership:16}):{...(trainer==='hunter'?{dex:32}:trainer==='swordsman'?{str:32,dex:18}:{int:32,dex:18}),vit:28,agi:18,leadership:22},level);
   profile.companions=[{id:ids[0],type:'emberfox',ordinal:1,xp:BondProgress.threshold(level),skills:[...G.UNITS.emberfox.default],growth:{},pact:{map:'clearing-0',trainerClass:trainer}},{id:ids[1],type:branch,ordinal:1,xp:BondProgress.threshold(level),skills:[...G.UNITS[branch].default],growth:{},pact:{map:'clearing-0',trainerClass:trainer}}];
+  for(const m of profile.companions){m.movesVersion=1;m.skills=BondCompanionMoves.initial(m.type);m.skills=learnedKit(m);}
   allocate(profile,trainer);
-  const trainerUnit=trainer==='apprentice'?BondOpening.build(profile.character):{type:trainer,skills:[...G.UNITS[trainer].default]},team=[trainerUnit,{type:'emberfox',instanceId:ids[0],skills:[...G.UNITS.emberfox.default]},{type:branch,instanceId:ids[1],skills:[...G.UNITS[branch].default]}],opts={profile,formation:profile.formation,enemyLevel:e.level,seed:e.seed||16,encounter:e.kind?e:null},b=new G.Battle([team,e.team||G.defaultBuild()[1]],opts).run();
+  const trainerUnit=trainer==='apprentice'?BondOpening.build(profile.character):{type:trainer,skills:[...G.UNITS[trainer].default]},team=[trainerUnit,{type:'emberfox',instanceId:ids[0],skills:[...profile.companions[0].skills]},{type:branch,instanceId:ids[1],skills:[...profile.companions[1].skills]}],opts={profile,formation:profile.formation,enemyLevel:e.level,seed:e.seed||16,encounter:e.kind?e:null},b=new G.Battle([team,e.team||G.defaultBuild()[1]],opts).run();
   earlyBalance.push({id,trainer,level,branch,weapon,winner:b.winner,time:b.time,reason:b.reason,trainerHP:Math.round(100*b.trainer(0).hp/b.trainer(0).maxHp)});
  }
  for(const branch of ['bloomslime','stonehorn'])for(const weapon of ['dagger','bow']){

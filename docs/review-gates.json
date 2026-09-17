@@ -1234,6 +1234,29 @@
           "sha256": "355c7122a4da7213b52b2ff92d53b8c5bb9d9b72d1ff09e27d59e59fef845c0d"
         }
       ]
+    },
+    {
+      "id": "companion-services-navigation-v1-2026-09-17",
+      "source": "Current owner conversation: numbered companion progression and menu request, plus move spacing clarification",
+      "scope": [
+        "Implement class attribute refunds, individual move learning and city General move tutors",
+        "Prevent new duplicate summons, retain saved individuals and charge one matching Echo for city talent resets",
+        "Reorganize Bag and Inner Sea, simplify companion overview and notify compatible empty held slots"
+      ],
+      "quotes": [
+        "Make it so that when changing the class, the spent attributes reset.",
+        "Mons start with too many skills, make them start with 1 signature move + 2 basic moves.",
+        "Also teach a few existing basic moves between signatures",
+        "Create a 'Reset talents' NPC in every city as well to reset the mons talents. The resetting will cost one of the same mon's echo.",
+        "Bag should only display Inventory."
+      ],
+      "boundary": "Authorizes this local implementation and reuse of current NPC art. Does not approve final expanded-roster art, live economy, external playtest or release.",
+      "evidence": [
+        {
+          "path": "features/growth/COMPANION_MOVES.md",
+          "sha256": "534e38369d64fefd17c314e031e2f0e8cb6ce07abe0b6044901a5853fa88a517"
+        }
+      ]
     }
   ]
 }

@@ -20,7 +20,7 @@ function render(){
  if(item){
   detail=icon(selected,true)+'<p class="eyebrow">'+item.category.toUpperCase()+' · '+amount+' OWNED</p><h3>'+item.name+'</h3><p>'+item.description+'</p>';
   if(BondEquipment.get(selected)){const gear=BondEquipment.get(selected);detail=icon(selected,true)+'<h3>'+gear.name+'</h3>'+BondEquipmentView.info(gear)+'<p>'+amount+' owned · '+BondEquipment.used(s,selected)+' equipped</p><button class="button primary" data-open-equipment="" data-gear-id="'+selected+'">Manage equipment</button>';}else if(item.category==='Echoes'){
-   const origin=s.echoes[item.type]?.[0];detail+='<p class="item-note">Source: '+(origin?BondAtlas.get(origin.map).name+' · Lv '+origin.level:'saved reward')+'</p><button class="button primary '+(selected===tutorialEcho?'tutorial-target':'')+'" data-summon="'+item.type+'" '+''+'>'+'Summon companion'+'</button>';
+   detail+='<button class="button primary '+(selected===tutorialEcho?'tutorial-target':'')+'" data-summon="'+item.type+'" '+(P.owns(item.type)?'disabled':'')+'>'+(P.owns(item.type)?'Companion acquired':'Summon companion')+'</button>';
   }else if(BondAdventure.items[selected])detail+='<button class="button primary" data-open-recovery="'+selected+'">Choose a target →</button>';
   else if(selected==='biscuit')detail+='<button class="button primary" data-prepare '+(s.prepared?'disabled':'')+'>'+(s.prepared?'Prepared · +80 opening shield':'Prepare one biscuit')+'</button>'+(s.prepared?'<button class="text-button" data-unprepare>Unprepare · keep it</button>':'');
   else if(selected==='trailfood')detail+='<button class="button primary" data-pick-feed '+(!s.companions.length?'disabled':'')+'>Feed companion</button>';

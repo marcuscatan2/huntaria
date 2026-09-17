@@ -52,6 +52,7 @@
     "opening-rules.js",
     "adventure-rules.js",
     "progression.js",
+    "companion-moves.js",
     "formation.js",
     "growth.js",
     "training.js",

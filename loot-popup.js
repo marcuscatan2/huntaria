@@ -68,7 +68,7 @@ function levels(before,after){
  const R=BondProgress,changes=[];
  const from=R.trainerLevel(before),to=R.trainerLevel(after);
  if(to>from)changes.push({name:after.character?.name||'Trainer',level:to,trainer:true});
- for(const m of after.companions){const old=before.companions.find(x=>x.id===m.id);if(old&&R.level(m.xp)>R.level(old.xp))changes.push({name:BondContent.UNITS[m.type].name+' #'+m.ordinal,level:R.level(m.xp),id:m.id});}
+ for(const m of after.companions){const old=before.companions.find(x=>x.id===m.id);if(old&&R.level(m.xp)>R.level(old.xp))changes.push({name:BondContent.UNITS[m.type].name,level:R.level(m.xp),id:m.id});}
  if(!changes.length)return;
  BondAudio.play('level');
  levelToast.dataset.trainer=String(changes.some(c=>c.trainer));

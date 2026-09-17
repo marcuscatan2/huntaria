@@ -1,5 +1,6 @@
 /* Illustrated trainer and companion prerequisite diagrams. */
-#teams[data-screen=trees]>.menu-content:has(>.talent-screen){padding:0;background:#10262b}
+#teams:is([data-section=trees],[data-section=mastery])>.menu-content:has(>.talent-screen){padding:0;background:#10262b}
+#teams:is([data-section=trees],[data-section=mastery])>.menu-content>.collection-mode{padding:10px 12px;margin:0;background:#e5d6ac}
 .talent-screen{color:#e8e4cd;--talent-accent:#a8dac9;--talent-gold:#eac67b;background:#10262b;min-height:100%}
 .talent-screen[data-talent-class=mage]{--talent-accent:#c0b2ef}
 .talent-screen[data-talent-class=hunter]{--talent-accent:#d5c38f}
@@ -83,7 +84,6 @@
  .talent-board{background-position:48% center}
 }
 @media(prefers-reduced-motion:reduce){.talent-node{transition:none}}
-#teams[data-screen=mastery]>.menu-content:has(>.talent-screen){padding:0;background:#10262b}
 .companion-talents .talent-map{height:814px;--talent-scale:1}
 .companion-talents .talent-lines{height:814px}
 .companion-talents .fork-threshold{top:390px}
