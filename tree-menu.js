@@ -8,8 +8,8 @@ function render(scope='class'){
  const s=P.snapshot(),spec=s.progression?.specialization;if(s.character&&!s.character.legacy&&BondContent.TRAINERS.includes(ref))ref=spec||'apprentice';const mon=P.getCompanion(ref),type=mon?.type||ref,u=BondGame.UNITS[type]||BondGame.UNITS.druid;
  const owned=!!mon||s.character?.legacy&&BondContent.CLASSES.includes(ref)||spec===ref,r=mon?mon.growth:s.growth[type]||{},points=G.budget(s,ref),stats=G.stats(type,r),nodes=G.nodes(type),used=G.used(r),unlocked=G.unlocked(s,ref);
  const classButton=s.character&&!s.character.legacy?'<button class="button secondary" data-class-tree="'+(spec||'apprentice')+'">'+BondGame.UNITS[spec||'apprentice'].name+'</button>':BondContent.CLASSES.map(type=>'<button class="button secondary" data-class-tree="'+type+'">'+BondContent.UNITS[type].name+'</button>').join('');
- if(G.classTree(type))return BondTalentView.render({type,nodes,ranks:r,points,used,owned,unlocked,name:u.name,classPicker:s.character?.legacy?classButton:''});
- if(G.companionTree(type))return BondTalentView.render({type,nodes,ranks:r,points,used,owned,unlocked,name:mon?P.label(mon):u.name,classPicker:'<button class="button secondary" data-collection-mode="companions">Back to companions</button>'});
+ if(G.classTree(type))return BondTalentView.render({ref,type,nodes,ranks:r,points,used,owned,unlocked,name:u.name,classPicker:s.character?.legacy?classButton:''});
+ if(G.companionTree(type))return BondTalentView.render({ref,type,nodes,ranks:r,points,used,owned,unlocked,name:mon?P.label(mon):u.name,classPicker:'<button class="button secondary" data-collection-mode="companions">Back to companions</button>'});
  const bonuses=Object.entries(G.classTree(type)?{}:stats).filter(([,v])=>typeof v==='number').map(([k,v])=>'<span>'+k+' '+Math.round(v*100)+'%</span>').join('');
  const nodeMarkup=n=>{
   const rank=r[n.id]||0,locked=!G.gate(type,n.id,r),parent=nodes.find(x=>x.id===n.parent);

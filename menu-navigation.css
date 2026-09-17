@@ -1,0 +1,14 @@
+/* Shared, legible destination artwork and read-only upgrade breadcrumbs. */
+.destination-icon{display:block;width:34px;height:34px;object-fit:contain;flex-shrink:0;pointer-events:none;filter:drop-shadow(0 2px 2px #091d2e66)}
+#world-action-menu button{gap:2px;padding:4px 8px;min-height:59px}
+#world-action-menu .destination-icon{width:36px;height:36px}
+#world-status{bottom:88px}
+.frame-destinations .destination-icon{width:30px;height:30px}
+.has-upgrade{position:relative}
+.upgrade-dot{position:absolute;top:3px;right:5px;width:10px;height:10px;border:1.5px solid #ffe0b1;border-radius:50%;background:#e44448;box-shadow:0 1px 3px #42101899,0 0 0 1px #772b2b;pointer-events:none;z-index:4}
+#world-action-menu .upgrade-dot{top:4px;right:12px}
+.frame-destinations .upgrade-dot{top:5px;right:7px}
+.talent-node>.upgrade-dot{top:-3px;right:-3px;width:12px;height:12px}
+.has-upgrade[data-talent-node]{position:absolute}
+.has-upgrade[data-stat],.has-upgrade[data-talent-learn]{padding-right:22px}
+@media(max-width:600px){#world-action-menu button{min-height:54px}#world-status{bottom:80px}.frame-destinations .destination-icon{width:27px;height:27px}#world-action-menu .destination-icon{width:31px;height:31px}}

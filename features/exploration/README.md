@@ -67,6 +67,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/field_encounters_check.py --browser chrome` — All-map tripled populations, pack preview/cancel/challenge/reload/escape and the current-trainer aggression boundary.
 - `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
 - `python tests/landscapes_check.py --browser chrome` — Forty map profiles, seamless ground patches, reachable services, destination-specific passage taps/walking, lock/save retry, stairs, asset recovery, phone touch and bounded landscape caches.
+- `python tests/menu_upgrades_check.py --browser chrome` — Read-only upgrade routes, independent trainer/companion level-ups, affordable points, individual pagination, purchases, resets, reload and responsive shared SVG navigation.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

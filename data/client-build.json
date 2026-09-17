@@ -23,7 +23,8 @@
     "assets/inner-sea/*.png",
     "assets/cities/*.png",
     "assets/summons/*.png",
-    "assets/talents/*.png"
+    "assets/talents/*.png",
+    "assets/interface/*.svg"
   ],
   "rules": [
     "content.js",

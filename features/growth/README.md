@@ -59,6 +59,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/combat_workbooks_check.py --browser chrome` — Imported workbook integrity, shield/guardian/debt/critical/entity contracts, all proposed loadouts and responsive summon presentation.
 - `python tests/talent_tree_check.py --browser chrome` — All four illustrated talent graphs, authoritative unlock lines, inspect-versus-learn behavior, responsive geometry, mobile dialog focus and save isolation.
 - `python tests/monster_progression_check.py --browser chrome` — Exact 10,000-row CSV stats, 100 talent kits, quest budgets, shared shields, effect regressions, legacy/current encounter replay and responsive individual trees.
+- `python tests/menu_upgrades_check.py --browser chrome` — Read-only upgrade routes, independent trainer/companion level-ups, affordable points, individual pagination, purchases, resets, reload and responsive shared SVG navigation.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 

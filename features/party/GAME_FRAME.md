@@ -24,6 +24,15 @@ mixes class and companion trees. Existing `BondMenu.open('party'|'formation'|
 'trainer')` calls route to Inner Sea subsections. `current()` returns the main
 screen and `section()` returns the Inner Sea subsection.
 
+`upgrade-notices.js` derives red badges from the current profile's affordable
+attribute upgrades and unlocked class/individual talent nodes. Bag marks any
+available upgrade; Inner Sea marks attributes and companion mastery. The route
+continues through the relevant tab, individual companion and pagination,
+tree branch, node and Learn control. Badges survive inspection and reload;
+spending points clears them and a reset restores them. They never write progress
+or change budgets. `menu-navigation.css` styles the badges and shared SVG
+destination artwork in `assets/interface/` for exploration and preparation.
+
 Party contains the [Dummy test](../combat/TRAINING.md), including its incoming
 damage toggle. The button is unavailable while an adventure is reserved.
 Player copy names actions, costs, skill effects and quest destinations. Release
@@ -40,6 +49,9 @@ upgrades, defenders, 320/390/768/1440px layouts, live combat and save isolation.
 The full current gate also checks opening, party, farm, export and bundle flows.
 `tests/player_experience_check.py` covers copy, menu routing, dummy rates and
 one-time NPC wins.
+`tests/menu_upgrades_check.py` follows badge routes through real controls,
+trainer/companion level-ups, repeated species, pagination, spending, resets,
+reload and 320/390/768/1440px icon layouts using isolated saves.
 
 Owner review: follow Bag → select an item → summon, then Inner Sea → Homestead
 → select a habitat → assign defenders. Review legibility and control density on

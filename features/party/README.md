@@ -9,7 +9,7 @@ Status: **local**. Selects individuals, skills and formation; connects saved bui
 
 `BondMenu.render; BondPicker; BondFormation.assign; BondApp.changeUnit / changeSkills`
 
-UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials preserve the current Apprentice party. Any party slots may share a formation row; shared rows spread actors vertically. Formation is an opening position, not a targeting override. Profile owns saved skills/trees. Preparation shares the exploration game frame. Native framed menus retain internal scrolling and focus; mobile item details return to their item grid. Homestead, owned companions and catalog are separate Inner Sea views. Main navigation separates Class Skill Tree from Inner Sea and Inventory. Party, formation, attributes and companion mastery are Inner Sea subsections; current()/section() expose that routing. Party launches a 30-second dummy test.
+UI chooses up to two individual companions and three distinct skills each. Summoning fills the first empty companion slot; later selection remains explicit. Same species may occupy both slots, same individual may not. A created Apprentice cannot use the class picker; confirmed specialization supplies its persistent Druid/Mage build. Class trials preserve the current Apprentice party. Any party slots may share a formation row; shared rows spread actors vertically. Formation is an opening position, not a targeting override. Profile owns saved skills/trees. Preparation shares the exploration game frame. Native framed menus retain internal scrolling and focus; mobile item details return to their item grid. Homestead, owned companions and catalog are separate Inner Sea views. Main navigation separates Class Skill Tree from Inner Sea and Inventory. Party, formation, attributes and companion mastery are Inner Sea subsections; current()/section() expose that routing. Party launches a 30-second dummy test. Read-only red badges guide affordable attribute, class and individual talent upgrades from Bag and Inner Sea through menus, companion pages, branches and upgrade controls. They recompute from accepted profile state and remain until spent. Exploration and preparation share SVG destination icons.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -27,6 +27,12 @@ The links below point to the actual source; root browser paths remain in use.
 | [pass14.css](<../../pass14.css>) | Owned source/configuration; inspect before editing. |
 | [game-frame.css](<../../game-frame.css>) | Owned source/configuration; inspect before editing. |
 | [tests/player_experience_check.py](<../../tests/player_experience_check.py>) | Owned source/configuration; inspect before editing. |
+| [upgrade-notices.js](<../../upgrade-notices.js>) | `BondUpgradeNotices` |
+| [menu-navigation.css](<../../menu-navigation.css>) | Owned source/configuration; inspect before editing. |
+| [assets/interface/bag.svg](<../../assets/interface/bag.svg>) | Owned source/configuration; inspect before editing. |
+| [assets/interface/inner-sea.svg](<../../assets/interface/inner-sea.svg>) | Owned source/configuration; inspect before editing. |
+| [assets/interface/explore.svg](<../../assets/interface/explore.svg>) | Owned source/configuration; inspect before editing. |
+| [tests/menu_upgrades_check.py](<../../tests/menu_upgrades_check.py>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -56,6 +62,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
 - `python tests/player_experience_check.py --browser chrome` — Concise player copy, Inner Sea/class-tree routing, dummy DPS/healing/shield rates, save isolation, responsive reports and one-time NPC victory return.
 - `python tests/monster_progression_check.py --browser chrome` — Exact 10,000-row CSV stats, 100 talent kits, quest budgets, shared shields, effect regressions, legacy/current encounter replay and responsive individual trees.
+- `python tests/menu_upgrades_check.py --browser chrome` — Read-only upgrade routes, independent trainer/companion level-ups, affordable points, individual pagination, purchases, resets, reload and responsive shared SVG navigation.
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
