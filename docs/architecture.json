@@ -160,7 +160,7 @@
         "F-036"
       ],
       "entry": "BondGame.Battle.step / emit / run; BondRules",
-      "contract": "Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective. The class rescue uses two raiders, a boss and a Lv100 master; old seven-enemy reservations remain accepted. raid-rules.js guarantees player-party defeat at 8 seconds and the master's victory by 14 seconds; saved tick replay uses the same deterministic choreography. Normal attacks choose the closest living enemy, including trainers; explicit skills can override this target. training.js configures a stationary neutral dummy and optional two-second party damage pulses. Training lasts 30 simulation seconds, prevents defeat, skips overtime and reports event-based DPS, effective healing and newly granted shield rates by party and individual. combat-effects.js applies 5% physical crit at 1.4x after accuracy, named shields capped at 25% HP, one post-shield interceptor capped at 35%, and nonrecursive delayed loss. combat-entities.js keeps finite summons outside encounter/reward actors. combat-passives.js and combat-talents.js own event triggers; class talents load from each trainer owner profile at battle initialization. Saved encounters pin the class-tree rules version; pre-migration fights retain their legacy class bonuses until settlement. companion-talents.js supplies explicit handlers for all 100 species trees. Shared shield reservoirs obey every recipient's 25% HP allowance and count one granted amount in metrics. Proc packets do not recursively trigger direct-hit talents; rolling caps, owner death, one-use effects and temporary entity lifetimes use simulation time. New encounters pin monsterRules=1; old reservations without the marker use version0 linear stats and generic mastery through replay. Equipment rules pin separate frozen loadouts; named buffs refresh and item-generated events cannot recursively trigger item effects. Equipment rates multiply basic attacks per second. Core-party effects exclude temporary entities and story masters.",
+      "contract": "Owns targeting, range, HP, damage, cooldowns, encounter outcomes and seeded randomness. Adventure wilds scale by deployed player-party size: 1/1.8/2.6× HP and 1/1.15/1.3× offense for one/two/three player actors; trainer-only opening values remain intact. Trusted authored opponent entries may apply bounded power, skill and health tuning; player-side entries cannot supply those modifiers. 20-Hz simulation uses arena units, never CSS pixels or wall-clock RNG. Shared browser/Node generated corpus verifies canonical outcomes; offline probe is not a live authoritative server. Explicit escape runs for60 ticks: trainers stop acting and retreat, companions cover, enemies may pursue the trainer using ordinary attack rules. Death/victory precede escape settlement. Explicit defenders mode accepts one to five owned monster individuals, removes trainer actors, protects allied monsters with Guard, and ends on total side defeat; normal adventure builds retain their trainer objective. The class rescue uses two raiders, a boss and a Lv100 master; old seven-enemy reservations remain accepted. raid-rules.js guarantees player-party defeat at 8 seconds and the master's victory by 14 seconds; saved tick replay uses the same deterministic choreography. Normal attacks choose the closest living enemy, including trainers; explicit skills can override this target. training.js configures a stationary neutral dummy and optional two-second party damage pulses. Training lasts 30 simulation seconds, prevents defeat, skips overtime and reports event-based DPS, effective healing and newly granted shield rates by party and individual. combat-effects.js applies 5% physical crit at 1.4x after accuracy, named shields capped at 25% HP, one post-shield interceptor capped at 35%, and nonrecursive delayed loss. combat-entities.js keeps finite summons outside encounter/reward actors. combat-passives.js and combat-talents.js own event triggers; class talents load from each trainer owner profile at battle initialization. Saved encounters pin the class-tree rules version; pre-migration fights retain their legacy class bonuses until settlement. companion-talents.js supplies explicit handlers for all 100 species trees. Shared shield reservoirs obey every recipient's 25% HP allowance and count one granted amount in metrics. Proc packets do not recursively trigger direct-hit talents; rolling caps, owner death, one-use effects and temporary entity lifetimes use simulation time. New encounters pin monsterRules=1; old reservations without the marker use version0 linear stats and generic mastery through replay. Equipment rules pin separate frozen loadouts; named buffs refresh and item-generated events cannot recursively trigger item effects. Equipment rates multiply basic attacks per second. Core-party effects exclude temporary entities and story masters. Apprentice training is frozen independently as apprenticeTrees: new reservations use1; existing reservations without the marker replay version0 legacy ranks and stats.",
       "tests": [
         "field-polish",
         "mechanics",
@@ -172,7 +172,8 @@
         "player-experience",
         "combat-workbooks",
         "monster-progression",
-        "equipment"
+        "equipment",
+        "apprentice-tree"
       ],
       "docs": [
         "Companion stats.md",
@@ -200,7 +201,10 @@
         "assets/talents/manifest.json",
         "companion-trees.js",
         "tests/monster_progression_check.cjs",
-        "tests/monster_progression_check.py"
+        "tests/monster_progression_check.py",
+        "apprentice-tree.js",
+        "tests/apprentice_tree_check.cjs",
+        "tests/apprentice_tree_check.py"
       ],
       "backlog": [
         "F-003",
@@ -208,7 +212,7 @@
         "F-010"
       ],
       "entry": "BondProgress.derived / trainerLevel; BondGrowth.nodes / stats; BondTree",
-      "contract": "Trainer and companion XP are independent values on the same cumulative curve, with a hard player launch cap60; no owned monster sets trainer level. The engine/wild curve remains valid through100. Lv61–100 Echoes summon as Lv60 individuals while preserving sourceLevel; migration initializes trainerXP at the previously displayed level and preserves older tree access. All four classes unlock 15 class-specific talents at transformation. The class budget starts with two points at Lv20 and adds one every three levels through Lv59, capped at15. Normalization resets old class ranks into this budget and preserves valid new allocations; companion trees use the supplied CSV budget. Talent branches have ranked prerequisites, and reset is free. Every owned companion unlocks its 24-node species tree immediately: three branches of eight one-point talents, at most one capstone. Budget is one starting point, one every five individual levels through60, plus one each for Tidecrown and the completed relic quest, capped at15. Quest awards apply to existing and future companions. Retired generic companion ranks refund; valid new IDs persist. Monster intrinsic attributes, final HP, physical ATK and hard physical DEF come from the exact level CSV rows; INT derives spell power, and Leadership contributes only the additional stat/HP delta. Classic/pre-Renewal STR/DEX stat ATK, INT MATK ranges, HIT/FLEE, VIT HP/recovery/soft defense and AGI/DEX attack delay use progression.js. DEX cast-time scaling is separate from cooldowns; only explicit tree/skill effects reduce cooldowns, capped at50%. Leadership sharing remains custom. Intact farm power adds capped account HP once, never to enemies. XP losses preserve already-earned individual tree budgets via optional treeLevel. Trainer and companion diagrams show opening-to-fork, alternative fork-to-advanced and advanced-to-capstone connections; point and rank gates stay authoritative in class-trees.js. Selection never allocates a point. Desktop uses a side inspector; phone branches and modal details retain touch targets and keyboard focus.",
+      "contract": "Trainer and companion XP are independent values on the same cumulative curve, with a hard player launch cap60; no owned monster sets trainer level. The engine/wild curve remains valid through100. Lv61–100 Echoes summon as Lv60 individuals while preserving sourceLevel; migration initializes trainerXP at the previously displayed level and preserves older tree access. All four classes unlock 15 class-specific talents at transformation. The class budget starts with two points at Lv20 and adds one every three levels through Lv59, capped at15. Normalization resets old class ranks into this budget and preserves valid new allocations; companion trees use the supplied CSV budget. Talent branches have ranked prerequisites, and reset is free. Every owned companion unlocks its 24-node species tree immediately: three branches of eight one-point talents, at most one capstone. Budget is one starting point, one every five individual levels through60, plus one each for Tidecrown and the completed relic quest, capped at15. Quest awards apply to existing and future companions. Retired generic companion ranks refund; valid new IDs persist. Monster intrinsic attributes, final HP, physical ATK and hard physical DEF come from the exact level CSV rows; INT derives spell power, and Leadership contributes only the additional stat/HP delta. Classic/pre-Renewal STR/DEX stat ATK, INT MATK ranges, HIT/FLEE, VIT HP/recovery/soft defense and AGI/DEX attack delay use progression.js. DEX cast-time scaling is separate from cooldowns; only explicit tree/skill effects reduce cooldowns, capped at50%. Leadership sharing remains custom. Intact farm power adds capped account HP once, never to enemies. XP losses preserve already-earned individual tree budgets via optional treeLevel. Trainer and companion diagrams show opening-to-fork, alternative fork-to-advanced and advanced-to-capstone connections; point and rank gates stay authoritative in class-trees.js. Selection never allocates a point. Desktop uses a side inspector; phone branches and modal details retain touch targets and keyboard focus. Apprentice training has six three-rank talents in three two-node chains. One point per trainer level from1 through18 caps at18: +12% damage, +18% HP and +6 personal AGI. Second nodes require first-node rank3. Training is active and spendable only before class choice; archived ranks do not affect class budgets, stats or Leadership sharing.",
       "tests": [
         "onboarding",
         "mechanics",
@@ -219,7 +223,8 @@
         "talent-tree",
         "monster-progression",
         "menu-upgrades",
-        "equipment"
+        "equipment",
+        "apprentice-tree"
       ],
       "docs": [
         "Companion stats.md",
@@ -565,7 +570,7 @@
       ],
       "backlog": [],
       "entry": "BondProfile.commit (private); normalize / reserveBattle / checkpoint / restoreBattle / settleKills / complete / summon",
-      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions. Normalized journey.relic stages and critical nearby relicAction transactions own Echo delivery and the one-time class weapon. Rescue settlement restores vitality and advances the story atomically; no raid Echo or repeat loot is issued. Border transitions optionally accept the current walked position, validate finite coordinates/collision/proximity and commit arrival atomically; exploration does not issue a separate position write before this critical save. Defeated authored NPCs cannot reserve rematches; existing reservations and first-win receipt retries remain resumable. Dummy tests never mutate the profile. Companion normalization uses quest state before cleaning ranks. Retired generic ranks refund into the current 15-point budget; IDs, XP, loadouts, vitality and class allocations survive. Encounter reservations freeze monsterRules independently of classTrees, preserving old fights and current talent snapshots through replay. Equipment assignment is an atomic profile command; old encounters pin equipmentRules=0, while new ones freeze equipped copies and version1 effects.",
+      "contract": "Owns local profile commands, migration, independent trainerXP/companion XP, early milestone state including Forest Mage meeting/gate, spawn-life reservations and idempotent receipts. Owned active XP is capped at Lv60; normalization initializes trainerXP from the previously displayed migrated level, preserves older excess as deferredXP and records Lv61–100 Echo sourceLevel. Intro/second-choice guarantees, Mage gate, trainer rewards, trial credit and specialization mutate only through accepted commands/receipts. Existing saves from before the Mage fields that already summoned two companions keep their forward progress. Saved encounters freeze the deployed living party/options, world anchor and tick-stamped joins; the saved loadout remains unchanged when a fallen companion is benched. Wild claims and authored NPC rewards settle separately; storage failures must not discard fights or double-pay. Escape preserves command order and never triggers defeat rescue. Missing required modules abort before reading or writing a save. City arrivals and waystone teleports are critical save transactions: validate proximity, opening gate, allowed destination and encounter exclusion before changing location or healing; failure preserves origin and possessions. Normalized journey.relic stages and critical nearby relicAction transactions own Echo delivery and the one-time class weapon. Rescue settlement restores vitality and advances the story atomically; no raid Echo or repeat loot is issued. Border transitions optionally accept the current walked position, validate finite coordinates/collision/proximity and commit arrival atomically; exploration does not issue a separate position write before this critical save. Defeated authored NPCs cannot reserve rematches; existing reservations and first-win receipt retries remain resumable. Dummy tests never mutate the profile. Companion normalization uses quest state before cleaning ranks. Retired generic ranks refund into the current 15-point budget; IDs, XP, loadouts, vitality and class allocations survive. Encounter reservations freeze monsterRules independently of classTrees, preserving old fights and current talent snapshots through replay. Equipment assignment is an atomic profile command; old encounters pin equipmentRules=0, while new ones freeze equipped copies and version1 effects. Apprentice training is frozen independently as apprenticeTrees: new reservations use1; existing reservations without the marker replay version0 legacy ranks and stats.",
       "tests": [
         "field-polish",
         "onboarding",
@@ -582,7 +587,8 @@
         "landscapes",
         "player-experience",
         "monster-progression",
-        "equipment"
+        "equipment",
+        "apprentice-tree"
       ],
       "docs": [
         "features/persistence/SAVES.md",
@@ -805,7 +811,8 @@
     ],
     "progression.js": [
       "BondContent",
-      "BondMonsterProgression"
+      "BondMonsterProgression",
+      "BondApprenticeTree"
     ],
     "game.js": [
       "BondContent",
@@ -868,7 +875,8 @@
     "growth.js": [
       "BondContent",
       "BondProgress",
-      "BondCompanionTrees"
+      "BondCompanionTrees",
+      "BondApprenticeTree"
     ],
     "campaign.js": [
       "BondAtlas",
@@ -905,7 +913,8 @@
       "BondCompanionTalents",
       "BondItemCatalog",
       "BondEquipment",
-      "BondEquipmentEffects"
+      "BondEquipmentEffects",
+      "BondApprenticeTree"
     ],
     "world-atlas.js": [
       "BondAtlas",
@@ -1166,7 +1175,8 @@
     "equipment-effects.js",
     "equipment-passives.js",
     "held-passives.js",
-    "combat-hooks.js"
+    "combat-hooks.js",
+    "apprentice-tree.js"
   ],
   "storage_writers": {
     "profile.js": "Profile document and receipts",
@@ -1391,6 +1401,13 @@
         "tests/server_refresh_check.py"
       ],
       "purpose": "Same-origin cached-menu refresh, current icons/upgrade routes, content versions and preserved saves.",
+      "browser": true
+    },
+    "apprentice-tree": {
+      "command": [
+        "tests/apprentice_tree_check.py"
+      ],
+      "purpose": "Apprentice level18 completion, personal combat bonuses, four class transitions, frozen replay, atomic saves, badges and responsive illustrated paths",
       "browser": true
     }
   },

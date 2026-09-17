@@ -41,6 +41,7 @@
   class Battle {
     constructor(build, options = {}) {
       this.classTrees=options.classTrees===0?0:root.BondClassTrees.active?1:0;
+      this.apprenticeTrees=options.apprenticeTrees===0?0:1;
       this.monsterRules=options.monsterRules===0?0:1;
       this.equipmentRules=options.equipmentRules===0?0:1;
       if (!validBuild(build)) throw new Error('Invalid team or skill selection');
@@ -102,10 +103,10 @@
         const companion=u.side===0&&u.instanceId?root.BondProgress?.instance(profile||{},u.instanceId):null;
         if(u.side===0&&!u.storyMaster&&u.slot===0&&profile?.character?.name)u.name=profile.character.name;
         if(companion)u.name=UNITS[u.type].name+' #'+companion.ordinal;
-        const bonus=u.side===0&&!u.storyMaster&&root.BondGrowth?root.BondGrowth.stats(u.type,companion?companion.growth:(profile?.growth||options.growth)?.[u.type],this.classTrees===0,this.monsterRules===0):{hp:0,attack:0,armor:0,move:0,cooldown:0};
+        const bonus=u.side===0&&!u.storyMaster&&root.BondGrowth?root.BondGrowth.stats(u.type,companion?companion.growth:(profile?.growth||options.growth)?.[u.type],this.classTrees===0,this.monsterRules===0,this.apprenticeTrees===0):{hp:0,attack:0,armor:0,move:0,cooldown:0};
         u.talents=this.monsterRules&&companion?root.BondCompanionTrees.clean(u.type,companion.growth,root.BondCompanionTrees.budget(profile,companion.id)):{};
         u.growth=bonus;u.basePower=u.power;
-        const base={...UNITS[u.type],...u,hp:u.maxHp,equipment:!!this.equipmentRules};
+        const base={...UNITS[u.type],...u,hp:u.maxHp,apprenticeTree:!!this.apprenticeTrees,equipment:!!this.equipmentRules};
         const derived=(profile||this.monsterRules&&MONSTERS.includes(u.type))&&root.BondProgress?BondProgress.derived(u.type,profile||{},base,u.storyMaster?u.level:u.side===1?(u.level||options.enemyLevel||1):null,this.monsterRules===0):null;
         u.hardDefense=derived?.hardDefense||0;u.hardMagicDefense=derived?.hardMagicDefense||0;u.itemStats=derived?.itemStats||{};
         u.level=derived?.level||1;u.element=root.BondProgress?.ELEMENT[u.type]||null;
@@ -133,7 +134,7 @@
       if(this.training||this.ended||!entry?.spawnId||this.units.some(u=>u.spawnId===entry.spawnId&&u.life===entry.life))return false;
       // Reuse the same stat/passive initialization as an initial wild encounter.
       const proxy=new Battle(soloBuild(),{profile:this.spawnOptions.profile,seed:this.seed,
-        adventure:this.adventure,wildPartySize:this.wildPartySize,classTrees:this.classTrees,monsterRules:this.monsterRules,equipmentRules:this.equipmentRules,encounter:{kind:'wild',enemies:[entry]}});
+        adventure:this.adventure,wildPartySize:this.wildPartySize,classTrees:this.classTrees,apprenticeTrees:this.apprenticeTrees,monsterRules:this.monsterRules,equipmentRules:this.equipmentRules,encounter:{kind:'wild',enemies:[entry]}});
       const u=proxy.units.find(u=>u.side===1),slot=Math.max(0,...this.units.filter(u=>u.side===1).map(u=>u.slot))+1;
       u.id='1-'+slot;u.slot=slot;u.position={x:86,y:36+(slot%5)*8};u.previousPosition={...u.position};
       this.units.push(u);this.effects.init(u);this.effects.start(u);this.refreshTargets();

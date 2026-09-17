@@ -4,6 +4,7 @@
 const TYPES=Object.keys(BondContent.UNITS);
 const classTree=type=>root.BondClassTrees?.active&&BondContent.CLASSES.includes(type);
 const companionTree=type=>!!root.BondCompanionTrees?.has(type);
+const apprenticeTree=type=>type==='apprentice';
 const data=[
  ['bond',null,'Growing bond','hp',.02,10,'♥'],
  ['might','bond','Strength','attack',.025,5,'✦'],['might2','might','Instinct','attack',.025,3,'✦'],
@@ -19,8 +20,9 @@ const data=[
 ];
 const NODES=data.map(([id,parent,name,stat,value,max,icon])=>({id,parent,name,stat,value,max,icon,label:'+'+(value*100).toFixed(1).replace('.0','')+'% '+({hp:'maximum HP',attack:'strike damage',armor:'damage reduction',move:'movement',cooldown:'cooldown reduction',speed:'Speed',healing:'healing'}[stat])+' / rank'}));
 const used=r=>Array.isArray(r)?new Set(r.filter(k=>NODES.some(n=>n.id===k))).size:Object.values(r||{}).reduce((n,v)=>n+(Number.isInteger(v)&&v>0?v:0),0);
-const budget=(s,type='druid')=>classTree(type)?BondClassTrees.budget(BondProgress.trainerLevel(s)):companionTree(BondProgress.instance(s,type)?.type||type)?BondCompanionTrees.budget(s,type):0;
-function clean(type,raw,points=999,legacyClass=false,legacyMonster=false){
+const budget=(s,type='druid')=>apprenticeTree(type)?BondApprenticeTree.budget(BondProgress.trainerLevel(s)):classTree(type)?BondClassTrees.budget(BondProgress.trainerLevel(s)):companionTree(BondProgress.instance(s,type)?.type||type)?BondCompanionTrees.budget(s,type):0;
+function clean(type,raw,points=999,legacyClass=false,legacyMonster=false,legacyApprentice=false){
+ if(apprenticeTree(type)&&!legacyApprentice)return BondApprenticeTree.clean(raw,points);
  if(classTree(type)&&!legacyClass)return BondClassTrees.clean(type,raw,Math.min(15,points));
  if(companionTree(type)&&!legacyMonster)return BondCompanionTrees.clean(type,raw,points);
  const out={};if(!TYPES.includes(type))return out;
@@ -30,7 +32,8 @@ function clean(type,raw,points=999,legacyClass=false,legacyMonster=false){
  return out;
 }
 const labels={hp:'maximum HP',attack:'strike damage',armor:'damage reduction',move:'movement',cooldown:'cooldown reduction',speed:'Speed',healing:'healing'};
-function nodes(type,legacyClass=false,legacyMonster=false){
+function nodes(type,legacyClass=false,legacyMonster=false,legacyApprentice=false){
+ if(apprenticeTree(type)&&!legacyApprentice)return BondApprenticeTree.nodes;
  if(classTree(type)&&!legacyClass)return BondClassTrees.nodes(type);
  if(companionTree(type)&&!legacyMonster)return BondCompanionTrees.nodes(type);
  const u=BondContent.UNITS[type],healer=u&&u.skills.some(k=>['heal','teamheal','selfheal','cleanse'].includes(BondContent.SKILLS[k].kind))||u?.passive==='cinder';
@@ -52,18 +55,19 @@ function nodes(type,legacyClass=false,legacyMonster=false){
   return {...n,stat,name,label:'+'+(n.value*100).toFixed(1).replace('.0','')+'% '+labels[stat]+' / rank'};
  });
 }
-function typedStats(type,ranks,legacyClass=false,legacyMonster=false){
- const out={hp:0,attack:0,armor:0,move:0,cooldown:0,speed:0,healing:0,skillPower:{},skillCooldown:{}},byId=Object.fromEntries(nodes(type,legacyClass,legacyMonster).map(n=>[n.id,n]));
+function typedStats(type,ranks,legacyClass=false,legacyMonster=false,legacyApprentice=false){
+ const out={hp:0,attack:0,armor:0,move:0,cooldown:0,speed:0,healing:0,skillPower:{},skillCooldown:{}},byId=Object.fromEntries(nodes(type,legacyClass,legacyMonster,legacyApprentice).map(n=>[n.id,n]));
+ if(apprenticeTree(type)&&!legacyApprentice)return {...out,...BondApprenticeTree.bonuses(ranks)};
  if(classTree(type)&&!legacyClass||companionTree(type)&&!legacyMonster)return out;
- for(const [id,rank] of Object.entries(clean(type,ranks,999,legacyClass,legacyMonster))){const n=byId[id];if(n.effect==='skillPower')out.skillPower[n.skill]=(out.skillPower[n.skill]||0)+n.value*rank;else if(n.effect==='skillCooldown')out.skillCooldown[n.skill]=(out.skillCooldown[n.skill]||0)+n.value*rank;else out[n.stat]+=n.value*rank;const legacy=BondContent.UNITS[type]?.legacySkills?.[BondContent.UNITS[type].skills.indexOf(n.skill)];if(legacy&&legacy!==n.skill&&['skillPower','skillCooldown'].includes(n.effect))out[n.effect][legacy]=(out[n.effect][legacy]||0)+n.value*rank;}
+ for(const [id,rank] of Object.entries(clean(type,ranks,999,legacyClass,legacyMonster,legacyApprentice))){const n=byId[id];if(n.effect==='skillPower')out.skillPower[n.skill]=(out.skillPower[n.skill]||0)+n.value*rank;else if(n.effect==='skillCooldown')out.skillCooldown[n.skill]=(out.skillCooldown[n.skill]||0)+n.value*rank;else out[n.stat]+=n.value*rank;const legacy=BondContent.UNITS[type]?.legacySkills?.[BondContent.UNITS[type].skills.indexOf(n.skill)];if(legacy&&legacy!==n.skill&&['skillPower','skillCooldown'].includes(n.effect))out[n.effect][legacy]=(out[n.effect][legacy]||0)+n.value*rank;}
  out.armor=Math.min(.5,out.armor);out.cooldown=Math.min(.4,out.cooldown);return out;
 }
 function unlocked(s,ref){
  const mon=root.BondProgress?.instance(s||{},ref),type=mon?.type||ref;
  if(mon)return true;
- if(type==='apprentice')return false;
+ if(type==='apprentice')return !!s?.character&&!s.character.legacy&&!s.progression?.specialization;
  return s?.character?.legacy===true||s?.progression?.specialization===type;
 }
-function gate(type,id,r){if(classTree(type))return BondClassTrees.gate(type,id,r);if(companionTree(type))return BondCompanionTrees.gate(type,id,r);const node=nodes(type).find(n=>n.id===id);return !!node&&(!node.parent||!!r[node.parent]);}
-root.BondGrowth={TYPES,NODES,nodes,budget,used,clean,stats:typedStats,unlocked,gate,classTree,companionTree};
+function gate(type,id,r){if(apprenticeTree(type))return BondApprenticeTree.gate(id,r);if(classTree(type))return BondClassTrees.gate(type,id,r);if(companionTree(type))return BondCompanionTrees.gate(type,id,r);const node=nodes(type).find(n=>n.id===id);return !!node&&(!node.parent||!!r[node.parent]);}
+root.BondGrowth={TYPES,NODES,nodes,budget,used,clean,stats:typedStats,unlocked,gate,classTree,companionTree,apprenticeTree};
 })(globalThis);

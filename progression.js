@@ -54,7 +54,8 @@ function derived(type,s,base=C.UNITS[type],enemyLevel=null,legacyMonster=false){
    healing:1+stat(a.int)*.01,speed:100/Math.max(.2,base.interval*stats.delayMultiplier),hardDefense:row[7]/100,
    armor:0,cooldown:0,regenPerSecond:hpRecovery(hp,a.vit)/6};
  }
- const source=attributes(s),gear=trainer&&enemyLevel===null&&base.equipment!==false?(root.BondEquipment?.bonuses(s,type,l)||{}):{},a=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,enemyLevel!==null?0:trainer?source[k]+(gear[k]||0):source[k]*source.leadership*.005])),stats=classic(a,l);
+ const trainingAGI=trainer&&type==='apprentice'&&enemyLevel===null&&base.apprenticeTree!==false?BondApprenticeTree.bonuses(s.growth?.apprentice).agi:0;
+ const source=attributes(s),gear=trainer&&enemyLevel===null&&base.equipment!==false?(root.BondEquipment?.bonuses(s,type,l)||{}):{},a=Object.fromEntries(ATTRS.slice(0,5).map(k=>[k,enemyLevel!==null?0:trainer?source[k]+(gear[k]||0)+(k==='agi'?trainingAGI:0):source[k]*source.leadership*.005])),stats=classic(a,l);
  const hpScale=(1+.04*(l-1))*stats.hpMultiplier,levelOffense=1+.025*(l-1),innate=base.power*levelOffense;
  const magicRange=[innate+stats.magicMin+(gear.matk||0),innate+stats.magicMax+(gear.matk||0)];
  const factors={melee:(innate+stats.melee+(gear.atk||0))/base.power,ranged:(innate+stats.ranged+(gear.atk||0))/base.power,magic:(magicRange[0]+magicRange[1])/2/base.power};

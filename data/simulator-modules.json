@@ -17,6 +17,7 @@
   "monster-progression-data.js",
   "companion-trees.js",
   "companion-talents.js",
+  "apprentice-tree.js",
   "class-trees.js",
   "combat-talents.js",
   "opening-rules.js",

@@ -82,7 +82,7 @@ with sync_playwright() as pw:
         fresh.locator('#character-name').fill('New adventurer');fresh.locator('#create-character').click()
         fresh.evaluate("BondApp.switchTab('loadout');BondMenu.open('trees')")
         text=fresh.locator('#teams').inner_text()
-        check('A new trainer sees class requirements without companion summoning instructions','Choose a class at Lv 20.' in text and 'SUMMON TO TRAIN' not in text and 'Summon this companion' not in text)
+        check('A new trainer can train in the illustrated Apprentice tree',fresh.locator('[data-talent-node]').count()==6 and '1 points available' in text and 'SUMMON TO TRAIN' not in text and 'Summon this companion' not in text)
         fresh.close()
     except Exception:
         errors.append(traceback.format_exc())

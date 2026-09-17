@@ -2,7 +2,7 @@
 
 ## Ownership and assets
 
-`talent-tree-view.js` renders the four trainer diagrams and their inspectors;
+`talent-tree-view.js` renders Apprentice and four class diagrams with inspectors;
 `talent-tree.css` owns their presentation. `tree-menu.js` routes selection,
 branch changes and purchases through `BondProfile.learn` / `respec`.
 `class-trees.js` and `growth.js` remain authoritative for ranks, prerequisites
@@ -20,7 +20,7 @@ includes these files through `data/client-build.json`.
 
 ## Diagram and interaction contract
 
-Each branch progresses from top to bottom:
+Class branches progress from top to bottom:
 
 ```text
              Opening
@@ -49,6 +49,38 @@ Each branch progresses from top to bottom:
 - Rendering and changing branches do not alter saved progress. The painted
   assets are optional presentation: download failure leaves controls, names,
   ranks, connections and requirements usable.
+
+## Apprentice training
+
+`apprentice-tree.js` owns six talents in three two-node paths. Each talent has
+three ranks; the second talent requires all three ranks of the first. One point
+is available at Lv1, then one per trainer level through Lv18, for 18 total.
+There are no quest point awards. Reset is free while still an Apprentice.
+
+| Path | First talent | Second talent | Per rank | Full path |
+| --- | --- | --- | --- | --- |
+| Power | Practice Strikes | Heavy Blows | +2% damage | +12% damage |
+| Vitality | Healthy Start | Endurance | +3% max HP | +18% max HP |
+| Agility | Light Feet | Quick Reflexes | +1 AGI | +6 AGI |
+
+Bonuses are personal and active only as an Apprentice. AGI enters the existing
+classic stat formulas without changing allocated attributes or Leadership
+sharing. Choosing any class retains archived Apprentice ranks but disables
+their effects and spending; class points use their own unchanged budget.
+Upgrade badges lead through Bag to Class Skill Tree, its branches and talents.
+
+The Apprentice atlas (`assets/talents/apprentice.png`) has two columns and three
+rows, ordered as the table above, and reuses the sanctuary background. Each path
+has one prerequisite line. Mobile selection uses the same inspector as classes.
+
+New reservations freeze `apprenticeTrees=1` and the deployed growth snapshot.
+Saved encounters without the flag normalize to version 0, preserving legacy
+Apprentice formulas and ranks through replay. New profile normalization refunds
+retired generic ranks into the Apprentice budget without changing other progress.
+
+`python tests/apprentice_tree_check.py --browser chrome` checks progression,
+personal combat bonuses, all four class transitions, frozen replay, atomic
+spending, badges, reset, reload, artwork and 320–1440px layouts.
 
 ## Visual references
 

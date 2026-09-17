@@ -25,7 +25,7 @@
 .talent-edge.ready{stroke:var(--talent-accent);stroke-opacity:.95;stroke-dasharray:4 4}
 .talent-edge.learned{stroke:#f3c971;stroke-opacity:1;stroke-width:3;filter:drop-shadow(0 0 4px #ebc16e)}
 .talent-node{position:absolute;left:var(--node-x);top:calc(var(--node-y) * var(--talent-scale,1));transform:translate(-50%,-50%);width:58px;height:58px;min-height:0;padding:3px;border:2px solid #667772;border-radius:50%;background:#132a30;box-shadow:0 3px 9px #000b,0 0 0 3px #071d27c9;cursor:pointer;color:#f2ead4;isolation:isolate}
-.talent-icon{display:block;width:100%;height:100%;border-radius:inherit;background-color:#142d34;background-image:var(--icon-atlas);background-size:500% 300%;background-position:var(--icon-x) var(--icon-y);background-repeat:no-repeat;pointer-events:none}
+.talent-icon{display:block;width:100%;height:100%;border-radius:inherit;background-color:#142d34;background-image:var(--icon-atlas);background-size:var(--icon-size,500% 300%);background-position:var(--icon-x) var(--icon-y);background-repeat:no-repeat;pointer-events:none}
 .talent-node.locked .talent-icon{filter:saturate(.35) brightness(.7)}
 .talent-node.available{border-color:var(--talent-accent);box-shadow:0 0 0 3px #142b31,0 0 14px #b5e7dc38}
 .talent-node.learned{border-color:#e6bc68;box-shadow:0 0 0 3px #13262b,0 0 14px #e5ba6b50}
@@ -89,3 +89,8 @@
 .companion-talents .fork-threshold{top:390px}
 .companion-talents .cap-threshold{top:676px}
 .companion-talents .talent-inspector{position:sticky;top:0;align-self:start;min-height:550px}
+.apprentice-talents{--talent-accent:#dac68e}
+.apprentice-talents .talent-layout{min-height:430px}
+.apprentice-talents .talent-map{height:340px;--talent-scale:1}
+.apprentice-talents .talent-lines{height:340px}
+.apprentice-duration{margin:6px 0 0;font-size:10px;color:#bdcbb9}

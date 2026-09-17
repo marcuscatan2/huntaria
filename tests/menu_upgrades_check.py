@@ -26,7 +26,7 @@ with sync_playwright() as pw:
         dot=lambda selector:page.locator(selector+' > .upgrade-dot').count()>0
         check('No upgrade badges when every spendable point is used',not dot('[data-world-menu="inventory"]') and not dot('[data-world-menu="collection"]'))
         check('A new uncreated profile has no upgrade route',page.evaluate('!BondUpgradeNotices.read(BondProfile.fresh()).any'))
-        check('An Apprentice does not advertise a locked class tree',page.evaluate("()=>{const s=upgradeFixture();s.progression.specialization=null;s.character.legacy=false;return !BondUpgradeNotices.read(s).trainer.available;}"))
+        check('An Apprentice advertises spendable training points',page.evaluate("()=>{const s=upgradeFixture();s.progression.specialization=null;s.character.legacy=false;const t=BondUpgradeNotices.read(s).trainer;return t.available&&t.points===18&&t.nodes.size===3;}"))
         page.evaluate('BondProfile.testing.replace(upgradeFixture(58))')
         check('A fully allocated trainer has no badge before leveling',not dot('[data-world-menu="inventory"]'))
         page.evaluate('BondProfile.testing.setTrainerXP(BondProgress.threshold(59))')

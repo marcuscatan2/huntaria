@@ -42,6 +42,18 @@
       "prompt": "Use case: stylized-concept. Asset type: a production fantasy RPG ability icon sprite atlas, 15 DIFFERENT hand-painted illustrations. Exact layout: FIVE equal-width columns by THREE equal-height rows, perfectly regular grid filling the full 1536x1024 image, no external margins and no gutters. Each cell is a standalone centered icon on the SAME solid very dark midnight teal #112a30 background. Every subject fits well inside the central 70 percent of its own cell with generous dark space around it, never crossing into adjacent cells. No drawn grid or borders. Painted storybook fantasy inventory art, crisp large readable silhouettes, exquisite restrained light and material detail, palette amber leather, moss green, ivory and copper. Read left to right row by row, the 15 subjects are: 1: drawn longbow aimed at distant star; 2: needle-tipped arrow; 3: watchful hawk eye; 4: arrow through target; 5: one radiant perfect arrow; 6: horn calling a wolf pack; 7: leaping wolf silhouette; 8: three animal eyes; 9: two crossing arrows; 10: alpha wolf head; 11: coiled rope with anchoring hook; 12: taut tension wire trap; 13: three scattering rope snares; 14: hunter boot beside hidden trap; 15: field of sharp stakes. Each of the fifteen cells must be occupied by exactly its assigned subject. No duplicates. No text, letters, words, numbers, UI, outlines around cells, logos, watermark, photorealism, or hands except the specified gauntlet. Match a premium illustrated RPG skill tree; these will display as small circular icons.",
       "sourceFile": "exec-3a9c3b00-379c-4647-b73b-e2bade7fa6a1.png",
       "sha256": "9be304191010f57969e789fe875c4cd7d8ae7e64ecf32beaa6291d884649d6a6"
+    },
+    {
+      "id": "apprentice",
+      "file": "apprentice.png",
+      "atlas": {
+        "columns": 2,
+        "rows": 3,
+        "order": "Row-major: Practice Strikes, Heavy Blows, Healthy Start, Endurance, Light Feet, Quick Reflexes; apprentice-tree.js order."
+      },
+      "prompt": "Create one original fantasy RPG skill-icon atlas for an Apprentice, portrait image, exactly TWO equal columns and THREE equal rows, six square tiles edge-to-edge. Each tile has a centered clearly readable object with generous padding for circular UI crops. Painterly game inventory illustration, warm brass and leather, subtle leaf-green accents, soft worn material detail, dark teal charcoal background uniformly across every cell, warm light, strong simple silhouettes at 64 pixels. No text, letters, numbers, borders, UI, grid lines or watermark. Row 1 left: two crossed wooden training swords, modest novice equipment. Row 1 right: one simple iron sword striking a small straw practice target with a restrained golden impact spark. Row 2 left: a bright warm red heart with two fresh green leaves. Row 2 right: a modest round wooden buckler with a small glowing red heart emblem, simple brass rim. Row 3 left: a single sturdy brown leather walking boot with a little green leaf. Row 3 right: a pair of light leather boots with a small white wing and subtle pale wind trail. Keep the six subjects completely separate inside their own exact equal square cells. Match polished hand-painted fantasy class talent art; uncomplicated novice symbols rather than ornate legendary equipment. This is a new atlas for use directly in a game's skill tree.",
+      "sourceFile": "exec-5793790f-3697-48aa-a3bd-07d1582f1c7c.png",
+      "sha256": "8f256ed69560c8ed26126a2aee3c7a21b0f053c09b9aae5ed1675313901f88c2"
     }
   ]
 }

@@ -1165,6 +1165,39 @@
           "sha256": "4a068ceb6556017fa88c59c2d5cdfd316f898d0effc06c201c37eddf73104467"
         }
       ]
+    },
+    {
+      "id": "apprentice-tree-v1-2026-09-17",
+      "source": "Current owner conversation: explicit Apprentice tree implementation request",
+      "scope": [
+        "Implement a simple visual Apprentice tree for damage, maximum HP and AGI, fully earnable by level 18",
+        "Create matching illustrations, integrate point notices, preserve saves and frozen combat inputs"
+      ],
+      "quotes": [
+        "Come up with a very simple evolution for the apprentice skill tree, it should max out in lvl 18.",
+        "The things should be very basic, like some extra damage boost, hp and Agi.",
+        "Make it visual as other clases are.",
+        "Apply them only while you are an Apprentice"
+      ],
+      "boundary": "Authorizes this six-node Apprentice tree and matching interface art, with bonuses active only as an Apprentice. Broader balance, device, expanded-roster and release approvals remain open.",
+      "evidence": [
+        {
+          "path": "assets/talents/sanctuary.png",
+          "sha256": "addd411762221842c80200df880bd0e527a60174e47279d25fe66157ada8dba8"
+        },
+        {
+          "path": "apprentice-tree.js",
+          "sha256": "96f310485d92ff8d51959da63ecbdf7a38958bb13efd4e26cf36bfe52e1ffc66"
+        },
+        {
+          "path": "assets/talents/apprentice.png",
+          "sha256": "8f256ed69560c8ed26126a2aee3c7a21b0f053c09b9aae5ed1675313901f88c2"
+        },
+        {
+          "path": "assets/talents/manifest.json",
+          "sha256": "438c6b41e0559d9c130c900f00c0c1013e3a511f51ada7ed7d49fa71b131acce"
+        }
+      ]
     }
   ]
 }
