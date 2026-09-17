@@ -8,14 +8,18 @@ assets; no runtime npm package, bundler or build step is required.
 ## Start and troubleshoot
 
 ```powershell
-python -m http.server 8765 --bind 127.0.0.1
+python scripts/serve_game.py
 ```
 
 Keep this terminal running; use another for checks. Open
 [normal play](http://127.0.0.1:8765/) or [QA](http://127.0.0.1:8765/?test=1).
 Connection refused means the server is not listening; check the terminal/process,
-not the save. Hard-refresh after source changes. Storage is origin-specific:
-changing the port/host does not move progress.
+not the save. The local server versions entry scripts and styles by their content
+and prevents HTML/code caching. An ordinary refresh loads current source, even
+when the browser previously cached unversioned files. Keep the same address:
+storage is origin-specific, and changing the port/host does not move progress.
+The server never reads, clears or migrates browser storage. Static player packages
+retain their separate immutable-build cache contract in CLIENT_BUILD.md.
 
 QA uses sandbox storage keys, not the normal save. Browser automation additionally
 uses disposable contexts and an ephemeral loopback server. Never point tests

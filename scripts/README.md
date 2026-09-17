@@ -14,6 +14,10 @@ Use `python scripts/project.py --help` from the project root.
 | `reviews --write` | Regenerate owner board; never grants approval |
 | `backup` | On explicit request: verified source/art ZIP, not browser saves |
 
+`python scripts/serve_game.py` serves the game on loopback port 8765. It versions
+entry script/style URLs by content so refreshing bypasses old cached code.
+`--port` selects another local port; saves remain tied to the original address.
+
 [Operations](../features/delivery/OPERATIONS.md) owns setup and caveats.
 [Engineering](../docs/ENGINEERING.md#content-updates) owns authorized
 `refresh_pass18_reference.py` / `creature_reference.py` publication.

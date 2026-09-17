@@ -55,3 +55,7 @@ tests use automatically cleaned temporary folders, leaving `dist/` for explicitl
 requested builds. See [storage policy](../features/delivery/OPERATIONS.md#repository-storage).
 Never hand-edit reports. Match source hashes before treating browser results as
 current evidence. Documentation checks are not gameplay, art or release acceptance.
+
+`python tests/server_refresh_check.py --browser chrome` warms an older menu cache,
+refreshes on the same origin, and checks current icons/badges plus save retention.
+The server and browser context are disposable; normal browser saves stay untouched.

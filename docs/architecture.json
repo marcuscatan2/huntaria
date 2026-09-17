@@ -749,7 +749,9 @@
         "tests/farm_classes_cases.js",
         "tests/field_encounters_check.py",
         "tests/relic_quest_check.py",
-        "tests/landscapes_check.py"
+        "tests/landscapes_check.py",
+        "scripts/serve_game.py",
+        "tests/server_refresh_check.py"
       ],
       "backlog": [
         "F-034",
@@ -768,14 +770,15 @@
         "F-066"
       ],
       "entry": "scripts/project.py; Git/CI configuration; future operator services",
-      "contract": "Local architecture/review tooling, Git source checkpoints, on-request ZIP backups and reproducible immutable client packages exist; packages remain local-preview. No deployment, production auth/payment/telemetry, restored cloud backups, certified capacity or external acceptance. Current remaining-work/decision audit is routed in REMAINING_SCOPE.md. Generated reports, local packages and pass histories stay outside Git; project checks reject tracked ignored files. Browser package tests use disposable temporary output and clean it up after validation.",
+      "contract": "Local architecture/review tooling, Git source checkpoints, on-request ZIP backups and reproducible immutable client packages exist; packages remain local-preview. No deployment, production auth/payment/telemetry, restored cloud backups, certified capacity or external acceptance. Current remaining-work/decision audit is routed in REMAINING_SCOPE.md. Generated reports, local packages and pass histories stay outside Git; project checks reject tracked ignored files. Browser package tests use disposable temporary output and clean it up after validation. The loopback development server serves a fresh entry with content-versioned script/style URLs and no-store HTML/code headers. Ordinary refresh bypasses previously cached unversioned menus while keeping the same origin and browser saves.",
       "tests": [
         "structure",
         "boundaries",
         "client-build",
         "farm-classes",
         "game-frame",
-        "relic-quest"
+        "relic-quest",
+        "server-refresh"
       ],
       "docs": [
         "docs/ENGINEERING.md",
@@ -1382,6 +1385,13 @@
       ],
       "browser": true,
       "purpose": "All 200 item loadouts, independent drops, ownership, effect contracts, frozen combat gear, failed-save rollback and phone equipment menus"
+    },
+    "server-refresh": {
+      "command": [
+        "tests/server_refresh_check.py"
+      ],
+      "purpose": "Same-origin cached-menu refresh, current icons/upgrade routes, content versions and preserved saves.",
+      "browser": true
     }
   },
   "connections": [

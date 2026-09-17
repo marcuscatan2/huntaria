@@ -33,7 +33,7 @@ Route lookup: `python scripts/project.py context combat`.
 From this folder; Python 3.12+. No game package install or build step.
 
 ```powershell
-python -m http.server 8765 --bind 127.0.0.1
+python scripts/serve_game.py
 python scripts/project.py check
 ```
 

@@ -9,7 +9,7 @@ Status: **partial-tooling**. Owns navigation tooling and checks; routes release,
 
 `scripts/project.py; Git/CI configuration; future operator services`
 
-Local architecture/review tooling, Git source checkpoints, on-request ZIP backups and reproducible immutable client packages exist; packages remain local-preview. No deployment, production auth/payment/telemetry, restored cloud backups, certified capacity or external acceptance. Current remaining-work/decision audit is routed in REMAINING_SCOPE.md. Generated reports, local packages and pass histories stay outside Git; project checks reject tracked ignored files. Browser package tests use disposable temporary output and clean it up after validation.
+Local architecture/review tooling, Git source checkpoints, on-request ZIP backups and reproducible immutable client packages exist; packages remain local-preview. No deployment, production auth/payment/telemetry, restored cloud backups, certified capacity or external acceptance. Current remaining-work/decision audit is routed in REMAINING_SCOPE.md. Generated reports, local packages and pass histories stay outside Git; project checks reject tracked ignored files. Browser package tests use disposable temporary output and clean it up after validation. The loopback development server serves a fresh entry with content-versioned script/style URLs and no-store HTML/code headers. Ordinary refresh bypasses previously cached unversioned menus while keeping the same origin and browser saves.
 
 These are ownership containers, not duplicate runtime implementations.
 The links below point to the actual source; root browser paths remain in use.
@@ -47,6 +47,8 @@ The links below point to the actual source; root browser paths remain in use.
 | [tests/field_encounters_check.py](<../../tests/field_encounters_check.py>) | Owned source/configuration; inspect before editing. |
 | [tests/relic_quest_check.py](<../../tests/relic_quest_check.py>) | Owned source/configuration; inspect before editing. |
 | [tests/landscapes_check.py](<../../tests/landscapes_check.py>) | Owned source/configuration; inspect before editing. |
+| [scripts/serve_game.py](<../../scripts/serve_game.py>) | Owned source/configuration; inspect before editing. |
+| [tests/server_refresh_check.py](<../../tests/server_refresh_check.py>) | Owned source/configuration; inspect before editing. |
 
 ## Connections
 
@@ -68,6 +70,7 @@ cover this feature and shared boundaries; they are not isolated unit tests.
 - `python tests/farm_classes_check.py --browser chrome` — Four-class acceptance, AFK timing/cleanliness, lunar five-monster defense, repair/loot idempotency, replay and responsive farm controls.
 - `python tests/game_frame_check.py --browser chrome` — Shared exploration/preparation bounds, framed Bag summoning and item inspection, painted farm controls, modal focus, responsive layouts and background battle settlement.
 - `python tests/relic_quest_check.py --browser chrome` — Four-class guaranteed rescue, saved replay, atomic Echo delivery, ghost party condition, connected tower floors and one-time class weapon reward.
+- `python tests/server_refresh_check.py --browser chrome` — Same-origin cached-menu refresh, current icons/upgrade routes, content versions and preserved saves..
 
 For a cross-feature change, run `python scripts/project.py verify --browser chrome`; see [validation setup and limits](<../../features/delivery/OPERATIONS.md>).
 
