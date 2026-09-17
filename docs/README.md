@@ -10,7 +10,7 @@ Do not read all planning/history before a focused fix.
 | Engineering decisions and growth boundaries | [ENGINEERING.md](ENGINEERING.md) |
 | Run, backup, validate | [Delivery operations](../features/delivery/OPERATIONS.md) |
 | Owner decision timing and evidence | [OWNER_REVIEWS](../OWNER_REVIEWS.md); source [review-gates.json](review-gates.json) |
-| Current commercial scope | [Scope](<../Commercial MVP scope.md>), [feature cards](../FEATURE_BACKLOG.md), [traceability](../FEATURE_TRACEABILITY.md), [acceptance](../VALIDATION_PLAN.md) |
+| Full launch scope and implementation audit | [Scope](<../Commercial MVP scope.md>) includes one PvP mode, Android/iOS apps, both stores and remaining guideline adaptations; [feature cards](../FEATURE_BACKLOG.md), [traceability](../FEATURE_TRACEABILITY.md), [acceptance](../VALIDATION_PLAN.md) |
 | Creature design, data, animation | [Content](../features/content/README.md), [animation](../features/animation/README.md) |
 | World design and implementation | [World](../features/world/README.md), [exploration](../features/exploration/README.md) |
 | Actual stat formulas | [Companion stats](<../Companion stats.md>) |

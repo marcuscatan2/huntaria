@@ -12,7 +12,7 @@
 
 Updated 2026-09-13. Commercial traceability, with zero accepted commercial criteria. F-001–F-016 now have a local implementation pass; see [current playtest walkthrough](<features/opening/VALIDATION.md>). Sources: [active scope](<Commercial MVP scope.md>), [feature cards](FEATURE_BACKLOG.md) and [validation](VALIDATION_PLAN.md). Git history retains superseded plans and their evidence context.
 
-Coverage: **66 features, 64 P0 + two P1, 264 criteria; 28 source items; 18 scope sections; 15 protocols; eight design locks; six release gates.** F-001–F-057 keep their IDs but v2 semantics replace conflicting v1 requirements. New F-058–F-066 address the expanded world, rates, groups, ultra-rare reward economy, roster production, abuse and rebaseline.
+Coverage: **66 retained features, 65 P0 + one P1, 264 criteria; 28 source items; 18 scope sections; 15 protocols; eight design locks; six release gates.** F-001–F-057 keep their IDs but v2 semantics replace conflicting v1 requirements. New F-058–F-066 address the expanded world, rates, groups, ultra-rare reward economy, roster production, abuse and rebaseline.
 
 The local world includes authored layouts, illustrated scenery, physical itinerary
 walking, cave/bridge navigation and persistent landmark discovery. See
@@ -50,7 +50,7 @@ commercial acceptance boxes have been checked.
 | MVP-18 | Launch package | [F-053](FEATURE_BACKLOG.md#f-053), [F-054](FEATURE_BACKLOG.md#f-054) |
 | MVP-19 | Controlled commercial release | [F-051](FEATURE_BACKLOG.md#f-051), [F-053](FEATURE_BACKLOG.md#f-053), [F-055](FEATURE_BACKLOG.md#f-055), [F-066](FEATURE_BACKLOG.md#f-066) |
 | MVP-20 | PT-BR | [F-056](FEATURE_BACKLOG.md#f-056) |
-| MVP-21 | Wider browser support | [F-057](FEATURE_BACKLOG.md#f-057) |
+| MVP-21 | Android/iOS apps and both store releases | [F-057](FEATURE_BACKLOG.md#f-057) |
 | MVP-22 | World atlas and large maps | [F-027](FEATURE_BACKLOG.md#f-027), [F-058](FEATURE_BACKLOG.md#f-058) |
 | MVP-23 | Map-wide populations and rare respawns | [F-039](FEATURE_BACKLOG.md#f-039), [F-059](FEATURE_BACKLOG.md#f-059), [F-060](FEATURE_BACKLOG.md#f-060) |
 | MVP-24 | Cooperative group bosses | [F-022](FEATURE_BACKLOG.md#f-022), [F-039](FEATURE_BACKLOG.md#f-039), [F-061](FEATURE_BACKLOG.md#f-061), [F-062](FEATURE_BACKLOG.md#f-062) |
@@ -108,25 +108,25 @@ commercial acceptance boxes have been checked.
 | --- | --- | --- |
 | Distinct summonable species | At least 100; planning 94 wild + six boss species; no recolor counting | F-006, F-064; VP-01/04 |
 | Trainer classes and kit | Four classes; each class/species five active choices, three equipped | F-004, F-006 |
-| Skill/innate/tree coverage | 520 active assignments; 100 innates; 104 trees ×18 nodes =1,872 | F-006, F-010, F-064 |
+| Skill/innate/tree coverage | 304 signatures +11 shared moves and supported legacy/trainer kits; 100 innates; 2,400 companion +60 class nodes; separate Apprentice tree | F-006, F-010, F-064 |
 | New-player party | Trainer alone; zero-to-two companions supported; all four classes solo-beat starters | F-004, F-009, F-015 |
 | World | 24 large maps across six regions: 18 outdoor + six caves; six compact hubs and six compact boss domains; danger never invisibly locks roads | F-016–018, F-058 |
 | Crossing | At least 30 seconds at base speed, target 45–90; shortest opposite-side routes; no load/combat/idle padding | F-058; VP-13 |
 | Habitat identity | 94 wild species assigned source populations with roaming and durable spawn life/respawn | F-059; VP-13 |
 | Narrative / opposition | Six chapters/48 steps; 60 trainer/faction compositions; 12 packs; six optional bosses | F-019–023 |
-| Starter Echoes | 10% per eligible killed spawn life; no guaranteed first drop or pity | F-014–015, F-060; VP-15 |
+| Starter Echoes | 10% ordinary starter row; two explicit onboarding quest guarantees; no ordinary-hunt pity | F-014–015, F-060; VP-15 |
 | Mid/late Echoes and every very-rare row | 0.01% = one in 10,000; spawn rarity separate | F-060; VP-15 |
 | Summoning | 100% legal success; consume Echo once, no additional RNG/papyrus/paid fee | F-014, F-040; VP-15 |
 | Loot persistence | Committed per-kill loot survives later loss, exit and reconnect | F-011, F-039–040 |
 | Group bosses | Two–three real players; cross-party support; max 13 actors; server clock and own-party elimination | F-022, F-061–062; VP-14 |
 | Boss essence | One 0.01% roll per eligible group victory, including later victories; one recipient per success; no server-wide copy cap | F-063; VP-15 |
 | Consume / deletion / restore | Reconcile each victory/reward/summon receipt without duplicating old rewards or disabling independent future drops | F-041, F-047, F-063 |
-| Progression | Hard player/owned ceiling60, engine/wild curve100; high-source summons clamp safely; trainer highest owned or 1; story possible with ordinary roster | F-009, F-019, F-051 |
+| Progression | Hard player/owned ceiling60, engine/wild curve100; high-source summons clamp safely; independent trainer XP; story possible with ordinary roster | F-009, F-019, F-051 |
 | Presentation | 104 character state sets, six boss phase sets, 24 large maps/six hubs/six boss domains and fixed Inner Sea | F-024–028, F-064 |
 | Cosmetics | Eight paid products + ≥3 earned rewards; no power, Echo or luck sales | F-032–033, F-042–044 |
 | Full-scale runtime | Lazy loading; physical dense-map/13-actor tests; 100-account staged load | F-034–036, F-049 |
 | Resource reality | Withdraw old small-MVP schedule/cost allowance; measured pilot and funded rebaseline | F-066 |
-| Optional platforms/language | PT-BR and Safari/iOS remain two P1 cards, not advertised untested | F-056–057 |
+| Platforms/language | Android/iOS apps and both stores are P0; PT-BR alone remains P1 | F-056–057; L-06–L-08 |
 
 Numbers remain commercial requirements, not automatic acceptance. Pass 14 supplies a 100-species local test manifest, independent companions/portrait picker/immediate wild loot and 24-map/six-hub runtime. Production art, kit distinctness, group-boss sources and world-quality review remain pending; see features/delivery/REMAINING_SCOPE.md.
 
@@ -135,7 +135,7 @@ Numbers remain commercial requirements, not automatic acceptance. Pass 14 suppli
 - V1 small-release quantities, proposed level20 cap, first-capture guarantee/pity, consumable contract rolls and board-based three-encounter routes are not active v2 commercial requirements.
 - Pass 13 replaces the old live contract/route system with local Soul Echo summoning and spatial maps. README, PROGRESS and Companion stats document actual behavior; server/group criteria are still planned.
 - GN-009 cooperative boss fights are now **planned for commercial v2**, not implemented. GN-001 account buffs and GN-002 quest evolution remain stashed.
-- Shared public exploration/towns, PvP, trading, guilds/chat, housing construction, water exploration and paid gameplay advantages remain outside scope.
+- Shared public exploration/towns, additional PvP modes, trading, guilds/chat, housing construction, water exploration and paid gameplay advantages remain outside scope. Choose and implement one PvP mode for launch.
 - Boss rarity is not guaranteed superior power. Encounter raid stats/phase behavior are separate from a summoned companion's balanced playable kit.
 - A smaller free pilot can validate the work; it cannot satisfy the at-least-100 commercial launch requirement. The old time/cash estimate cannot be reused for this expanded scope.
 
@@ -144,3 +144,26 @@ Numbers remain commercial requirements, not automatic acceptance. Pass 14 suppli
 Run `python tests/scope_docs_check.py`. It verifies IDs, four criteria/card, metadata, acyclic dependencies, all source/section/protocol links, gate/lock counts and selected v2 design invariants. The audit also checks source-to-feature and protocol-to-feature mappings against actual card metadata.
 
 All 264 acceptance criteria remain unchecked until their real evidence is produced. A successful documentation check does not constitute browser, art, security, multiplayer, payment or commercial acceptance.
+
+## 7. Full-launch extension trace
+
+The canonical scope §17 owns acceptance for all ten P0 launch packages in
+addition to the retained cards. No package is commercially accepted.
+
+| Package | Requirement source | Required evidence routes |
+| --- | --- | --- |
+| L-01 | Attachment §§4–6; scope §§2/5/7/9 | F-005/006/010/012/013; VP-01/02/03/05; OR-02/07 |
+| L-02 | Attachment §8; scope §9 | F-031/032; VP-03/05/07/09; OR-02/07/08 |
+| L-03 | Attachment §§7/9/13; scope §7 | F-009/011/023/040; VP-02/03/07/09/10; OR-07/08 |
+| L-04 | Attachment §10; scope §§6/7/11 | F-019/022/023/061/062/063; VP-02/03/07/14/15; OR-02/07/08 |
+| L-05 | Owner: choose and implement one PvP mode; scope §4 | F-036/039/040/045/049/050; VP-02/06/07/10/11/12/14; OR-02/06/07/08 |
+| L-06 | Owner: Android and iOS; scope §16 | F-030/034/035/057; VP-05/06/07/12; OR-06 |
+| L-07 | Owner: both stores; attachment §§12/13; scope §§10/16 | F-037/041/042/043/044/045/053; VP-07/08/09/12; OR-10 |
+| L-08 | Owner: publish in both stores; scope §16 | F-054/055/057; VP-08/09/12; OR-09/10/11/12; G5 |
+| L-09 | Attachment §13; scope §§11/15/16 | F-037–050/065; VP-07/08/09/11/14/15; OR-08/10/11 |
+| L-10 | Attachment §§14–18; scope §§12–18 | F-024–028/051/052/053/066; all applicable protocols/gates and explicit package acceptance |
+
+The existing section mappings include nested audit, mobile/store and extension
+requirements; this table supplies the additional acceptance routes. Guidelines'
+proposals remain decisions, and the attachment's deferred-PvP instruction is
+superseded by the owner's one-mode launch requirement.

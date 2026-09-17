@@ -85,6 +85,7 @@
       "before": "Before repeating the current combat/progression loop across more regions, monsters and quests.",
       "why": "Boring or unreadable combat, excessive walking, unrewarding hunts or forced recovery become embedded in encounter levels, rewards, quest scripts and content volume.",
       "packet": [
+        "Full-launch alignment packet: review scope §2/§17 L-01/L-02, especially two held slots, Knight/Swordsman identity and replacing absence-driven farm XP loss/repair chores. Select one PvP design before dependent mode production; no mode is selected by the brainstorm.",
         "Review the explicitly authorized equipment/held-item feature and supplied CSV revision in features/collection/EQUIPMENT.md: personal trainer stats, six slots, individual held items, nonrecursive effects and temporary 1% drops. Implementation is authorized; broader combat pacing and release balance are not approved.",
         "Review the supplied monster CSV revision: exact level stats, 24-node individual trees and Tidecrown/relic quest points. The owner retained existing wild levels, including level80+ Ashen challenges above the owned level60 cap. Implementation is authorized; final pacing acceptance remains pending. See features/growth/COMPANION_TREES.md.",
         "Review class-flow-v2 in the local game: four-city class choice, explicit class confirmation, the alarm and shorter Lv100-master rescue, closest-target combat, shared rows and classic stat contributions. Firstlight stays passive; all other roaming wildlife attacks at every level.",
@@ -107,7 +108,8 @@
         "features/delivery/REMAINING_SCOPE.md",
         "features/inner-sea/FARM_SCOPE.md",
         "features/opening/CLASSES.md",
-        "features/world/CITIES.md"
+        "features/world/CITIES.md",
+        "Commercial MVP scope.md"
       ],
       "per_species": false,
       "decisions": []
@@ -392,9 +394,10 @@
       "before": "Before locking asset detail/texture budgets or expanding screens and control patterns.",
       "why": "Changing screen density, touch/mouse assumptions or the minimum device later affects asset sizes, camera distance, labels, effects, input, layouts and performance budgets.",
       "packet": [
+        "Android and iOS apps plus both store releases are now required by the owner. Prepare named physical phone/OS tiers, native/shared-client architecture evidence, lifecycle/accessibility and asset budgets. Platform inclusion is decided; device/layout certification remains pending.",
         "Review player-menu-v1: concise copy, Inner Sea party controls, a separate Class Skill Tree, dummy throughput tables and two-second NPC victories. Use features/party/GAME_FRAME.md and features/combat/TRAINING.md on the intended phones before accepting this interaction standard.",
         "Review class-flow-v2 conversations and the four-class panel on the intended phones. game-frame.css bounds dialogue to the playfield, with internal scrolling and touch-size actions. Target-device and final layout approval remain pending.",
-        "Review the framed Bag, painted Inner Sea, recovery, settings and exploration HUD on the chosen physical devices. Emulated viewport checks do not certify hardware; the supported desktop/browser baseline and Android launch requirement remain owner decisions. Use features/party/GAME_FRAME.md and features/inner-sea/DISPLAY.md."
+        "Review the framed Bag, painted Inner Sea, recovery, settings and exploration HUD on the chosen physical devices. Emulated viewport checks do not certify hardware; supported hardware/OS tiers and layout acceptance remain owner decisions; Android/iOS launch inclusion is confirmed. Use features/party/GAME_FRAME.md and features/inner-sea/DISPLAY.md."
       ],
       "owner_accept": [
         "The intended launch devices are explicitly chosen; essential controls and combat information are readable and usable.",
@@ -409,7 +412,8 @@
         "features/opening/VALIDATION.md",
         "VALIDATION_PLAN.md",
         "features/party/GAME_FRAME.md",
-        "features/world/CITIES.md"
+        "features/world/CITIES.md",
+        "Commercial MVP scope.md"
       ],
       "per_species": false,
       "decisions": []
@@ -434,6 +438,7 @@
       "before": "Before promising permanent progress, launching persistent economy tests or publishing acquisition claims.",
       "why": "Progression rates and scarcity set player expectations; correcting permanent wealth or extremely rare drops after launch may require wipes, compensation or trust-damaging changes.",
       "packet": [
+        "Approve the combined power ceiling, non-destructive seasonal model, overflow/catch-up, absence-friendly farm outputs and chosen PvP reward/stat treatment before persistent economy commitments; see full scope L-01–L-05.",
         "AI presents starter-to-late progression scenarios, recovery costs and expected acquisition time including rare encounter availability and kills/hour.",
         "Separate current 15% testing from release proposals; show unlucky streaks and duplicate outcomes, not only averages or forced grants.",
         "Preserve the agreed 100% summon/no-pity rules and proposed 10%/0.01% odds unless you explicitly authorize a change.",
@@ -450,7 +455,8 @@
       "refs": [
         "CREATURE_DROPS.md",
         "VALIDATION_PLAN.md",
-        "features/inner-sea/FARM_SCOPE.md"
+        "features/inner-sea/FARM_SCOPE.md",
+        "Commercial MVP scope.md"
       ],
       "per_species": false,
       "decisions": []
@@ -476,6 +482,7 @@
       "before": "Before committing to cloud save schemas, real group sessions or importing prototype profiles.",
       "why": "Identity, ownership, reward receipts and room lifecycle constrain database/API design. Reworking them after accounts or purchases exist risks progress and financial reconciliation.",
       "packet": [
+        "Include the chosen single PvP topology and shared browser/Android/iOS account, entitlement, authoritative time and reward contracts. No universal free PvP catalog or imported local wealth is assumed.",
         "AI supplies a short player-facing policy: guest upgrade, save ownership, allowed devices, wipes/imports, pause/2× rules, disconnect/rejoin and group loot eligibility.",
         "Add technical recommendations for versioned authoritative commands, idempotent receipts and migration/restore tests; owner is not asked to review implementation code.",
         "Compare costs and tradeoffs before choosing paid providers or accepting a multiplayer promise.",
@@ -493,7 +500,8 @@
         "docs/ENGINEERING.md",
         "VALIDATION_PLAN.md",
         "features/delivery/REMAINING_SCOPE.md",
-        "features/inner-sea/FARM_SCOPE.md"
+        "features/inner-sea/FARM_SCOPE.md",
+        "Commercial MVP scope.md"
       ],
       "per_species": false,
       "decisions": []
@@ -561,6 +569,7 @@
       "before": "Before paid marketing/public commercial claims, taking money or production personal-data collection.",
       "why": "Branding/assets without cleared provenance, misleading cosmetics, refunds or privacy/support gaps become public trust and operational liabilities once players spend or sign up.",
       "packet": [
+        "Prepare scope §16 Apple/Google applicability evidence: native billing, SDK/privacy disclosures, account deletion, audience/territories, seller setup, listings and reviewer access. Recheck current policies at submission.",
         "AI prepares the cosmetics-only catalog, real previews, ownership/refund/support behavior and purchase-failure evidence.",
         "Provide asset provenance/brand checks and a list of owner/provider/adviser approvals still required; do not invent legal clearance.",
         "Present the exact player-facing promises, territories, data/retention policy and spend authorization."
@@ -575,7 +584,8 @@
       "reopen": "Asset rights/brand, paid catalog, data collection, territories or refund/support promises change.",
       "refs": [
         "VALIDATION_PLAN.md",
-        "docs/ENGINEERING.md"
+        "docs/ENGINEERING.md",
+        "Commercial MVP scope.md"
       ],
       "per_species": false,
       "decisions": []
@@ -598,6 +608,7 @@
       "before": "Before admitting a larger persistent cohort, raising player caps or increasing operating spend.",
       "why": "Unbounded concurrency, lost rewards or an untested restore become incidents involving real players rather than cheap disposable test failures.",
       "packet": [
+        "Rebaseline mobile build/device/store costs, the single PvP mode, seasonal operations, support and recurring policy maintenance alongside server capacity before funding/expansion commitments.",
         "AI shows measured target-cohort load/soak results, room/DB bottlenecks, per-player/room costs and spending/admission limits.",
         "Demonstrate backup restoration, reward reconciliation, alerting, kill switches and rollback in staging.",
         "Owner chooses the specific player cap, spending ceiling, support coverage and rollback/stop conditions."
@@ -612,7 +623,8 @@
       "reopen": "Player cap, provider/pricing, room size, retained data, spend or operational responsibility changes.",
       "refs": [
         "docs/ENGINEERING.md",
-        "VALIDATION_PLAN.md"
+        "VALIDATION_PLAN.md",
+        "Commercial MVP scope.md"
       ],
       "per_species": false,
       "decisions": []
@@ -631,6 +643,7 @@
       "before": "Before a public commercial release.",
       "why": "Shipping unresolved critical issues converts development rework into player harm, reputation loss and support obligations.",
       "packet": [
+        "Require L-01–L-10 and mandatory Android/iOS acceptance, one chosen PvP mode, both store approvals/readiness and owner go/no-go before publication. Close launch only with both live listings and post-publication smoke evidence.",
         "AI presents existing G0–G5 gate status, applicable acceptance criteria, unresolved blockers, all launch art approvals and outside-player/device evidence.",
         "Include versioned build, staged rollout, rollback, support and budget plan; separate technical passes from owner acceptance.",
         "No blanket auto-approval from green tests. All launch species need scoped design coverage and final asset acceptance evidence under the existing protocols."
@@ -645,7 +658,8 @@
       "reopen": "Release build/scope changes materially or prior approvals become stale.",
       "refs": [
         "VALIDATION_PLAN.md",
-        "FEATURE_BACKLOG.md"
+        "FEATURE_BACKLOG.md",
+        "Commercial MVP scope.md"
       ],
       "per_species": false,
       "decisions": []
@@ -1196,6 +1210,28 @@
         {
           "path": "assets/talents/manifest.json",
           "sha256": "438c6b41e0559d9c130c900f00c0c1013e3a511f51ada7ed7d49fa71b131acce"
+        }
+      ]
+    },
+    {
+      "id": "full-launch-scope-alignment-2026-09-17",
+      "source": "Current owner conversation, 2026-09-17; attached Huntaria_Product_Scope_and_System_Guidelines.md v1.0 is design reference, not independent execution authority",
+      "scope": [
+        "Audit full launch against source and supplied guidelines; align scope and acceptance routes",
+        "Choose and implement one PvP mode at launch; retain other candidates as brainstorms",
+        "Include Android/iOS apps and publication in Google Play and Apple App Store with applicable requirements"
+      ],
+      "quotes": [
+        "1 - From the full launch scope what have we already done and what's missing",
+        "2 - Analyze if we're following the specifications on the attached doc, else, adapt to follow.",
+        "We're only gonna launch with one pvp mode, so the propositions on the end are a brainstorm, not scoping everyone of those. Keep it saved in scope as 'choose and implement one'.",
+        "Also add to the scope everything of the full launch, including app that works in both ios and android and publishing it in playstore and applestore (which implies attending every specifications these 2 may have)."
+      ],
+      "boundary": "Authorizes scope reconciliation and these launch requirements; does not select a PvP mode, finalize unresolved numerical/product rules, approve final art/device quality, spend money, register accounts or authorize an unreviewed public release. Existing review gates remain pending.",
+      "evidence": [
+        {
+          "path": "Commercial MVP scope.md",
+          "sha256": "355c7122a4da7213b52b2ff92d53b8c5bb9d9b72d1ff09e27d59e59fef845c0d"
         }
       ]
     }

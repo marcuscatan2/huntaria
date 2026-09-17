@@ -1,4 +1,4 @@
-# Commercial scope v2 — Feature backlog
+# Full launch — Retained feature backlog
 
 > Current prototype override — Patch20 (2026-09-13): all configured Echo chances
 > are **15% for testing**, with faster wild levels/XP and persistent injuries.
@@ -14,9 +14,9 @@ Status: **Local implementations are not commercial acceptance.**
 See the [current implementation scope](features/delivery/REMAINING_SCOPE.md)
 for delivered work and remaining decisions.
 
-There are **66 feature cards: 64 P0, two optional P1, 264 acceptance criteria**.
+There are **66 feature cards: 65 P0, one optional P1, 264 acceptance criteria**.
 F-001 through F-057 retain their identifiers; v2 criteria supersede v1.
-F-058 through F-066 add the expanded systems. Superseded plans and pass reports
+F-058 through F-066 add the expanded systems. Full launch additionally requires packages L-01–L-10 in scope §17; these include guideline adaptations, seasons, one selected PvP mode, both mobile apps and store publication. Superseded plans and pass reports
 are retained in Git history, not as additional active requirements.
 
 Read with [scope](<Commercial MVP scope.md>), [validation plan](VALIDATION_PLAN.md)
@@ -29,7 +29,7 @@ are routed through [FEATURE_MAP](FEATURE_MAP.md).
 - Planning baseline: 24 large maps across six regions, six compact hubs. Large maps must take at least 30 seconds to cross at base walking speed; target 45–90 seconds. Hubs are exempt.
 - Trainer can begin alone. Starter Echo drops: 10%. Designated mid/late Echoes and every very-rare drop: 0.01%. A legal Echo summon: 100%. No pity or second summoning roll.
 - Two–three-player optional boss fights; one 0.01% group essence roll on every eligible victory. Boss essences are extremely rare but have no server-wide copy limit; previous drops/ownership/summons do not change the chance.
-- F2P, cosmetics only. No trading, paid luck, full shared open-world presence or PvP. GN-001 account buffs and GN-002 evolution remain stashed.
+- F2P, cosmetics only. Choose and implement one PvP mode. Android/iOS apps and publication on both stores are P0. No trading, paid luck or full shared open-world presence. GN-001 account buffs and GN-002 evolution remain stashed.
 - The earlier small-MVP timeline and budget are withdrawn; F-066 rebaselines the larger release. A smaller free pilot is allowed but does not satisfy the commercial roster/world floor.
 
 ## Delivery and evidence
@@ -102,7 +102,7 @@ Accountability labels allocate future work; they do not spawn agents or authoriz
 | [F-054](#f-054) | P0 | M5 | Landing page, launch media and support materials |
 | [F-055](#f-055) | P0 | M5 | Controlled launch, commercial learning and first-month operations |
 | [F-056](#f-056) | P1 | After P0 | PT-BR localization |
-| [F-057](#f-057) | P1 | After P0 | Safari / iOS and wider-browser certification |
+| [F-057](#f-057) | P0 | M0–M5 | Android/iOS apps and both store releases |
 | [F-058](#f-058) | P0 | M0 design; M2–M5 production | World atlas and 24 genuinely large maps |
 | [F-059](#f-059) | P0 | M2–M3 | Fixed habitats, rare spawns and durable respawn lives |
 | [F-060](#f-060) | P0 | M0 lock; M3 authority | Exact Echo odds and honest independent loot tables |
@@ -228,9 +228,9 @@ Accountability: Implementation agent; owner accepts
 Acceptance criteria:
 
 - [ ] F-006-AC1: Launch contains at least 100 distinct summonable monster species plus four trainer classes. Working manifest: 94 wild species and six group-boss essence species. Color variants, skins, ages and encounter-only copies do not count as new species.
-- [ ] F-006-AC2: Every species and class has five authored active-skill assignments, three equipped per present actor; the 100-species baseline requires 520 assignments, 100 innate passive assignments and 104 eighteen-node trees (1,872 nodes). Shared effect code is allowed; 520 unique engine effects are not required.
+- [ ] F-006-AC2: Each present actor equips three unique active moves. Validate 304 monster signatures, 11 shared moves, supported legacy moves and the four trainer kits, 100 free species innates, 2,400 companion nodes and60 class nodes plus the separate Apprentice tree. Shared effect code is allowed; source/catalog coverage must agree.
 - [ ] F-006-AC3: Every species has a stable ID, silhouette/portrait, role, element, attributes, movement/range, legal kit, innate passive and discoverable habitat or boss source. Content rejects unknown references, invalid numbers and role-inapplicable tree branches.
-- [ ] F-006-AC4: All 100 species are playable after a test-authorized summon and validated in battle, menus and Inner Sea; no placeholder art/kit counts toward launch acceptance. Coverage enumerates all 520 assignments, passives and trees, not just the original ten.
+- [ ] F-006-AC4: All 100 species are playable after a test-authorized summon and validated in battle, menus and Inner Sea; no placeholder art/kit counts toward launch acceptance. Coverage enumerates all current catalog assignments, passives and trees, not just the original ten.
 
 Validation: Validate the F-064 roster manifest and per-species acceptance matrix. Use controlled test inventory to cover ultra-rare species; test injection cannot mint a production Echo or boss essence.
 Required protocols: VP-01, VP-02. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
@@ -410,7 +410,7 @@ Accountability: Implementation agent; owner accepts
 Acceptance criteria:
 
 - [ ] F-015-AC1: New players create a named Apprentice with a dagger or bow, zero monsters, an effective starter loadout and no paid/rare requirement. One nearby Emberfox attacks after an orientation grace period; both weapons can win. Four Druid/Mage demonstrations lead to trials and confirmed specialization at player Lv20.
-- [ ] F-015-AC2: The first accepted introductory Emberfox victory grants one guaranteed normal Emberfox Echo. After its explicit Inventory summon and one companion fight, the first accepted Bloomslime-or-Stonehorn choice grants that chosen normal Echo. These guarantees use unique receipts and never display backend odds.
+- [ ] F-015-AC2: The first accepted introductory Brimble victory grants one guaranteed normal Brimble Echo. After its explicit Inventory summon and one companion fight, the first accepted Bloomslime-or-Stonehorn choice grants that chosen normal Echo. These guarantees use unique receipts and never display backend odds.
 - [ ] F-015-AC3: Outside the two named onboarding receipts, ordinary Echo rows, rare hunting and independent rolls remain unchanged: no global pity counter, escalating probability, guaranteed-after-N rule or paid retry. Reload, defeat and replay cannot regenerate either guarantee.
 - [ ] F-015-AC4: Tutorial progress survives reloads and interrupted saves, teaches Inventory summoning, auto-fills empty party slots and uses two physical signs for the second role choice. A naturally obtained Echo or alternate owned party can satisfy the usable-companion result without creating a softlock.
 
@@ -626,14 +626,14 @@ Required protocols: VP-04, VP-06. Evidence: pinned build/rules, fixtures/seeds, 
 ### F-026 — Impact-synchronized VFX and combat feedback
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
-Baseline: 520 explicit visual assignments and shared solo impact deadline; live group/network/device signoff pending; see features/campaign/README.md
+Baseline: Local visual assignments for legacy and v2 kits and shared solo impact deadline; live group/network/device signoff pending; see features/campaign/README.md
 Dependencies: F-008, F-024
 Source items: MVP-03, MVP-04
 Accountability: Implementation agent; owner accepts
 
 Acceptance criteria:
 
-- [ ] F-026-AC1: All 520 skill assignments map to readable reusable physical, projectile, elemental, area, heal, ward and status VFX; innate triggers and each boss warning are identified. Assignments need not be unique engine effects.
+- [ ] F-026-AC1: All supported legacy, signature, shared and trainer skill assignments map to readable reusable physical, projectile, elemental, area, heal, ward and status VFX; innate triggers and each boss warning are identified. Assignments need not be unique engine effects.
 - [ ] F-026-AC2: Visible contact/projectile arrival, HP delta, hit reaction and sound share one logical impact event. Solo 1×/2× and network-interpolated group presentation meet VP-04; effects never alter authoritative simulation.
 - [ ] F-026-AC3: Damage, guarding, healing and dodge remain distinguishable in the 13-combatant worst case. Ownership labels distinguish allies; effects cannot hide a trainer or boss warning.
 - [ ] F-026-AC4: Solo pause freezes local presentation; group clients cannot pause the server. Low-effects/reduced-motion preserve essential warnings, loot confirmation and guaranteed summoning outcome.
@@ -725,7 +725,7 @@ Required protocols: VP-05, VP-12. Evidence: pinned build/rules, fixtures/seeds, 
 
 <a id="f-031"></a>
 
-### F-031 — Inner Sea farm, daily defense and local screenshot export
+### F-031 — Absence-friendly Inner Sea and local screenshot export
 
 Priority: P0 · Milestone: M2 · Status: Local/partial implementation · commercial criteria incomplete.
 Baseline: Local farm, five automatic habitat displays, AFK training, daily defenses, upgrades/repairs, decoration drafts and PNG export; equipment and release acceptance pending
@@ -738,7 +738,7 @@ Acceptance criteria:
 - [ ] F-031-AC1: One farm scene contains a wooden house, barn, cellar, bird roost, insect garden and pond, displaying the highest-level compatible owned individual per habitat with stable first-individual ties. Retain three cosmetic sockets and one style selector.
 - [ ] F-031-AC2: Selecting a socket previews/equips only eligible owned decorations; unequip/replace/cancel works and the layout survives returning from combat and reloading.
 - [ ] F-031-AC3: A local image export reproduces the player's scene without private email/account identifiers, remote upload, blank assets or browser-tainted-canvas failure.
-- [ ] F-031-AC4: Clean, intact farms train every owned copy; power sums one maximum level per species. Five chosen monsters defend without a trainer against daily trainer-level, lunar-scaled attacks. Successful defenses settle normal attacker loot once; failure removes XP from all owned monsters and suspends training/bonuses until item repair. Habitats upgrade separately; future boss/dungeon habitat equipment must strengthen account/defense without selling power. Validate offline time, normalization, replay and idempotency under the detailed farm scope.
+- [ ] F-031-AC4: A seven-day absence preserves earned XP/facilities and useful AFK progress without compulsory cleanup/repair. Define storage, optional care/defense rewards, return summary, bounded bonuses and habitat gear sources under L-02 before implementation. Migrate dirty/damaged prototype farms safely; validate authoritative elapsed time, repeated claims, replay and overflow. Current XP-loss/repair behavior is not launch acceptance.
 
 Validation: Every socket/background state, empty ownership, rapid replace, locked decoration, reload and screenshot pixel/content review at desktop/mobile resolutions.
 Required protocols: VP-03, VP-04, VP-05. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
@@ -949,7 +949,7 @@ Required protocols: VP-07, VP-09, VP-11. Evidence: pinned build/rules, fixtures/
 
 <a id="f-042"></a>
 
-### F-042 — Hosted checkout and purchase initiation
+### F-042 — Platform checkout and purchase initiation
 
 Priority: P0 · Milestone: M4 · Status: Planned / not commercially accepted.
 Baseline: New
@@ -959,9 +959,9 @@ Accountability: Implementation agent; owner accepts
 
 Acceptance criteria:
 
-- [ ] F-042-AC1: An authenticated recoverable account can buy only an eligible server-priced SKU/currency/version through hosted checkout; no card data or payment secret enters game storage/client code.
+- [ ] F-042-AC1: An authenticated recoverable account can buy only an eligible server-priced SKU/currency/version through StoreKit on iOS, Google Play Billing on Android, or compliant web checkout; no card data or payment secret enters game storage/client code.
 - [ ] F-042-AC2: Account, order and provider-session IDs are bound server-side. Forged price, account, currency, quantity or owned/disabled SKU requests are rejected before charging.
-- [ ] F-042-AC3: Success redirect alone grants nothing. Cancel, decline, authentication challenge, delayed payment and browser closure have distinct recoverable states; reopening retrieves pending order status.
+- [ ] F-042-AC3: Client purchase callbacks or success redirects alone grant nothing. Cancel, decline, authentication challenge, delayed payment and browser closure have distinct recoverable states; reopening retrieves pending order status.
 - [ ] F-042-AC4: Checkout initiation is idempotent against double-click/retry and prevents unintended concurrent duplicate purchases. Test/live environments are isolated; real charges remain disabled until the separate commercial authorization gate.
 
 Validation: Provider sandbox for all checkout states, mismatched IDs/price versions, two tabs and closed-return page; a real transaction is not part of ordinary automated acceptance.
@@ -1255,22 +1255,22 @@ Required protocols: VP-05, VP-12. Evidence: pinned build/rules, fixtures/seeds, 
 
 <a id="f-057"></a>
 
-### F-057 — Safari / iOS and wider-browser certification
+### F-057 — Android/iOS apps and both store releases
 
-Priority: P1 · Milestone: After P0 · Status: Planned / not commercially accepted.
-Baseline: Not physically verified
+Priority: P0 · Milestone: M0–M5 · Status: Planned / not commercially accepted.
+Baseline: Browser prototype only; native app projects and store publication absent
 Dependencies: F-052
 Source items: MVP-21
 Accountability: Owner/testers: hardware; agent: fixes and validation
 
 Acceptance criteria:
 
-- [ ] F-057-AC1: If included, a named physical iPhone/Safari pair passes the required game/account/checkout-return journey, audio interaction, asset rendering and local screenshot export.
-- [ ] F-057-AC2: Touch navigation, background/resume, memory/performance and poor-network handling meet a recorded support-tier budget; desktop resize emulation is not accepted as iOS evidence.
-- [ ] F-057-AC3: Any platform-specific unsupported behavior has a visible safe fallback, and support/marketing claims list the tested versions.
-- [ ] F-057-AC4: The optional platform cannot weaken account/payment safety or block the declared desktop/Android MVP if it remains unverified and unadvertised.
+- [ ] F-057-AC1: Signed Android and iOS apps pass install/update, full game/account/PvP, audio, asset and export journeys on named physical devices and supported OS tiers. A responsive browser page does not satisfy app delivery.
+- [ ] F-057-AC2: Both apps pass touch/safe-area/accessibility, background/termination/resume, network changes, secure credential storage, memory/thermal/battery and performance budgets; emulator viewport checks do not certify physical hardware.
+- [ ] F-057-AC3: Both submission packages meet scope §16 applicable current SDK, signing, billing, privacy/SDK disclosure, account-deletion, age-rating, reviewer-access and beta/production-access requirements. Preserve sandbox purchase/restore/refund and policy evidence.
+- [ ] F-057-AC4: Both apps obtain store review approval and are published in the approved launch territories on Google Play and Apple App Store after owner go/no-go. Record public URLs/release versions and pass post-publication install/update/account/entitlement checks; unresolved review rejection blocks full launch.
 
-Validation: Physical-device VP-12 certification plus targeted performance and payment tests; preserve videos/traces and record actual device/browser versions.
+Validation: Physical Android/iOS VP-12 certification, VP-06/08 performance/billing, all L-06–L-08 acceptance and scope §16 store evidence. Record actual device/OS/app versions, artifacts and listing URLs.
 Required protocols: VP-06, VP-08, VP-12. Evidence: pinned build/rules, fixtures/seeds, observed versus expected, failures, artifacts and reviewer; see VALIDATION_PLAN.md.
 
 ## K · Expanded world, Echoes and cooperative bosses
@@ -1329,7 +1329,7 @@ Acceptance criteria:
 
 - [ ] F-060-AC1: Starter Echoes roll at 10% per eligible kill; designated mid/late Echoes and every very-rare item roll at 0.01%. Use uniform integers 0–9,999 with respectively 1,000 and one successful outcomes, not floating-point percent ambiguity.
 - [ ] F-060-AC2: Normal kills can roll coins/materials and an Echo independently under explicit versioned rows. A trainer-owned enemy companion never supplies a wild Echo. Table validation distinguishes per-kill, per-player and per-group scopes; multiple rare rows are not advertised as 0.01% total.
-- [ ] F-060-AC3: No pity, first-kill guarantee, hidden streak modifier, paid luck or paid gameplay item changes rates. A legal owned Echo summons with 100% success; spawn availability is separately disclosed.
+- [ ] F-060-AC3: Outside the two explicit onboarding quest receipts, no pity, first-kill guarantee, hidden streak modifier, paid luck or paid gameplay item changes ordinary rates. A legal owned Echo summons with 100% success; spawn availability is separately disclosed.
 - [ ] F-060-AC4: Exact boundary/exhaustive tests prove probabilities; statistical sanity tests are secondary. Reload, duplicate settlement, changed loadout and failed summon writes cannot reroll one victory; each distinct eligible victory still gets its normal independent 0.01% chance regardless of previous drops or ownership.
 
 Validation: Exhaust all 10,000 roll inputs per threshold; reject malformed tables; test eligible/ineligible deaths and duplicate receipts; independently reproduce probability quantiles.
@@ -1408,7 +1408,7 @@ Accountability: Implementation agent; owner accepts
 Acceptance criteria:
 
 - [ ] F-064-AC1: The launch manifest lists at least100 genuinely distinct summonable species (94 wild/six boss). The initial100 use25 land,15 bird,4 frog,1 mythic,15 insect,3 spider,12 aquatic,10 reptile/newt,6 plant/fungus,6 spirit/construct and3 other-invertebrate inspirations. Each records source map, element, role, silhouette/art, active skills, innate,24-node tree and acquisition rules; skins/recolors do not count.
-- [ ] F-064-AC2: All 520 skill assignments, 100 innates and 104 trees totaling 1,872 nodes are defined and validated. Shared mechanics and tree templates are allowed; each species needs a coherent identity and at least one tested useful build, with stronger balance sampling across class/role matchups.
+- [ ] F-064-AC2: All 304 signatures, 11 shared moves, supported legacy/trainer moves, 100 innates, 2,400 companion nodes and60 class nodes plus the Apprentice tree are defined and validated. Shared mechanics and tree templates are allowed; each species needs a coherent identity and at least one tested useful build, with stronger balance sampling across class/role matchups.
 - [ ] F-064-AC3: Produce and accept batches of ten after a first reference batch; each has animation/event clips, provenance, collision/anchor checks, working Echo summon and loadout tests. Completion is species-by-species, not a numeric placeholder counter.
 - [ ] F-064-AC4: Commercial gates require all 100 complete; the final batch receives the same rubric. A smaller free prototype/pilot is explicitly labeled a test, never presented as satisfying this launch floor; boss species are tested in isolated grant-enabled realms.
 

@@ -44,7 +44,7 @@ Keep normal saves untouched. [Setup, browser tests, Git checkpoints and troubles
 ## Other routes
 
 - [Owner decisions](OWNER_REVIEWS.md): reviews due before dependent production.
-- [Remaining scope](features/delivery/REMAINING_SCOPE.md): all 66 cards, delivered work and blocking decisions/resources.
+- [Full scope](<Commercial MVP scope.md>): audit, PvP, mobile apps/stores; [cards](features/delivery/REMAINING_SCOPE.md).
 - [Client package](features/delivery/CLIENT_BUILD.md) / [runtime probe](features/combat/RUNTIME.md): reproducible local build and browser/Node parity.
 - [Development and scaling policy](docs/ENGINEERING.md): architecture decisions, authority and release boundaries.
 - [Documentation index](docs/README.md): active scope and design references; past handoffs live in Git history.

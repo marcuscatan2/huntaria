@@ -26,7 +26,7 @@ not replace technical tests or automatically accept commercial criteria.
 ## What happens next
 
 - **OR-01 — Approve the visual direction with a small creature set** (Needs revision). The owner supplied 100 replacement PNGs and a numbered stable-ID workbook; integration is authorized, final commercial art approval is not recorded. Current source and 100-species contact sheets are routed through features/animation/SUPPLIED_SPRITES.md. Review the supplied starter set in actual world/combat/collection sizes before dependent production.
-- **OR-02 — Approve the first 20–30 minutes and core combat feel** (Pending review packet / decision). Review the explicitly authorized equipment/held-item feature and supplied CSV revision in features/collection/EQUIPMENT.md: personal trainer stats, six slots, individual held items, nonrecursive effects and temporary 1% drops. Implementation is authorized; broader combat pacing and release balance are not approved.
+- **OR-02 — Approve the first 20–30 minutes and core combat feel** (Pending review packet / decision). Full-launch alignment packet: review scope §2/§17 L-01/L-02, especially two held slots, Knight/Swordsman identity and replacing absence-driven farm XP loss/repair chores. Select one PvP design before dependent mode production; no mode is selected by the brainstorm.
 
 Coming next: OR-03, OR-04, OR-05, OR-06.
 The AI prepares a named packet before asking for approval. A pending gate
@@ -109,6 +109,7 @@ Priority: **NOW**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
+- Full-launch alignment packet: review scope §2/§17 L-01/L-02, especially two held slots, Knight/Swordsman identity and replacing absence-driven farm XP loss/repair chores. Select one PvP design before dependent mode production; no mode is selected by the brainstorm.
 - Review the explicitly authorized equipment/held-item feature and supplied CSV revision in features/collection/EQUIPMENT.md: personal trainer stats, six slots, individual held items, nonrecursive effects and temporary 1% drops. Implementation is authorized; broader combat pacing and release balance are not approved.
 - Review the supplied monster CSV revision: exact level stats, 24-node individual trees and Tidecrown/relic quest points. The owner retained existing wild levels, including level80+ Ashen challenges above the owned level60 cap. Implementation is authorized; final pacing acceptance remains pending. See features/growth/COMPANION_TREES.md.
 - Review class-flow-v2 in the local game: four-city class choice, explicit class confirmation, the alarm and shorter Lv100-master rescue, closest-target combat, shared rows and classic stat contributions. Firstlight stays passive; all other roaming wildlife attacks at every level.
@@ -126,7 +127,7 @@ Priority: **NOW**. State: **Pending review packet / decision**.
 
 **Reopen when:** Changing combat control model, battle length, progression curve, healing/travel friction or onboarding loop.
 
-**Related specifications:** [Companion stats.md](<Companion stats.md>), [features/opening/VALIDATION.md](<features/opening/VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/opening/DESIGN.md](<features/opening/DESIGN.md>), [features/opening/EARLY_PROGRESSION_SCOPE.md](<features/opening/EARLY_PROGRESSION_SCOPE.md>), [features/delivery/REMAINING_SCOPE.md](<features/delivery/REMAINING_SCOPE.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>), [features/opening/CLASSES.md](<features/opening/CLASSES.md>), [features/world/CITIES.md](<features/world/CITIES.md>).
+**Related specifications:** [Companion stats.md](<Companion stats.md>), [features/opening/VALIDATION.md](<features/opening/VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/opening/DESIGN.md](<features/opening/DESIGN.md>), [features/opening/EARLY_PROGRESSION_SCOPE.md](<features/opening/EARLY_PROGRESSION_SCOPE.md>), [features/delivery/REMAINING_SCOPE.md](<features/delivery/REMAINING_SCOPE.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>), [features/opening/CLASSES.md](<features/opening/CLASSES.md>), [features/world/CITIES.md](<features/world/CITIES.md>), [Commercial MVP scope.md](<Commercial MVP scope.md>).
 
 <a id="or-03"></a>
 ### OR-03 — Approve one complete world slice before repeating it
@@ -230,9 +231,10 @@ Priority: **NEXT**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
+- Android and iOS apps plus both store releases are now required by the owner. Prepare named physical phone/OS tiers, native/shared-client architecture evidence, lifecycle/accessibility and asset budgets. Platform inclusion is decided; device/layout certification remains pending.
 - Review player-menu-v1: concise copy, Inner Sea party controls, a separate Class Skill Tree, dummy throughput tables and two-second NPC victories. Use features/party/GAME_FRAME.md and features/combat/TRAINING.md on the intended phones before accepting this interaction standard.
 - Review class-flow-v2 conversations and the four-class panel on the intended phones. game-frame.css bounds dialogue to the playfield, with internal scrolling and touch-size actions. Target-device and final layout approval remain pending.
-- Review the framed Bag, painted Inner Sea, recovery, settings and exploration HUD on the chosen physical devices. Emulated viewport checks do not certify hardware; the supported desktop/browser baseline and Android launch requirement remain owner decisions. Use features/party/GAME_FRAME.md and features/inner-sea/DISPLAY.md.
+- Review the framed Bag, painted Inner Sea, recovery, settings and exploration HUD on the chosen physical devices. Emulated viewport checks do not certify hardware; supported hardware/OS tiers and layout acceptance remain owner decisions; Android/iOS launch inclusion is confirmed. Use features/party/GAME_FRAME.md and features/inner-sea/DISPLAY.md.
 
 **You validate / acceptance:**
 
@@ -246,7 +248,7 @@ Priority: **NEXT**. State: **Pending review packet / decision**.
 
 **Reopen when:** Minimum hardware, browser promise, input model, UI density or asset budgets change.
 
-**Related specifications:** [ART_BIBLE.md](<ART_BIBLE.md>), [features/opening/VALIDATION.md](<features/opening/VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/party/GAME_FRAME.md](<features/party/GAME_FRAME.md>), [features/world/CITIES.md](<features/world/CITIES.md>).
+**Related specifications:** [ART_BIBLE.md](<ART_BIBLE.md>), [features/opening/VALIDATION.md](<features/opening/VALIDATION.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/party/GAME_FRAME.md](<features/party/GAME_FRAME.md>), [features/world/CITIES.md](<features/world/CITIES.md>), [Commercial MVP scope.md](<Commercial MVP scope.md>).
 
 <a id="or-07"></a>
 ### OR-07 — Approve release economy and rarity expectations
@@ -259,6 +261,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
+- Approve the combined power ceiling, non-destructive seasonal model, overflow/catch-up, absence-friendly farm outputs and chosen PvP reward/stat treatment before persistent economy commitments; see full scope L-01–L-05.
 - AI presents starter-to-late progression scenarios, recovery costs and expected acquisition time including rare encounter availability and kills/hour.
 - Separate current 15% testing from release proposals; show unlucky streaks and duplicate outcomes, not only averages or forced grants.
 - Preserve the agreed 100% summon/no-pity rules and proposed 10%/0.01% odds unless you explicitly authorize a change.
@@ -276,7 +279,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **Reopen when:** Odds, source availability, XP, price/supply sinks, progression promises or reset policy changes.
 
-**Related specifications:** [CREATURE_DROPS.md](<CREATURE_DROPS.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>).
+**Related specifications:** [CREATURE_DROPS.md](<CREATURE_DROPS.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>), [Commercial MVP scope.md](<Commercial MVP scope.md>).
 
 <a id="or-08"></a>
 ### OR-08 — Approve account, persistence and real multiplayer rules
@@ -289,6 +292,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
+- Include the chosen single PvP topology and shared browser/Android/iOS account, entitlement, authoritative time and reward contracts. No universal free PvP catalog or imported local wealth is assumed.
 - AI supplies a short player-facing policy: guest upgrade, save ownership, allowed devices, wipes/imports, pause/2× rules, disconnect/rejoin and group loot eligibility.
 - Add technical recommendations for versioned authoritative commands, idempotent receipts and migration/restore tests; owner is not asked to review implementation code.
 - Compare costs and tradeoffs before choosing paid providers or accepting a multiplayer promise.
@@ -306,7 +310,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **Reopen when:** Ownership, reward eligibility, account migration, room model or persistence policy changes.
 
-**Related specifications:** [docs/ENGINEERING.md](<docs/ENGINEERING.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/delivery/REMAINING_SCOPE.md](<features/delivery/REMAINING_SCOPE.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>).
+**Related specifications:** [docs/ENGINEERING.md](<docs/ENGINEERING.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [features/delivery/REMAINING_SCOPE.md](<features/delivery/REMAINING_SCOPE.md>), [features/inner-sea/FARM_SCOPE.md](<features/inner-sea/FARM_SCOPE.md>), [Commercial MVP scope.md](<Commercial MVP scope.md>).
 
 <a id="or-09"></a>
 ### OR-09 — Approve the representative slice for a polished external test
@@ -348,6 +352,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
+- Prepare scope §16 Apple/Google applicability evidence: native billing, SDK/privacy disclosures, account deletion, audience/territories, seller setup, listings and reviewer access. Recheck current policies at submission.
 - AI prepares the cosmetics-only catalog, real previews, ownership/refund/support behavior and purchase-failure evidence.
 - Provide asset provenance/brand checks and a list of owner/provider/adviser approvals still required; do not invent legal clearance.
 - Present the exact player-facing promises, territories, data/retention policy and spend authorization.
@@ -364,7 +369,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **Reopen when:** Asset rights/brand, paid catalog, data collection, territories or refund/support promises change.
 
-**Related specifications:** [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [docs/ENGINEERING.md](<docs/ENGINEERING.md>).
+**Related specifications:** [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [docs/ENGINEERING.md](<docs/ENGINEERING.md>), [Commercial MVP scope.md](<Commercial MVP scope.md>).
 
 <a id="or-11"></a>
 ### OR-11 — Approve capacity, operating cost and recovery before expansion
@@ -377,6 +382,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
+- Rebaseline mobile build/device/store costs, the single PvP mode, seasonal operations, support and recurring policy maintenance alongside server capacity before funding/expansion commitments.
 - AI shows measured target-cohort load/soak results, room/DB bottlenecks, per-player/room costs and spending/admission limits.
 - Demonstrate backup restoration, reward reconciliation, alerting, kill switches and rollback in staging.
 - Owner chooses the specific player cap, spending ceiling, support coverage and rollback/stop conditions.
@@ -393,7 +399,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **Reopen when:** Player cap, provider/pricing, room size, retained data, spend or operational responsibility changes.
 
-**Related specifications:** [docs/ENGINEERING.md](<docs/ENGINEERING.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>).
+**Related specifications:** [docs/ENGINEERING.md](<docs/ENGINEERING.md>), [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [Commercial MVP scope.md](<Commercial MVP scope.md>).
 
 <a id="or-12"></a>
 ### OR-12 — Final release go/no-go
@@ -406,6 +412,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **AI prepares:**
 
+- Require L-01–L-10 and mandatory Android/iOS acceptance, one chosen PvP mode, both store approvals/readiness and owner go/no-go before publication. Close launch only with both live listings and post-publication smoke evidence.
 - AI presents existing G0–G5 gate status, applicable acceptance criteria, unresolved blockers, all launch art approvals and outside-player/device evidence.
 - Include versioned build, staged rollout, rollback, support and budget plan; separate technical passes from owner acceptance.
 - No blanket auto-approval from green tests. All launch species need scoped design coverage and final asset acceptance evidence under the existing protocols.
@@ -422,7 +429,7 @@ Priority: **LATER**. State: **Pending review packet / decision**.
 
 **Reopen when:** Release build/scope changes materially or prior approvals become stale.
 
-**Related specifications:** [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [FEATURE_BACKLOG.md](<FEATURE_BACKLOG.md>).
+**Related specifications:** [VALIDATION_PLAN.md](<VALIDATION_PLAN.md>), [FEATURE_BACKLOG.md](<FEATURE_BACKLOG.md>), [Commercial MVP scope.md](<Commercial MVP scope.md>).
 
 ## Developer enforcement and decision records
 

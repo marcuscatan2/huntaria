@@ -1,6 +1,12 @@
 # Remaining scope — implementation and decision audit
 
-Audit updated for the 2026-09-14 class/farm expansion. Covers all 66 active cards. The request authorizes unblocked
+Audit updated 2026-09-17. The [full launch scope](<../../Commercial MVP scope.md>)
+§2 owns the current source/guideline comparison; §17 adds ten mandatory launch
+packages beyond these 66 retained cards. Mobile apps and publication on both
+Google Play and the Apple App Store are P0. Choose and implement one PvP mode;
+unselected candidates remain brainstorms. Seasons, absence-friendly farm changes,
+two held slots, server operations and mobile commerce are remaining launch work.
+No commercial acceptance follows from this source audit. Prior requests authorized unblocked
 implementation, not approval of final art, permanent economy, public services,
 payments or unrelated stashed ideas. The owner explicitly activated Inner Sea AFK/defense and Hunter/Swordsman on 2026-09-14; see [farm scope](../inner-sea/FARM_SCOPE.md) and [class contract](../opening/CLASSES.md). No commercial criterion is accepted here.
 
@@ -54,9 +60,9 @@ review before their reference treatments become final assets.
 
 ### C3 — Launch devices and progression promise
 
-Recommendation: desktop Chrome/Edge first; keep phone layouts usable but do not
-advertise Android/iOS support until real-device certification. Confirm whether
-Android is a launch requirement and provide the actual model for testing (OR-06).
+Browser, Android and iOS apps are required at launch. OR-06 must settle named
+physical devices, supported OS tiers and app architecture before production
+layout/asset budgets are locked. Real-device certification remains missing.
 
 Keep 15% Echo odds and fast opening XP in this prototype. Before permanent online
 tests, approve release pacing and the unlucky-player experience (OR-07): proposed
@@ -96,8 +102,9 @@ Need named target hardware, uninvolved playtesters and permission/consent for a
 bounded outside study; later, real accounts/clients for group and recovery tests.
 Need an approved operating reserve/invitation cap before load tests or expansion,
 and a final go/no-go before launch. The historical $1–2k is not proof the expanded
-100-species service is funded. Optional PT-BR and iOS remain after P0 unless
-explicitly promoted, with a fluent reviewer/physical iPhone respectively.
+100-species service is funded. Optional PT-BR still needs a fluent reviewer;
+mandatory Android/iOS need physical devices, signing/build resources and both
+store accounts. Include mobile/PvP/seasonal work in the measured rebaseline.
 
 ## Full card disposition
 
@@ -139,7 +146,7 @@ batch. Detailed criteria remain in [the backlog](../../FEATURE_BACKLOG.md).
 | F-028 | Implemented local loops/cues/controls; final listening/mix acceptance | C2,C6 |
 | F-029 | Existing quiet creation/navigation, plus settings/scene; real offline/login/group states absent | C1,C4 |
 | F-030 | New persistent controls/focus/responsive checks; whole-game human/device and future checkout acceptance | C3,C5,C6 |
-| F-031 | Implemented farm, AFK training, lunar five-monster defense, repairs/upgrades, scene/export; habitat equipment and final visual/device review pending | C2,C6 |
+| F-031 | Local farm/defenses/decorations/export; replace absence penalties for launch, define storage/return summary and habitat equipment, certify devices | C2,C3,C4,C6 |
 | F-032 | Three local earned decorations and invariant gameplay; cloud/paid ownership and outfit slots absent | C4,C5; outfits use sprites |
 | F-033 | No paid catalog; needs approved products/prices and actual preview assets | C5; sprites |
 | F-034 | Implemented local immutable build/load safeguards; production rules/cache/network acceptance incomplete | C3,C4,C6 |
@@ -150,7 +157,7 @@ batch. Detailed criteria remain in [the backlog](../../FEATURE_BACKLOG.md).
 | F-039 | Authoritative tickets/deaths/live rooms absent | C4 |
 | F-040 | Server atomic reward/summon ledger absent; local receipts remain | C4 |
 | F-041 | Authenticated data export/deletion/retention absent; local download is not a substitute | C4,C5 |
-| F-042 | Hosted checkout absent | C4,C5 |
+| F-042 | Web checkout, StoreKit and Google Play Billing absent | C4,C5 |
 | F-043 | Verified payment/grant ledger absent | C4,C5 |
 | F-044 | Refund/dispute/support workflows absent | C5 |
 | F-045 | Real auth/session/rate boundaries absent | C4,C5 |
@@ -165,7 +172,7 @@ batch. Detailed criteria remain in [the backlog](../../FEATURE_BACKLOG.md).
 | F-054 | No public launch package; requires real RC, approved claims/support/policies | C2,C5,C6; actual release art |
 | F-055 | No launch or commercial learning cohort authorized | C5,C6 |
 | F-056 | Optional PT-BR remains after P0, not silently promoted | C6 |
-| F-057 | Optional Safari/iOS remains uncertified | C3,C6 |
+| F-057 | P0 Android/iOS apps, physical certification and both store publications absent | C3,C5,C6 |
 | F-058 | Existing 36-place atlas:24 large maps/six hubs/six boss domains; complete final-map/device acceptance | C2,C6 |
 | F-059 | Existing map-wide local counts/lives/respawns; server timing and cross-device claims absent | C4 |
 | F-060 | Exact local integer rolls/test15%; release pacing approval/server entropy absent | C3,C4 |
@@ -191,4 +198,5 @@ batch. Detailed criteria remain in [the backlog](../../FEATURE_BACKLOG.md).
 Coming next: habitat equipment after the farm loop review; C4 when online work
 is selected, then C5 before accounts/commerce or
 public data collection. Safe to defer: distant sprite batches, paid cosmetics,
-optional languages/iOS and final launch copy. Deferred Game notes remain stashed.
+optional languages and final launch copy. iOS and Android are mandatory launch
+work. Unselected PvP candidates and unrelated Game notes remain deferred.

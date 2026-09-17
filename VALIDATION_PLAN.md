@@ -1,4 +1,4 @@
-# Commercial scope v2 — Validation and acceptance plan
+# Full launch — Validation and acceptance plan
 
 > Current prototype override — Patch20 (2026-09-13): all configured Echo chances
 > are **15% for testing**, with faster wild levels/XP and persistent injuries.
@@ -10,7 +10,7 @@
 > This does not accept any commercial criterion or implement online boss loot.
 
 
-Updated 2026-09-11. Acceptance plan; local evidence is tracked separately in [current implementation scope](<features/delivery/REMAINING_SCOPE.md>). **No commercial feature is accepted by this document.** Read [scope](<Commercial MVP scope.md>), [66-card backlog](FEATURE_BACKLOG.md) and [traceability](FEATURE_TRACEABILITY.md). Superseded plans, including their capture guarantees, small roster and cost estimates, remain in Git history.
+Updated 2026-09-17. Acceptance plan; local evidence is tracked separately in [current implementation scope](<features/delivery/REMAINING_SCOPE.md>). **No commercial feature is accepted by this document.** Read [scope](<Commercial MVP scope.md>), [66-card backlog](FEATURE_BACKLOG.md) and [traceability](FEATURE_TRACEABILITY.md). Superseded plans, including their capture guarantees, small roster and cost estimates, remain in Git history.
 
 The local world includes authored layouts, illustrated scenery, physical itinerary
 walking, cave/bridge navigation and persistent landmark discovery. See
@@ -46,19 +46,19 @@ approval; they do not close server/group design locks or release gates.
 | DEC-02 | XP curves, hard player cap60/engine-wild curve100, per-kill XP, high-source summon clamping, tree budgets, consumable prices, story and boss scaling | Progression/content balancing | Owner/product review; later cap changes must be player-visible and may not override locked 10%/0.01% rates |
 | DEC-03 | Spawn-bound tickets, pause/2× elapsed-time policy, cancellation/consumables, guest linking and stale-client recovery | Authoritative solo rewards and saves | Implementer documents; owner accepts tradeoffs |
 | DEC-04 | Seller, territories/currencies, eight cosmetic SKUs/prices, grants, refund/dispute/tax policy | Public commerce | Owner/provider/adviser as required |
-| DEC-05 | Named physical hardware/browser tiers, presets, accessibility and measurement tooling | Performance certification/marketing | Owner/testers and implementer |
+| DEC-05 | Mandatory Android/iOS app architecture, named physical hardware/OS/browser tiers, signing, presets, accessibility and measurement tooling | Performance certification/marketing | Owner/testers and implementer |
 | DEC-06 | Recruitment/consent, data retention, cohort windows, support coverage, reserve/spend thresholds, beta-save policy | Outside studies, release gates | Owner |
 | DEC-07 | Versioned 36-place atlas (24 large/six hubs/six boss domains), crossing routes/base speed, open-road danger guidance, six-region habitat/respawn tables and Sheet-backed 100-species manifest | World/content production acceptance | Implementer supplies; owner accepts defaults and quality |
 | DEC-08 | Persistent home realm, boss schedules/scaling, two–three-player eligibility, tick/reconnect budgets, repeat-drop scope, per-victory deduplication/recovery | Live group/economy safety | Implementer and owner; no server-wide copy cap; retries must not duplicate a victory reward |
 
-Planning defaults are explicit: 24 large maps/six hubs/six boss domains, 94 wild + six boss species, hard player cap60 with engine/wild curve100, 18 nodes per type, four-element ±20%, provisional 0.5% Leadership sharing, private fields, two–three-player groups, 20-Hz host and 120-second reconnect grace. Freeze exact tunables before marking related criteria verified. Do not copy whatever code outputs into an expected-value fixture.
+Planning defaults are explicit: 24 large maps/six hubs/six boss domains, 94 wild + six boss species, hard player cap60 with engine/wild curve100, 24 companion nodes per species and15 class nodes per class, four-element ±20%, provisional 0.5% Leadership sharing, private fields, two–three-player groups, 20-Hz host and 120-second reconnect grace. Freeze exact tunables before marking related criteria verified. Do not copy whatever code outputs into an expected-value fixture.
 
 | Fixture | Required cases |
 | --- | --- |
-| FIX-FRESH | Both level-1 classes, zero companions, starter build, no completed tutorial/rewards |
+| FIX-FRESH | Both level-1 Apprentice weapons, zero companions, starter build, no completed tutorial/rewards |
 | FIX-RULES | Every category/status, level/stat/rank boundaries, all four elements, no-enemy-trainer and bypass |
 | FIX-FORMATION | Six full deployments; zero/one companion; group locked build |
-| FIX-ECHO | All 10,000 integer inputs; starter, ultra-rare, ordinary duplicate, invalid summon and no-drop tutorial |
+| FIX-ECHO | All 10,000 integer inputs; starter, ultra-rare, ordinary duplicate, invalid summon and no-drop ordinary hunts plus idempotent onboarding guarantees |
 | FIX-WORLD | All 24 large maps/six hubs/six boss domains; shortest large-map crossings, reciprocal gates, habitat/source/life/respawn records |
 | FIX-PACK | Twelve templates, partial kills then defeat/disconnect, untouched enemies |
 | FIX-GROUP | Two/three accounts, six bosses, 13 actors, support eligibility and trainer elimination |
@@ -97,7 +97,7 @@ Test grants and deterministic rare drops are restricted to test builds/realms. T
 
 ### VP-01 — Data, roster and content contracts
 
-Validate the release manifest, stable IDs, all references and allowed numeric ranges. Enumerate 100 distinct species (94 wild + six bosses), four classes, 520 skill assignments, 100 innates, 104 trees/1,872 nodes, 24 exploration maps, six hubs, 60 trainer/faction compositions, 12 pack templates, six bosses and 48 objective steps. A placeholder/recolor is not a species. Every species has a habitat or boss source; every map exit resolves and every skill has an explicit category. Companion boss stats use normal roster budgets, not raid HP. Test malformed, missing, duplicate, empty-pool and incompatible schema entries. Review provenance/runtime exports and eight cosmetic SKUs. Pass: complete enumerated coverage with no invalid content; a valid manifest alone does not establish art quality or fun.
+Validate the release manifest, stable IDs, all references and allowed numeric ranges. Enumerate 100 distinct species (94 wild + six bosses), four classes, 304 signatures, 11 shared moves and supported legacy/trainer kits, 100 innates, 2,400 companion and60 class talent nodes plus the Apprentice tree, 24 exploration maps, six hubs, 60 trainer/faction compositions, 12 pack templates, six bosses and 48 objective steps. A placeholder/recolor is not a species. Every species has a habitat or boss source; every map exit resolves and every skill has an explicit category. Companion boss stats use normal roster budgets, not raid HP. Test malformed, missing, duplicate, empty-pool and incompatible schema entries. Review provenance/runtime exports and eight cosmetic SKUs. Pass: complete enumerated coverage with no invalid content; a valid manifest alone does not establish art quality or fun.
 
 Evidence: pinned build/rules, inputs/seeds, raw observations/traces, expected versus actual, failures and dated reviewer decision.
 
@@ -113,7 +113,7 @@ Evidence: pinned build/rules, inputs/seeds, raw observations/traces, expected ve
 
 ### VP-03 — Browser flows, inventory and persistence
 
-Run fresh Druid and Mage profiles from zero monsters: walk → solo kill → inspect ordinary/no-drop loot → obtain a controlled test Echo → view inventory → summon → equip one/two companions → choose skills/formation/tree → fight → return to Inner Sea. Separately verify genuine production tutorial RNG has no guarantee. Test owned/unowned species and independent duplicate individuals, same-species pairs with different XP/skills/trees, portrait picker search/swap/Escape focus, invalid summon preserving the item, prepared supply reserve/consume once, loss after a kill, map leave/re-entry, context cancellation, login expiry, two tabs and device recovery. Complete the six-chapter solo story with a normally obtainable roster, all gates and full collection UI. Group flows use VP-14 and genuine separate clients. Legacy local saves stay separate; fixtures cannot inject live wealth. Pass: truthful UI and durable exactly-once acknowledged state through every interruption, with no forced two-companion requirement.
+Run fresh dagger and bow Apprentice profiles from zero monsters, then all four class paths: walk → solo kill → inspect ordinary/no-drop loot → obtain a controlled test Echo → view inventory → summon → equip one/two companions → choose skills/formation/tree → fight → return to Inner Sea. Verify both named onboarding guarantees settle once; ordinary hunting retains configured independent RNG without pity. Test owned/unowned species and independent duplicate individuals, same-species pairs with different XP/skills/trees, portrait picker search/swap/Escape focus, invalid summon preserving the item, prepared supply reserve/consume once, loss after a kill, map leave/re-entry, context cancellation, login expiry, two tabs and device recovery. Complete the six-chapter solo story with a normally obtainable roster, all gates and full collection UI. Group flows use VP-14 and genuine separate clients. Legacy local saves stay separate; fixtures cannot inject live wealth. Pass: truthful UI and durable exactly-once acknowledged state through every interruption, with zero-to-two companions except explicitly authored party trials.
 
 Evidence: pinned build/rules, inputs/seeds, raw observations/traces, expected versus actual, failures and dated reviewer decision.
 
@@ -159,7 +159,7 @@ Evidence: pinned build/rules, inputs/seeds, raw observations/traces, expected ve
 
 ### VP-08 — Checkout, ownership, refunds and purchase recovery
 
-In provider sandbox, cover all eight SKUs and actual bundle contents with server catalog/price versions. Test anonymous/unverified/account mismatch, duplicate owned purchase, preview-only access, pending/cancel/failure/success, lost redirect, double-click/two tabs and network retry. Only authenticated provider events grant paid rights; valid/invalid signatures and environment IDs, 50 duplicate/concurrent events, late/out-of-order events and partial fulfillment failures are mandatory. Verify cross-device restore, equipped appearance, overlapping paid/earned grants, full/partial/refused refunds where supported and disputes. Revoke only the relevant grant; gameplay reset/deletion handling cannot erase required purchase audit history. Reconciliation must recover lost grants once without trusting local save data. Pass: consistent ledger/provider status and cosmetics-only invariance. Live payment/refund is a separate owner-authorized action with actual costs recorded, never an automatic test permission.
+In web-provider, StoreKit and Google Play Billing sandboxes, cover all eight planned SKUs and actual bundle contents with server catalog/price versions. Test anonymous/unverified/account mismatch, duplicate owned purchase, preview-only access, pending/cancel/failure/success, lost redirect, double-click/two tabs and network retry. Only authenticated provider events grant paid rights; valid/invalid signatures and environment IDs, 50 duplicate/concurrent events, late/out-of-order events and partial fulfillment failures are mandatory. Verify cross-device restore, equipped appearance, overlapping paid/earned grants, full/partial/refused refunds where supported and disputes. Revoke only the relevant grant; gameplay reset/deletion handling cannot erase required purchase audit history. Reconciliation must recover lost grants once without trusting local save data. Pass: consistent ledger/provider status and cosmetics-only invariance. Live payment/refund is a separate owner-authorized action with actual costs recorded, never an automatic test permission.
 
 Evidence: pinned build/rules, inputs/seeds, raw observations/traces, expected versus actual, failures and dated reviewer decision.
 
@@ -191,7 +191,7 @@ Evidence: pinned build/rules, inputs/seeds, raw observations/traces, expected ve
 
 ### VP-12 — Device/browser and optional locale certification
 
-Primary launch support is named Chrome/Edge desktop and Chrome on a physical midrange Android, subject to DEC-05 confirmation. Record actual versions/models; emulator viewport and file-mode smoke tests do not certify physical performance or online payment recovery. Complete fresh solo hunt, Echo summon, collection/loadout, map transition, real group/reconnect, account restore and checkout return. Retest audio policies, screenshot export, background memory and touch. If PT-BR is adopted, review stable-string coverage, placeholders, plurals/numbers/prices, long layouts and a fluent-reader journey. If Safari/iOS is adopted, a named physical iPhone must pass its supported tier; otherwise do not advertise it. Neither P1 may weaken P0 purchase/account safety.
+Launch requires the browser baseline plus signed Android/iOS apps on named physical device/OS tiers. DEC-05 selects tiers, not whether mobile is optional. Test install/update, full PvE and chosen PvP, account recovery/deletion, StoreKit/Play Billing purchase/restore/refund, network changes, termination/background/resume, touch/safe areas, audio/export, accessibility, memory/thermal/battery and performance. Emulated viewports do not certify devices. Complete scope §16 policies, beta/access, review and publication evidence for both stores under L-06–L-08. PT-BR remains optional and needs fluent-reader review if adopted.
 
 Evidence: pinned build/rules, inputs/seeds, raw observations/traces, expected versus actual, failures and dated reviewer decision.
 
@@ -251,7 +251,7 @@ Owner separately approves live selling, provider/business policies, budget/opera
 
 ### G5 — Public commercial release / controlled expansion
 
-All 64 P0 cards and 256 P0 criteria are accepted; optional P1 support is advertised only if accepted. Verify the complete world/roster, 500 supported sessions with ≥99% unexpected-error-free rate, live-service safety, mature cohorts and measured funded operating limits. The owner records proceed/iterate/delay with actual revenue/refunds/fees/costs and uncertainty. A quiet small launch does not waive content or payment/rare-economy safety.
+All 65 P0 cards and 260 P0 criteria are accepted; optional PT-BR is advertised only if accepted. All launch packages L-01–L-10 also require their scope §17 evidence, including guideline reconciliation, one PvP mode, seasons and both mobile releases. G5 owner approval authorizes publication only after required store approvals/readiness; full-launch closure records live Google Play and Apple App Store URLs plus post-publication smoke checks. Verify the complete world/roster, 500 supported sessions with ≥99% unexpected-error-free rate, live-service safety, mature cohorts and measured funded operating limits. The owner records proceed/iterate/delay with actual revenue/refunds/fees/costs and uncertainty. A quiet small launch does not waive content or payment/rare-economy safety.
 
 Cannot waive: server authority, no duplication/loss of acknowledged rare/paid ownership, repeatable independent drops with per-victory deduplication, required approvals, zero known S0/S1 and the user's content/rate constraints. Missing cohort maturity, devices, funds or business permission is missing evidence—not a fabricated pass or permission to spend.
 
@@ -288,3 +288,31 @@ Gate decision record:
 Run `python tests/scope_docs_check.py` for read-only checks of 66 IDs, 264 criteria, 28 source items, 18 scope sections, 15 protocols, eight locks, six gates, dependencies, links and v2 design invariants. It does not execute combat, prove statistical randomness of a deployed RNG, test the database, certify devices or mark any criterion delivered.
 
 Current implementation and test routes live in feature guides. Git history retains superseded plans and pass reports; old evidence cannot certify changed source.
+
+## Full-launch extension acceptance
+
+Scope §17 L-01–L-10 supplements the 264 retained criteria; no existing green
+protocol substitutes for an extension's missing evidence. Pin versions and
+record expected/actual outcomes for each package before acceptance:
+
+- Two held slots: copy conservation, duplicate/stacking rules, legacy slot
+  migration, frozen encounters and item proc recursion; save/build/target UI.
+- Absence: a seven-day offline return, dirty/damaged-save migration, capped
+  storage, failed/repeated claims and useful progress without XP loss or chores.
+- Power/seasons: combined source caps, late entry, rollover, permanent item
+  identity and idempotent overflow with no stockpile exploit.
+- PvE/PvP: real cooperating/opposing clients, legal build locks, support
+  eligibility, reconnect, win/tie/timeout, latency and duplicate result claims;
+  human evidence for the one selected mode and newcomer/veteran outcomes.
+- Apps/stores: physical signed builds, update/lifecycle/network recovery,
+  native billing/deletion/privacy, applicable current policies, review access,
+  beta requirements, store decisions and post-publication installs on both stores.
+- Operations/business: authoritative reward/time integrity, restored cloud
+  backups, privacy/rights, support incidents, capacity/cost and outside cohorts.
+
+Scope §2 distinguishes source observations from test results. The attachment's
+success questions require voluntary replay, build diversity, useful owned
+species, hunt completion/unlucky tails, absence recovery, bounded power, late
+season participation, role viability and net cosmetic economics. Set thresholds
+from approved testing; do not invent a revenue forecast or substitute playtime
+for enjoyable team experimentation.

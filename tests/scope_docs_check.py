@@ -36,7 +36,7 @@ check("Four nonempty criteria per feature", all(
     {a for a, text in all_ac if a.startswith(feature + "-")} == {f"{feature}-AC{n}" for n in range(1, 5)}
     for feature in expected_features
 ))
-check("64 P0 and 2 optional P1 cards", len(re.findall(r"^Priority: P0 ", backlog, re.M)) == 64 and len(re.findall(r"^Priority: P1 ", backlog, re.M)) == 2)
+check("65 P0 and 1 optional P1 card after mandatory mobile promotion", len(re.findall(r"^Priority: P0 ", backlog, re.M)) == 65 and len(re.findall(r"^Priority: P1 ", backlog, re.M)) == 1)
 
 deps, item_coverage, suite_coverage = {}, set(), set()
 metadata_complete = True
@@ -149,9 +149,16 @@ check("Active plans reject the superseded lifetime-essence cap",
           "Summoning cannot free the issuance slot",
           "at most one realm essence lineage",
       )))
-check("Full roster counts are arithmetically coherent",
-      94 + 6 == 100 and (100 + 2) * 5 == 510 and (100 + 2) * 18 == 1836
-      and all(token in source for token in ("520", "100 innate", "1,872", "104")))
+check("Current roster/tree counts and superseded budget are explicit",
+      94 + 6 == 100 and 100 * 24 == 2400 and 4 * 15 == 60
+      and all(token in source for token in ("304 signatures", "11 shared moves", "100 innate", "2,400", "60 class talent", "superseded")))
+check("Full launch includes ten mandatory extension packages",
+      set(re.findall(r"^\| (L-\d{2}) /", source, re.M)) == {f"L-{n:02d}" for n in range(1, 11)})
+check("One PvP mode and both mobile stores cannot be silently deferred",
+      "Choose and implement one PvP mode" in source
+      and all(name in source for name in ("Google Play", "Apple App Store", "StoreKit", "publication"))
+      and re.search(r"^Priority: P0 ", cards["F-057"], re.M)
+      and "All launch packages L-01–L-10" in validation)
 odds = [(0.1, 10, 7, 29), (0.0001, 10000, 6932, 29956)]
 check("Published independent-roll mean/median/95-percent thresholds are correct", all(
     math.isclose(1 / p, mean)
