@@ -39,8 +39,9 @@ the ensuing raid and rescues the party, then asks you to hunt for Echoes.
 Follow the tracker through the Echo delivery and ghost tower. Keep Casketot in
 your active party when speaking to Tully in the rooftop cemetery. Return his
 clue to your master to receive a class weapon in Bag and finish the current main
-quest. The farm opens at level 25. Each companion has its own skill tree from
-the moment you summon it, with bonus points after Tidecrown and the relic quest.
+quest. The farm opens at level 25. Each companion unlocks its Mastery tree at level 31, earning points every two or
+three levels through 60. Tidecrown and the relic quest each add a bonus point,
+available once that companion reaches 31.
 
 ## Companions and menus
 

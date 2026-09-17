@@ -88,7 +88,7 @@ def main():
                 s.progression.specialization='mage';s.trainerXP=BondProgress.threshold(25);s.coins=73;
                 s.journey.early.introFightWon=true;s.journey.early.mageGate=true;s.journey.early.tidecrown=true;
                 s.inventory['weapon:class:mage']=1;s.equipment.weapon='weapon:class:mage';
-                s.companions=[{id:'refresh:1',type:'acornboar',xp:BondProgress.threshold(5),skills:BondContent.UNITS.acornboar.default,growth:{}}];
+                s.companions=[{id:'refresh:1',type:'acornboar',xp:BondProgress.threshold(31),skills:BondContent.UNITS.acornboar.default,growth:{}}];
                 BondProfile.testing.replace(s);BondApp.switchTab('region');}""")
             check('Older cached menu lacks both SVG icons and upgrade badges', page.locator('#world-action-menu .old-icon').count() == 3 and page.locator('.upgrade-dot').count() == 0)
             saved = page.evaluate('BondProfile.snapshot()')
@@ -103,7 +103,7 @@ def main():
             page.locator('[data-world-menu="inventory"]').click()
             check('Bag stays inventory-only and its Inner Sea destination marks upgrades', page.locator('#teams>.menu-nav').count() == 0 and page.locator('[data-frame-menu="collection"] > .upgrade-dot').count() == 1)
             page.locator('[data-frame-menu="collection"]').click()
-            check('Inner Sea routes badges to attributes and companion talents', page.locator('[data-sea-tab="trainer"] > .upgrade-dot').count() == 1 and page.locator('[data-sea-tab="party"] > .upgrade-dot').count() == 1)
+            check('Inner Sea routes badges to trainer attributes and level31 companion talents', page.locator('[data-sea-tab="trainer"] > .upgrade-dot').count() == 1 and page.locator('[data-sea-tab="party"] > .upgrade-dot').count() == 1)
             current = page.evaluate('BondProfile.snapshot()')
             check('Refresh retains character, points, individuals, items and equipped weapon', all(saved[k] == current[k] for k in ['character', 'trainerXP', 'coins', 'attributes', 'growth', 'companions', 'inventory', 'equipment']))
             check('Normal save remains untouched', page.evaluate("localStorage.getItem('bond-bolt-profile-v7')==='normal-save-sentinel'"))

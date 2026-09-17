@@ -19,9 +19,16 @@ function clean(type,raw,points=15){
  for(let pass=0;pass<8;pass++){let changed=false;for(const n of pending)if(!out[n.id]&&raw[n.id]===1&&used(out)<Math.min(15,points)&&gate(type,n.id,out)){out[n.id]=1;changed=true;}if(!changed)break;}
  return out;
 }
-function budget(s,ref){
+function budget(s,ref,version=1){
  const mon=root.BondProgress.instance(s,ref),level=Math.max(root.BondProgress.monLevel(s,ref),mon?.treeLevel||1);
- return Math.min(15,1+Math.floor(Math.min(60,level)/5)+(s.journey?.early?.tidecrown===true?1:0)+(s.journey?.relic?.stage==='complete'?1:0));
+ const points=version===0?1+Math.floor(Math.min(60,level)/5):data.policy.levelAwards.filter(l=>l<=level).length;
+ if(!points)return 0;
+ return Math.min(15,points+(s.journey?.early?.tidecrown===true?1:0)+(s.journey?.relic?.stage==='complete'?1:0));
 }
-root.BondCompanionTrees={has,nodes,gate,clean,budget};
+function allocations(s,ref){
+ const mon=root.BondProgress.instance(s,ref);
+ const saved=clean(mon.type,{...mon.deferredGrowth,...mon.growth}),growth=clean(mon.type,saved,budget(s,ref));
+ return {growth,deferredGrowth:Object.fromEntries(Object.entries(saved).filter(([id])=>!growth[id]))};
+}
+root.BondCompanionTrees={has,nodes,gate,clean,budget,allocations,unlockLevel:data.policy.unlockLevel};
 })(globalThis);

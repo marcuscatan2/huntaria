@@ -18,7 +18,7 @@ topology; [the current contract](../growth/COMPANION_TREES.md) owns those rules.
 The owner-requested [sacred treasures route](../campaign/SACRED_TREASURES.md)
 continues immediately after ascension and ends with a class weapon. The Amber
 adaptation encounters, farm and monster-tree lessons below remain optional
-progression, with saved receipts. Monster trees are available on ownership.
+progression, with saved receipts. Monster trees unlock at individual Lv31; the optional tree proof waits for an eligible companion.
 
 ## Decisions and adaptations
 
@@ -622,8 +622,9 @@ is still required by roster batch.
 - Ability selection works from first summon and prior discovery skips redundant
   menu instruction.
 - Inner Sea establishment checks Lv25 and saves ownership once.
-- Monster trees check ownership, while node budget/prerequisites use the owned
-  individual's state; duplicate species do not share purchases.
+- Monster trees check ownership and individual level31; node budgets and
+  prerequisites use that individual's state. Saved duplicate species do not
+  share purchases.
 - Defeat, retreat, background navigation, loadout use, reload and critical-save
   failure cannot strand or duplicate any progression step.
 

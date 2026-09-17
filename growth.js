@@ -64,7 +64,7 @@ function typedStats(type,ranks,legacyClass=false,legacyMonster=false,legacyAppre
 }
 function unlocked(s,ref){
  const mon=root.BondProgress?.instance(s||{},ref),type=mon?.type||ref;
- if(mon)return true;
+ if(mon)return BondCompanionTrees.budget(s,ref)>0;
  if(type==='apprentice')return !!s?.character&&!s.character.legacy&&!s.progression?.specialization;
  return s?.character?.legacy===true||s?.progression?.specialization===type;
 }

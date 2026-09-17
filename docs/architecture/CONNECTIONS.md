@@ -98,7 +98,7 @@ Trace through: [campaign.js](<../../campaign.js>) → [campaign-menu.js](<../../
 
 [opening](<../../features/opening/README.md>) → [campaign](<../../features/campaign/README.md>)
 
-Accepted first Firstlight Brimble claim -> guaranteed ordinary Echo -> highlighted Bag/Echo/Summon path and auto-party -> Forest Mage meeting -> guaranteed second-role Echo and second summon -> easy Mage proof that opens physical roads -> four recorded class demonstrations -> fixed Tidecrown -> easy master acceptance battle -> Lv20 specialization -> adaptation encounters -> Lv30 monster-tree proof. Trainer XP and monster XP remain independent; UI hints and travel never grant milestones. Four classes are available; explicit farm establishment at Lv25 precedes Amber mastery.
+Accepted first Firstlight Brimble claim -> guaranteed ordinary Echo -> highlighted Bag/Echo/Summon path and auto-party -> Forest Mage meeting -> guaranteed second-role Echo and second summon -> easy Mage proof that opens physical roads -> four recorded class demonstrations -> fixed Tidecrown -> easy master acceptance battle -> Lv20 specialization -> adaptation encounters -> optional monster-tree proof after individual Lv31. Trainer XP and monster XP remain independent; UI hints and travel never grant milestones. Four classes are available; explicit farm establishment at Lv25 precedes Amber mastery.
 
 Trace through: [opening-rules.js](<../../opening-rules.js>) → [wild-behavior.js](<../../wild-behavior.js>) → [region.js](<../../region.js>) → [campaign.js](<../../campaign.js>) → [profile.js](<../../profile.js>) → [app.js](<../../app.js>) → [menu.js](<../../menu.js>) → [growth.js](<../../growth.js>) → [tree-menu.js](<../../tree-menu.js>).
 
@@ -181,7 +181,7 @@ Relevant features: [persistence](<../../features/persistence/README.md>), [party
 
 id, species type, ordinal, active xp, optional deferredXP and sourceLevel, three skill IDs, growth ranks, pact metadata. Trainer uses profile attributes; owned level is derived from active XP and capped at60.
 
-Use id for ownership/build/progress; use type for shared content/art. Never key individual mutations only by display name or species. Keep Lv61–100 wild provenance separate from the Lv60 owned-state ceiling, and never discard deferred legacy XP.
+Use id for ownership/build/progress; use type for shared content/art. Never key individual mutations only by display name or species. Retain delayed talent selections in deferredGrowth until earned points reactivate them. Keep Lv61–100 wild provenance separate from the Lv60 owned-state ceiling, and never discard deferred legacy XP.
 
 Relevant features: [growth](<../../features/growth/README.md>), [party](<../../features/party/README.md>), [content](<../../features/content/README.md>), [collection](<../../features/collection/README.md>), [persistence](<../../features/persistence/README.md>), [combat](<../../features/combat/README.md>).
 

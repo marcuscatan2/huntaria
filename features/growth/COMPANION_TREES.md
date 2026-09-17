@@ -36,10 +36,12 @@ the first five chapters and validate complete routes and replayable defeats.
 
 ## Points and paths
 
-- Every owned companion opens its own tree immediately.
-- One starting point, then one at each multiple of five through Lv60.
+- Each companion opens its tree at individual Lv31; no talent points or
+  talent upgrade badges appear through Lv30. Trainer level does not unlock it.
+- Thirteen level points arrive at31,34,36,39,41,44,46,48,51,53,56,58,60.
 - One additional point after Tidecrown and one after Tully's relic quest.
-  These approved milestones cover existing and future companions.
+  These approved milestones cover existing and future companions, but their
+  points become available only once that individual reaches31.
 - Maximum15 points; level loss does not remove previously earned points.
 - Three branches contain eight single-rank nodes each. The opening leads to
   two parallel paths, which converge after four branch points. The next node
@@ -47,6 +49,11 @@ the first five chapters and validate complete routes and replayable defeats.
   the three branches are mutually exclusive. The innate remains free.
 - Reset costs one matching Echo at a city Reset talents NPC. Three equipped combat skills and player-selected priority
   remain unchanged.
+
+This owner-requested schedule overrides the original CSV's starting point and
+five-level schedule. The importer still validates the unchanged source policy;
+its generated runtime policy supplies the new level awards and unlock level.
+Trainer class and Apprentice point schedules are unchanged.
 
 `talent-tree-view.js` uses the painted sanctuary and role-matched icon atlases.
 It draws every prerequisite edge and shows a separate Learn action after node
@@ -90,12 +97,20 @@ Exact image prompts, references and hashes are in
 Old generic companion ranks refund into the new budget. Valid new node IDs,
 individual IDs, XP, skills, formation, vitality and inventory survive normalizing
 and reloading. Quest state is normalized before tree budgets are calculated.
+Allocations above the delayed budget are retained per individual in
+`deferredGrowth`. They grant no bonuses or spending prompts and automatically
+return, with prerequisites intact, as points become available. Normalization
+and profile commits reconcile active and deferred ranks idempotently. A paid
+city reset clears both sets so old selections cannot reappear after a reset.
 
 New reservations freeze `options.monsterRules=1`, including stats and learned
 talents. Old reservations without this marker use version0's linear stats and
 generic mastery through settlement. Resetting a tree during a saved fight changes
 the next battle; it does not change the frozen encounter. `classTrees` is a
-separate version marker. Normal browser saves are never used by QA tests.
+separate version marker. New reservations also pin `companionTrees=1` for the
+Lv31 schedule. Existing reservations without this marker use0's original point
+budget with their untouched frozen profile; their CSV stats remain version1.
+Normal browser saves are never used by QA tests.
 
 ## Checks
 

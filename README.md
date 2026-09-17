@@ -13,7 +13,7 @@ Local browser prototype. Online accounts, authoritative rewards, multiplayer and
 
 | Task | Start here | Connection |
 | --- | --- | --- |
-| Creation, Lv1–30 route, first Echoes and class choice | [Opening](features/opening/README.md) / [Campaign](features/campaign/README.md) | The first-Brimble summon and Forest Mage lead to four Lv20 classes, then [the courtyard raid and sacred treasures](features/campaign/SACRED_TREASURES.md). Farm opens at Lv25; companion trees open on ownership. |
+| Creation, Lv1–30 route, first Echoes and class choice | [Opening](features/opening/README.md) / [Campaign](features/campaign/README.md) | The first-Brimble summon and Forest Mage lead to four Lv20 classes, then [the courtyard raid and sacred treasures](features/campaign/SACRED_TREASURES.md). Farm opens at Lv25; companion trees open at individual Lv31. |
 | Test-mode travel, recovery, restart or playback speed | [Test controls](features/delivery/OPERATIONS.md#test-controls) | QA alone uses 3× travel, post-combat recovery and 5× playback; normal saves and tuning stay separate. |
 | Background fights, Run, joiners, targets or stuck encounters | [Live encounters](features/shell/ENCOUNTERS.md) / [Combat](features/combat/README.md) | Anchors and ordered join/escape requests connect simulation, persistence, rewards and continuous combat presentation. |
 | Poses, class/NPC sprites, hit feedback | [Animation](features/animation/README.md) / [Supplied roster](features/animation/SUPPLIED_SPRITES.md) | Painted class sheets, cropped portraits and civilian NPCs share the rig with species sprites. |

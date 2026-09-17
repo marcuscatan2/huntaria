@@ -88,7 +88,9 @@ def generate(data):
     lines += [encode(key) + ':' + encode(value) + (',' if index < len(data['levels']) - 1 else '') for index, (key, value) in enumerate(data['levels'].items())]
     lines += ['},talents:{']
     lines += [encode(key) + ':' + encode(value) + (',' if index < len(data['talents']) - 1 else '') for index, (key, value) in enumerate(data['talents'].items())]
-    lines += ['},policy:{maxPoints:15,startingPoints:1,questPoints:2,levelAwards:' + encode(list(range(5, 61, 5))) + '}};', '})(globalThis);', '']
+    # Owner override: defer all points until after30, retaining13 level awards.
+    talent_levels = [31, 34, 36, 39, 41, 44, 46, 48, 51, 53, 56, 58, 60]
+    lines += ['},policy:{maxPoints:15,startingPoints:0,unlockLevel:31,questPoints:2,levelAwards:' + encode(talent_levels) + '}};', '})(globalThis);', '']
     return '\n'.join(lines)
 
 

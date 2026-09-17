@@ -43,6 +43,7 @@
       this.classTrees=options.classTrees===0?0:root.BondClassTrees.active?1:0;
       this.apprenticeTrees=options.apprenticeTrees===0?0:1;
       this.monsterRules=options.monsterRules===0?0:1;
+      this.companionTrees=options.companionTrees===0?0:1;
       this.equipmentRules=options.equipmentRules===0?0:1;
       if (!validBuild(build)) throw new Error('Invalid team or skill selection');
       this.build = JSON.parse(JSON.stringify(build)); this.time = 0; this.tick = 0; this.events = []; this.ended = false; this.winner = null; this.reason = ''; this.overcharge = false;
@@ -104,7 +105,7 @@
         if(u.side===0&&!u.storyMaster&&u.slot===0&&profile?.character?.name)u.name=profile.character.name;
         if(companion){u.name=UNITS[u.type].name;if(companion.movesVersion===1&&!BondCompanionMoves.validLoadout(companion,u.skills))throw Error('Unlearned companion move');}
         const bonus=u.side===0&&!u.storyMaster&&root.BondGrowth?root.BondGrowth.stats(u.type,companion?companion.growth:(profile?.growth||options.growth)?.[u.type],this.classTrees===0,this.monsterRules===0,this.apprenticeTrees===0):{hp:0,attack:0,armor:0,move:0,cooldown:0};
-        u.talents=this.monsterRules&&companion?root.BondCompanionTrees.clean(u.type,companion.growth,root.BondCompanionTrees.budget(profile,companion.id)):{};
+        u.talents=this.monsterRules&&companion?(this.companionTrees?root.BondCompanionTrees.allocations(profile,companion.id).growth:root.BondCompanionTrees.clean(u.type,companion.growth,root.BondCompanionTrees.budget(profile,companion.id,0))):{};
         u.growth=bonus;u.basePower=u.power;
         const base={...UNITS[u.type],...u,hp:u.maxHp,apprenticeTree:!!this.apprenticeTrees,equipment:!!this.equipmentRules};
         const derived=(profile||this.monsterRules&&MONSTERS.includes(u.type))&&root.BondProgress?BondProgress.derived(u.type,profile||{},base,u.storyMaster?u.level:u.side===1?(u.level||options.enemyLevel||1):null,this.monsterRules===0):null;
@@ -134,7 +135,7 @@
       if(this.training||this.ended||!entry?.spawnId||this.units.some(u=>u.spawnId===entry.spawnId&&u.life===entry.life))return false;
       // Reuse the same stat/passive initialization as an initial wild encounter.
       const proxy=new Battle(soloBuild(),{profile:this.spawnOptions.profile,seed:this.seed,
-        adventure:this.adventure,wildPartySize:this.wildPartySize,classTrees:this.classTrees,apprenticeTrees:this.apprenticeTrees,monsterRules:this.monsterRules,equipmentRules:this.equipmentRules,encounter:{kind:'wild',enemies:[entry]}});
+        adventure:this.adventure,wildPartySize:this.wildPartySize,classTrees:this.classTrees,apprenticeTrees:this.apprenticeTrees,monsterRules:this.monsterRules,companionTrees:this.companionTrees,equipmentRules:this.equipmentRules,encounter:{kind:'wild',enemies:[entry]}});
       const u=proxy.units.find(u=>u.side===1),slot=Math.max(0,...this.units.filter(u=>u.side===1).map(u=>u.slot))+1;
       u.id='1-'+slot;u.slot=slot;u.position={x:86,y:36+(slot%5)*8};u.previousPosition={...u.position};
       this.units.push(u);this.effects.init(u);this.effects.start(u);this.refreshTargets();

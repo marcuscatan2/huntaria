@@ -177,7 +177,7 @@ function requirement(encounter,s,party=null){const e=s.journey?.early||earlyFres
  if(encounter.id==='early:amber:2'&&!e.amber1)return 'Defeat Amber Challenger 1 first.';
  if(encounter.id==='early:amber:3'&&!e.amber2)return 'Defeat Amber Challenger 2 first.';
  if(encounter.requiresEarly&&!e[encounter.requiresEarly])return 'Complete the preceding Amber challenge first.';
- if(encounter.requiresTreeInvestment&&!s.companions.some(m=>BondGrowth.used(m.growth)))return 'Invest one point in an owned companion tree first.';
+ if(encounter.requiresTreeInvestment&&!s.companions.some(m=>BondGrowth.used(m.growth)))return s.companions.some(m=>BondGrowth.unlocked(s,m.id))?'Learn a companion talent first.':'Raise a companion to Lv 31 first.';
  if(encounter.requiresCompanions&&party&&party.slice(1).filter(Boolean).length<encounter.requiresCompanions)return 'Bring two summoned companions in your party.';
  return '';
 }
@@ -215,7 +215,7 @@ function earlyNext(s){if(root.BondRelicQuest?.active(s))return BondRelicQuest.ne
  if(!e.amber2)return {id:'early:amber:2',label:'Defeat Amber Challenger 2',map:'hollow-1'};
  if(!e.amber3)return {id:'early:amber:3',label:'Defeat Amber Challenger 3',map:'hollow-2'};
  if(!e.amberBoss)return {id:'early:boss:amber',label:'Defeat the Amber Colossus',map:'hollow-boss'};
- if(!s.companions.some(m=>BondGrowth.used(m.growth)))return {id:'ep:tree',label:'Spend a point in an owned companion skill tree',map:s.map};
+ if(!s.companions.some(m=>BondGrowth.used(m.growth)))return {id:'ep:tree',label:s.companions.some(m=>BondGrowth.unlocked(s,m.id))?'Learn a companion talent':'Raise a companion to Lv 31',map:s.map};
  if(!e.treeProof)return {id:'early:tree-proof',label:'Prove the monster-tree upgrade',map:'hollow-hub'};
  return null;
 }

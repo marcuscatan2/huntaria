@@ -1257,6 +1257,24 @@
           "sha256": "534e38369d64fefd17c314e031e2f0e8cb6ce07abe0b6044901a5853fa88a517"
         }
       ]
+    },
+    {
+      "id": "companion-delayed-talents-v1-2026-09-17",
+      "source": "Current owner conversation: companion talent progression after level30",
+      "scope": [
+        "Delay companion talent choices until individual level31 and distribute the same total points through60",
+        "Preserve saved allocations and frozen encounters; update menus, notices and optional tree-proof guidance"
+      ],
+      "quotes": [
+        "1 - Change things so that mons only start gaining talent points after level 30 (They'll have to earn points in fewer jumps, it was every 5 lvls, I think now it'll be every other lvl or so) - It's too overwhelming to start the game having to make too many decisions."
+      ],
+      "boundary": "Authorizes this local progression change. Trainer and Apprentice progression, final balance, art, economy and release approvals remain separate.",
+      "evidence": [
+        {
+          "path": "features/growth/COMPANION_TREES.md",
+          "sha256": "86b621036e57211072f14c6f3b38b713fe581d327382a67b3b7ca68309313fc3"
+        }
+      ]
     }
   ]
 }

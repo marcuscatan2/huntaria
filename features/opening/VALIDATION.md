@@ -35,7 +35,7 @@ separately. Record elapsed time, deaths, recovery trips and confusing moments.
 3. Follow [the sacred-treasures walkthrough](../campaign/SACRED_TREASURES.md):
    master rescue, Echo hunting, the ghost tower, Tully and the class weapon.
 4. Reload between milestones and verify class, companions, inventory and quest
-   progress. The farm opens at Lv25; individual monster trees open on ownership;
+   progress. The farm opens at Lv25; individual monster trees open at Lv31;
    the earlier Amber and regional lessons are optional.
 
 Review the first moment that feels confusing, unfair or dull. Current owner

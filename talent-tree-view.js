@@ -25,7 +25,7 @@ function requirements(node,nodes,ranks){
 function inspector(ctx,node){
  const {type,nodes,ranks,owned,unlocked,points,used}=ctx,rank=ranks[node.id]||0,gate=BondGrowth.gate(type,node.id,ranks);
  const canLearn=owned&&unlocked&&gate&&rank<node.max&&used<points;
- const action=!owned||!unlocked?BondGrowth.companionTree(type)?'Summon this companion first':'Choose this class first':rank===node.max?'Max rank':!gate?'Requirements not met':used>=points?'No points available':rank?'Improve · 1 point':'Learn · 1 point';
+ const action=!owned||!unlocked?BondGrowth.companionTree(type)?owned?'Unlocks at Lv '+BondCompanionTrees.unlockLevel:'Summon this companion first':'Choose this class first':rank===node.max?'Max rank':!gate?'Requirements not met':used>=points?'No points available':rank?'Improve · 1 point':'Learn · 1 point';
  const req=requirements(node,nodes,ranks);
  return '<div class="talent-detail-heading">'+icon(type,nodes.indexOf(node))+'<div><p>'+esc(node.branch)+'</p><h3>'+esc(node.name)+'</h3><span>Rank '+rank+' / '+node.max+'</span></div></div>'+
   '<div class="talent-rank-descriptions">'+node.ranks.map((text,i)=>'<section class="'+(rank>i?'invested':'')+'"><h4>Rank '+(i+1)+(rank>i?' <span aria-label="Learned">✓</span>':'')+'</h4><p>'+copy(text)+'</p></section>').join('')+'</div>'+
@@ -34,6 +34,7 @@ function inspector(ctx,node){
 }
 function render(ctx){
  const {type,nodes,ranks,points,used,owned,unlocked,classPicker,name}=ctx;
+ if(BondGrowth.companionTree(type)&&owned&&!unlocked)return '<section class="mastery-panel tree-locked"><h3>'+esc(name)+'</h3><p>Mastery tree unlocks at Lv '+BondCompanionTrees.unlockLevel+'.</p>'+classPicker+'</section>';
  const apprentice=BondGrowth.apprenticeTree(type),companion=BondGrowth.companionTree(type),layout=apprentice?[[50,65],[50,255]]:companion?[[50,48],[24,172],[76,172],[24,296],[76,296],[50,448],[50,584],[50,740]]:positions,height=apprentice?340:companion?814:508;
  if(!nodes.some(n=>n.id===selections[type]))selections[type]=nodes[0].id;
  if(!Number.isInteger(branches[type]))branches[type]=0;

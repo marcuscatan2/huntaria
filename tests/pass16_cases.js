@@ -30,6 +30,7 @@
   for(const t of C.trainers.filter(t=>t.area===ch.region)){
    let fight=new G.Battle([commonTeam,t.team],{profile:P.snapshot(),enemyLevel:t.level,seed:16}).run(),variation='balanced';
    if(fight.winner!==0&&cls==='mage'){const alternate=JSON.parse(JSON.stringify(commonTeam));alternate[0].skills=['hex','comet','aegis'];fight=new G.Battle([alternate,t.team],{profile:P.snapshot(),enemyLevel:t.level,seed:16}).run();variation='Crown Hex / Comet / Aegis against armor';}
+   if(fight.winner!==0&&cls==='hunter'){const alternate=JSON.parse(JSON.stringify(commonTeam));alternate[0].skills=['huntersmark','huntingcall','longshot'];fight=new G.Battle([alternate,t.team],{profile:P.snapshot(),enemyLevel:t.level,seed:16}).run();variation='Pinning shot / Hunting call / Longshot for focused pressure';}
    summary.push({cls,id:t.id,level,winner:fight.winner,time:fight.time,variation});
   }
  }
@@ -79,9 +80,9 @@
   earlyFight('story:clearing:0','apprentice',4,branch,weapon);earlyFight('story:brook:1','apprentice',6,branch,weapon);earlyFight('story:brook:3','apprentice',8,branch,weapon);earlyFight('story:brook:4','apprentice',10,branch,weapon);earlyFight('early:boss:tidecrown','apprentice',12,branch,weapon);
  }
  for(const branch of ['bloomslime','stonehorn'])for(const cls of BondContent.CLASSES){
-  for(const weapon of ['dagger','bow'])earlyFight('early:master:'+cls,'apprentice',15,branch,weapon);earlyFight('early:application:'+cls,cls,20,branch);earlyFight('early:counter',cls,21,branch);earlyFight('early:ability',cls,23,branch);earlyFight('early:resolution',cls,24,branch);earlyFight('early:amber:1',cls,25,branch);earlyFight('early:amber:2',cls,27,branch);earlyFight('early:amber:3',cls,28,branch);earlyFight('early:boss:amber',cls,29,branch);earlyFight('early:tree-proof',cls,30,branch);
+  for(const weapon of ['dagger','bow'])earlyFight('early:master:'+cls,'apprentice',15,branch,weapon);earlyFight('early:application:'+cls,cls,20,branch);earlyFight('early:counter',cls,21,branch);earlyFight('early:ability',cls,23,branch);earlyFight('early:resolution',cls,24,branch);earlyFight('early:amber:1',cls,25,branch);earlyFight('early:amber:2',cls,27,branch);earlyFight('early:amber:3',cls,28,branch);earlyFight('early:boss:amber',cls,29,branch);earlyFight('early:tree-proof',cls,31,branch);
  }
- check('Both starter-role branches and launch classes can clear the authored Lv1-30 route at milestone levels',earlyBalance.every(x=>x.winner===0),earlyBalance.filter(x=>x.winner!==0));
+ check('Both starter-role branches and launch classes clear the opening route and optional Lv31 talent proof',earlyBalance.every(x=>x.winner===0),earlyBalance.filter(x=>x.winner!==0));
  P.reset();const member=P.summon('emberfox','mage',P.testing.grantEcho('emberfox',100)).instanceId,tankMember=P.summon('stonehorn','mage',P.testing.grantEcho('stonehorn',100)).instanceId;
  const actor=[{type:'mage',skills:['aegis','comet','frost']},{type:'emberfox',instanceId:member,skills:[...G.UNITS.emberfox.default]},{type:'stonehorn',instanceId:tankMember,skills:[...G.UNITS.stonehorn.default]}];
  const trained=P.snapshot();trained.trainerXP=BondProgress.threshold(60);P.testing.replace(trained);

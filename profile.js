@@ -18,8 +18,8 @@ for(const k of ['bondcontract','rarecontract'])W.ITEMS[k]={...W.ITEMS[k],categor
 W.ITEMS.starseed.description='A legacy expedition keepsake. Preserved from an earlier save; not a current drop. Decorative, with no hidden stat bonus.';
 W.ITEMS.ashglass={name:'Ashglass',icon:'◇',category:'Materials',description:'A smoky piece of ordinary volcanic glass from an Ashen Reach cache. Decorative; no stat bonus.'};
 const validSkills=(type,skills)=>Array.isArray(skills)&&skills.length===3&&new Set(skills).size===3&&skills.every(k=>C.MONSTERS.includes(type)?BondCompanionMoves.validID(type,k):C.UNITS[type]?.skills.includes(k));
-function summarize(s){
- for(const m of s.companions)BondCompanionMoves.clean(m);
+function summarize(s,trees=true){
+ for(const m of s.companions){BondCompanionMoves.clean(m);if(trees)Object.assign(m,BondCompanionTrees.allocations(s,m.id));}
  s.owned=[...new Set(s.companions.map(m=>m.type))];s.xp={};s.pacts={};
  for(const mon of s.companions){s.xp[mon.type]=Math.max(s.xp[mon.type]||0,mon.xp);s.pacts[mon.id]=mon.pact;}
 }
@@ -41,9 +41,9 @@ function normalize(raw){
   seen.add(m.id);ordinals[m.type]=(ordinals[m.type]||0)+1;
   const skills=validSkills(m.type,m.skills)?[...m.skills]:[...C.UNITS[m.type].default],pact=m.pact,engineXP=R.clampXP(m.xp),excess=Math.max(0,engineXP-R.PLAYER_MAX_XP);
   if(excess)cappedCompanions++;
-  s.companions.push({id:m.id,type:m.type,ordinal:ordinals[m.type],xp:R.clampPlayerXP(engineXP),treeLevel:Number.isInteger(m.treeLevel)?Math.max(R.level(engineXP),Math.min(60,integer(m.treeLevel))):undefined,deferredXP:Math.max(integer(m.deferredXP,R.ENGINE_MAX_XP),excess),sourceLevel:Number.isInteger(m.sourceLevel)?Math.max(1,Math.min(R.ENGINE_LEVEL_CAP,m.sourceLevel)):undefined,skills,movesVersion:m.movesVersion,taughtMoves:m.taughtMoves,legacyMoves:m.legacyMoves,moveLevel:m.moveLevel,growth:m.growth||{},heldItem:m.heldItem||null,pact:{map:A.get(pact?.map)?pact.map:'clearing-0',trainerClass:BondContent.TRAINERS.includes(pact?.trainerClass)?pact.trainerClass:'druid'}});
+  s.companions.push({id:m.id,type:m.type,ordinal:ordinals[m.type],xp:R.clampPlayerXP(engineXP),treeLevel:Number.isInteger(m.treeLevel)?Math.max(R.level(engineXP),Math.min(60,integer(m.treeLevel))):undefined,deferredXP:Math.max(integer(m.deferredXP,R.ENGINE_MAX_XP),excess),sourceLevel:Number.isInteger(m.sourceLevel)?Math.max(1,Math.min(R.ENGINE_LEVEL_CAP,m.sourceLevel)):undefined,skills,movesVersion:m.movesVersion,taughtMoves:m.taughtMoves,legacyMoves:m.legacyMoves,moveLevel:m.moveLevel,growth:m.growth||{},deferredGrowth:m.deferredGrowth||{},heldItem:m.heldItem||null,pact:{map:A.get(pact?.map)?pact.map:'clearing-0',trainerClass:BondContent.TRAINERS.includes(pact?.trainerClass)?pact.trainerClass:'druid'}});
  }
- summarize(s);
+ summarize(s,false);
  s.journey=root.BondCampaign?.clean(raw.journey)||{};
  const currentProgression=raw.progression?.version>=2;
  const oldApprentice=s.character&&!s.character.legacy?Math.min(5,R.level(s.apprenticeXP)):1;
@@ -61,7 +61,7 @@ function normalize(raw){
  s.sights=[...new Set((Array.isArray(raw.sights)?raw.sights:[]).filter(id=>A.maps.some(m=>m.landmarks.some(l=>l.id===id))))];
  s.collected=[...new Set((Array.isArray(raw.collected)?raw.collected:[]).filter(k=>A.get(k)||A.REGIONS.some(r=>r.id===k)))];
  let refunded=0;for(const type of BondContent.TRAINERS){s.growth[type]=BondGrowth.clean(type,raw.growth?.[type],BondGrowth.budget(s,type));refunded+=Math.max(0,BondGrowth.used(raw.growth?.[type])-BondGrowth.used(s.growth[type]));}
- for(const mon of s.companions){const ranks=BondGrowth.clean(mon.type,mon.growth,BondGrowth.budget(s,mon.id));refunded+=Math.max(0,BondGrowth.used(mon.growth)-BondGrowth.used(ranks));mon.growth=ranks;}
+ for(const mon of s.companions){const saved=BondCompanionTrees.allocations(s,mon.id);refunded+=Math.max(0,BondGrowth.used(mon.growth)-BondGrowth.used(saved.growth)-BondGrowth.used(saved.deferredGrowth));Object.assign(mon,saved);}
  const requested=raw.version>=6?raw.map:(A.REGIONS.some(r=>r.id===raw.area)?raw.area:'clearing')+'-0';
  // Preserve the location of existing/debug saves. Player-facing routes still use
  // Atlas.unlocked and cannot leave Firstlight before the Mage trial.
@@ -95,7 +95,7 @@ function normalize(raw){
  }else s.migration='Your earlier companions, items, coins and builds were retained. The original save is untouched. A new world awaits; '+refunded+' out-of-budget tree ranks were removed from this migrated copy.';
  s.encounterReceipts=Object.fromEntries(Object.entries(raw.encounterReceipts||{}).filter(([id,v])=>id.length<220&&v&&Number.isInteger(v.coins)&&v.coins>=0));
  const saved=raw.encounterSave;
- if(saved&&saved.encounter&&A.get(saved.encounter.map)&&typeof saved.id==='string'&&saved.id.length<220&&(!saved.build||BondGame.validBuild(saved.build))&&Number.isInteger(saved.tick)&&saved.tick>=0&&saved.tick<=1500){s.encounterSave=clone(saved);s.encounterSave.options||={};s.encounterSave.options.classTrees??=0;s.encounterSave.options.apprenticeTrees??=0;s.encounterSave.options.monsterRules??=0;s.encounterSave.options.equipmentRules??=0;s.encounterSave.options.profile||={};if(!Number.isSafeInteger(s.encounterSave.options.profile.trainerXP))s.encounterSave.options.profile.trainerXP=s.trainerXP;}
+ if(saved&&saved.encounter&&A.get(saved.encounter.map)&&typeof saved.id==='string'&&saved.id.length<220&&(!saved.build||BondGame.validBuild(saved.build))&&Number.isInteger(saved.tick)&&saved.tick>=0&&saved.tick<=1500){s.encounterSave=clone(saved);s.encounterSave.options||={};s.encounterSave.options.classTrees??=0;s.encounterSave.options.apprenticeTrees??=0;s.encounterSave.options.monsterRules??=0;s.encounterSave.options.companionTrees??=0;s.encounterSave.options.equipmentRules??=0;s.encounterSave.options.profile||={};if(!Number.isSafeInteger(s.encounterSave.options.profile.trainerXP))s.encounterSave.options.profile.trainerXP=s.trainerXP;}
  for(const m of A.maps)for(const h of m.habitats){
   const selected=new Set(Q.selected(h,s.spawns,s.encounterSave?.encounter?.enemies));
   for(const id of Q.keys(h))if(s.spawns[id])s.spawns[id].activeSlot=selected.has(id);
@@ -172,7 +172,7 @@ function reserveBattle(b,id,options){
  if(BondCampaign.requirement(e,state,b.build[0]))return false;
  if(state.encounterSave?.id===id){b._attemptId=state.encounterSave.attempt;return true;}
  const profile=clone(options.profile);delete profile.encounterSave;delete profile.encounterReceipts;delete profile.claims;delete profile.spawns;
- const saved={id,attempt:'attempt:'+(state.sequence+1),encounter:e,build:clone(b.build),options:{...clone(options),profile,classTrees:b.classTrees,apprenticeTrees:b.apprenticeTrees,monsterRules:b.monsterRules,equipmentRules:b.equipmentRules},tick:0,supply:null,joins:[],anchor:clone(options.worldAnchor||{map:state.map,position:state.position,actors:[]})};
+ const saved={id,attempt:'attempt:'+(state.sequence+1),encounter:e,build:clone(b.build),options:{...clone(options),profile,classTrees:b.classTrees,apprenticeTrees:b.apprenticeTrees,monsterRules:b.monsterRules,companionTrees:b.companionTrees,equipmentRules:b.equipmentRules},tick:0,supply:null,joins:[],anchor:clone(options.worldAnchor||{map:state.map,position:state.position,actors:[]})};
  const ok=commit(s=>{if(s.encounterSave)return false;s.sequence++;s.encounterSave=saved;return true;},{critical:true});
  if(ok)b._attemptId=saved.attempt;return ok;
 }
@@ -318,7 +318,7 @@ function activeCompanions(s=state){
 root.BondProfile={
  activeCompanions:()=>{sync();return activeCompanions();},
  teachMove(npc,id,skill){return commit(s=>{const m=resolve(s,id);if(!m||!BondCities.service(s,npc,'moves')||!activeCompanions(s).includes(id)||!BondCompanionMoves.general.includes(skill)||BondCompanionMoves.learned(m).includes(skill))return false;m.taughtMoves.push(skill);return {ok:true,skill};},{critical:true,growth:true});},
- resetCompanionTalents(npc,id){return commit(s=>{const m=resolve(s,id);if(!m||!BondCities.service(s,npc,'talents')||!BondGrowth.used(m.growth))return false;const echoes=s.echoes[m.type]||[],echo=[...echoes].sort((a,b)=>a.level-b.level||a.id.localeCompare(b.id))[0];if(!echo)return false;echoes.splice(echoes.findIndex(e=>e.id===echo.id),1);s.inventory[E.key(m.type)]=echoes.length;m.growth={};return {ok:true,echo:echo.id};},{critical:true,growth:true});},
+ resetCompanionTalents(npc,id){return commit(s=>{const m=resolve(s,id);if(!m||!BondCities.service(s,npc,'talents')||!BondGrowth.used(m.growth))return false;const echoes=s.echoes[m.type]||[],echo=[...echoes].sort((a,b)=>a.level-b.level||a.id.localeCompare(b.id))[0];if(!echo)return false;echoes.splice(echoes.findIndex(e=>e.id===echo.id),1);s.inventory[E.key(m.type)]=echoes.length;m.growth={};m.deferredGrowth={};return {ok:true,echo:echo.id};},{critical:true,growth:true});},
  KEY,BUILD_KEY,TEST,fresh,normalize,snapshot:()=>{sync();return clone(state);},persistent:()=>persistent,error:()=>lastError,owns:t=>state.owned.includes(t),getCompanion:id=>{sync();const m=resolve(state,id);return m?clone(m):null;},companions:type=>{sync();return clone(state.companions.filter(m=>!type||m.type===type));},label:m=>m?C.UNITS[m.type].name:'Empty slot',
  createCharacter(raw){const c=BondOpening.character(raw);if(!c||c.legacy)return false;return commit(s=>{if(s.character||s.encounterSave||s.companions.length||s.tutorial.kills||s.coins)return false;s.character=c;s.attributes=BondOpening.attributes(c.weapon);s.map=BondOpening.start.map;s.area=A.get(s.map).region;s.position=A.safePoint(s.map,BondOpening.start.position);s.visited=[s.map];s.inventory={leafdraught:2};s.growth.apprentice={};return true;},{critical:true,growth:true});},
  nameCharacter(value){const name=BondOpening.name(value);if(!BondOpening.validName(name)||name.toLocaleLowerCase()==='apprentice')return false;return commit(s=>{if(!s.character||!BondOpening.needsIdentity(s.character))return false;s.character=s.character.legacy?{legacy:true,name}:{...s.character,name};return true;},{critical:true});},

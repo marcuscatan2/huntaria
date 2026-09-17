@@ -25,7 +25,8 @@ function detail(type,entry=null,instanceId=null){
  const u={...base,...BondProgress.derived(type,state,base,preview?1:null)},passive=G.PASSIVES[u.passive],M=BondCompanionMoves;
  u.hp=Math.round(u.hp*(1+bonus.hp));u.power=Math.round(u.power*(1+bonus.attack));u.speed*=1+bonus.speed;u.interval=100/u.speed;u.moveSpeed*=1+bonus.move;
  const known=mon?M.learned(mon):trainer?base.skills:M.plan(type).map(x=>x.id),lessons=trainer?[]:M.plan(type),pool=trainer?base.skills:[...new Set([...known,...lessons.map(x=>x.id)])];
- const tree='<button class="button secondary open-tree-button" data-open-tree="'+(mon?.id||type)+'">'+(trainer?'Class Skill Tree':'Mastery tree')+'</button>';
+ const treeLocked=!!mon&&!BondGrowth.unlocked(state,mon.id);
+ const tree='<button class="button secondary open-tree-button" data-open-tree="'+(mon?.id||type)+'" '+(treeLocked?'disabled':'')+'>'+ (trainer?'Class Skill Tree':treeLocked?'Mastery tree · Lv '+BondCompanionTrees.unlockLevel:'Mastery tree')+'</button>';
  return '<div class="companion-detail"><div class="companion-profile" style="--unit-accent:'+u.color+'">'+tree+'<div class="hero-creature">'+art(type)+'</div><h3>'+displayName+'</h3><span class="element-badge">Lv '+u.level+' · '+u.element+'</span>'+(!preview?BondEquipmentView.quick(mon?.id||type):'')+
  '<div class="stat-ribbon"><span><b>'+u.hp+'</b>MAX HP</span><span><b>'+u.power+'</b>ATK</span><span><b>'+u.speed.toFixed(1)+'</b>SPEED</span><span><b>'+(u.moveSpeed*8).toFixed(1)+'</b>MOVE</span></div><p class="reach-note">Atk: '+({melee:'STR',ranged:'DEX',magic:'INT'}[base.basicCategory]||'STR')+' Based</p>'+(passive?'<div class="passive-card"><small>INNATE</small><strong>'+passive.name+'</strong><p>'+passive.description+'</p></div>':'')+
  '</div><div class="ability-panel"><div class="ability-heading"><h3>Combat Skills</h3>'+(editing?'<button class="text-button" data-rotate>Rotate order</button>':'')+'</div>'+
